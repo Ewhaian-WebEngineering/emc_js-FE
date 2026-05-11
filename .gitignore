@@ -1,0 +1,7 @@
+node_modules/
+.env
+build/
+back/test-socket.js
+back/seed.js
+.history/
+back/swagger.json
