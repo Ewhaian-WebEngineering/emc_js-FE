@@ -1,6 +1,6 @@
 ---
 name: FE Bug Report
-about: 에러 상황을 자세히 보고합니다.
+about: 클라이언트 에러 보고
 title: ''
 labels: ''
 assignees: ''

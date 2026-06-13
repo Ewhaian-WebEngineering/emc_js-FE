@@ -1,6 +1,6 @@
 ---
-name: 이슈 생성 템플릿
-about: 해당 이슈 템플릿을 사용해서 이슈를 생성해주세요.
+name: FE Issue Template
+about: 이슈 생성
 title: ''
 labels: ''
 assignees: ''
