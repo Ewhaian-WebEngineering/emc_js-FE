@@ -1,6 +1,6 @@
 ---
 name: BE Bug Report
-about: 에러를 발견했어요.
+about: 서버 에러 보고
 title: ㅁㅁㅁㅁ API 403 Forbidden
 labels: ''
 assignees: ''

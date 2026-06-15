@@ -1,6 +1,6 @@
 ---
 name: QA Report
-about: QA 테스트를 위한 템플릿
+about: QA 테스트
 title: ''
 labels: ''
 assignees: ''
