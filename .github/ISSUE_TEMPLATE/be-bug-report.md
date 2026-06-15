@@ -4,7 +4,6 @@ about: 에러를 발견했어요.
 title: ㅁㅁㅁㅁ API 403 Forbidden
 labels: ''
 assignees: ''
-
 ---
 
 ## 📄 API
