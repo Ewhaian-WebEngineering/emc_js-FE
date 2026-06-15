@@ -4,6 +4,7 @@ about: 서버 에러 보고
 title: ㅁㅁㅁㅁ API 403 Forbidden
 labels: ''
 assignees: ''
+
 ---
 
 ## 📄 API

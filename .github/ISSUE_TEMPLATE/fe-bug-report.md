@@ -4,6 +4,7 @@ about: 클라이언트 에러 보고
 title: ''
 labels: ''
 assignees: ''
+
 ---
 
 ## 📜 요약
