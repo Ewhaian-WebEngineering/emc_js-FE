@@ -4,26 +4,25 @@ export const common = {
 };
 
 export const gray = {
-  100: '#F9FAFB',
-  200: '#F6F8FA',
-  300: '#ECEEF0',
-  400: '#D3D5D7',
-  500: '#BABCBE',
-  600: '#A1A3A5',
-  700: '#888A8C',
-  800: '#6F7173',
-  900: '#56585A',
-  950: '#3D3F41',
-  970: '#242628',
-  990: '#0B0E0F',
+  50: '#F9FAFB',
+  100: '#F6F8FA',
+  200: '#ECEEF0',
+  300: '#D3D5D7',
+  400: '#BABCBE',
+  500: '#A1A3A5',
+  600: '#888A8C',
+  700: '#6F7173',
+  800: '#56585A',
+  900: '#3D3F41',
+  950: '#242628',
 };
 
 export const blue = {
-  50: '#E1ECFE',
+  50: '#E8F1FF',
   100: '#C3D8FE',
   150: '#A5C5FD',
   200: '#79A9FC',
-  300: '#4387FE',
+  300: '#4B8CFF',
   400: '#0F66FD',
   500: '#0253DE',
   600: '#0240AC',
@@ -34,7 +33,7 @@ export const blue = {
 };
 
 export const yellow = {
-  50: '#FFF8E5',
+  50: '#FFFBE5',
   100: '#FFEBB2',
   150: '#FFE499',
   200: '#FFD666',
@@ -49,12 +48,12 @@ export const yellow = {
 };
 
 export const pink = {
-  50: '#FFE7EC',
-  100: '#F9CCD5',
+  50: '#FFEEF1',
+  100: '#FFEBEF',
   150: '#F7B2C0',
   200: '#F499AB',
-  300: '#EE6681',
-  400: '#E93357',
+  300: '#F16E88',
+  400: '#FA5172',
   500: '#E3002D',
   600: '#B60024',
   700: '#88001B',
@@ -80,8 +79,8 @@ export const red = {
 };
 
 export const green = {
-  50: '#F2FFF6',
-  100: '#D9FFE6',
+  50: '#EEFDF3',
+  100: '#DFFBE9',
   150: '#ACFCC7',
   200: '#7DF5A5',
   300: '#49E57D',
@@ -123,7 +122,7 @@ export const orange = {
 };
 
 export const cyan = {
-  50: '#F7FEFF',
+  50: '#EAFCFF',
   100: '#DEFAFF',
   200: '#B5F4FF',
   300: '#8AEDFF',
@@ -134,4 +133,17 @@ export const cyan = {
   800: '#006F82',
   900: '#004854',
   950: '#00252B',
+};
+
+export const purple = {
+  50: '#F9EDFF',
+  100: '#F2D6FF',
+  200: '#E9BAFF',
+  300: '#DE96FF',
+  400: '#D478FF',
+  500: '#CB59FF',
+  600: '#AD36E3',
+  700: '#861CB8',
+  800: '#580A7D',
+  900: '#290247',
 };
