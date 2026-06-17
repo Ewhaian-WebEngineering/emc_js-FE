@@ -117,19 +117,19 @@ export const typography = {
     fontFamily: 'Pretendard',
     fontWeight: 600,
     fontSize: '14px',
-    lineHeight: '16px',
+    lineHeight: '20px',
   },
   body2Medium: {
     fontFamily: 'Pretendard',
     fontWeight: 500,
     fontSize: '14px',
-    lineHeight: '16px',
+    lineHeight: '20px',
   },
   body2Regular: {
     fontFamily: 'Pretendard',
     fontWeight: 400,
     fontSize: '14px',
-    lineHeight: '16px',
+    lineHeight: '20px',
   },
 
   caption1Semibold: {
