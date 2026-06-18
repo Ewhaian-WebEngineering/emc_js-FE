@@ -22,9 +22,9 @@ export const semantic = {
   borderPrimaryNormal: blue[400],
 
   iconPrimaryNormal: blue[400],
-  iconNormalStrong: gray[900],
-  iconNormalNormal: gray[700],
-  iconNormalAssistive: gray[400],
+  iconNormalStrong: gray[800],
+  iconNormalNormal: gray[600],
+  iconNormalAssistive: gray[300],
   iconNormalInverse: common[0],
 
   secondaryYellowDefault: yellow[400],
