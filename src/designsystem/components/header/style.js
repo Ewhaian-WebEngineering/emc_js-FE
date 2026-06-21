@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { semantic } from '../../../designsystem/tokens/semantic';
-import { measurement } from '../../../designsystem/tokens/measurement';
+import { semantic } from '../../tokens/semantic';
+import { measurement } from '../../tokens/measurement';
 
 export const HeaderContainer = styled.div`
   display: flex;
@@ -11,7 +11,9 @@ export const HeaderContainer = styled.div`
     $transparent ? 'transparent' : semantic.fillNormalWhite};
   padding-inline: ${measurement.spacing16};
   border-bottom: ${({ $border }) =>
-    $border ? `1px solid ${semantic.borderNormalNormal}` : 'none'};
+    $border
+      ? `${measurement.borderWidthSm} solid ${semantic.borderNormalNormal}`
+      : 'none'};
   gap: ${({ $gap }) => ($gap ? measurement.spacing4 : measurement.spacing0)};
 `;
 
