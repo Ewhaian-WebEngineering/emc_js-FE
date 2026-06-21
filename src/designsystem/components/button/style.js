@@ -60,3 +60,41 @@ export const BoxButtonContainer = styled.button`
           : gray[200]};
   }
 `;
+
+export const TextButtonContainer = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  padding: ${measurement.spacing4};
+
+  background-color: transparent;
+
+  color: ${({ $type }) =>
+    $type === 'primary'
+      ? semantic.textPrimaryNormal
+      : semantic.textNormalNormal};
+
+  border: none;
+  border-radius: ${measurement.borderRadiusMd};
+
+  ${({ $size }) =>
+    $size === 'md'
+      ? css(typography.body1Semibold)
+      : $size === 'sm'
+        ? css(typography.body2Semibold)
+        : css(typography.caption1Medium)}
+
+  &:disabled {
+    color: ${semantic.textNormalAssistive};
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: ${({ $type }) =>
+      $type === 'primary'
+        ? semantic.fillPrimaryAssistive
+        : semantic.fillNormalStrong};
+  }
+`;
