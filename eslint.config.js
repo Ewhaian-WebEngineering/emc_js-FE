@@ -11,10 +11,6 @@ export default defineConfig([
     plugins: { js },
     extends: ['js/recommended'],
     languageOptions: { globals: globals.browser },
-    rules: {
-      'no-unused-vars': 'warn', // 사용하지 않는 변수가 있으면 경고
-      eqeqeq: 'error', // == 대신 === 사용 강제
-    },
   },
   {
     files: ['vite.config.js', '*.config.js'],
@@ -23,4 +19,11 @@ export default defineConfig([
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
   ...storybook.configs['flat/recommended'],
+  {
+    rules: {
+      'no-unused-vars': 'warn', // 사용하지 않는 변수가 있으면 경고
+      eqeqeq: 'error', // == 대신 === 사용 강제
+      'react/prop-types': 'off',
+    },
+  },
 ]);
