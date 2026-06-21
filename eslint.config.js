@@ -1,3 +1,5 @@
+import storybook from 'eslint-plugin-storybook';
+
 import js from '@eslint/js';
 import globals from 'globals';
 import pluginReact from 'eslint-plugin-react';
@@ -14,6 +16,11 @@ export default defineConfig([
       eqeqeq: 'error', // == 대신 === 사용 강제
     },
   },
+  {
+    files: ['vite.config.js', '*.config.js'],
+    languageOptions: { globals: globals.node },
+  },
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
+  ...storybook.configs['flat/recommended'],
 ]);
