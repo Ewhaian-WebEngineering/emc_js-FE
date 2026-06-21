@@ -1,4 +1,3 @@
-// BoxButton.stories.jsx
 import BoxButton from './BoxButton';
 
 const meta = {
