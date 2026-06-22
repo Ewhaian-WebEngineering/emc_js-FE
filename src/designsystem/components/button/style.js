@@ -51,7 +51,7 @@ export const BoxButtonContainer = styled.button`
     cursor: default;
   }
 
-  &:hover:not(:disabled) {
+  &:active:not(:disabled) {
     background-color: ${({ $type }) =>
       $type === 'primary'
         ? semantic.fillInteractionPrimaryHover
@@ -91,7 +91,7 @@ export const TextButtonContainer = styled.button`
     cursor: default;
   }
 
-  &:hover:not(:disabled) {
+  &:active:not(:disabled) {
     background-color: ${({ $type }) =>
       $type === 'primary'
         ? semantic.fillPrimaryAssistive
