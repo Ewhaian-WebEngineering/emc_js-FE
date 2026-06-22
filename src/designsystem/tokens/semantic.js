@@ -44,7 +44,8 @@ export const semantic = {
   statusWarning: yellow[400],
   statusWarningSubtle: yellow[50],
   statusDanger: red[500],
-  statusDangerSubtle: red[50],
+  statusDangerSubtle1: red[50],
+  statusDangerSubtle2: red[100],
   statusSuccess: green[500],
   statusSuccessSubtle: green[50],
 };
