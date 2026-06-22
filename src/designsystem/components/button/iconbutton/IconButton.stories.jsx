@@ -1,5 +1,5 @@
 import IconButton from './IconButton';
-import SearchIcon from '../../../../assets/svg/20px/ic_search_20px.svg?react';
+import SearchIcon from '../../../../assets/svg/20px/ic_search.svg?react';
 
 const meta = {
   title: 'Components/IconButton',
