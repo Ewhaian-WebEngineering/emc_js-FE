@@ -4,6 +4,7 @@ export default function LinkButton({
   type,
   size,
   href,
+  target = '_self',
   children,
   onClick,
   ...rest
@@ -11,8 +12,8 @@ export default function LinkButton({
   return (
     <LinkButtonContainer
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={target}
+      rel={target === '_blank' ? 'noopener noreferrer' : undefined}
       $type={type}
       $size={size}
       onClick={onClick}
