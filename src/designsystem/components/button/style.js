@@ -98,3 +98,26 @@ export const TextButtonContainer = styled.button`
         : semantic.fillNormalStrong};
   }
 `;
+
+export const LinkButtonContainer = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  color: ${({ $type }) =>
+    $type === 'primary'
+      ? semantic.textPrimaryNormal
+      : semantic.textNormalNormal};
+
+  border: none;
+
+  text-decoration: underline;
+
+  ${({ $size }) =>
+    $size === 'lg'
+      ? css(typography.body1Medium)
+      : $size === 'md'
+        ? css(typography.body2Medium)
+        : css(typography.caption1Medium)}
+`;
