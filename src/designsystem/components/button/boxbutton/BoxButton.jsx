@@ -3,7 +3,7 @@ import { BoxButtonContainer } from '../style';
 export default function BoxButton({
   type,
   size,
-  label,
+  children,
   onClick,
   disabled = false,
   ...rest
@@ -16,7 +16,7 @@ export default function BoxButton({
       disabled={disabled}
       {...rest}
     >
-      {label}
+      {children}
     </BoxButtonContainer>
   );
 }

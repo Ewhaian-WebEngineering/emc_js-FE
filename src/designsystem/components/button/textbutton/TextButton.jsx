@@ -3,7 +3,7 @@ import { TextButtonContainer } from '../style';
 export default function TextButton({
   type,
   size,
-  label,
+  children,
   onClick,
   disabled = false,
   ...rest
@@ -16,7 +16,7 @@ export default function TextButton({
       disabled={disabled}
       {...rest}
     >
-      {label}
+      {children}
     </TextButtonContainer>
   );
 }
