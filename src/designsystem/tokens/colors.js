@@ -6,7 +6,7 @@ export const common = {
 export const gray = {
   50: '#F9FAFB',
   100: '#F6F8FA',
-  200: '#ECEEF0',
+  200: '#E7EAED',
   300: '#D3D5D7',
   400: '#BABCBE',
   500: '#A1A3A5',
