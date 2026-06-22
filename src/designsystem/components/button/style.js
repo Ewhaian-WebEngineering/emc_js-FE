@@ -121,3 +121,61 @@ export const LinkButtonContainer = styled.a`
         ? css(typography.body2Medium)
         : css(typography.caption1Medium)}
 `;
+
+export const IconButtonContainer = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  padding: ${({ $size }) =>
+    $size === 'md' ? measurement.spacing12 : measurement.spacing8};
+
+  background-color: ${({ $type }) =>
+    $type === 'primary'
+      ? semantic.fillPrimaryNormal
+      : $type === 'secondary'
+        ? semantic.fillNormalNormal
+        : 'transparent'};
+
+  color: ${({ $type }) =>
+    $type === 'primary'
+      ? semantic.iconNormalInverse
+      : semantic.iconNormalStrong};
+
+  border: ${({ $type }) =>
+    $type === 'transparent'
+      ? 'none'
+      : `${measurement.borderWidthSm} solid ${
+          $type === 'primary'
+            ? semantic.borderPrimaryNormal
+            : semantic.borderNormalStrong
+        }`};
+
+  border-radius: ${measurement.borderRadiusLg};
+
+  &:disabled {
+    background-color: ${semantic.fillInteractionDisabled};
+    color: ${semantic.iconNormalAssistive};
+    border: ${({ $type }) =>
+      $type === 'transparent'
+        ? 'none'
+        : `${measurement.borderWidthSm} solid ${semantic.borderNormalNormal}`};
+    cursor: default;
+  }
+
+  &:active:not(:disabled) {
+    background-color: ${({ $type }) =>
+      $type === 'primary'
+        ? semantic.fillPrimaryNormal
+        : semantic.fillInteractionPressed};
+    border: ${({ $type }) =>
+      $type === 'transparent'
+        ? 'none'
+        : `${measurement.borderWidthSm} solid ${
+            $type === 'primary'
+              ? semantic.borderPrimaryNormal
+              : semantic.borderNormalStrong
+          }`};
+  }
+`;
