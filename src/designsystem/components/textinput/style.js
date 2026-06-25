@@ -109,3 +109,66 @@ export const TextInputMaxLength = styled.span`
   ${typography.caption1Regular};
   color: ${semantic.textNormalNormal};
 `;
+
+export const TextAreaWrapper = styled.div`
+  position: relative;
+  border: ${measurement.borderRadiusSm} solid ${semantic.borderNormalNormal};
+  border-radius: ${measurement.borderRadiusXl};
+  background-color: ${semantic.fillNormalWhite};
+  padding-right: 3px;
+
+  &:focus-within {
+    border-color: ${semantic.borderPrimaryNormal};
+  }
+
+  &:has(textarea:disabled) {
+    background-color: ${semantic.fillInteractionDisabled};
+    border-color: ${semantic.borderNormalNormal};
+  }
+
+  ${({ hasError }) =>
+    hasError &&
+    css`
+      border-color: ${semantic.statusDanger};
+      &:focus-within {
+        border-color: ${semantic.statusDanger};
+      }
+    `}
+`;
+
+export const TextAreaInput = styled.textarea`
+  width: 100%;
+  height: 148px;
+  overflow-y: auto;
+  padding: ${measurement.spacing12};
+  border: none;
+  outline: none;
+  background-color: transparent;
+  resize: none;
+  color: ${semantic.textNormalStrong};
+  ${typography.body2Regular}
+
+  &::placeholder {
+    color: ${semantic.textNormalAssistive};
+  }
+
+  &:disabled {
+    color: ${semantic.textNormalAssistive};
+    cursor: not-allowed;
+  }
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 7px 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${semantic.borderNormalNormal};
+    border-radius: ${measurement.borderRadiusRounded};
+    cursor: pointer;
+  }
+`;
