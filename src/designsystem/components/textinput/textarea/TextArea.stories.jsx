@@ -46,12 +46,20 @@ const Template = (args) => {
   );
 };
 
-export const Default = { render: Template };
-export const Required = { render: Template, args: { required: true } };
+export const Default = {
+  render: Template,
+};
+
+export const Required = {
+  render: Template,
+  args: { required: true },
+};
+
 export const Error = {
   render: Template,
   args: { required: true, hasError: true, helperText: '에러 메시지' },
 };
+
 export const Disabled = {
   render: (args) => <TextArea {...args} value="내용 입력" />,
   args: { disabled: true },
