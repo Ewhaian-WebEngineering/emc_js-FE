@@ -29,11 +29,18 @@ export default meta;
 
 const Template = (args) => {
   const [value, setValue] = useState('');
+  const [error, setError] = useState(args.hasError ? args.helperText : '');
+
   return (
     <TextField
       {...args}
       value={value}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={(e) => {
+        setValue(e.target.value);
+        setError('');
+      }}
+      hasError={!!error}
+      helperText={error || args.helperText}
     />
   );
 };
