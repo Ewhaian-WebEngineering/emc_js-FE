@@ -24,7 +24,8 @@ export const ToastWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  width: 335px;
+  width: calc(100vw - 40px);
+  max-width: 335px;
   height: 56px;
   padding: ${measurement.spacing12} ${measurement.spacing16};
 
