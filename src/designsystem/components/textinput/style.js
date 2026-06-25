@@ -4,30 +4,30 @@ import { semantic } from '../../tokens/semantic';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
 
-export const TextFieldContainer = styled.div`
+export const TextInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: ${measurement.spacing8};
 `;
 
-export const TextFieldHeadLine = styled.div`
+export const TextInputHeadLine = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-export const TextFieldLabel = styled.label`
+export const TextInputLabel = styled.label`
   ${typography.body1Medium};
   color: ${semantic.textNormalNormal};
 `;
 
-export const TextFieldRequired = styled.span`
+export const TextInputRequired = styled.span`
   ${typography.body1Semibold};
   color: ${semantic.statusDanger};
 `;
 
-export const TextFieldDescription = styled.span`
+export const TextInputDescription = styled.span`
   ${typography.caption1Regular};
   color: ${semantic.textNormalAssistive};
 `;
@@ -93,19 +93,19 @@ export const TextFieldIcon = styled.button`
   color: ${semantic.iconNormalNormal};
 `;
 
-export const TextFieldBottomLine = styled.div`
+export const TextInputBottomLine = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-export const TextFieldHelperText = styled.span`
+export const TextInputHelperText = styled.span`
   ${typography.caption1Regular};
   color: ${({ hasError }) =>
     hasError ? semantic.statusDanger : semantic.textNormalNormal};
 `;
 
-export const TextFieldMaxLength = styled.span`
+export const TextInputMaxLength = styled.span`
   ${typography.caption1Regular};
   color: ${semantic.textNormalNormal};
 `;
