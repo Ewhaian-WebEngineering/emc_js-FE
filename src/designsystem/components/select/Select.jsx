@@ -19,6 +19,9 @@ export default function Select({
   placeholder,
   error,
   disabled,
+  showActions,
+  onDelete,
+  onEdit,
 }) {
   // 상태 관리
   const [selectedValue, setSelectedValue] = useState(value || defaultValue);
@@ -96,6 +99,9 @@ export default function Select({
                 selected={selectedValue?.value === option.value}
                 disabled={option.disabled}
                 onClick={() => handleSelect(option)}
+                showActions={showActions}
+                onDelete={() => onDelete?.(option)}
+                onEdit={() => onEdit?.(option)}
               />
             ))}
           </SelectScrollArea>
