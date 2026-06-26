@@ -23,12 +23,21 @@ export default function SelectItem({
       {showActions && (
         <SelectItemActions>
           <TextButton
-            onClick={onDelete}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete?.();
+            }}
             style={{ color: semantic.statusDanger }}
           >
             삭제
           </TextButton>
-          <TextButton onClick={onEdit} style={{ color: semantic.statusInfo }}>
+          <TextButton
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit?.();
+            }}
+            style={{ color: semantic.statusInfo }}
+          >
             수정
           </TextButton>
         </SelectItemActions>
