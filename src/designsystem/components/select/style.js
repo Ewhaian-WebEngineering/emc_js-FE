@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { semantic } from '../../tokens/semantic';
+import { shadow } from '../../tokens/shadow';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
 
@@ -63,6 +64,7 @@ export const SelectTrigger = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: ${({ size }) => (size === 'md' ? '200px' : 'auto')};
 
   padding: ${({ size }) =>
     size === 'md'
@@ -86,12 +88,22 @@ export const SelectTrigger = styled.div`
     disabled &&
     css`
       pointer-events: none;
+    `}
+
+  ${({ disabled, size }) =>
+    disabled &&
+    size === 'md' &&
+    css`
       background-color: ${semantic.fillInteractionDisabled};
     `}
 
   span {
-    color: ${({ hasValue }) =>
-      hasValue ? semantic.textNormalStrong : semantic.textNormalAssistive};
+    color: ${({ hasValue, disabled }) =>
+      disabled
+        ? semantic.textNormalAssistive
+        : hasValue
+          ? semantic.textNormalStrong
+          : semantic.textNormalAssistive};
 
     ${({ size }) =>
       size === 'md'
@@ -111,5 +123,41 @@ export const SelectTrigger = styled.div`
     border: none;
     cursor: pointer;
     transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+  }
+`;
+
+export const SelectList = styled.ul`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+
+  margin-top: ${measurement.spacing4};
+  padding: ${measurement.spacing8};
+
+  border-radius: ${measurement.borderRadiusLg};
+  background-color: ${semantic.fillNormalWhite};
+  box-shadow: ${shadow.shadowEmphasize};
+
+  z-index: 9999;
+`;
+
+export const SelectScrollArea = styled.div`
+  max-height: 130px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 7px 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${semantic.borderNormalNormal};
+    border-radius: ${measurement.borderRadiusRounded};
+    cursor: pointer;
   }
 `;
