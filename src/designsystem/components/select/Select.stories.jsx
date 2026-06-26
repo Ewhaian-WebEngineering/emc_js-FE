@@ -63,6 +63,7 @@ export const ErrorMd = {
           setError(false);
           args.onChange?.(option);
         }}
+        defaultValue={{ label: '항목 1', value: 'item1' }}
       />
     );
   },
@@ -131,5 +132,28 @@ export const WithDisabledOptions = {
       { label: '항목 4', value: 'item4', disabled: true },
       { label: '항목 5', value: 'item5' },
     ],
+  },
+};
+
+export const WithActionsMd = {
+  render: (args) => {
+    const [options, setOptions] = useState(OPTIONS);
+
+    return (
+      <Select
+        {...args}
+        options={options}
+        showActions
+        onDelete={(option) => {
+          setOptions((prev) => prev.filter((o) => o.value !== option.value));
+        }}
+        onEdit={(option) => {
+          alert(`수정: ${option.label}`);
+        }}
+      />
+    );
+  },
+  args: {
+    size: 'md',
   },
 };
