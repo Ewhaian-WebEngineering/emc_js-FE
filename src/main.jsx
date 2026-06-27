@@ -5,12 +5,15 @@ import './index.css';
 import App from './App.jsx';
 import { ToastProvider } from './designsystem/components/toast/ToastContext';
 import { ToastContainer } from './designsystem/components/toast/ToastContainer';
+import { ModalProvider } from './designsystem/components/modal/ModalContext';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ToastProvider>
-      <App />
-      <ToastContainer />
-    </ToastProvider>
+    <ModalProvider>
+      <ToastProvider>
+        <App />
+        <ToastContainer />
+      </ToastProvider>
+    </ModalProvider>
   </StrictMode>,
 );
