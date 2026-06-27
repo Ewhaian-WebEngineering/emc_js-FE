@@ -14,6 +14,7 @@ export default function Modal({
   title,
   description,
   placeholder,
+  defaultValue,
   options,
   confirmText,
   cancelText,
@@ -21,7 +22,7 @@ export default function Modal({
   onCancel,
 }) {
   // 드롭다운
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState(defaultValue || '');
 
   const handleConfirm = () => {
     onConfirm?.(variant === 'form' ? selectedOption : undefined);
@@ -43,6 +44,7 @@ export default function Modal({
             <Select
               size="md"
               placeholder={placeholder}
+              defaultValue={defaultValue}
               options={options}
               value={selectedOption}
               onChange={setSelectedOption}
