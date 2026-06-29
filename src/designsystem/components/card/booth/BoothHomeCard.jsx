@@ -1,17 +1,18 @@
 import Badge from '../../badge/Badge';
 import EcoMark from '../../../../assets/svg/badge/ic_eco_mark_sm.svg?react';
 import VeganMark from '../../../../assets/svg/badge/ic_vegan_mark_sm.svg?react';
-import {
-  BoothHomeCardContainer,
-  BoothHomeCardContent,
-  BoothHomeCardMarks,
-  BoothHomeCardThumbnail,
-  BoothHomeCardNumber,
-  BoothHomeCardName,
-  BoothHomeCardBadges,
-  BoothHomeCardMore,
-} from '../style';
+
 import CardPlaceholder from '../CardPlaceholder';
+import {
+  BoothCardBadges,
+  BoothCardContent,
+  BoothCardMarks,
+  BoothCardMore,
+  BoothCardName,
+  BoothCardNumber,
+  BoothCardThumbnail,
+  BoothHomeCardContainer,
+} from './style';
 
 const MARK_ICON = {
   eco: EcoMark,
@@ -28,31 +29,31 @@ export default function BoothHomeCard({
 }) {
   return (
     <BoothHomeCardContainer onClick={onClick}>
-      <BoothHomeCardThumbnail>
+      <BoothCardThumbnail>
         {thumbnail ? (
           <img src={thumbnail} alt={boothName} />
         ) : (
           <CardPlaceholder />
         )}
-        <BoothHomeCardMarks>
+        <BoothCardMarks>
           {marks.map((mark) => {
             const MarkIcon = MARK_ICON[mark];
             return <MarkIcon key={mark} />;
           })}
-        </BoothHomeCardMarks>
-      </BoothHomeCardThumbnail>
-      <BoothHomeCardContent>
-        <BoothHomeCardNumber>No. {boothNumber}</BoothHomeCardNumber>
-        <BoothHomeCardName>{boothName}</BoothHomeCardName>
-        <BoothHomeCardBadges>
+        </BoothCardMarks>
+      </BoothCardThumbnail>
+      <BoothCardContent>
+        <BoothCardNumber>No. {boothNumber}</BoothCardNumber>
+        <BoothCardName>{boothName}</BoothCardName>
+        <BoothCardBadges>
           {badges.slice(0, 2).map((badge) => (
             <Badge key={badge} size="sm" type={badge} />
           ))}
           {badges.length > 2 && (
-            <BoothHomeCardMore>+{badges.length - 2}</BoothHomeCardMore>
+            <BoothCardMore>+{badges.length - 2}</BoothCardMore>
           )}
-        </BoothHomeCardBadges>
-      </BoothHomeCardContent>
+        </BoothCardBadges>
+      </BoothCardContent>
     </BoothHomeCardContainer>
   );
 }

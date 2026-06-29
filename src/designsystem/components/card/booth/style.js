@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
-import { gray } from '../../tokens/colors';
-import { semantic } from '../../tokens/semantic';
-import { measurement } from '../../tokens/measurement';
-import { typography } from '../../tokens/typography';
+import { gray } from '../../../tokens/colors';
+import { semantic } from '../../../tokens/semantic';
+import { measurement } from '../../../tokens/measurement';
+import { typography } from '../../../tokens/typography';
 
 export const BoothHomeCardContainer = styled.div`
   display: flex;
   gap: ${measurement.spacing12};
 `;
 
-export const BoothHomeCardThumbnail = styled.div`
+export const BoothCardThumbnail = styled.div`
   position: relative;
   width: 70px;
   height: 70px;
@@ -24,7 +24,7 @@ export const BoothHomeCardThumbnail = styled.div`
   }
 `;
 
-export const BoothHomeCardMarks = styled.div`
+export const BoothCardMarks = styled.div`
   position: absolute;
   bottom: 3px;
   left: 4px;
@@ -34,19 +34,19 @@ export const BoothHomeCardMarks = styled.div`
   gap: ${measurement.spacing2};
 `;
 
-export const BoothHomeCardContent = styled.div`
+export const BoothCardContent = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 0;
   gap: ${measurement.spacing6};
 `;
 
-export const BoothHomeCardNumber = styled.h2`
+export const BoothCardNumber = styled.h2`
   ${typography.caption1Medium};
   color: ${semantic.textNormalAssistive};
 `;
 
-export const BoothHomeCardName = styled.h3`
+export const BoothCardName = styled.h3`
   ${typography.body2Medium};
   color: ${semantic.textNormalStrong};
   overflow: hidden;
@@ -54,12 +54,12 @@ export const BoothHomeCardName = styled.h3`
   white-space: nowrap;
 `;
 
-export const BoothHomeCardBadges = styled.div`
+export const BoothCardBadges = styled.div`
   display: flex;
   gap: ${measurement.spacing4};
 `;
 
-export const BoothHomeCardMore = styled.div`
+export const BoothCardMore = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

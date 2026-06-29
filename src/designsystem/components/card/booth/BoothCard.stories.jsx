@@ -18,7 +18,7 @@ const meta = {
 
 export default meta;
 
-export const BoothHomeCardDefault = {
+export const Home = {
   args: {
     boothNumber: '01',
     boothName: '뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로',
