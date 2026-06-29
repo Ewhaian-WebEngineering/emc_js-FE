@@ -9,7 +9,8 @@ import {
   BoothCardMore,
   BoothCardName,
   BoothCardNumber,
-  BoothCardThumbnail,
+  BoothCardTextWrapper,
+  BoothCardThumbnailSm,
   BoothHomeCardContainer,
 } from './style';
 
@@ -23,7 +24,7 @@ export default function BoothHomeCard({
 }) {
   return (
     <BoothHomeCardContainer onClick={onClick}>
-      <BoothCardThumbnail>
+      <BoothCardThumbnailSm>
         {thumbnail ? (
           <img src={thumbnail} alt={boothName} />
         ) : (
@@ -35,10 +36,12 @@ export default function BoothHomeCard({
             return <MarkIcon key={mark} />;
           })}
         </BoothCardMarks>
-      </BoothCardThumbnail>
+      </BoothCardThumbnailSm>
       <BoothCardContent>
-        <BoothCardNumber>No. {boothNumber}</BoothCardNumber>
-        <BoothCardName>{boothName}</BoothCardName>
+        <BoothCardTextWrapper>
+          <BoothCardNumber>No. {boothNumber}</BoothCardNumber>
+          <BoothCardName>{boothName}</BoothCardName>
+        </BoothCardTextWrapper>
         <BoothCardBadges>
           {badges.slice(0, 2).map((badge) => (
             <Badge key={badge} size="sm" type={badge} />

@@ -9,10 +9,32 @@ export const BoothHomeCardContainer = styled.div`
   gap: ${measurement.spacing12};
 `;
 
-export const BoothCardThumbnail = styled.div`
+export const BoothDetailCardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 82px;
+  gap: ${measurement.spacing6};
+`;
+
+export const BoothCardThumbnailSm = styled.div`
   position: relative;
   width: 70px;
   height: 70px;
+  flex-shrink: 0;
+
+  & > img,
+  & > div:first-of-type {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: ${measurement.borderRadiusMd};
+  }
+`;
+
+export const BoothCardThumbnailMd = styled.div`
+  position: relative;
+  width: 82px;
+  height: 82px;
   flex-shrink: 0;
 
   & > img,
@@ -37,6 +59,7 @@ export const BoothCardMarks = styled.div`
 export const BoothCardContent = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   min-width: 0;
   gap: ${measurement.spacing6};
 `;
@@ -44,6 +67,12 @@ export const BoothCardContent = styled.div`
 export const BoothCardNumber = styled.h2`
   ${typography.caption1Medium};
   color: ${semantic.textNormalAssistive};
+`;
+
+export const BoothCardTextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing2};
 `;
 
 export const BoothCardName = styled.h3`
