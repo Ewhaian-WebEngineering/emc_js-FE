@@ -2,7 +2,7 @@ import { useState } from 'react';
 import AdminProductCard from './AdminProductCard';
 import AdminNoticeCard from './AdminNoticeCard';
 import AdminSpCard from './AdminSpCard';
-import AdminBannerSpCard from './AdminBannerSpCard';
+import AdminBannerSpCard from './AdminEventBannerCard';
 
 const meta = {
   title: 'Components/AdminCard',
@@ -83,7 +83,7 @@ export const SpCard = {
   },
 };
 
-export const BannerSpCard = {
+export const EventBannerCard = {
   render: (args) => {
     const [selected, setSelected] = useState(false);
     return (
