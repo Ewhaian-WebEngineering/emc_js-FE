@@ -1,3 +1,4 @@
+import ManagementBoothCard from './ManagementBoothCard';
 import ManagementFairCard from './ManagementFairCard';
 
 const meta = {
@@ -18,11 +19,21 @@ const meta = {
 
 export default meta;
 
-export const Default = {
+export const Fair = {
   args: {
     congestionLevel: '혼잡',
     visitorCount: 46,
     onLinkClick: () => alert('바로가기 클릭'),
     onCongestionClick: () => alert('혼잡도 클릭'),
+  },
+};
+
+export const Booth = {
+  render: (args) => <ManagementBoothCard {...args} />,
+  args: {
+    boothName: '부스 이름',
+    scrapCount: 46,
+    visitorCount: 10999,
+    onLinkClick: () => alert('바로가기 클릭'),
   },
 };
