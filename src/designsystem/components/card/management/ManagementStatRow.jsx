@@ -11,6 +11,7 @@ import {
 } from './style';
 import InfoMarkIcon from '../../../../assets/svg/16px/ic_information_mark.svg?react';
 import SwapIcon from '../../../../assets/svg/20px/ic_swap.svg?react';
+import { semantic } from '../../../tokens/semantic';
 import { formatNumber } from '../../../../utils/formatNumber';
 
 export default function ManagementStatRow({
@@ -18,7 +19,7 @@ export default function ManagementStatRow({
   label,
   tooltip,
   value,
-  valueColor,
+  valueColor = semantic.textNormalStrong,
   onActionClick,
 }) {
   return (
