@@ -1,5 +1,7 @@
 import BoothHomeCard from './BoothHomeCard';
 import BoothDetailCard from './BoothDetailCard';
+import BoothListCard from './BoothListCard';
+import { useState } from 'react';
 
 const meta = {
   title: 'Components/BoothCard',
@@ -36,5 +38,36 @@ export const Detail = {
     boothName: '뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로뷰할로',
     badges: ['performance', 'stationery', 'craft', 'fashionBeauty'],
     marks: ['eco', 'vegan'],
+  },
+};
+
+export const List = {
+  render: (args) => {
+    const [isBookmarked, setIsBookmarked] = useState(args.isBookmarked);
+    return (
+      <BoothListCard
+        {...args}
+        isBookmarked={isBookmarked}
+        onBookmarkClick={() => setIsBookmarked((prev) => !prev)}
+      />
+    );
+  },
+  args: {
+    boothNumber: '01',
+    boothName: '이화체인-블록체인',
+    boothDescription:
+      '부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄. 부스 소개글 최대 1줄.',
+    badges: [
+      'performance',
+      'stationery',
+      'craft',
+      'fashionBeauty',
+      'food',
+      'eco',
+      'vegan',
+    ],
+    thumbnails: ['', '', '', ''],
+    marks: ['eco'],
+    isBookmarked: false,
   },
 };
