@@ -6,7 +6,6 @@ import {
   BoothCardContent,
   BoothCardMarks,
   BoothCardTextWrapper,
-  BoothCardThumbnailMd,
   BoothListCardInfoWrapper,
   BoothListCardTitle,
   BoothListCardTitleWrapper,
