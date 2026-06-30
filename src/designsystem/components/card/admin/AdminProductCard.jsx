@@ -5,9 +5,9 @@ import {
   AdminCardPrice,
   AdminCardRowContainer,
   AdminCardTitle,
-  AdminProductCardContent,
   AdminProductCardThumbnail,
   AdminCardBottomContainer,
+  AdminProductCardInfo,
 } from './style';
 
 export default function AdminProductCard({
@@ -24,13 +24,13 @@ export default function AdminProductCard({
       <AdminProductCardThumbnail>
         {thumbnail ? <img src={thumbnail} alt={title} /> : <CardPlaceholder />}
       </AdminProductCardThumbnail>
-      <AdminProductCardContent>
+      <AdminProductCardInfo>
         <AdminCardTitle>{title}</AdminCardTitle>
         <AdminCardBottomContainer>
           <AdminCardPrice>{formatNumber(price)}원</AdminCardPrice>
           <AdminCardActions onDelete={onDelete} onEdit={onEdit} />
         </AdminCardBottomContainer>
-      </AdminProductCardContent>
+      </AdminProductCardInfo>
     </AdminCardRowContainer>
   );
 }

@@ -40,7 +40,7 @@ export const AdminProductCardThumbnail = styled.div`
   }
 `;
 
-export const AdminProductCardContent = styled.div`
+export const AdminProductCardInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -66,4 +66,32 @@ export const AdminCardBottomContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+export const AdminCardColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing8};
+  padding: ${measurement.spacing12};
+
+  border: 1px solid
+    ${({ selected }) =>
+      selected ? semantic.textPrimaryNormal : semantic.borderNormalStrong};
+  border-radius: ${measurement.borderRadiusLg};
+`;
+
+export const AdminCardContent = styled.p`
+  ${typography.body2Regular};
+  color: ${semantic.textNormalNormal};
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
+
+export const AdminCardDate = styled.span`
+  ${typography.body2Regular};
+  color: #a2a3a5;
 `;
