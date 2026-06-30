@@ -19,6 +19,7 @@ export const AdminCardRowContainer = styled.div`
   display: flex;
   gap: ${measurement.spacing12};
   padding: ${measurement.spacing12};
+  align-items: center;
 
   border: 1px solid
     ${({ selected }) =>
@@ -40,6 +41,20 @@ export const AdminProductCardThumbnail = styled.div`
   }
 `;
 
+export const AdminSpProductCardThumbnail = styled.div`
+  width: 82px;
+  height: 82px;
+  flex-shrink: 0;
+
+  img,
+  & > div {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: ${measurement.borderRadiusMd};
+  }
+`;
+
 export const AdminProductCardInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -47,6 +62,15 @@ export const AdminProductCardInfo = styled.div`
   flex: 1;
   min-width: 0;
   gap: ${measurement.spacing16};
+`;
+
+export const AdminSpProductCardInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  gap: ${measurement.spacing8};
 `;
 
 export const AdminCardTitle = styled.h3`
