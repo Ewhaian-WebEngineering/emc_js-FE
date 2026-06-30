@@ -2,6 +2,7 @@ import { useState } from 'react';
 import AdminProductCard from './AdminProductCard';
 import AdminNoticeCard from './AdminNoticeCard';
 import AdminSpCard from './AdminSpCard';
+import AdminBannerSpCard from './AdminBannerSpCard';
 
 const meta = {
   title: 'Components/AdminCard',
@@ -77,6 +78,26 @@ export const SpCard = {
   args: {
     title: '등록 카드 제목 영역입니다 등록 카드 제목 영역입니다 등록 카...',
     content: '본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문...',
+    onDelete: () => alert('삭제 클릭'),
+    onEdit: () => alert('수정 클릭'),
+  },
+};
+
+export const BannerSpCard = {
+  render: (args) => {
+    const [selected, setSelected] = useState(false);
+    return (
+      <AdminBannerSpCard
+        {...args}
+        selected={selected}
+        onClick={() => setSelected((prev) => !prev)}
+      />
+    );
+  },
+  args: {
+    title: '등록 카드 제목 영역입니다 등록 카드 제목 영역입니다 등록 카...',
+    startDate: '2026-05-01',
+    endDate: '2026-05-10',
     onDelete: () => alert('삭제 클릭'),
     onEdit: () => alert('수정 클릭'),
   },
