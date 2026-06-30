@@ -1,3 +1,4 @@
+import { formatNumber } from '../../../../utils/formatNumber';
 import CardPlaceholder from '../CardPlaceholder';
 import {
   ProductVerticalCardContainer,
@@ -28,7 +29,9 @@ export default function ProductVerticalCard({
         <ProductVerticalCardDescription>
           {productDescription}
         </ProductVerticalCardDescription>
-        <ProductVerticalCardPrice>{productPrice}</ProductVerticalCardPrice>
+        <ProductVerticalCardPrice>
+          {formatNumber(productPrice)}원
+        </ProductVerticalCardPrice>
       </ProductVerticalCardContent>
     </ProductVerticalCardContainer>
   );

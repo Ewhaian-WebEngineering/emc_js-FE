@@ -26,7 +26,7 @@ export const Vertical = {
     productName: '제품이름 영역입니다. 제품이름 영역입니다.',
     productDescription:
       '제품 소개글입니다. 제품 소개글입니다. 제품 소개글입니다. 제품 소개글입니다.',
-    productPrice: '999,999,999,999원',
+    productPrice: 9999,
   },
   decorators: [
     (Story) => (

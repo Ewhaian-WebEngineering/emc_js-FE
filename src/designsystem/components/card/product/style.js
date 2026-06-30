@@ -62,6 +62,7 @@ export const ProductVerticalCardDescription = styled.p`
 export const ProductVerticalCardPrice = styled.span`
   ${typography.body1Semibold};
   color: ${semantic.textNormalStrong};
+  align-self: flex-end;
 `;
 
 export const ProductHorizontalCardContainer = styled.div`
