@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import AdminProductCard from './AdminProductCard';
+import AdminNoticeCard from './AdminNoticeCard';
 
 const meta = {
   title: 'Components/AdminCard',
@@ -34,6 +35,28 @@ export const ProductCard = {
     thumbnail: '',
     title: '등록 카드 제목 영역입니다 등록 카드 제목...',
     price: 999999,
+    onDelete: () => alert('삭제 클릭'),
+    onEdit: () => alert('수정 클릭'),
+  },
+};
+
+export const NoticeCard = {
+  render: (args) => {
+    const [selected, setSelected] = useState(false);
+    return (
+      <AdminNoticeCard
+        {...args}
+        selected={selected}
+        onClick={() => setSelected((prev) => !prev)}
+      />
+    );
+  },
+  args: {
+    title:
+      '등록 카드 제목 영역입니다 등록 카드 제목 영역입니다 등록 카드 제목 영역입니다 등록 카드 제목',
+    content:
+      '본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역',
+    date: '2026-07-01',
     onDelete: () => alert('삭제 클릭'),
     onEdit: () => alert('수정 클릭'),
   },
