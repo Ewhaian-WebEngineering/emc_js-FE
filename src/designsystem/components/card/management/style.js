@@ -68,7 +68,7 @@ export const StatRowActionButton = styled.button`
   color: ${semantic.iconNormalAssistive};
 `;
 
-export const ManagementFairCardContainer = styled.div`
+export const ManagementCardContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -96,7 +96,7 @@ export const ManagementFairCardHeader = styled.div`
   color: ${semantic.textNormalInverse};
 `;
 
-export const ManagementFairCardLink = styled.button`
+export const ManagementCardLink = styled.button`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -110,7 +110,7 @@ export const ManagementFairCardLink = styled.button`
   color: ${semantic.textNormalNormal};
 `;
 
-export const ManagementFairCardStats = styled.div`
+export const ManagementCardStats = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -119,4 +119,15 @@ export const ManagementFairCardStats = styled.div`
 
   border-radius: ${measurement.borderRadiusLg};
   background-color: ${semantic.fillNormalWhite};
+`;
+
+export const ManagementBoothCardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const ManagementBoothCardHeaderTitle = styled.div`
+  ${typography.headline2Semibold};
+  color: ${semantic.textNormalStrong};
 `;

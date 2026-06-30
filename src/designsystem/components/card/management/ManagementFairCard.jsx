@@ -5,10 +5,10 @@ import Divider from '../../divider/Divider';
 import ManagementStatRow from './ManagementStatRow';
 import { semantic } from '../../../tokens/semantic';
 import {
-  ManagementFairCardContainer,
+  ManagementCardContainer,
   ManagementFairCardHeader,
-  ManagementFairCardLink,
-  ManagementFairCardStats,
+  ManagementCardLink,
+  ManagementCardStats,
 } from './style';
 import {
   CONGESTION_TOOLTIP,
@@ -22,13 +22,13 @@ export default function ManagementFairCard({
   visitorCount,
 }) {
   return (
-    <ManagementFairCardContainer>
+    <ManagementCardContainer>
       <ManagementFairCardHeader>종합손물세트 14th</ManagementFairCardHeader>
-      <ManagementFairCardLink onClick={onLinkClick}>
+      <ManagementCardLink onClick={onLinkClick}>
         바로가기
         <ArrowRightIcon />
-      </ManagementFairCardLink>
-      <ManagementFairCardStats>
+      </ManagementCardLink>
+      <ManagementCardStats>
         <ManagementStatRow
           icon={<ChartIcon color={semantic.statusDanger} />}
           label="현재 혼잡도"
@@ -43,9 +43,8 @@ export default function ManagementFairCard({
           label="방문자 수"
           tooltip={VISITOR_TOOLTIP}
           value={visitorCount}
-          valueColor={semantic.textNormalStrong}
         />
-      </ManagementFairCardStats>
-    </ManagementFairCardContainer>
+      </ManagementCardStats>
+    </ManagementCardContainer>
   );
 }
