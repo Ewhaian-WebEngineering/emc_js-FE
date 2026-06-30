@@ -102,3 +102,70 @@ export const BoothCardMore = styled.div`
   ${typography.caption1Medium};
   color: ${gray[500]};
 `;
+
+export const BoothListCardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing8};
+`;
+
+export const BoothListCardThumbnailsWrapper = styled.div`
+  display: flex;
+  gap: ${measurement.spacing6};
+`;
+
+export const BoothListCardThumbnail = styled.div`
+  position: relative;
+  flex: 1;
+  aspect-ratio: 1 / 1;
+
+  & > img,
+  & > div:first-of-type {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: ${measurement.borderRadiusMd};
+  }
+`;
+
+export const BoothListCardInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const BoothListCardTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${measurement.spacing2};
+`;
+
+export const BoothListCardTitle = styled.h2`
+  ${typography.body1Medium};
+  color: ${semantic.textNormalStrong};
+`;
+
+export const BoothListCardBookmarkIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  & > svg {
+    width: 20px;
+    height: 20px;
+    color: ${({ isBookmarked }) =>
+      isBookmarked ? semantic.iconPrimaryNormal : semantic.iconNormalAssistive};
+  }
+`;
+
+export const BoothListCardDescription = styled.p`
+  ${typography.body2Regular};
+  color: ${semantic.textNormalNormal};
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+`;
