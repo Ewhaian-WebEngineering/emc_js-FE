@@ -68,6 +68,12 @@ export const AdminCardBottomContainer = styled.div`
   justify-content: space-between;
 `;
 
+export const AdminCardBottomContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
 export const AdminCardColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -89,6 +95,15 @@ export const AdminCardContent = styled.p`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+`;
+
+export const AdminCardContentOneLine = styled.p`
+  ${typography.body2Regular};
+  color: ${semantic.textNormalNormal};
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const AdminCardDate = styled.span`
