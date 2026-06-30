@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AdminProductCard from './AdminProductCard';
 import AdminNoticeCard from './AdminNoticeCard';
+import AdminSpCard from './AdminSpCard';
 
 const meta = {
   title: 'Components/AdminCard',
@@ -57,6 +58,25 @@ export const NoticeCard = {
     content:
       '본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문 영역',
     date: '2026-07-01',
+    onDelete: () => alert('삭제 클릭'),
+    onEdit: () => alert('수정 클릭'),
+  },
+};
+
+export const SpCard = {
+  render: (args) => {
+    const [selected, setSelected] = useState(false);
+    return (
+      <AdminSpCard
+        {...args}
+        selected={selected}
+        onClick={() => setSelected((prev) => !prev)}
+      />
+    );
+  },
+  args: {
+    title: '등록 카드 제목 영역입니다 등록 카드 제목 영역입니다 등록 카...',
+    content: '본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문...',
     onDelete: () => alert('삭제 클릭'),
     onEdit: () => alert('수정 클릭'),
   },
