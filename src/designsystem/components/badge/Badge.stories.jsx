@@ -12,57 +12,57 @@ const meta = {
 export default meta;
 
 export const PerformanceSm = {
-  args: { type: 'performance', size: 'sm' },
+  args: { variant: 'performance', size: 'sm' },
 };
 
 export const StationerySm = {
-  args: { type: 'stationery', size: 'sm' },
+  args: { variant: 'stationery', size: 'sm' },
 };
 
 export const CraftSm = {
-  args: { type: 'craft', size: 'sm' },
+  args: { variant: 'craft', size: 'sm' },
 };
 
 export const FashionBeautySm = {
-  args: { type: 'fashionBeauty', size: 'sm' },
+  args: { variant: 'fashionBeauty', size: 'sm' },
 };
 
 export const FoodSm = {
-  args: { type: 'food', size: 'sm' },
+  args: { variant: 'food', size: 'sm' },
 };
 
 export const EcoSm = {
-  args: { type: 'eco', size: 'sm' },
+  args: { variant: 'eco', size: 'sm' },
 };
 
 export const VeganSm = {
-  args: { type: 'vegan', size: 'sm' },
+  args: { variant: 'vegan', size: 'sm' },
 };
 
 export const PerformanceMd = {
-  args: { type: 'performance', size: 'md' },
+  args: { variant: 'performance', size: 'md' },
 };
 
 export const StationeryMd = {
-  args: { type: 'stationery', size: 'md' },
+  args: { variant: 'stationery', size: 'md' },
 };
 
 export const CraftMd = {
-  args: { type: 'craft', size: 'md' },
+  args: { variant: 'craft', size: 'md' },
 };
 
 export const FashionBeautyMd = {
-  args: { type: 'fashionBeauty', size: 'md' },
+  args: { variant: 'fashionBeauty', size: 'md' },
 };
 
 export const FoodMd = {
-  args: { type: 'food', size: 'md' },
+  args: { variant: 'food', size: 'md' },
 };
 
 export const EcoMd = {
-  args: { type: 'eco', size: 'md' },
+  args: { variant: 'eco', size: 'md' },
 };
 
 export const VeganMd = {
-  args: { type: 'vegan', size: 'md' },
+  args: { variant: 'vegan', size: 'md' },
 };
