@@ -6,9 +6,10 @@ import {
   AccordionDescriptionButton,
 } from './style';
 import { motion } from 'framer-motion';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const COLLAPSED_HEIGHT = 38; // caption2Regular line-height * 2
+const ANIMATION_DURATION = 0.25;
 
 /**
  * 설명 영역이 있는 아코디언 컴포넌트입니다.
@@ -26,12 +27,33 @@ export default function AccordionDescription({
 }) {
   const measureRef = useRef(null);
   const [fullHeight, setFullHeight] = useState(COLLAPSED_HEIGHT);
+  const [showClamp, setShowClamp] = useState(!expanded);
 
   useLayoutEffect(() => {
-    if (measureRef.current) {
-      setFullHeight(measureRef.current.scrollHeight);
-    }
+    const el = measureRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver((entries) => {
+      const height = entries[0]?.target.scrollHeight;
+      if (height) {
+        setFullHeight(height);
+      }
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, [description]);
+
+  useEffect(() => {
+    if (expanded) {
+      setShowClamp(false);
+    } else {
+      const timer = setTimeout(() => {
+        setShowClamp(true);
+      }, ANIMATION_DURATION * 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [expanded]);
 
   return (
     <AccordionDescriptionWrapper>
@@ -40,9 +62,9 @@ export default function AccordionDescription({
         initial={false}
         animate={{ height: expanded ? fullHeight : COLLAPSED_HEIGHT }}
         style={{ overflow: 'hidden' }}
-        transition={{ duration: 0.25, ease: 'easeInOut' }}
+        transition={{ duration: ANIMATION_DURATION, ease: 'easeInOut' }}
       >
-        <AccordionDescriptionText expanded={expanded}>
+        <AccordionDescriptionText expanded={!showClamp}>
           {description}
         </AccordionDescriptionText>
       </motion.div>
