@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
 
@@ -19,9 +18,7 @@ export const BadgeWrapper = styled.span`
   background-color: ${({ $backgroundColor }) => $backgroundColor};
 
   ${({ $size }) =>
-    $size === 'sm'
-      ? css(typography.caption1Medium)
-      : css(typography.body2Medium)}
+    $size === 'sm' ? typography.caption1Medium : typography.body2Medium}
 
   line-height: 1;
 `;

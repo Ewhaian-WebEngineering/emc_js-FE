@@ -18,13 +18,13 @@ const meta = {
 
 export default meta;
 
-export const WithImage = {
+export const WithSrc = {
   args: {
     src: 'https://picsum.photos/400/80',
   },
 };
 
-export const WithPlaceholder = {
+export const WithoutSrc = {
   args: {
     src: undefined,
   },
