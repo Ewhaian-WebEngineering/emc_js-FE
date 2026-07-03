@@ -1,8 +1,8 @@
 import BADGE_MAP from '../../../constants/badges';
 import { BadgeWrapper } from './style';
 
-export default function Badge({ size, type }) {
-  const { label, color, backgroundColor } = BADGE_MAP[type];
+export default function Badge({ size = 'sm', variant }) {
+  const { label, color, backgroundColor } = BADGE_MAP[variant];
 
   return (
     <BadgeWrapper
