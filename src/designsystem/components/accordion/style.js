@@ -87,3 +87,44 @@ export const AccordionLineContentGuideText = styled.p`
   ${typography.body2Regular}
   color: ${semantic.textNormalNormal};
 `;
+
+export const AccordionDescriptionWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing8};
+  padding: ${measurement.spacing16};
+`;
+
+export const AccordionDescriptionTitle = styled.h3`
+  ${typography.caption1Regular}
+  color: ${semantic.textNormalAssistive};
+`;
+
+export const AccordionDescriptionText = styled.p`
+  ${typography.caption2Regular}
+  color: ${semantic.textNormalNormal};
+
+  display: ${({ expanded }) => (expanded ? 'block' : '-webkit-box')};
+  -webkit-line-clamp: ${({ expanded }) => (expanded ? 'unset' : 2)};
+  -webkit-box-orient: vertical;
+  overflow: ${({ expanded }) => (expanded ? 'visible' : 'hidden')};
+`;
+
+export const AccordionDescriptionButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ${measurement.spacing4};
+
+  background: none;
+  border: none;
+  color: ${semantic.textNormalStrong};
+  cursor: pointer;
+
+  svg {
+    transform: ${({ expanded }) =>
+      expanded ? 'rotate(180deg)' : 'rotate(0deg)'};
+  }
+`;
