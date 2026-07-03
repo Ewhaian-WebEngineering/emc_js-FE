@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import AccordionLine from './AccordionLine';
+import AccordionDescription from './AccordionDescription';
 
 const meta = {
   title: 'Components/Accordion',
@@ -34,7 +35,7 @@ function Template({ children, ...args }) {
   );
 }
 
-export const Lg = {
+export const LineLg = {
   render: (args) => (
     <Template {...args}>
       <AccordionLine.ContentGuide description="설명영역입니다. 설명영역입니다. 설명영역입니다." />
@@ -52,7 +53,7 @@ export const Lg = {
   },
 };
 
-export const Md = {
+export const LineMd = {
   render: (args) => (
     <Template {...args}>
       <AccordionLine.ContentGuide description="설명영역입니다. 설명영역입니다. 설명영역입니다." />
@@ -63,5 +64,32 @@ export const Md = {
     subtitle: '2024-01-01',
     size: 'md',
     expanded: true,
+  },
+};
+
+const longText =
+  '설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.설명영역입니다.';
+
+function DescriptionTemplate(args) {
+  const [expanded, setExpanded] = useState(args.expanded ?? false);
+
+  return (
+    <div style={{ width: 375 }}>
+      <AccordionDescription
+        {...args}
+        expanded={expanded}
+        onToggle={() => setExpanded((prev) => !prev)}
+      />
+    </div>
+  );
+}
+
+export const Description = {
+  render: DescriptionTemplate,
+  component: AccordionDescription,
+  args: {
+    title: '아코디언 타이틀 영역',
+    description: longText,
+    expanded: false,
   },
 };
