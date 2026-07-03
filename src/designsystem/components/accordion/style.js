@@ -33,18 +33,25 @@ export const AccordionLineTextWrapper = styled.div`
 export const AccordionLineTitle = styled.span`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: ${measurement.spacing4};
 
-  ${({ size }) => {
-    size === 'md'
-      ? `${typography.body2Semibold};`
-      : `${typography.headline2Semibold};`;
-  }}
+  ${({ size }) =>
+    size === 'md' ? typography.body2Semibold : typography.headline2Semibold}
   color: ${semantic.textNormalStrong};
+  line-height: 1;
+`;
 
-  span {
-    color: ${semantic.statusDanger};
-  }
+export const AccordionLineRequired = styled.span`
+  ${typography.body1Semibold}
+  color: ${semantic.statusDanger};
+  line-height: 1;
+`;
+
+export const AccordionLineCount = styled.span`
+  ${typography.caption1Medium}
+  color: ${semantic.textNormalAssistive};
+  line-height: 1;
 `;
 
 export const AccordionLineSubtitle = styled.span`

@@ -6,6 +6,8 @@ import {
   AccordionLineTextWrapper,
   AccordionLineTitle,
   AccordionLineSubtitle,
+  AccordionLineRequired,
+  AccordionLineCount,
   AccordionLineIcon,
   AccordionLineContent,
   AccordionLineContentGuideText,
@@ -15,6 +17,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 /**
  * 제목만 보여주는 아코디언 컴포넌트입니다.
+ * 콘텐츠 영역은 필요한 조각을 조합하여 구성할 수 있습니다.
  *
  * @param {string} title - 아코디언의 제목
  * @param {boolean} required - 제목 옆에 필수 표시를 할지 여부
@@ -23,12 +26,12 @@ import { AnimatePresence, motion } from 'framer-motion';
  * @param {boolean} expanded - 아코디언이 펼쳐져 있는지 여부
  * @param {function} onToggle - 아코디언을 펼치거나 접는 함수
  * @param {React.ReactNode} children - 아코디언 안에 들어갈 콘텐츠
- * @returns
  */
 export default function AccordionLine({
   title,
   required,
   subtitle,
+  count,
   size = 'lg',
   expanded,
   onToggle,
@@ -41,7 +44,10 @@ export default function AccordionLine({
         <AccordionLineTextWrapper>
           <AccordionLineTitle size={size}>
             {title}
-            {required && <span>*</span>}
+            {required && <AccordionLineRequired>*</AccordionLineRequired>}
+            {typeof count === 'number' && (
+              <AccordionLineCount>･ {count}개</AccordionLineCount>
+            )}
           </AccordionLineTitle>
           {subtitle && (
             <AccordionLineSubtitle size={size}>
@@ -77,7 +83,6 @@ export default function AccordionLine({
  * 아코디언 콘텐츠 내부 가이드 텍스트 컴포넌트입니다.
  *
  * @param {string} param0.description - 가이드 텍스트 내용
- * @returns
  */
 function AccordionLineContentGuide({ description }) {
   return (
@@ -90,11 +95,10 @@ function AccordionLineContentGuide({ description }) {
  *
  * @param {string} param0.buttonText - 버튼 텍스트
  * @param {function} param0.onClick - 버튼 클릭 시 실행될 함수
- * @returns
  */
 function AccordionLineActionButton({ buttonText, onClick }) {
   return (
-    <BoxButton type="primary" size="md" onClick={() => onClick()}>
+    <BoxButton type="primary" size="md" onClick={onClick}>
       {buttonText}
     </BoxButton>
   );
