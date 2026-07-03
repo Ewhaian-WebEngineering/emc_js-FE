@@ -150,4 +150,23 @@ export const typography = {
     fontSize: '12px',
     lineHeight: '14px',
   },
+
+  caption2Semibold: {
+    fontFamily: 'Pretendard',
+    fontWeight: 600,
+    fontSize: '12px',
+    lineHeight: '18px',
+  },
+  caption2Medium: {
+    fontFamily: 'Pretendard',
+    fontWeight: 500,
+    fontSize: '12px',
+    lineHeight: '18px',
+  },
+  caption2Regular: {
+    fontFamily: 'Pretendard',
+    fontWeight: 400,
+    fontSize: '12px',
+    lineHeight: '18px',
+  },
 };
