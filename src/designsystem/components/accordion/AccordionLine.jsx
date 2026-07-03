@@ -11,6 +11,7 @@ import {
   AccordionLineContentGuideText,
 } from './style';
 import BoxButton from '../button/boxbutton/BoxButton';
+import { AnimatePresence, motion } from 'framer-motion';
 
 /**
  * 제목만 보여주는 아코디언 컴포넌트입니다.
@@ -54,7 +55,20 @@ export default function AccordionLine({
       </AccordionLineHeader>
 
       {/* 아코디언 콘텐츠 */}
-      {expanded && <AccordionLineContent>{children}</AccordionLineContent>}
+      <AnimatePresence initial={false}>
+        {expanded && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            style={{ overflow: 'hidden' }}
+          >
+            <AccordionLineContent>{children}</AccordionLineContent>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AccordionLineWrapper>
   );
 }
