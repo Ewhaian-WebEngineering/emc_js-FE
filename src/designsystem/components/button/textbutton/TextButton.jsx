@@ -1,7 +1,7 @@
 import { TextButtonContainer } from '../style';
 
 export default function TextButton({
-  type,
+  variant = 'primary',
   size,
   children,
   onClick,
@@ -10,7 +10,7 @@ export default function TextButton({
 }) {
   return (
     <TextButtonContainer
-      $type={type}
+      $variant={variant}
       $size={size}
       onClick={onClick}
       disabled={disabled}

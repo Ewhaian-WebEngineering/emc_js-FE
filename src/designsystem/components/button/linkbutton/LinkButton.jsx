@@ -1,7 +1,7 @@
 import { LinkButtonContainer } from '../style';
 
 export default function LinkButton({
-  type,
+  variant,
   size,
   href,
   target = '_self',
@@ -14,7 +14,7 @@ export default function LinkButton({
       href={href}
       target={target}
       rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-      $type={type}
+      $variant={variant}
       $size={size}
       onClick={onClick}
       {...rest}

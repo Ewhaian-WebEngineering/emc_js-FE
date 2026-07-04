@@ -1,7 +1,7 @@
 import { IconButtonContainer } from '../style';
 
 export default function IconButton({
-  type,
+  variant = 'primary',
   size,
   children,
   onClick,
@@ -10,7 +10,7 @@ export default function IconButton({
 }) {
   return (
     <IconButtonContainer
-      $type={type}
+      $variant={variant}
       $size={size}
       onClick={onClick}
       disabled={disabled}

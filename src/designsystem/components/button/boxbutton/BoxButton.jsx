@@ -1,7 +1,7 @@
 import { BoxButtonContainer } from '../style';
 
 export default function BoxButton({
-  type,
+  variant = 'primary',
   size,
   children,
   onClick,
@@ -10,7 +10,7 @@ export default function BoxButton({
 }) {
   return (
     <BoxButtonContainer
-      $type={type}
+      $variant={variant}
       $size={size}
       onClick={onClick}
       disabled={disabled}
