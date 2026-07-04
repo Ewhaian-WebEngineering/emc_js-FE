@@ -132,7 +132,7 @@ export const AdminCardContentOneLine = styled.p`
 
 export const AdminCardDate = styled.span`
   ${typography.body2Regular};
-  color: #a2a3a5;
+  color: ${semantic.textNormalAssistive};
 `;
 
 export const AdminBoothCardTextWrapper = styled.div`
