@@ -35,7 +35,7 @@ const meta = {
 export default meta;
 
 const ContentArea = () => (
-  <div style={{ padding: '16px', height: '100%', overflowY: 'auto' }}>
+  <div style={{ padding: '16px' }}>
     {Array.from({ length: 10 }).map((_, i) => (
       <p key={i} style={{ marginBottom: '12px' }}>
         스크롤 콘텐츠 {i + 1}

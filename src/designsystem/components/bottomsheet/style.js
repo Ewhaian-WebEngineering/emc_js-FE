@@ -46,6 +46,13 @@ export const BottomSheetHeaderCloseButton = styled.button`
 export const BottomSheetContentsSection = styled.div`
   height: ${({ heightPx }) => (heightPx ? `${heightPx}px` : 'auto')};
   transition: ${({ isDragging }) => (isDragging ? 'none' : 'height 0.3s ease')};
+
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const BottomSheetContainer = styled.div`
