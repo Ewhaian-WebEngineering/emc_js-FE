@@ -19,9 +19,27 @@ const meta = {
 
 export default meta;
 
-export const Fair = {
+export const FairCrowded = {
   args: {
-    congestionLevel: '혼잡',
+    congestionLevel: 'crowded',
+    visitorCount: 46,
+    onLinkClick: () => alert('바로가기 클릭'),
+    onCongestionClick: () => alert('혼잡도 클릭'),
+  },
+};
+
+export const FairNormal = {
+  args: {
+    congestionLevel: 'normal',
+    visitorCount: 46,
+    onLinkClick: () => alert('바로가기 클릭'),
+    onCongestionClick: () => alert('혼잡도 클릭'),
+  },
+};
+
+export const FairRelaxed = {
+  args: {
+    congestionLevel: 'relaxed',
     visitorCount: 46,
     onLinkClick: () => alert('바로가기 클릭'),
     onCongestionClick: () => alert('혼잡도 클릭'),
