@@ -15,6 +15,15 @@ import {
   VISITOR_TOOLTIP,
 } from '../../../../constants/tooltip';
 
+/**
+ * 관리자 부스 정보 카드 컴포넌트입니다.
+ * 마이페이지에서 사용됩니다.
+ *
+ * @param {function} [onLinkClick] - '바로가기' 클릭 시 호출되는 함수
+ * @param {number|string} congestionLevel - 현재 혼잡도
+ * @param {function} [onCongestionClick] - 혼잡도 항목의 전환 버튼 클릭 시 호출되는 함수
+ * @param {number} visitorCount - 방문자 수
+ */
 export default function ManagementFairCard({
   onLinkClick,
   congestionLevel,

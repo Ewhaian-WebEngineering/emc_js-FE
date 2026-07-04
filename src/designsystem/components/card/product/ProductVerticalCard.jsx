@@ -9,6 +9,16 @@ import {
   ProductVerticalCardThumbnail,
 } from './style';
 
+/**
+ * 세로형 제품 카드 컴포넌트입니다.
+ * 부스 상세 > 제품 목록 섹션, 내 부스 관리 > 미리보기 > 제품 목록 섹션에서 사용됩니다.
+ *
+ * @param {string} [thumbnail] - 제품 썸네일 이미지 URL, 없으면 placeholder 표시
+ * @param {string} productName - 제품 이름
+ * @param {string} productDescription - 제품 설명
+ * @param {number} productPrice - 제품 가격
+ * @returns
+ */
 export default function ProductVerticalCard({
   thumbnail,
   productName,

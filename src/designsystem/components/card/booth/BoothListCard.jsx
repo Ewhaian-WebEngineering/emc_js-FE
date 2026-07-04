@@ -18,6 +18,20 @@ import {
 import CardPlaceholder from '../CardPlaceholder';
 import { MARK_ICON } from '../../../../constants/marks';
 
+/**
+ * 부스 목록 카드 컴포넌트입니다.
+ * 부스 목록, 부스 검색 결과, 부스 스크랩 화면에서 사용됩니다.
+ *
+ * @param {string|number} boothNumber - 부스 번호
+ * @param {string} boothName - 부스 이름
+ * @param {string} boothDescription - 부스 설명
+ * @param {Array<string>} [badges=[]] - 표시할 배지 타입 목록
+ * @param {Array<string>} [thumbnails=[]] - 부스 썸네일 이미지 URL 목록, 비어있으면 각 자리에 placeholder 표시
+ * @param {Array<string>} [marks=[]] - 첫 번째 썸네일 위에 표시할 mark 아이콘 종류 목록
+ * @param {boolean} [isBookmarked=false] - 북마크 여부
+ * @param {function} [onClick] - 카드 클릭 시 호출되는 함수
+ * @param {function} [onBookmarkClick] - 북마크 아이콘 클릭 시 호출되는 함수
+ */
 export default function BoothListCard({
   boothNumber,
   boothName,

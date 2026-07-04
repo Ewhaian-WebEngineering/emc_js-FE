@@ -13,6 +13,15 @@ import {
   ManagementCardStats,
 } from './style';
 
+/**
+ * 관리자 부스 카드 컴포넌트입니다.
+ * 마이페이지에서 사용됩니다.
+ *
+ * @param {string} boothName - 부스 이름
+ * @param {function} [onLinkClick] - '바로가기' 클릭 시 호출되는 함수
+ * @param {number} scrapCount - 스크랩 수
+ * @param {number} visitorCount - 방문자 수
+ */
 export default function ManagementBoothCard({
   boothName,
   onLinkClick,
