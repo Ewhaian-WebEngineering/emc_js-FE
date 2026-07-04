@@ -23,6 +23,12 @@ import {
 } from './style';
 import { WEEKDAY_LABELS } from '@/utils/calendarMath';
 
+/**
+ * 월 그리드 형태의 달력 컴포넌트입니다.
+ *
+ * @param {Date|null} value - 선택된 날짜
+ * @param {function} onChange - 날짜 선택 시 호출되는 콜백 함수
+ */
 export function Calendar({ value, onChange }) {
   const [visibleMonth, setVisibleMonth] = useState(value ?? new Date());
 

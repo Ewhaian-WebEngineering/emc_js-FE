@@ -13,6 +13,16 @@ import {
 } from './style';
 import { Calendar } from './Calendar';
 
+/**
+ * 기간 설정을 위한 DatePicker 컴포넌트입니다.
+ *
+ * @param {string} label - 필드 라벨
+ * @param {boolean} [required=true] - 필수 입력 여부
+ * @param {boolean} [disabled=false] - 비활성화 여부
+ * @param {string} [externalError=''] - 외부에서 전달되는 에러 메시지
+ * @param {{ start: Date|null, end: Date|null }} value - 선택된 날짜 범위
+ * @param {function} onChange - 날짜 범위가 변경될 때 호출되는 콜백 함수
+ */
 export default function DatePicker({
   label = '기간 설정',
   required = true,
