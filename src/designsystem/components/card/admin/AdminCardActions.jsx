@@ -2,20 +2,34 @@ import TextButton from '../../button/textbutton/TextButton';
 import { semantic } from '../../../tokens/semantic';
 import { ActionCardActionsDivider, AdminCardActionsWrapper } from './style';
 
-export default function AdminCardActions({ onDelete, onEdit }) {
+export default function AdminCardActions({ onDelete, onEdit, onPreview }) {
   return (
     <AdminCardActionsWrapper>
-      <TextButton
-        variant="primary"
-        size="sm"
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete?.();
-        }}
-        style={{ color: semantic.statusDanger }}
-      >
-        삭제
-      </TextButton>
+      {onPreview ? (
+        <TextButton
+          variant="primary"
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            onPreview();
+          }}
+          style={{ color: semantic.textNormalNormal }}
+        >
+          미리보기
+        </TextButton>
+      ) : (
+        <TextButton
+          variant="primary"
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete?.();
+          }}
+          style={{ color: semantic.statusDanger }}
+        >
+          삭제
+        </TextButton>
+      )}
       <ActionCardActionsDivider />
       <TextButton
         variant="primary"
