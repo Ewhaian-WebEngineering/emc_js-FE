@@ -6,7 +6,7 @@ export default function AdminCardActions({ onDelete, onEdit }) {
   return (
     <AdminCardActionsWrapper>
       <TextButton
-        type="primary"
+        variant="primary"
         size="sm"
         onClick={(e) => {
           e.stopPropagation();
@@ -18,7 +18,7 @@ export default function AdminCardActions({ onDelete, onEdit }) {
       </TextButton>
       <ActionCardActionsDivider />
       <TextButton
-        type="primary"
+        variant="primary"
         size="sm"
         onClick={(e) => {
           e.stopPropagation();

@@ -16,7 +16,7 @@ export default function EmptyState({
         {description && <p>{description}</p>}
       </EmptyStateText>
       {buttonText && (
-        <BoxButton type="primary" size="sm" onClick={onButtonClick}>
+        <BoxButton variant="primary" size="sm" onClick={onButtonClick}>
           {buttonText}
         </BoxButton>
       )}

@@ -20,17 +20,17 @@ export const BoxButtonContainer = styled.button`
         ? `${measurement.spacing12} ${measurement.spacing20}`
         : `${measurement.spacing12} ${measurement.spacing16}`};
 
-  background-color: ${({ $type }) =>
-    $type === 'primary'
+  background-color: ${({ $variant }) =>
+    $variant === 'primary'
       ? semantic.fillPrimaryNormal
-      : $type === 'error'
+      : $variant === 'error'
         ? semantic.statusDangerSubtle1
         : semantic.fillNormalStrong};
 
-  color: ${({ $type }) =>
-    $type === 'primary'
+  color: ${({ $variant }) =>
+    $variant === 'primary'
       ? semantic.textNormalInverse
-      : $type === 'error'
+      : $variant === 'error'
         ? semantic.statusDanger
         : semantic.textNormalNormal};
 
@@ -52,10 +52,10 @@ export const BoxButtonContainer = styled.button`
   }
 
   &:active:not(:disabled) {
-    background-color: ${({ $type }) =>
-      $type === 'primary'
+    background-color: ${({ $variant }) =>
+      $variant === 'primary'
         ? semantic.fillInteractionPrimaryHover
-        : $type === 'error'
+        : $variant === 'error'
           ? semantic.statusDangerSubtle2
           : gray[200]};
   }
@@ -71,8 +71,8 @@ export const TextButtonContainer = styled.button`
 
   background-color: transparent;
 
-  color: ${({ $type }) =>
-    $type === 'primary'
+  color: ${({ $variant }) =>
+    $variant === 'primary'
       ? semantic.textPrimaryNormal
       : semantic.textNormalNormal};
 
@@ -92,8 +92,8 @@ export const TextButtonContainer = styled.button`
   }
 
   &:active:not(:disabled) {
-    background-color: ${({ $type }) =>
-      $type === 'primary'
+    background-color: ${({ $variant }) =>
+      $variant === 'primary'
         ? semantic.fillPrimaryAssistive
         : semantic.fillNormalStrong};
   }
@@ -105,8 +105,8 @@ export const LinkButtonContainer = styled.a`
   justify-content: center;
   cursor: pointer;
 
-  color: ${({ $type }) =>
-    $type === 'primary'
+  color: ${({ $variant }) =>
+    $variant === 'primary'
       ? semantic.textPrimaryNormal
       : semantic.textNormalNormal};
 
@@ -131,23 +131,23 @@ export const IconButtonContainer = styled.button`
   padding: ${({ $size }) =>
     $size === 'md' ? measurement.spacing12 : measurement.spacing8};
 
-  background-color: ${({ $type }) =>
-    $type === 'primary'
+  background-color: ${({ $variant }) =>
+    $variant === 'primary'
       ? semantic.fillPrimaryNormal
-      : $type === 'secondary'
+      : $variant === 'secondary'
         ? semantic.fillNormalNormal
         : 'transparent'};
 
-  color: ${({ $type }) =>
-    $type === 'primary'
+  color: ${({ $variant }) =>
+    $variant === 'primary'
       ? semantic.iconNormalInverse
       : semantic.iconNormalStrong};
 
-  border: ${({ $type }) =>
-    $type === 'transparent'
+  border: ${({ $variant }) =>
+    $variant === 'transparent'
       ? 'none'
       : `${measurement.borderWidthSm} solid ${
-          $type === 'primary'
+          $variant === 'primary'
             ? semantic.borderPrimaryNormal
             : semantic.borderNormalStrong
         }`};
@@ -157,23 +157,23 @@ export const IconButtonContainer = styled.button`
   &:disabled {
     background-color: ${semantic.fillInteractionDisabled};
     color: ${semantic.iconNormalAssistive};
-    border: ${({ $type }) =>
-      $type === 'transparent'
+    border: ${({ $variant }) =>
+      $variant === 'transparent'
         ? 'none'
         : `${measurement.borderWidthSm} solid ${semantic.borderNormalNormal}`};
     cursor: default;
   }
 
   &:active:not(:disabled) {
-    background-color: ${({ $type }) =>
-      $type === 'primary'
+    background-color: ${({ $variant }) =>
+      $variant === 'primary'
         ? semantic.fillPrimaryNormal
         : semantic.fillInteractionPressed};
-    border: ${({ $type }) =>
-      $type === 'transparent'
+    border: ${({ $variant }) =>
+      $variant === 'transparent'
         ? 'none'
         : `${measurement.borderWidthSm} solid ${
-            $type === 'primary'
+            $variant === 'primary'
               ? semantic.borderPrimaryNormal
               : semantic.borderNormalStrong
           }`};
