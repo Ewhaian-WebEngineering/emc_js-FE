@@ -53,15 +53,15 @@ export default function Modal({
         </ModalContent>
         <ModalButtonContainer>
           {variant === 'alert' ? (
-            <BoxButton type="secondary" size="md" onClick={handleCancel}>
+            <BoxButton variant="secondary" size="md" onClick={handleCancel}>
               {cancelText}
             </BoxButton>
           ) : (
             <ModalButtonGroup>
-              <BoxButton type="secondary" size="md" onClick={handleCancel}>
+              <BoxButton variant="secondary" size="md" onClick={handleCancel}>
                 {cancelText}
               </BoxButton>
-              <BoxButton type="primary" size="md" onClick={handleConfirm}>
+              <BoxButton variant="primary" size="md" onClick={handleConfirm}>
                 {confirmText}
               </BoxButton>
             </ModalButtonGroup>

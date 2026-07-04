@@ -99,7 +99,7 @@ function AccordionLineContentGuide({ description }) {
  */
 function AccordionLineActionButton({ buttonText, onClick }) {
   return (
-    <BoxButton type="primary" size="md" onClick={onClick}>
+    <BoxButton variant="primary" size="md" onClick={onClick}>
       {buttonText}
     </BoxButton>
   );
