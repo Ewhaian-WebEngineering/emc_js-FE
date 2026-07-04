@@ -4,6 +4,7 @@ import AdminNoticeCard from './AdminNoticeCard';
 import AdminSpCard from './AdminSpCard';
 import AdminBannerSpCard from './AdminEventBannerCard';
 import AdminSpProductCard from './AdminSpProductCard';
+import AdminBoothCard from './AdminBoothCard';
 
 const meta = {
   title: 'Components/AdminCard',
@@ -120,6 +121,26 @@ export const SpProductCard = {
     title: '등록 카드 제목 영역입니다 등록 카드 제목...',
     content: '본문 영역 본문 영역 본문 영역 본문...',
     onDelete: () => alert('삭제 클릭'),
+    onEdit: () => alert('수정 클릭'),
+  },
+};
+
+export const BoothCard = {
+  render: (args) => {
+    const [selected, setSelected] = useState(false);
+    return (
+      <AdminBoothCard
+        {...args}
+        selected={selected}
+        onClick={() => setSelected((prev) => !prev)}
+      />
+    );
+  },
+  args: {
+    cardNumber: 1,
+    title: '등록 카드 제목 영역입니다 등록 카드 제목 영역입니다 등록 카...',
+    content: '본문 영역 본문 영역 본문 영역 본문 영역 본문 영역 본문...',
+    onPreview: () => alert('미리보기 클릭'),
     onEdit: () => alert('수정 클릭'),
   },
 };

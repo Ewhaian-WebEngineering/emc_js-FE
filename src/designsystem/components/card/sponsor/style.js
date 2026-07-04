@@ -31,7 +31,7 @@ export const SponsorCardThumbnailWrapper = styled.div`
 `;
 
 export const SponsorCardMainImage = styled.div`
-  flex: 7;
+  flex: 8;
   aspect-ratio: 1.5 / 1;
 
   img,

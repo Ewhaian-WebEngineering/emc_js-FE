@@ -11,6 +11,15 @@ import {
   SponsorCardThumbnailWrapper,
 } from './style';
 
+/**
+ * 협찬사 카드 컴포넌트입니다.
+ * 협찬사 목록 화면에서 사용됩니다.
+ *
+ * @param {string} sponsorName - 협찬사 이름
+ * @param {string} sponsorDescription - 협찬사 소개글
+ * @param {Array<string>} [thumbnails=[]] - 협찬사 이미지 URL 목록, 첫 번째는 메인 이미지로 사용되고 이미지가 없으면 placeholder 표시
+ * @param {function} [onClick] - 카드 클릭 시 호출되는 함수
+ */
 export default function SponsorCard({
   sponsorName,
   sponsorDescription,

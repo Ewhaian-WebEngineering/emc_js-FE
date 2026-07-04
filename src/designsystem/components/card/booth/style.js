@@ -22,8 +22,8 @@ export const BoothCardThumbnailSm = styled.div`
   height: 70px;
   flex-shrink: 0;
 
-  & > img,
-  & > div:first-of-type {
+  & > img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -37,8 +37,8 @@ export const BoothCardThumbnailMd = styled.div`
   height: 82px;
   flex-shrink: 0;
 
-  & > img,
-  & > div:first-of-type {
+  & > img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -119,8 +119,8 @@ export const BoothListCardThumbnail = styled.div`
   flex: 1;
   aspect-ratio: 1 / 1;
 
-  & > img,
-  & > div:first-of-type {
+  & > img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;

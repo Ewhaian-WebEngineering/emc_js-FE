@@ -71,3 +71,47 @@ export const List = {
     isBookmarked: false,
   },
 };
+
+export const ListThumbnailsUnderFour = {
+  render: (args) => {
+    const [isBookmarked, setIsBookmarked] = useState(args.isBookmarked);
+    return (
+      <BoothListCard
+        {...args}
+        isBookmarked={isBookmarked}
+        onBookmarkClick={() => setIsBookmarked((prev) => !prev)}
+      />
+    );
+  },
+  args: {
+    ...List.args,
+    thumbnails: [
+      'https://placehold.co/100x100/orange/white?text=1',
+      'https://placehold.co/100x100/skyblue/white?text=2',
+    ],
+  },
+};
+
+export const ListThumbnailsOverFour = {
+  render: (args) => {
+    const [isBookmarked, setIsBookmarked] = useState(args.isBookmarked);
+    return (
+      <BoothListCard
+        {...args}
+        isBookmarked={isBookmarked}
+        onBookmarkClick={() => setIsBookmarked((prev) => !prev)}
+      />
+    );
+  },
+  args: {
+    ...List.args,
+    thumbnails: [
+      'https://placehold.co/100x100/orange/white?text=1',
+      'https://placehold.co/100x100/skyblue/white?text=2',
+      'https://placehold.co/100x100/green/white?text=3',
+      'https://placehold.co/100x100/purple/white?text=4',
+      'https://placehold.co/100x100/red/white?text=5',
+      'https://placehold.co/100x100/gray/white?text=6',
+    ],
+  },
+};

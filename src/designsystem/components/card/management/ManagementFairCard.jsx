@@ -14,13 +14,25 @@ import {
   CONGESTION_TOOLTIP,
   VISITOR_TOOLTIP,
 } from '../../../../constants/tooltip';
+import { CONGESTION_LEVEL } from '@/constants/congestionLevel';
 
+/**
+ * 관리자 부스 정보 카드 컴포넌트입니다.
+ * 마이페이지에서 사용됩니다.
+ *
+ * @param {function} [onLinkClick] - '바로가기' 클릭 시 호출되는 함수
+ * @param {'crowded'|'normal'|'relaxed'} congestionLevel - 현재 혼잡도
+ * @param {function} [onCongestionClick] - 혼잡도 항목의 전환 버튼 클릭 시 호출되는 함수
+ * @param {number} visitorCount - 방문자 수
+ */
 export default function ManagementFairCard({
   onLinkClick,
   congestionLevel,
   onCongestionClick,
   visitorCount,
 }) {
+  const congestion = CONGESTION_LEVEL[congestionLevel];
+
   return (
     <ManagementCardContainer>
       <ManagementFairCardHeader>종합손물세트 14th</ManagementFairCardHeader>
@@ -30,11 +42,11 @@ export default function ManagementFairCard({
       </ManagementCardLink>
       <ManagementCardStats>
         <ManagementStatRow
-          icon={<ChartIcon color={semantic.statusDanger} />}
+          icon={<ChartIcon color={congestion.color} />}
           label="현재 혼잡도"
           tooltip={CONGESTION_TOOLTIP}
-          value={congestionLevel}
-          valueColor={semantic.statusDanger}
+          value={congestion.label}
+          valueColor={congestion.color}
           onActionClick={onCongestionClick}
         />
         <Divider size="sm" />
