@@ -15,6 +15,21 @@ const DEFAULT_SNAPS = {
   header: [],
 };
 
+/**
+ * 바텀시트 컴포넌트입니다.
+ * variant에 따라 핸들과 헤더 유무가 결정되며, 드래그를 통한 스냅 포인트 이동을 지원합니다.
+ *
+ * @param {'normal'|'handle'|'handleWithHeader'|'header'} [variant='normal'] - 바텀시트 변형 타입
+ * @param {boolean} isOpen - 바텀시트 열림 여부
+ * @param {function} onClose - 바텀시트 닫기 이벤트 핸들러
+ * @param {function} [onFull] - 바텀시트가 full 스냅 포인트에 도달했을 때 호출되는 이벤트 핸들러
+ * @param {boolean} [showScrim=true] - 스크림 표시 여부
+ * @param {string} [title] - 바텀시트 헤더에 표시될 제목
+ * @param {Array<string>} [snapPoints] - 바텀시트 스냅 포인트 목록, 미지정 시 variant별 기본 스냅 포인트 사용
+ * @param {string} [defaultSnap='half'] - 바텀시트 초기 스냅 포인트
+ * @param {React.ReactNode} children - 바텀시트 내부에 렌더링할 콘텐츠
+ */
+
 export default function BottomSheet({
   variant = 'normal',
   isOpen,
