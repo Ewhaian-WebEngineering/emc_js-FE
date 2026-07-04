@@ -18,6 +18,8 @@ import {
 import CardPlaceholder from '../CardPlaceholder';
 import { MARK_ICON } from '../../../../constants/marks';
 
+const THUMBNAIL_SLOT_COUNT = 4;
+
 /**
  * 부스 목록 카드 컴포넌트입니다.
  * 부스 목록, 부스 검색 결과, 부스 스크랩 화면에서 사용됩니다.
@@ -43,10 +45,15 @@ export default function BoothListCard({
   onClick,
   onBookmarkClick,
 }) {
+  const displayThumbnails = Array.from(
+    { length: THUMBNAIL_SLOT_COUNT },
+    (_, index) => thumbnails[index] ?? null,
+  );
+
   return (
     <BoothListCardContainer onClick={onClick}>
       <BoothListCardThumbnailsWrapper>
-        {thumbnails.map((thumbnail, index) => (
+        {displayThumbnails.map((thumbnail, index) => (
           <BoothListCardThumbnail key={index}>
             {thumbnail ? (
               <img src={thumbnail} alt={boothName} />
@@ -87,7 +94,7 @@ export default function BoothListCard({
         </BoothCardTextWrapper>
         <BoothCardBadges>
           {badges.map((badge) => (
-            <Badge key={badge} size="sm" type={badge} />
+            <Badge key={badge} size="sm" variant={badge} />
           ))}
         </BoothCardBadges>
       </BoothCardContent>

@@ -55,7 +55,7 @@ export default function BoothHomeCard({
         </BoothCardTextWrapper>
         <BoothCardBadges>
           {badges.slice(0, 2).map((badge) => (
-            <Badge key={badge} size="sm" type={badge} />
+            <Badge key={badge} size="sm" variant={badge} />
           ))}
           {badges.length > 2 && (
             <BoothCardMore>+{badges.length - 2}</BoothCardMore>

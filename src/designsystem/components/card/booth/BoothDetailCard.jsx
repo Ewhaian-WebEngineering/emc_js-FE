@@ -54,7 +54,7 @@ export default function BoothDetailCard({
         </BoothCardTextWrapper>
         <BoothCardBadges>
           {badges.slice(0, 1).map((badge) => (
-            <Badge key={badge} size="sm" type={badge} />
+            <Badge key={badge} size="sm" variant={badge} />
           ))}
           {badges.length > 1 && (
             <BoothCardMore>+{badges.length - 1}</BoothCardMore>
