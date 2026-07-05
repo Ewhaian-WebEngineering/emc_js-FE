@@ -24,7 +24,6 @@ const Template = (args) => {
   return <Radio {...args} defaultValue={value} onChange={setValue} />;
 };
 
-/** 세로 나열 (기본) */
 export const Vertical = Template.bind({});
 Vertical.args = {
   options: defaultOptions,
@@ -33,7 +32,6 @@ Vertical.args = {
   gap: 29,
 };
 
-/** 가로 나열 */
 export const Horizontal = Template.bind({});
 Horizontal.args = {
   options: defaultOptions,
