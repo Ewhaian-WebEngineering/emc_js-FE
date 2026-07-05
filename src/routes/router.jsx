@@ -6,7 +6,7 @@ import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
-import { ROUTES } from '../constants/routes';
+import { TAB_ROUTES } from '../constants/routes';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -22,11 +22,11 @@ export const router = createBrowserRouter([
       {
         element: <MainLayout />,
         children: [
-          { path: ROUTES.HOME, element: <HomeScreen /> },
-          { path: ROUTES.EVENT, element: <EventScreen /> },
-          { path: ROUTES.BOOTH, element: <BoothScreen /> },
-          { path: ROUTES.SCRAP, element: <ScrapScreen /> },
-          { path: ROUTES.MY, element: <MyScreen /> },
+          { path: TAB_ROUTES.HOME, element: <HomeScreen /> },
+          { path: TAB_ROUTES.EVENT, element: <EventScreen /> },
+          { path: TAB_ROUTES.BOOTH, element: <BoothScreen /> },
+          { path: TAB_ROUTES.SCRAP, element: <ScrapScreen /> },
+          { path: TAB_ROUTES.MY, element: <MyScreen /> },
         ],
       },
     ],
