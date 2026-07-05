@@ -26,7 +26,7 @@ export const EmptyStateText = styled.div`
 
   h2 {
     ${typography.headline2Semibold};
-    color: '#252626';
+    color: ${semantic.textNormalStrong};
   }
 
   p {
