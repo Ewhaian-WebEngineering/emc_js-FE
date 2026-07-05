@@ -1,6 +1,6 @@
 import { createContext, useReducer, useCallback, useContext } from 'react';
 
-const ToastContext = createContext();
+const ToastContext = createContext(null);
 
 function toastReducer(state, action) {
   switch (action.type) {
@@ -42,7 +42,16 @@ export function ToastProvider({ children }) {
 
 /**
  * ToastContext가 제공하는 값(toasts, toast, removeToast)을 반환하는 훅입니다.
+ * ToastProvider 하위가 아닌 곳에서 사용하면 에러를 던집니다.
+ *
+ * @returns {{ toasts: object[], toast: function, removeToast: function }} Toast 상태와 제어 함수들
  */
 export function useToastContext() {
-  return useContext(ToastContext);
+  const context = useContext(ToastContext);
+
+  if (!context) {
+    throw new Error('useToastContext must be used within a ToastProvider');
+  }
+
+  return context;
 }
