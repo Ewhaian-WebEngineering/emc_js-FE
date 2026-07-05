@@ -3,6 +3,11 @@ import Modal from './Modal';
 
 const ModalContext = createContext(null);
 
+/**
+ * showModal 함수를 통해 Modal을 Promise 기반으로 호출할 수 있게 해주는 Context Provider입니다.
+ *
+ * @param {React.ReactNode} children - Provider 하위에서 렌더링할 콘텐츠
+ */
 export function ModalProvider({ children }) {
   const [modalState, setModalState] = useState(null);
   const resolverRef = useRef(null);
