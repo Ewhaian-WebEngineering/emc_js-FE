@@ -1,3 +1,9 @@
+/**
+ * 날짜 문자열을 'yyyy. mm. dd' 형식으로 포맷팅합니다.
+ *
+ * @param {string} dateString - 포맷팅할 날짜 문자열
+ * @returns {string} 포맷팅된 날짜 문자열, dateString이 없으면 빈 문자열
+ */
 export function formatDate(dateString) {
   if (!dateString) return '';
 
