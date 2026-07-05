@@ -33,3 +33,8 @@ export const EmptyStateText = styled.div`
     color: ${semantic.textNormalNormal};
   }
 `;
+
+export const EmptyStateTextSm = styled.span`
+  ${typography.caption1Medium};
+  color: ${semantic.textNormalAssistive};
+`;

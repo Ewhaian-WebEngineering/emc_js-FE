@@ -1,4 +1,5 @@
 import EmptyState from './EmptyState';
+import EmptyStateSm from './EmptyStateSm';
 
 const meta = {
   title: 'Components/EmptyState',
@@ -30,4 +31,11 @@ export const WithoutIconAndButton = {
     title: '엠프티 타이틀 영역입니다.',
     description: '엠프티 문구 영역입니다.',
   },
+};
+
+export const InlineSm = {
+  args: {
+    title: '엠프티 문구 영역입니다.',
+  },
+  render: (args) => <EmptyStateSm {...args} />,
 };
