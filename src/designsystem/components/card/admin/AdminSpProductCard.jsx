@@ -1,4 +1,4 @@
-import CardPlaceholder from '../CardPlaceholder';
+import CardPlaceholder from '../../Placeholder';
 import AdminCardActions from './AdminCardActions';
 import {
   AdminCardBottomContent,
