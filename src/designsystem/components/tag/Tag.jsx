@@ -1,5 +1,5 @@
 import { TagWrapper } from './style';
-import CloseButton from '../../../assets/svg/16px/ic_close.svg?react';
+import CloseButton from '@/assets/svg/16px/ic_close.svg?react';
 
 export default function Tag({ label, type, selected, onDelete, onClick }) {
   return (

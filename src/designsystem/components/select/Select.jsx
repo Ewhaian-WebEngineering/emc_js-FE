@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { semantic } from '../../tokens/semantic';
-import ChevronDownIcon16px from '../../../assets/svg/16px/ic_arrow_down.svg?react';
-import ChevronDownIcon20px from '../../../assets/svg/20px/ic_arrow_down.svg?react';
+import ChevronDownIcon16px from '@/assets/svg/16px/ic_arrow_down.svg?react';
+import ChevronDownIcon20px from '@/assets/svg/20px/ic_arrow_down.svg?react';
 import SelectItem from './SelectItem';
 import {
   SelectList,

@@ -12,10 +12,10 @@ import {
   StatRowValue,
   StatRowValueWrapper,
 } from './style';
-import InfoMarkIcon from '../../../../assets/svg/16px/ic_information_mark.svg?react';
-import SwapIcon from '../../../../assets/svg/20px/ic_swap.svg?react';
-import { semantic } from '../../../tokens/semantic';
-import { formatNumber } from '../../../../utils/formatNumber';
+import InfoMarkIcon from '@/assets/svg/16px/ic_information_mark.svg?react';
+import SwapIcon from '@/assets/svg/20px/ic_swap.svg?react';
+import { semantic } from '@/designsystem/tokens/semantic';
+import { formatNumber } from '@/utils/formatNumber';
 import ToolTip from '../../tooltip/ToolTip';
 
 const TOOLTIP_VISIBLE_DURATION = 2000;

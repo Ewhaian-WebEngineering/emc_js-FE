@@ -1,19 +1,16 @@
-import ArrowRightIcon from '../../../../assets/svg/16px/ic_arrow_right.svg?react';
-import ChartIcon from '../../../../assets/svg/24px/ic_chart_bar.svg?react';
-import PeopleIcon from '../../../../assets/svg/24px/ic_people.svg?react';
+import ArrowRightIcon from '@/assets/svg/16px/ic_arrow_right.svg?react';
+import ChartIcon from '@/assets/svg/24px/ic_chart_bar.svg?react';
+import PeopleIcon from '@/assets/svg/24px/ic_people.svg?react';
 import Divider from '../../divider/Divider';
 import ManagementStatRow from './ManagementStatRow';
-import { semantic } from '../../../tokens/semantic';
+import { semantic } from '@/designsystem/tokens/semantic';
 import {
   ManagementCardContainer,
   ManagementFairCardHeader,
   ManagementCardLink,
   ManagementCardStats,
 } from './style';
-import {
-  CONGESTION_TOOLTIP,
-  VISITOR_TOOLTIP,
-} from '../../../../constants/tooltip';
+import { CONGESTION_TOOLTIP, VISITOR_TOOLTIP } from '@/constants/tooltip';
 import { CONGESTION_LEVEL } from '@/constants/congestionLevel';
 
 /**

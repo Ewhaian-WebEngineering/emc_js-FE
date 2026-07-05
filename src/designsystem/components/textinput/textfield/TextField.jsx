@@ -1,8 +1,8 @@
 import { TextFieldInput, TextFieldInputWrapper, TextFieldIcon } from '../style';
 import TextInputLayout from '../TextInputLayout';
-import { semantic } from '../../../tokens/semantic';
-import SearchIcon from '../../../../assets/svg/20px/ic_search.svg?react';
-import DeleteIcon from '../../../../assets/svg/20px/ic_circle_close.svg?react';
+import { semantic } from '@/designsystem/tokens/semantic';
+import SearchIcon from '@/assets/svg/20px/ic_search.svg?react';
+import DeleteIcon from '@/assets/svg/20px/ic_circle_close.svg?react';
 
 export default function TextField({
   title,

@@ -1,6 +1,6 @@
 import Badge from '../../badge/Badge';
-import BookmarkStrokeIcon from '../../../../assets/svg/24px/ic_scrap_stroke.svg?react';
-import BookmarkFillIcon from '../../../../assets/svg/24px/ic_scrap_fill.svg?react';
+import BookmarkStrokeIcon from '@/assets/svg/24px/ic_scrap_stroke.svg?react';
+import BookmarkFillIcon from '@/assets/svg/24px/ic_scrap_fill.svg?react';
 import {
   BoothCardBadges,
   BoothCardContent,
@@ -16,7 +16,7 @@ import {
   BoothListCardThumbnail,
 } from './style';
 import CardPlaceholder from '../../Placeholder';
-import { MARK_ICON } from '../../../../constants/marks';
+import { MARK_ICON } from '@/constants/marks';
 
 const THUMBNAIL_SLOT_COUNT = 4;
 

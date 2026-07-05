@@ -1,4 +1,4 @@
-import { formatDate } from '../../../../utils/formatDate';
+import { formatDate } from '@/utils/formatDate';
 import AdminCardActions from './AdminCardActions';
 import {
   AdminCardBottomContainer,

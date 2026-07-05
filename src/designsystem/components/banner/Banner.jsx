@@ -1,5 +1,5 @@
 import { BannerContainer } from './style';
-import Placeholder from '../../../assets/img/img_checker.png';
+import Placeholder from '@/assets/img/img_checker.png';
 
 /**
  * 배너 이미지를 표시하는 컴포넌트입니다.

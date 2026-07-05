@@ -1,8 +1,8 @@
 import { DeleteButton, SearchWrapper } from './style';
 import { semantic } from '../../tokens/semantic';
 import { useState } from 'react';
-import SearchIcon from '../../../assets/svg/20px/ic_search.svg?react';
-import DeleteIcon from '../../../assets/svg/20px/ic_circle_close.svg?react';
+import SearchIcon from '@/assets/svg/20px/ic_search.svg?react';
+import DeleteIcon from '@/assets/svg/20px/ic_circle_close.svg?react';
 
 export default function Search({ value, onChange, onDelete }) {
   const [focused, setFocused] = useState(false);

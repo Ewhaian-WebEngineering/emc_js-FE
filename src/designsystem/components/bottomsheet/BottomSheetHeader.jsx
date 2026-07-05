@@ -1,4 +1,4 @@
-import CloseIcon from '../../../assets/svg/20px/ic_close.svg?react';
+import CloseIcon from '@/assets/svg/20px/ic_close.svg?react';
 import {
   BottomSheetHeaderCloseButton,
   BottomSheetHeaderTitle,
