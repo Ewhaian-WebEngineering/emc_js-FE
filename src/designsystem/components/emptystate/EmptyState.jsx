@@ -9,6 +9,7 @@ import { EmptyStateContainer, EmptyStateText } from './style';
  * @param {string} [description] - 설명 텍스트
  * @param {string} [buttonText] - 버튼에 표시할 텍스트
  * @param {function} [onButtonClick] - 버튼 클릭 시 호출되는 함수
+ * @param {string} [height] - 컴포넌트 높이
  */
 export default function EmptyState({
   Icon,
@@ -16,9 +17,10 @@ export default function EmptyState({
   description,
   buttonText,
   onButtonClick,
+  height,
 }) {
   return (
-    <EmptyStateContainer>
+    <EmptyStateContainer height={height}>
       {Icon && <Icon />}
       <EmptyStateText>
         {title && <h2>{title}</h2>}

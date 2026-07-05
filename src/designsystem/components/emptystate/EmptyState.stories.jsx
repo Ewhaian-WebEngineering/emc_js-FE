@@ -36,6 +36,7 @@ export const WithoutIconAndButton = {
 export const InlineSm = {
   args: {
     title: '엠프티 문구 영역입니다.',
+    height: '100px',
   },
   render: (args) => <EmptyStateSm {...args} />,
 };
