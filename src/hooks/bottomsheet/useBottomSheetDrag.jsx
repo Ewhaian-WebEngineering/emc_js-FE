@@ -1,5 +1,15 @@
 import { useCallback, useRef, useState } from 'react';
 
+/**
+ * 바텀시트를 포인터로 드래그해서 높이를 조절하는 훅입니다.
+ *
+ * @param {number} currentHeightPx - 드래그 시작 시점의 바텀시트 높이(px)
+ * @param {number} minHeightPx - 드래그로 줄일 수 있는 최소 높이(px)
+ * @param {number} maxHeightPx - 드래그로 늘릴 수 있는 최대 높이(px)
+ * @param {function} [onDrag] - 드래그 중 높이가 바뀔 때마다 호출되는 함수
+ * @param {function} [onDragEnd] - 드래그가 끝났을 때 (최종 높이, 속도)와 함께 호출되는 함수
+ * @returns {{ handlePointerDown: function, isDragging: boolean }} 드래그 시작 핸들러와 드래그 중 여부
+ */
 export const useBottomSheetDrag = ({
   currentHeightPx,
   minHeightPx,

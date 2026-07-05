@@ -1,6 +1,21 @@
 import { getSnapByVelocity, snapToPx } from '../../constants/bottomSheet';
 import { useCallback, useState } from 'react';
 
+/**
+ * 바텀시트의 snap point(높이 단계)를 관리하는 훅입니다.
+ *
+ * @param {Array} allowedSnaps - 허용되는 snap point 목록
+ * @param {*} defaultSnap - 초기 snap point
+ * @param {function} [onClose] - 최소 snap point 아래로 빠르게 드래그했을 때 호출되는 함수
+ * @param {function} [onFull] - 최대 snap point를 넘어 'full'로 판정됐을 때 호출되는 함수
+ * @returns {{
+ *   currentSnap: *,
+ *   heightPx: number,
+ *   moveTo: function,
+ *   onDrag: function,
+ *   resolveAfterDrag: function,
+ * }} 현재 snap 상태와 이를 제어하는 함수들
+ */
 export const useSnapPoint = ({
   allowedSnaps,
   defaultSnap,
