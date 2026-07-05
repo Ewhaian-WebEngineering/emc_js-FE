@@ -158,7 +158,7 @@ export const TextAreaInput = styled.textarea`
   }
 
   &::-webkit-scrollbar {
-    width: 3px;
+    width: 4px;
   }
 
   &::-webkit-scrollbar-track {
