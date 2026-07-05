@@ -1,4 +1,5 @@
-import { ToastProvider, useToastContext } from './ToastContext';
+import { useToast } from '@/hooks/toast/useToast';
+import { ToastProvider } from './ToastContext';
 import { ToastContainer } from './ToastContainer';
 
 const meta = {
@@ -20,7 +21,7 @@ const meta = {
 export default meta;
 
 function ToastTrigger({ message, action }) {
-  const { toast } = useToastContext();
+  const { toast } = useToast();
 
   return (
     <button

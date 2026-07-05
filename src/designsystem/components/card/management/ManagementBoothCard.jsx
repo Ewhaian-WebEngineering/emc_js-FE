@@ -1,10 +1,10 @@
-import { SCRAP_TOOLTIP, VISITOR_TOOLTIP } from '../../../../constants/tooltip';
-import ArrowRightIcon from '../../../../assets/svg/16px/ic_arrow_right.svg?react';
-import ScrapIcon from '../../../../assets/svg/24px/ic_scrap_fill.svg?react';
-import PeopleIcon from '../../../../assets/svg/24px/ic_people.svg?react';
+import { SCRAP_TOOLTIP, VISITOR_TOOLTIP } from '@/constants/tooltip';
+import ArrowRightIcon from '@/assets/svg/16px/ic_arrow_right.svg?react';
+import ScrapIcon from '@/assets/svg/24px/ic_scrap_fill.svg?react';
+import PeopleIcon from '@/assets/svg/24px/ic_people.svg?react';
 import Divider from '../../divider/Divider';
 import ManagementStatRow from './ManagementStatRow';
-import { semantic } from '../../../tokens/semantic';
+import { semantic } from '@/designsystem/tokens/semantic';
 import {
   ManagementBoothCardHeader,
   ManagementBoothCardHeaderTitle,

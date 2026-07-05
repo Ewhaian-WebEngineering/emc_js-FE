@@ -1,4 +1,4 @@
-import BADGE_MAP from '../../../constants/badges';
+import BADGE_MAP from '@/constants/badges';
 import { BadgeWrapper } from './style';
 
 /**

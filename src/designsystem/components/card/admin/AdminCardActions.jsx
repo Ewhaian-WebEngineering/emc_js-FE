@@ -1,5 +1,5 @@
 import TextButton from '../../button/textbutton/TextButton';
-import { semantic } from '../../../tokens/semantic';
+import { semantic } from '@/designsystem/tokens/semantic';
 import { ActionCardActionsDivider, AdminCardActionsWrapper } from './style';
 
 /**

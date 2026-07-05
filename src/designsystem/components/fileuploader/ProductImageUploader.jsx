@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import UploadIcon from '../../../assets/svg/24px/ic_upload.svg?react';
-import CircleCloseIcon from '../../../assets/svg/20px/ic_circle_close.svg?react';
+import UploadIcon from '@/assets/svg/24px/ic_upload.svg?react';
+import CircleCloseIcon from '@/assets/svg/20px/ic_circle_close.svg?react';
 import { semantic } from '../../tokens/semantic';
 import {
   ProductImageUploaderBox,

@@ -1,7 +1,7 @@
-import { snapToPx } from '../../../constants/bottomSheet';
-import { useBottomSheetDrag } from '../../../hooks/bottomsheet/useBottomSheetDrag';
-import { useSnapPoint } from '../../../hooks/bottomsheet/useSnapPoint';
-import { usePreventScroll } from '../../../hooks/usePreventScroll';
+import { snapToPx } from '@/constants/bottomSheet';
+import { useBottomSheetDrag } from '@/hooks/bottomsheet/useBottomSheetDrag';
+import { useSnapPoint } from '@/hooks/bottomsheet/useSnapPoint';
+import { usePreventScroll } from '@/hooks/usePreventScroll';
 import Scrim from '../scrim/Scrim';
 import BottomSheetContentsSection from './BottomSheetContentsSection';
 import BottomSheetHandle from './BottomSheetHandle';

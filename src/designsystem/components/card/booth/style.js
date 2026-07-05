@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { gray } from '../../../tokens/colors';
-import { semantic } from '../../../tokens/semantic';
-import { measurement } from '../../../tokens/measurement';
-import { typography } from '../../../tokens/typography';
+import { gray } from '@/designsystem/tokens/colors';
+import { semantic } from '@/designsystem/tokens/semantic';
+import { measurement } from '@/designsystem/tokens/measurement';
+import { typography } from '@/designsystem/tokens/typography';
 
 export const BoothHomeCardContainer = styled.div`
   display: flex;

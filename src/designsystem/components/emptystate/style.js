@@ -5,6 +5,7 @@ import { typography } from '../../tokens/typography';
 
 export const EmptyStateContainer = styled.div`
   width: 100%;
+  height: ${({ height }) => (height ? `${height}px` : 'auto')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,11 +26,16 @@ export const EmptyStateText = styled.div`
 
   h2 {
     ${typography.headline2Semibold};
-    color: '#252626';
+    color: ${semantic.textNormalStrong};
   }
 
   p {
     ${typography.body1Regular};
     color: ${semantic.textNormalNormal};
   }
+`;
+
+export const EmptyStateTextSm = styled.span`
+  ${typography.caption1Medium};
+  color: ${semantic.textNormalAssistive};
 `;

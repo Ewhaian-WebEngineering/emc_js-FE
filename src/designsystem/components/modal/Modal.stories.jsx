@@ -1,4 +1,4 @@
-import useModal from '../../../hooks/modal/useModal';
+import useModal from '@/hooks/modal/useModal';
 import { ModalProvider } from './ModalContext';
 
 const OPTIONS = [
