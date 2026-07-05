@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { motion } from 'framer-motion';
 import { semantic } from '../../../tokens/semantic';
 import { measurement } from '../../../tokens/measurement';
 import { typography } from '../../../tokens/typography';
@@ -21,15 +22,28 @@ export const StatRowLabelWrapper = styled.div`
   gap: ${measurement.spacing4};
 `;
 
+export const StatRowTooltipPosition = styled(motion.div)`
+  position: absolute;
+  top: 100%;
+  left: -${measurement.spacing32};
+  z-index: 10;
+  margin-top: ${measurement.spacing4};
+
+  width: max-content;
+  max-width: 280px;
+`;
+
 export const StatRowLabel = styled.span`
   ${typography.body2Semibold};
   color: ${semantic.textNormalNormal};
 `;
 
 export const StatRowTooltipButton = styled.button`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
   border: none;
   background: none;
   cursor: pointer;
