@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import {
   StatRowActionButton,
   StatRowContainer,
@@ -5,6 +7,7 @@ import {
   StatRowLabel,
   StatRowLabelWrapper,
   StatRowTooltipButton,
+  StatRowTooltipPosition,
   StatRowUnit,
   StatRowValue,
   StatRowValueWrapper,
@@ -13,6 +16,9 @@ import InfoMarkIcon from '../../../../assets/svg/16px/ic_information_mark.svg?re
 import SwapIcon from '../../../../assets/svg/20px/ic_swap.svg?react';
 import { semantic } from '../../../tokens/semantic';
 import { formatNumber } from '../../../../utils/formatNumber';
+import ToolTip from '../../tooltip/ToolTip';
+
+const TOOLTIP_VISIBLE_DURATION = 2000;
 
 /**
  * 관리 카드 내부에서 아이콘, 라벨, 값을 한 줄로 보여주는 통계 행 컴포넌트입니다.
@@ -32,22 +38,40 @@ export default function ManagementStatRow({
   valueColor = semantic.textNormalStrong,
   onActionClick,
 }) {
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  const hideTimeoutRef = useRef(null);
+
+  useEffect(() => () => clearTimeout(hideTimeoutRef.current), []);
+
+  const handleTooltipButtonClick = (e) => {
+    e.stopPropagation();
+    setIsTooltipVisible(true);
+    clearTimeout(hideTimeoutRef.current);
+    hideTimeoutRef.current = setTimeout(() => {
+      setIsTooltipVisible(false);
+    }, TOOLTIP_VISIBLE_DURATION);
+  };
+
   return (
     <StatRowContainer>
       <StatRowContent>
         {icon}
         <StatRowLabelWrapper>
           <StatRowLabel>{label}</StatRowLabel>
-          <StatRowTooltipButton
-            onClick={(e) => {
-              e.stopPropagation();
-              {
-                /* Tooltip content */
-              }
-              alert(tooltip);
-            }}
-          >
+          <StatRowTooltipButton onClick={handleTooltipButtonClick}>
             <InfoMarkIcon />
+            <AnimatePresence>
+              {isTooltipVisible && (
+                <StatRowTooltipPosition
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ToolTip content={tooltip} />
+                </StatRowTooltipPosition>
+              )}
+            </AnimatePresence>
           </StatRowTooltipButton>
         </StatRowLabelWrapper>
       </StatRowContent>
