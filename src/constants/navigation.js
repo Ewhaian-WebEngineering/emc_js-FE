@@ -8,35 +8,35 @@ import ScrapFillIcon from '@/assets/svg/24px/ic_scrap_fill.svg?react';
 import ScrapStrokeIcon from '@/assets/svg/24px/ic_scrap_stroke.svg?react';
 import ProfileFillIcon from '@/assets/svg/24px/ic_profile_fill.svg?react';
 import ProfileStrokeIcon from '@/assets/svg/24px/ic_profile_stroke.svg?react';
-import { ROUTES } from './routes';
+import { TAB_ROUTES } from './routes';
 
 export const NAVIGATION_ITEMS = [
   {
-    path: ROUTES.HOME,
+    path: TAB_ROUTES.HOME,
     label: '홈',
     IconFill: HomeFillIcon,
     IconStroke: HomeStrokeIcon,
   },
   {
-    path: ROUTES.EVENT,
+    path: TAB_ROUTES.EVENT,
     label: '이벤트',
     IconFill: EventFillIcon,
     IconStroke: EventStrokeIcon,
   },
   {
-    path: ROUTES.BOOTH,
+    path: TAB_ROUTES.BOOTH,
     label: '부스',
     IconFill: BoothFillIcon,
     IconStroke: BoothStrokeIcon,
   },
   {
-    path: ROUTES.SCRAP,
+    path: TAB_ROUTES.SCRAP,
     label: '스크랩',
     IconFill: ScrapFillIcon,
     IconStroke: ScrapStrokeIcon,
   },
   {
-    path: ROUTES.MY,
+    path: TAB_ROUTES.MY,
     label: '마이',
     IconFill: ProfileFillIcon,
     IconStroke: ProfileStrokeIcon,
