@@ -11,7 +11,6 @@ export const HeaderContainer = styled.header`
     $transparent
       ? 'linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 100%)'
       : semantic.fillNormalWhite};
-  padding-inline: ${measurement.spacing16};
   border-bottom: ${({ $border }) =>
     $border
       ? `${measurement.borderWidthSm} solid ${semantic.borderNormalNormal}`
