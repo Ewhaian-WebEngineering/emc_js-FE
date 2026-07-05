@@ -15,7 +15,7 @@ export default meta;
 export const Sorting = {
   args: {
     label: '태그',
-    type: 'sorting',
+    variant: 'sorting',
     onDelete: () => {
       alert('delete');
     },
@@ -28,7 +28,7 @@ export const Notice = {
     return (
       <Tag
         label="태그"
-        type="notice"
+        variant="notice"
         selected={selected}
         onClick={() => setSelected((prev) => !prev)}
       />
@@ -42,7 +42,7 @@ export const Button = {
     return (
       <Tag
         label="태그"
-        type="button"
+        variant="button"
         selected={selected}
         onClick={() => setSelected((prev) => !prev)}
       />
