@@ -25,9 +25,9 @@ export default function Header({
 }) {
   return (
     <HeaderContainer $gap={gap} $border={border} $transparent={transparent}>
-      <HeaderLeft>{left}</HeaderLeft>
-      <HeaderCenter>{center}</HeaderCenter>
-      <HeaderRight>{right}</HeaderRight>
+      <HeaderLeft $gap={gap}>{left}</HeaderLeft>
+      <HeaderCenter $gap={gap}>{center}</HeaderCenter>
+      <HeaderRight $gap={gap}>{right}</HeaderRight>
     </HeaderContainer>
   );
 }

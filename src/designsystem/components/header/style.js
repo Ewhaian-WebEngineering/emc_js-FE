@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
 import { semantic } from '../../tokens/semantic';
 import { measurement } from '../../tokens/measurement';
+import { typography } from '../../tokens/typography';
 
-export const HeaderContainer = styled.div`
+export const HeaderContainer = styled.header`
   display: flex;
-  justify-content: ${({ $gap }) => ($gap ? 'flex-start' : 'space-between')};
   align-items: center;
   height: 64px;
-  background-color: ${({ $transparent }) =>
-    $transparent ? 'transparent' : semantic.fillNormalWhite};
+  background: ${({ $transparent }) =>
+    $transparent
+      ? 'linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 100%)'
+      : semantic.fillNormalWhite};
   padding-inline: ${measurement.spacing16};
   border-bottom: ${({ $border }) =>
     $border
@@ -18,7 +20,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderLeft = styled.div`
-  flex: 1;
+  flex: ${({ $gap }) => ($gap ? '0 0 auto' : '1')};
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -28,12 +30,18 @@ export const HeaderCenter = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: ${({ $gap }) => ($gap ? 'flex-start' : 'center')};
 `;
 
 export const HeaderRight = styled.div`
-  flex: 1;
+  flex: ${({ $gap }) => ($gap ? '0 0 auto' : '1')};
   display: flex;
   align-items: center;
   justify-content: flex-end;
+`;
+
+export const HeaderTitle = styled.span`
+  ${typography.headline2Semibold};
+  color: ${({ $inverse }) =>
+    $inverse ? semantic.textNormalInverse : semantic.textNormalStrong};
 `;
