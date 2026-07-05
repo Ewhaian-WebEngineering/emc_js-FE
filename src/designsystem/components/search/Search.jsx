@@ -1,4 +1,4 @@
-import { DeleteButton, SearchWrapper } from './style';
+import { SearchIconButton, SearchIconGroup, SearchWrapper } from './style';
 import { semantic } from '../../tokens/semantic';
 import { useState } from 'react';
 import SearchIcon from '@/assets/svg/20px/ic_search.svg?react';
@@ -11,12 +11,11 @@ import DeleteIcon from '@/assets/svg/20px/ic_circle_close.svg?react';
  * @param {function} onChange - 입력값이 변경될 때 호출되는 함수
  * @param {function} [onDelete] - 삭제 버튼 클릭 시 호출되는 함수
  */
-export default function Search({ value, onChange, onDelete }) {
+export default function Search({ value, onChange, onDelete, onSearch }) {
   const [focused, setFocused] = useState(false);
 
   return (
     <SearchWrapper focused={focused}>
-      <SearchIcon width="20" height="20" color={semantic.iconNormalAssistive} />
       <input
         type="text"
         value={value}
@@ -25,14 +24,26 @@ export default function Search({ value, onChange, onDelete }) {
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
       />
-      {value && (
-        <DeleteButton
+      <SearchIconGroup>
+        {value && (
+          <SearchIconButton
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={onDelete}
+          >
+            <DeleteIcon />
+          </SearchIconButton>
+        )}
+        <SearchIconButton
           onMouseDown={(e) => e.preventDefault()}
-          onClick={onDelete}
+          onClick={onSearch}
         >
-          <DeleteIcon />
-        </DeleteButton>
-      )}
+          <SearchIcon
+            width="20"
+            height="20"
+            color={semantic.iconNormalNormal}
+          />
+        </SearchIconButton>
+      </SearchIconGroup>
     </SearchWrapper>
   );
 }

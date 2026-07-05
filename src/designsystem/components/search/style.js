@@ -30,7 +30,7 @@ export const SearchWrapper = styled.div`
   }
 `;
 
-export const DeleteButton = styled.button`
+export const SearchIconButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,4 +43,10 @@ export const DeleteButton = styled.button`
   background-color: transparent;
 
   cursor: pointer;
+`;
+
+export const SearchIconGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${measurement.spacing8};
 `;

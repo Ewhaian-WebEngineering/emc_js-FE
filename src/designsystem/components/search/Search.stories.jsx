@@ -28,6 +28,7 @@ export const Default = {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onDelete={() => setValue('')}
+        onSearch={() => alert(`검색어: ${value}`)}
       />
     );
   },
