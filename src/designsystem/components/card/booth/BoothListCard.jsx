@@ -15,7 +15,7 @@ import {
   BoothListCardContainer,
   BoothListCardThumbnail,
 } from './style';
-import CardPlaceholder from '../CardPlaceholder';
+import CardPlaceholder from '../../Placeholder';
 import { MARK_ICON } from '../../../../constants/marks';
 
 const THUMBNAIL_SLOT_COUNT = 4;

@@ -1,6 +1,6 @@
 import { formatDate } from '../../../../utils/formatDate';
 import { STATUS_LABEL } from '../../../../constants/eventStatus';
-import CardPlaceholder from '../CardPlaceholder';
+import CardPlaceholder from '../../Placeholder';
 import {
   EventCardContainer,
   EventCardContent,

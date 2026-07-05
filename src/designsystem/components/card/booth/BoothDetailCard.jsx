@@ -1,6 +1,6 @@
 import { MARK_ICON } from '../../../../constants/marks';
 import Badge from '../../badge/Badge';
-import CardPlaceholder from '../CardPlaceholder';
+import CardPlaceholder from '../../Placeholder';
 import {
   BoothCardBadges,
   BoothCardContent,
