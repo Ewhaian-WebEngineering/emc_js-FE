@@ -1,8 +1,15 @@
-import { TextFieldInput, TextFieldInputWrapper, TextFieldIcon } from '../style';
+import { useState } from 'react';
+import {
+  TextFieldInput,
+  TextFieldInputWrapper,
+  TextFieldIcon,
+  TextFieldIconGroup,
+} from '../style';
 import TextInputLayout from '../TextInputLayout';
 import { semantic } from '@/designsystem/tokens/semantic';
-import SearchIcon from '@/assets/svg/20px/ic_search.svg?react';
 import DeleteIcon from '@/assets/svg/20px/ic_circle_close.svg?react';
+import VisibleIcon from '@/assets/svg/20px/ic_visible.svg?react';
+import VisibilityOffIcon from '@/assets/svg/20px/ic_visibility_off.svg?react';
 
 /**
  * 한 줄 텍스트를 입력하는 TextField 컴포넌트입니다.
@@ -18,6 +25,7 @@ import DeleteIcon from '@/assets/svg/20px/ic_circle_close.svg?react';
  * @param {string} [helperText] - 하단에 표시할 안내/에러 문구
  * @param {number} [maxLength] - 입력 가능한 최대 글자 수
  * @param {boolean} [disabled] - 비활성화 여부
+ * @param {boolean} [isPassword=false] - true이면 입력값을 가리고 보이기 전환하는 아이콘을 표시합니다.
  */
 export default function TextField({
   title,
@@ -31,7 +39,10 @@ export default function TextField({
   helperText,
   maxLength,
   disabled,
+  isPassword = false,
 }) {
+  const [isMasked, setIsMasked] = useState(false);
+
   return (
     <TextInputLayout
       title={title}
@@ -44,6 +55,7 @@ export default function TextField({
     >
       <TextFieldInputWrapper hasError={hasError}>
         <TextFieldInput
+          type={isPassword && isMasked ? 'password' : 'text'}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -52,19 +64,30 @@ export default function TextField({
           disabled={disabled}
         />
         {!disabled && (
-          <TextFieldIcon
-            type="button"
-            onClick={
-              value ? () => onChange({ target: { value: '' } }) : undefined
-            }
-            style={{ cursor: value ? 'pointer' : 'default' }}
-          >
-            {value ? (
-              <DeleteIcon color={semantic.iconNormalAssistive} />
-            ) : (
-              <SearchIcon />
+          <TextFieldIconGroup>
+            {isPassword && value && (
+              <TextFieldIcon
+                type="button"
+                onClick={() => setIsMasked((prev) => !prev)}
+                aria-label={isMasked ? '입력값 보이기' : '입력값 가리기'}
+              >
+                {isMasked ? (
+                  <VisibleIcon color={semantic.iconNormalNormal} />
+                ) : (
+                  <VisibilityOffIcon color={semantic.iconNormalNormal} />
+                )}
+              </TextFieldIcon>
             )}
-          </TextFieldIcon>
+            <TextFieldIcon
+              type="button"
+              onClick={
+                value ? () => onChange({ target: { value: '' } }) : undefined
+              }
+              style={{ cursor: value ? 'pointer' : 'default' }}
+            >
+              {value && <DeleteIcon color={semantic.iconNormalAssistive} />}
+            </TextFieldIcon>
+          </TextFieldIconGroup>
         )}
       </TextFieldInputWrapper>
     </TextInputLayout>

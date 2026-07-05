@@ -63,3 +63,8 @@ export const Disabled = {
   render: (args) => <TextField {...args} value="내용 입력" />,
   args: { disabled: true },
 };
+
+export const Visible = {
+  render: Template,
+  args: { isPassword: true },
+};
