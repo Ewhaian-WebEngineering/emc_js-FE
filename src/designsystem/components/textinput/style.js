@@ -79,11 +79,22 @@ export const TextFieldInput = styled.input`
     color: ${semantic.textNormalAssistive};
     cursor: not-allowed;
   }
+
+  &::-ms-reveal,
+  &::-ms-clear {
+    display: none;
+  }
+`;
+
+export const TextFieldIconGroup = styled.div`
+  position: absolute;
+  right: ${measurement.spacing12};
+  display: flex;
+  align-items: center;
+  gap: ${measurement.spacing12};
 `;
 
 export const TextFieldIcon = styled.button`
-  position: absolute;
-  right: ${measurement.spacing12};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,6 +102,7 @@ export const TextFieldIcon = styled.button`
   border: none;
   padding: 0;
   color: ${semantic.iconNormalNormal};
+  cursor: pointer;
 `;
 
 export const TextInputBottomLine = styled.div`
