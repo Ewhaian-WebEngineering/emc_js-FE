@@ -1,4 +1,4 @@
-export const ROUTES = {
+export const TAB_ROUTES = {
   HOME: '/',
   EVENT: '/event',
   BOOTH: '/booth',
