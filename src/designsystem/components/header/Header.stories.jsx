@@ -7,6 +7,7 @@ import TransparentHeader from './TransparentHeader';
 import TextButton from '../button/textbutton/TextButton';
 import CloseIcon from '@/assets/svg/28px/ic_close.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
+import { layout } from '@/designsystem/tokens/layout';
 
 const meta = {
   title: 'Components/Header',
@@ -17,7 +18,7 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ width: '375px' }}>
+      <div style={{ width: '375px', paddingInline: layout.containerPadding }}>
         <Story />
       </div>
     ),

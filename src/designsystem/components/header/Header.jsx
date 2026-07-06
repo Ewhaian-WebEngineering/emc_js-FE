@@ -22,9 +22,15 @@ export default function Header({
   gap = false,
   border = false,
   transparent = false,
+  ...rest
 }) {
   return (
-    <HeaderContainer $gap={gap} $border={border} $transparent={transparent}>
+    <HeaderContainer
+      $gap={gap}
+      $border={border}
+      $transparent={transparent}
+      {...rest}
+    >
       <HeaderLeft $gap={gap}>{left}</HeaderLeft>
       <HeaderCenter $gap={gap}>{center}</HeaderCenter>
       <HeaderRight $gap={gap}>{right}</HeaderRight>

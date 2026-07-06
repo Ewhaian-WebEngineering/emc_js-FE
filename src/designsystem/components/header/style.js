@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { semantic } from '../../tokens/semantic';
 import { measurement } from '../../tokens/measurement';
-import { typography } from '../../tokens/typography';
+import { typography } from '@/designsystem/tokens/typography';
+import { layout } from '@/designsystem/tokens/layout';
 
 export const HeaderContainer = styled.header`
   display: flex;
@@ -11,6 +12,8 @@ export const HeaderContainer = styled.header`
     $transparent
       ? 'linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 100%)'
       : semantic.fillNormalWhite};
+  padding-inline: ${measurement.spacing16};
+  margin-inline: -${layout.containerPadding};
   border-bottom: ${({ $border }) =>
     $border
       ? `${measurement.borderWidthSm} solid ${semantic.borderNormalNormal}`
