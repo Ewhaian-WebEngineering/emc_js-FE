@@ -5,9 +5,10 @@ import { layout } from '../designsystem/tokens/layout';
 export const PageContainer = styled.div`
   max-width: ${layout.containerMax};
   margin: 0 auto;
-  padding-inline: ${layout.containerPadding};
 `;
 
 export const MainLayoutContent = styled.main`
+  max-width: ${layout.containerMax};
+  margin: 0 auto;
   padding-bottom: calc(${measurement.spacing64} + env(safe-area-inset-bottom));
 `;
