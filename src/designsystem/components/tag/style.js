@@ -4,8 +4,8 @@ import { semantic } from '../../tokens/semantic';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
 
-const getColorStyle = (type, selected) => {
-  if (type === 'notice') {
+const getColorStyle = (variant, selected) => {
+  if (variant === 'notice') {
     return {
       border: semantic.secondaryYellowDefault,
       background: selected
@@ -17,7 +17,7 @@ const getColorStyle = (type, selected) => {
     };
   }
 
-  if (type === 'button') {
+  if (variant === 'button') {
     return {
       border: selected
         ? semantic.fillPrimaryNormal
@@ -42,8 +42,8 @@ export const TagWrapper = styled.button`
   justify-content: center;
   gap: ${measurement.spacing4};
 
-  cursor: ${({ type }) =>
-    type === 'notice' || type === 'button' ? 'pointer' : 'default'};
+  cursor: ${({ variant }) =>
+    variant === 'notice' || variant === 'button' ? 'pointer' : 'default'};
 
   padding: ${({ onDelete }) =>
     onDelete
@@ -52,8 +52,8 @@ export const TagWrapper = styled.button`
 
   border-radius: ${measurement.borderRadiusRounded};
 
-  ${({ type, selected }) => {
-    const { border, background, color } = getColorStyle(type, selected);
+  ${({ variant, selected }) => {
+    const { border, background, color } = getColorStyle(variant, selected);
     return css`
       border: ${measurement.borderRadiusSm} solid ${border};
       background-color: ${background};
