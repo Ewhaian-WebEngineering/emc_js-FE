@@ -13,7 +13,7 @@ export default meta;
 
 export const PrimaryLg = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'lg',
     children: '텍스트',
   },
@@ -21,7 +21,7 @@ export const PrimaryLg = {
 
 export const PrimaryMd = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'md',
     children: '텍스트',
   },
@@ -29,7 +29,7 @@ export const PrimaryMd = {
 
 export const PrimarySm = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'sm',
     children: '텍스트',
   },
@@ -37,7 +37,7 @@ export const PrimarySm = {
 
 export const ErrorLg = {
   args: {
-    type: 'error',
+    variant: 'error',
     size: 'lg',
     children: '텍스트',
   },
@@ -45,7 +45,7 @@ export const ErrorLg = {
 
 export const ErrorMd = {
   args: {
-    type: 'error',
+    variant: 'error',
     size: 'md',
     children: '텍스트',
   },
@@ -53,7 +53,7 @@ export const ErrorMd = {
 
 export const ErrorSm = {
   args: {
-    type: 'error',
+    variant: 'error',
     size: 'sm',
     children: '텍스트',
   },
@@ -61,7 +61,7 @@ export const ErrorSm = {
 
 export const SecondaryLg = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'lg',
     children: '텍스트',
   },
@@ -69,7 +69,7 @@ export const SecondaryLg = {
 
 export const SecondaryMd = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'md',
     children: '텍스트',
   },
@@ -77,7 +77,7 @@ export const SecondaryMd = {
 
 export const SecondarySm = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'sm',
     children: '텍스트',
   },
@@ -85,7 +85,7 @@ export const SecondarySm = {
 
 export const DisabledLg = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'lg',
     children: '텍스트',
     disabled: true,
@@ -94,7 +94,7 @@ export const DisabledLg = {
 
 export const DisabledMd = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'md',
     children: '텍스트',
     disabled: true,
@@ -103,7 +103,7 @@ export const DisabledMd = {
 
 export const DisabledSm = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'sm',
     children: '텍스트',
     disabled: true,
