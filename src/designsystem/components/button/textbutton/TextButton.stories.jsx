@@ -13,7 +13,7 @@ export default meta;
 
 export const PrimaryMd = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'md',
     children: '텍스트',
   },
@@ -21,7 +21,7 @@ export const PrimaryMd = {
 
 export const PrimarySm = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'sm',
     children: '텍스트',
   },
@@ -29,7 +29,7 @@ export const PrimarySm = {
 
 export const PrimaryXs = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'xs',
     children: '텍스트',
   },
@@ -37,7 +37,7 @@ export const PrimaryXs = {
 
 export const SecondaryMd = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'md',
     children: '텍스트',
   },
@@ -45,7 +45,7 @@ export const SecondaryMd = {
 
 export const SecondarySm = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'sm',
     children: '텍스트',
   },
@@ -53,7 +53,7 @@ export const SecondarySm = {
 
 export const SecondaryXs = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'xs',
     children: '텍스트',
   },
@@ -61,7 +61,7 @@ export const SecondaryXs = {
 
 export const DisabledMd = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'md',
     children: '텍스트',
     disabled: true,
@@ -70,7 +70,7 @@ export const DisabledMd = {
 
 export const DisabledSm = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'sm',
     children: '텍스트',
     disabled: true,
@@ -79,7 +79,7 @@ export const DisabledSm = {
 
 export const DisabledXs = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'xs',
     children: '텍스트',
     disabled: true,

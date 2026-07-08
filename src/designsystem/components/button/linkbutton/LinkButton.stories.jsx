@@ -13,7 +13,7 @@ export default meta;
 
 export const PrimaryLg = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'lg',
     href: 'https://example.com',
     children: '링크',
@@ -22,7 +22,7 @@ export const PrimaryLg = {
 
 export const PrimaryMd = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'md',
     href: 'https://example.com',
     children: '링크',
@@ -31,7 +31,7 @@ export const PrimaryMd = {
 
 export const PrimarySm = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'sm',
     href: 'https://example.com',
     children: '링크',
@@ -40,7 +40,7 @@ export const PrimarySm = {
 
 export const SecondaryLg = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'lg',
     href: 'https://example.com',
     children: '링크',
@@ -49,7 +49,7 @@ export const SecondaryLg = {
 
 export const SecondaryMd = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'md',
     href: 'https://example.com',
     children: '링크',
@@ -58,7 +58,7 @@ export const SecondaryMd = {
 
 export const SecondarySm = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'sm',
     href: 'https://example.com',
     children: '링크',

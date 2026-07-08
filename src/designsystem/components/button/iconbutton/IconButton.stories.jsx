@@ -14,7 +14,7 @@ export default meta;
 
 export const PrimaryMd = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'md',
   },
   render: (args) => (
@@ -26,7 +26,7 @@ export const PrimaryMd = {
 
 export const PrimarySm = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'sm',
   },
   render: (args) => (
@@ -38,7 +38,7 @@ export const PrimarySm = {
 
 export const SecondaryMd = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'md',
   },
   render: (args) => (
@@ -50,7 +50,7 @@ export const SecondaryMd = {
 
 export const SecondarySm = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     size: 'sm',
   },
   render: (args) => (
@@ -62,7 +62,7 @@ export const SecondarySm = {
 
 export const TransparentMd = {
   args: {
-    type: 'transparent',
+    variant: 'transparent',
     size: 'md',
   },
   render: (args) => (
@@ -74,7 +74,7 @@ export const TransparentMd = {
 
 export const TransparentSm = {
   args: {
-    type: 'transparent',
+    variant: 'transparent',
     size: 'sm',
   },
   render: (args) => (
@@ -86,7 +86,7 @@ export const TransparentSm = {
 
 export const Disabled = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     size: 'md',
     disabled: true,
   },
