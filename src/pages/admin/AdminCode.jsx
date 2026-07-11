@@ -8,9 +8,7 @@ import {
   AdminAuthDescription,
   AdminAuthHighlight,
   AdminAuthFooter,
-  AdminAuthBackButton,
   AdminAuthButtonWrapper,
-  AdminAuthHeaderTitle,
 } from './style.js';
 
 export default function AdminAuth() {
