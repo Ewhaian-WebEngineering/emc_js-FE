@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import Header from '../../designsystem/components/header/Header';
-import CodeInput from '../../designsystem/components/textinput/codeinput/CodeInput';
+import Header from '../../designsystem/components/header/FillCenterHeader';
+import TextFeild from '../../designsystem/components/textinput/textfield/TextField';
 import BoxButton from '../../designsystem/components/button/boxbutton/BoxButton';
-import arrowLeftIcon from '../../assets/svg/28px/ic_arrow_left.svg';
 import {
   AdminAuthContainer,
   AdminAuthContent,
@@ -33,20 +32,9 @@ export default function AdminAuth() {
     }
   };
 
-  const handleBack = () => {
-    window.history.back();
-  };
-
   return (
     <AdminAuthContainer>
-      <Header
-        left={
-          <AdminAuthBackButton onClick={handleBack}>
-            <img src={arrowLeftIcon} alt="뒤로가기" />
-          </AdminAuthBackButton>
-        }
-        center={<AdminAuthHeaderTitle>관리자 인증</AdminAuthHeaderTitle>}
-      />
+      <Header onBack={() => {}} title="Title" />
 
       <AdminAuthContent>
         <AdminAuthDescription>
@@ -55,7 +43,7 @@ export default function AdminAuth() {
           <AdminAuthHighlight>관리자 코드</AdminAuthHighlight>를 입력해주세요
         </AdminAuthDescription>
 
-        <CodeInput
+        <TextFeild
           value={code}
           onChange={handleChange}
           placeholder="관리자 코드를 입력해주세요. 예) CODE"

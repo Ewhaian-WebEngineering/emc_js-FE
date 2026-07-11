@@ -6,6 +6,7 @@ import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
+import Admin from '../pages/admin/AdminCode';
 import { TAB_ROUTES } from '../constants/routes';
 
 /**
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
           { path: TAB_ROUTES.MY, element: <MyScreen /> },
         ],
       },
+      { path: '/admin', element: <Admin /> },
     ],
   },
 ]);
