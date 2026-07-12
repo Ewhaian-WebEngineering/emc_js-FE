@@ -42,3 +42,13 @@ export const Default = {
     placeholder: '관리자 코드을 입력해 주세요.',
   },
 };
+
+export const HasError = {
+  render: Template,
+  args: {
+    isPassword: true,
+    placeholder: '관리자 코드을 입력해 주세요.',
+    hasError: true,
+    helperText: '관리자 코드가 올바르지 않습니다.',
+  },
+};
