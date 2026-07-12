@@ -7,6 +7,6 @@ export const TAB_ROUTES = {
 };
 
 export const ADMIN_ROUTES = {
-  AUTH: '/admin',
+  CODE: '/admin',
   DASHBOARD: '/admin/dashboard',
 };

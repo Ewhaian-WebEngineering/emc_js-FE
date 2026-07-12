@@ -7,7 +7,7 @@ export const AdminAuthContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding-bottom: ${measurement.spacing40};
+  padding-bottom: ${measurement.spacing6};
 `;
 
 export const AdminAuthContent = styled.div`
@@ -18,25 +18,21 @@ export const AdminAuthContent = styled.div`
   border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
 `;
 
-export const AdminAuthDescription = styled.p`
+export const AdminAuthTitle = styled.h2`
   color: ${semantic.textNormalStrong};
   margin-bottom: ${measurement.spacing36};
   ${typography.title3Semibold};
-`;
 
-export const AdminAuthHighlight = styled.span`
-  color: ${semantic.textPrimaryNormal};
+  span {
+    color: ${semantic.textPrimaryNormal};
+  }
 `;
 
 export const AdminAuthFooter = styled.div`
   padding: ${measurement.spacing16};
   margin-top: auto;
-  padding-bottom: ${measurement.spacing40};
-`;
 
-export const AdminAuthButtonWrapper = styled.div`
   width: 100%;
-
   & > button {
     width: 100%;
   }

@@ -17,7 +17,7 @@ import {
   DashboardHeaderWrapper,
 } from './style.js';
 
-export default function AdminAuth() {
+export default function AdminDashboardScreen() {
   const [sponsorExpanded, setSponsorExpanded] = useState(false);
   const [eventExpanded, setEventExpanded] = useState(false);
   const [bannerExpanded, setBannerExpanded] = useState(false);
