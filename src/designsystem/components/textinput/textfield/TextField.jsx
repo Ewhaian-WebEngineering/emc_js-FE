@@ -1,15 +1,5 @@
-import { useState } from 'react';
-import {
-  TextFieldInput,
-  TextFieldInputWrapper,
-  TextFieldIcon,
-  TextFieldIconGroup,
-} from '../style';
 import TextInputLayout from '../TextInputLayout';
-import { semantic } from '@/designsystem/tokens/semantic';
-import DeleteIcon from '@/assets/svg/20px/ic_circle_close.svg?react';
-import VisibleIcon from '@/assets/svg/20px/ic_visible.svg?react';
-import VisibilityOffIcon from '@/assets/svg/20px/ic_visibility_off.svg?react';
+import TextInput from '../TextInput';
 
 /**
  * 한 줄 텍스트를 입력하는 TextField 컴포넌트입니다.
@@ -41,8 +31,6 @@ export default function TextField({
   disabled,
   isPassword = false,
 }) {
-  const [isMasked, setIsMasked] = useState(false);
-
   return (
     <TextInputLayout
       title={title}
@@ -53,43 +41,16 @@ export default function TextField({
       maxLength={maxLength}
       value={value}
     >
-      <TextFieldInputWrapper hasError={hasError}>
-        <TextFieldInput
-          type={isPassword && isMasked ? 'password' : 'text'}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          maxLength={maxLength}
-          disabled={disabled}
-        />
-        {!disabled && (
-          <TextFieldIconGroup>
-            {isPassword && value && (
-              <TextFieldIcon
-                type="button"
-                onClick={() => setIsMasked((prev) => !prev)}
-                aria-label={isMasked ? '입력값 보이기' : '입력값 가리기'}
-              >
-                {isMasked ? (
-                  <VisibleIcon color={semantic.iconNormalNormal} />
-                ) : (
-                  <VisibilityOffIcon color={semantic.iconNormalNormal} />
-                )}
-              </TextFieldIcon>
-            )}
-            <TextFieldIcon
-              type="button"
-              onClick={
-                value ? () => onChange({ target: { value: '' } }) : undefined
-              }
-              style={{ cursor: value ? 'pointer' : 'default' }}
-            >
-              {value && <DeleteIcon color={semantic.iconNormalAssistive} />}
-            </TextFieldIcon>
-          </TextFieldIconGroup>
-        )}
-      </TextFieldInputWrapper>
+      <TextInput
+        isPassword={isPassword}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        maxLength={maxLength}
+        disabled={disabled}
+        hasError={hasError}
+      />
     </TextInputLayout>
   );
 }
