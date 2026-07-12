@@ -7,7 +7,7 @@ export const AdminAuthContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding-bottom: ${measurement.spacing40};
+  padding-bottom: ${measurement.spacing6};
 `;
 
 export const AdminAuthContent = styled.div`
@@ -18,23 +18,26 @@ export const AdminAuthContent = styled.div`
   border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
 `;
 
+<<<<<<< HEAD
 export const AdminAuthDescription = styled.p`
   ${typography.body1Medium};
+=======
+export const AdminAuthTitle = styled.h2`
+>>>>>>> 1df6d17 (feature(#91): 코드 리뷰 후 수정)
   color: ${semantic.textNormalStrong};
   margin-bottom: ${measurement.spacing36};
   ${typography.title3Semibold};
-`;
 
-export const AdminAuthHighlight = styled.span`
-  color: ${semantic.textPrimaryNormal};
+  span {
+    color: ${semantic.textPrimaryNormal};
+  }
 `;
 
 export const AdminAuthFooter = styled.div`
   padding: ${measurement.spacing16};
   margin-top: auto;
-  padding-bottom: ${measurement.spacing40};
-`;
 
+<<<<<<< HEAD
 export const AdminAuthBackButton = styled.button`
   display: flex;
   align-items: center;
@@ -46,8 +49,9 @@ export const AdminAuthBackButton = styled.button`
 `;
 
 export const AdminAuthButtonWrapper = styled.div`
+=======
+>>>>>>> 1df6d17 (feature(#91): 코드 리뷰 후 수정)
   width: 100%;
-
   & > button {
     width: 100%;
   }

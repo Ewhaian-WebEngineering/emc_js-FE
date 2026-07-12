@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import Header from '../../designsystem/components/header/FillCenterHeader';
-import TextField from '../../designsystem/components/textinput/textfield/TextField';
+import TextInput from '../../designsystem/components/textinput/TextInput';
 import BoxButton from '../../designsystem/components/button/boxbutton/BoxButton';
 import {
   AdminAuthContainer,
   AdminAuthContent,
-  AdminAuthDescription,
-  AdminAuthHighlight,
+  AdminAuthTitle,
   AdminAuthFooter,
-  AdminAuthButtonWrapper,
 } from './style.js';
+import { useNavigate } from 'react-router-dom';
+import { ADMIN_ROUTES } from '../../constants/routes';
 
-export default function AdminAuth() {
+export default function AdminCodeScreen() {
+  const navigate = useNavigate();
   const [code, setCode] = useState('');
   const [hasError, setHasError] = useState(false);
 
@@ -22,8 +23,10 @@ export default function AdminAuth() {
 
   const handleConfirm = async () => {
     try {
-      // 관리자 코드 인증 API 호출
+      // TODO: 관리자 코드 인증 API 호출
 
+      setHasError(false);
+      navigate(ADMIN_ROUTES.DASHBOARD);
       setHasError(false);
     } catch (err) {
       setHasError(true);
@@ -35,13 +38,14 @@ export default function AdminAuth() {
       <Header onBack={() => {}} title="관리자 인증" />
 
       <AdminAuthContent>
-        <AdminAuthDescription>
+        <AdminAuthTitle>
           이화이언을 통해 안내받은
           <br />
-          <AdminAuthHighlight>관리자 코드</AdminAuthHighlight>를 입력해주세요
-        </AdminAuthDescription>
+          <span>관리자 코드</span>를 입력해주세요
+        </AdminAuthTitle>
 
-        <TextField
+        <TextInput
+          isPassword
           value={code}
           onChange={handleChange}
           placeholder="관리자 코드를 입력해주세요. 예) CODE"
@@ -54,16 +58,14 @@ export default function AdminAuth() {
       </AdminAuthContent>
 
       <AdminAuthFooter>
-        <AdminAuthButtonWrapper>
-          <BoxButton
-            size="md"
-            type="primary"
-            disabled={!code}
-            onClick={handleConfirm}
-          >
-            확인
-          </BoxButton>
-        </AdminAuthButtonWrapper>
+        <BoxButton
+          size="md"
+          type="primary"
+          disabled={!code}
+          onClick={handleConfirm}
+        >
+          확인
+        </BoxButton>
       </AdminAuthFooter>
     </AdminAuthContainer>
   );
