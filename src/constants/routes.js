@@ -5,3 +5,8 @@ export const TAB_ROUTES = {
   SCRAP: '/scrap',
   MY: '/my',
 };
+
+export const ADMIN_ROUTES = {
+  AUTH: '/admin',
+  DASHBOARD: '/admin/dashboard',
+};
