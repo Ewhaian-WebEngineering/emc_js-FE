@@ -1,131 +1,67 @@
 import styled from '@emotion/styled';
-
-import { gray } from '@/designsystem/tokens/colors';
+import { semantic } from '@/designsystem/tokens/semantic';
+import { measurement } from '@/designsystem/tokens/measurement';
 import { typography } from '@/designsystem/tokens/typography';
 
-export const NoticeScreenContainer = styled.div`
-  width: 100%;
-  max-width: 375px;
-  min-height: 812px;
+const font = (token) => `
+  font-family: ${token.fontFamily};
+  font-weight: ${token.fontWeight};
+  font-size: ${token.fontSize};
+  line-height: ${token.lineHeight};
+`;
 
+export const NoticeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 375px;
   margin: 0 auto;
-
-  background: white;
-
-  border: 1px solid #b0b0b0;
-
-  display: flex;
-  flex-direction: column;
+  min-height: 100vh;
+  background-color: ${semantic.fillNormalWhite};
+  padding: 0 ${measurement.spacing16} ${measurement.spacing32};
 `;
 
-export const Content = styled.div`
+export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
-  flex: 1;
+  padding-top: ${measurement.spacing32};
 `;
 
-export const GuideSectionWrapper = styled.section`
+export const Section = styled.div`
   display: flex;
   flex-direction: column;
-
-  padding: 20px;
-
-  gap: 16px;
-`;
-
-export const NoticeSectionWrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-
-  padding: 0 20px 40px;
-
-  gap: 14px;
+  gap: ${measurement.spacing16};
 `;
 
 export const SectionTitle = styled.h2`
-  margin: 0;
-
-  font-family: ${typography.headline2Semibold.fontFamily};
-  font-size: ${typography.headline2Semibold.fontSize};
-  font-weight: ${typography.headline2Semibold.fontWeight};
-  line-height: 24px;
-
-  color: ${gray[800]};
+  ${font(typography.body1Semibold)}
+  color: ${semantic.textNormalStrong};
 `;
 
-export const ChipGroup = styled.div`
+export const TagRow = styled.div`
   display: flex;
-
-  gap: 8px;
+  align-items: center;
+  gap: ${measurement.spacing8};
 `;
 
 export const GuideList = styled.div`
   display: flex;
   flex-direction: column;
-
-  gap: 16px;
+  gap: ${measurement.spacing20};
 `;
 
-export const GuideItemWrapper = styled.div`
-  display: flex;
-
-  align-items: flex-start;
-
-  gap: 12px;
+export const NoticeDescription = styled.p`
+  ${font(typography.body2Regular)}
+  color: ${semantic.textNormalStrong};
+  white-space: pre-line;
 `;
 
-export const GuideItemNumber = styled.div`
-  width: 22px;
-  height: 22px;
-
-  border-radius: 4px;
-
-  background: ${gray[100]};
-
-  flex-shrink: 0;
-
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-
-  font-family: ${typography.body2Regular.fontFamily};
-  font-size: ${typography.body2Regular.fontSize};
-  font-weight: ${typography.body2Regular.fontWeight};
-
-  color: ${gray[800]};
+export const DividerWrapper = styled.div`
+  margin-top: ${measurement.spacing48};
+  margin-bottom: ${measurement.spacing32};
 `;
 
-export const GuideItemText = styled.p`
-  margin: 0;
-
-  flex: 1;
-
-  font-family: ${typography.body2Regular.fontFamily};
-  font-size: ${typography.body2Regular.fontSize};
-  font-weight: ${typography.body2Regular.fontWeight};
-
-  line-height: 22px;
-
-  color: ${gray[800]};
-`;
-
-export const NoticeList = styled.div`
+export const NoticeSectionsGroup = styled.div`
   display: flex;
   flex-direction: column;
-
-  gap: 8px;
-`;
-
-export const NoticeListItem = styled.p`
-  margin: 0;
-
-  font-family: ${typography.body2Regular.fontFamily};
-  font-size: ${typography.body2Regular.fontSize};
-  font-weight: ${typography.body2Regular.fontWeight};
-
-  line-height: 22px;
-
-  color: ${gray[800]};
+  gap: ${measurement.spacing24};
 `;
