@@ -7,19 +7,41 @@ import { TabMenu, TabMenuItem, TabIndicator } from './style';
  * @param {Array<{label: string, content: ReactNode}>} tabs - 탭 목록
  * @param {'default'|'categoryFilter'} [variant="default"] - 탭 스타일
  */
-export default function Tab({ tabs, variant = 'default' }) {
-  const [activeTab, setActiveTab] = useState(0);
+export default function Tab({
+  tabs,
+  variant = 'default',
+  activeTab: controlledActiveTab,
+  onTabChange,
+}) {
+  const [internalActiveTab, setInternalActiveTab] = useState(0);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
   const tabMenuRef = useRef(null);
   const tabRefs = useRef([]);
 
+  const isControlled = controlledActiveTab !== undefined;
+  const activeTabIndex = isControlled
+    ? tabs.findIndex(
+        (tab) => (tab.id ?? tab.value ?? tab.key) === controlledActiveTab,
+      )
+    : internalActiveTab;
+  const resolvedActiveTab = activeTabIndex >= 0 ? activeTabIndex : 0;
+
   const selectTabHandler = (index) => {
-    setActiveTab(index);
+    if (!isControlled) {
+      setInternalActiveTab(index);
+    }
+
+    if (onTabChange) {
+      const selectedTab = tabs[index];
+      const tabKey =
+        selectedTab?.id ?? selectedTab?.value ?? selectedTab?.key ?? index;
+      onTabChange(tabKey);
+    }
   };
 
   useLayoutEffect(() => {
     const updateIndicator = () => {
-      const activeTabNode = tabRefs.current[activeTab];
+      const activeTabNode = tabRefs.current[resolvedActiveTab];
       if (!activeTabNode) return;
 
       setIndicator({
@@ -38,7 +60,7 @@ export default function Tab({ tabs, variant = 'default' }) {
       resizeObserver.disconnect();
       window.removeEventListener('resize', updateIndicator);
     };
-  }, [activeTab, tabs]);
+  }, [resolvedActiveTab, tabs]);
 
   return (
     <>
@@ -48,7 +70,7 @@ export default function Tab({ tabs, variant = 'default' }) {
             key={index}
             ref={(node) => (tabRefs.current[index] = node)}
             variant={variant}
-            isActive={activeTab === index}
+            isActive={resolvedActiveTab === index}
             onClick={() => selectTabHandler(index)}
           >
             {tab.label}
@@ -56,7 +78,7 @@ export default function Tab({ tabs, variant = 'default' }) {
         ))}
         <TabIndicator left={indicator.left} width={indicator.width} />
       </TabMenu>
-      <div>{tabs[activeTab].content}</div>
+      <div>{tabs[resolvedActiveTab]?.content}</div>
     </>
   );
 }
