@@ -5,3 +5,12 @@ export const TAB_ROUTES = {
   SCRAP: '/scrap',
   MY: '/my',
 };
+
+export const MY_ROUTES = {
+  // 임시용
+  LOGIN: '/mylogin',
+  LOGOUT: '/mylogout',
+  SELLER: '/myseller',
+  ADMIN: '/myadmin',
+};
+

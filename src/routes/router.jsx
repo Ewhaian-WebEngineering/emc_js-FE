@@ -6,7 +6,11 @@ import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
-import { TAB_ROUTES } from '../constants/routes';
+import MyLoginScreen from '@/pages/my/MyLoginScreen';
+import MyLogoutScreen from '@/pages/my/MyLogoutScreen';
+import MyAdminScreen from '@/pages/my/MyAdminScreen';
+import MySellerScreen from '@/pages/my/MySellerScreen';
+import { TAB_ROUTES, MY_ROUTES } from '../constants/routes';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -29,6 +33,15 @@ export const router = createBrowserRouter([
           { path: TAB_ROUTES.MY, element: <MyScreen /> },
         ],
       },
+<<<<<<< HEAD
+=======
+      { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
+      { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
+      { path: MY_ROUTES.LOGIN, element: <MyLoginScreen /> },
+      { path: MY_ROUTES.LOGOUT, element: <MyLogoutScreen /> },
+      { path: MY_ROUTES.SELLER, element: <MySellerScreen /> },
+      { path: MY_ROUTES.ADMIN, element: <MyAdminScreen /> },
+>>>>>>> 9d153da (feature(#100): 마이페이지 UI 구현)
     ],
   },
 ]);

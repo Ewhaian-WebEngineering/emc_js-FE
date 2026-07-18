@@ -169,4 +169,10 @@ export const typography = {
     fontSize: '12px',
     lineHeight: '18px',
   },
+  headlineBd: {
+    fontFamily: 'Pretendard',
+    fontWeight: 600,
+    fontSize: '24px',
+    lineHeight: '36px',
+  },
 };
