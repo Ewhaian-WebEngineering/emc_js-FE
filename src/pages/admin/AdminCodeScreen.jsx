@@ -27,7 +27,6 @@ export default function AdminCodeScreen() {
 
       setHasError(false);
       navigate(ADMIN_ROUTES.DASHBOARD);
-      setHasError(false);
     } catch (err) {
       setHasError(true);
     }
