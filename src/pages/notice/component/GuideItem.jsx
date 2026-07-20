@@ -1,21 +1,13 @@
-import {
-  GuideItemWrapper,
-  GuideItemBadge,
-  GuideItemBadgeText,
-  GuideItemContent,
-  GuideItemTitle,
-  GuideItemDescription,
-} from './style';
+import { GuideItemWrapper, GuideItemBadge, GuideItemContent } from '../style';
 
 export default function GuideItem({ number, title, description }) {
   return (
     <GuideItemWrapper>
-      <GuideItemBadge>
-        <GuideItemBadgeText>{number}</GuideItemBadgeText>
-      </GuideItemBadge>
+      <GuideItemBadge>{number}</GuideItemBadge>
       <GuideItemContent>
-        <GuideItemTitle>{title}</GuideItemTitle>
-        <GuideItemDescription>{description}</GuideItemDescription>
+        <span>{title}</span>
+        <br />
+        {description}
       </GuideItemContent>
     </GuideItemWrapper>
   );

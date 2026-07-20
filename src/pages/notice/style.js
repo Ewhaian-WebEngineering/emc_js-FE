@@ -13,23 +13,30 @@ const font = (token) => `
 export const NoticeContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 375px;
+  width: 100%;
   margin: 0 auto;
   min-height: 100vh;
   background-color: ${semantic.fillNormalWhite};
-  padding: 0 ${measurement.spacing16} ${measurement.spacing32};
+  padding-inline: ${measurement.spacing16};
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: ${measurement.spacing32};
+  padding-block: ${measurement.spacing32};
+  border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
 `;
 
-export const Section = styled.div`
+export const EntrySection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing16};
+`;
+
+export const NoticeSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing8};
 `;
 
 export const SectionTitle = styled.h2`
@@ -46,7 +53,7 @@ export const TagRow = styled.div`
 export const GuideList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${measurement.spacing20};
+  gap: ${measurement.spacing16};
 `;
 
 export const NoticeDescription = styled.p`
@@ -64,4 +71,33 @@ export const NoticeSectionsGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing24};
+  padding-bottom: ${measurement.spacing48};
+`;
+
+export const GuideItemWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: ${measurement.spacing12};
+`;
+
+export const GuideItemBadge = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: ${measurement.borderRadiusSm};
+  background-color: ${semantic.fillPrimaryAssistive};
+  ${typography.caption1Regular}
+  color: ${semantic.textPrimaryNormal};
+`;
+
+export const GuideItemContent = styled.p`
+  ${typography.body2Regular}
+  color: ${semantic.textNormalStrong};
+
+  span {
+    ${typography.body2Semibold}
+  }
 `;

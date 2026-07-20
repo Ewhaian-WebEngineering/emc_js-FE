@@ -2,7 +2,7 @@ export const TAB_ROUTES = {
   HOME: '/',
   EVENT: '/event',
   BOOTH: '/booth',
-  SCRAP: '/gscrap',
+  SCRAP: '/scrap',
   MY: '/my',
 };
 
