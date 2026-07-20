@@ -31,6 +31,7 @@ export const EntrySection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing16};
+  padding-bottom: ${measurement.spacing48};
 `;
 
 export const NoticeSection = styled.div`
@@ -62,15 +63,11 @@ export const NoticeDescription = styled.p`
   white-space: pre-line;
 `;
 
-export const DividerWrapper = styled.div`
-  margin-top: ${measurement.spacing48};
-  margin-bottom: ${measurement.spacing32};
-`;
-
 export const NoticeSectionsGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing24};
+  padding-top: ${measurement.spacing32};
   padding-bottom: ${measurement.spacing48};
 `;
 
