@@ -9,10 +9,15 @@ import {
   HomeNoticeTitle,
   HomeNoticeTitleWrapper,
   IntroImage,
+  PopularBoothListContainer,
+  PopularBoothListHeader,
+  SectionHeader,
 } from './style';
 import HomeIconButton from './components/HomeIconButton';
-import { ICON_LIST } from '@/constants/homeIcon';
+import { ICON_LIST } from '@/constants/home/icon';
 import Divider from '@/designsystem/components/divider/Divider';
+import { POPULAR_BOOTH_LIST } from '@/constants/home/popularBooth';
+import PopularBoothRanking from './components/PopularBoothRanking';
 
 export default function HomeScreen() {
   return (
@@ -47,6 +52,14 @@ export default function HomeScreen() {
         ))}
       </HomeIconButtonSection>
       <Divider size="lg" />
+      <PopularBoothListContainer>
+        <PopularBoothListHeader>
+          <SectionHeader>실시간 인기 부스 TOP 10</SectionHeader>
+          {/* TODO: 업데이트 시간 추가 */}
+          <p>오늘 HH:MM 기준</p>
+        </PopularBoothListHeader>
+        <PopularBoothRanking list={POPULAR_BOOTH_LIST} />
+      </PopularBoothListContainer>
     </>
   );
 }

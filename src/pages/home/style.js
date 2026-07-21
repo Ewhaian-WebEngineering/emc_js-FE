@@ -73,3 +73,58 @@ export const HomeIconButtonSection = styled.div`
   padding: ${measurement.spacing16};
   gap: ${measurement.spacing16};
 `;
+
+export const RankingScroll = styled.div`
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const RankingPage = styled.div`
+  flex: 0 0 85%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing12};
+`;
+
+export const RankingItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${measurement.spacing8};
+`;
+
+export const RankingNumber = styled.div`
+  ${typography.title2Semibold}
+  color: ${({ rank }) => (rank <= 3 ? semantic.textPrimaryNormal : gray[950])};
+  width: ${measurement.spacing32};
+`;
+
+export const PopularBoothListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing24};
+  padding: ${measurement.spacing16};
+`;
+
+export const PopularBoothListHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    ${typography.caption1Regular}
+    color: ${semantic.textNormalNormal};
+  }
+`;
+
+export const SectionHeader = styled.h2`
+  ${typography.headline2Semibold};
+  color: ${semantic.textNormalStrong};
+`;
