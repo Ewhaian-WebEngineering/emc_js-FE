@@ -26,6 +26,8 @@ import SponsorList from './components/SponsorList';
 import { SPONSOR_LIST } from '@/constants/home/sponsor';
 import EventTabs from './components/EventList';
 import { EVENT_LIST } from '@/constants/home/event';
+import { FAQ_LIST } from '@/constants/home/faq';
+import FaqList from './components/FaqList';
 
 export default function HomeScreen() {
   return (
@@ -116,6 +118,15 @@ export default function HomeScreen() {
           />
         </SectionHeader>
         <EventTabs list={EVENT_LIST} />
+      </SectionContainer>
+
+      <Divider size="lg" />
+
+      <SectionContainer>
+        <SectionHeader>
+          <SectionTitle>자주 묻는 질문 FAQ</SectionTitle>
+        </SectionHeader>
+        <FaqList list={FAQ_LIST} />
       </SectionContainer>
     </>
   );

@@ -242,3 +242,14 @@ export const EventListItem = styled.div`
   flex-shrink: 0;
   width: 90%;
 `;
+
+export const FaqListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-inline: -${measurement.spacing16};
+`;
+
+export const FaqAnswer = styled.p`
+  ${typography.body2Regular}
+  color: ${semantic.textNormalNormal};
+`;
