@@ -59,7 +59,15 @@ export default function HomeScreen() {
 
       <HomeIconButtonSection>
         {ICON_LIST.map(({ key, label, icon }) => (
-          <HomeIconButton key={key} label={label} icon={icon} />
+          <HomeIconButton
+            key={key}
+            label={label}
+            icon={icon}
+            onClick={() => {
+              // TODO: 페이지 이동 추가
+              alert(`${label} button clicked`);
+            }}
+          />
         ))}
       </HomeIconButtonSection>
 

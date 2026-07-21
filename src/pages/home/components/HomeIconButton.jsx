@@ -1,8 +1,8 @@
 import { HomeIconButtonWrapper } from '../style';
 
-export default function HomeIconButton({ label, icon: Icon }) {
+export default function HomeIconButton({ label, icon: Icon, onClick }) {
   return (
-    <HomeIconButtonWrapper>
+    <HomeIconButtonWrapper onClick={onClick}>
       <Icon aria-label={label} />
       <p>{label}</p>
     </HomeIconButtonWrapper>
