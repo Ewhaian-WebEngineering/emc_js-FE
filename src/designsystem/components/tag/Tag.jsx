@@ -18,12 +18,7 @@ export default function Tag({
   onClick,
 }) {
   return (
-    <TagWrapper
-      variant={variant}
-      selected={selected}
-      onDelete={onDelete}
-      onClick={onClick}
-    >
+    <TagWrapper variant={variant} selected={selected} onClick={onClick}>
       {label}
       {onDelete && (
         <CloseButton onClick={onDelete} style={{ cursor: 'pointer' }} />
