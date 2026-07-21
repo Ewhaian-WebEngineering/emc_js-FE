@@ -106,25 +106,123 @@ export const RankingNumber = styled.div`
   width: ${measurement.spacing32};
 `;
 
-export const PopularBoothListContainer = styled.div`
+export const PopularBoothUpdateTime = styled.p`
+  ${typography.caption1Regular}
+  color: ${semantic.textNormalNormal};
+`;
+
+export const SectionContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing24};
   padding: ${measurement.spacing16};
 `;
 
-export const PopularBoothListHeader = styled.div`
+export const SectionHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+export const SectionTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing4};
+`;
+
+export const SectionTitle = styled.h2`
+  ${typography.headline2Semibold};
+  color: ${semantic.textNormalStrong};
+`;
+
+export const SectionSubTitle = styled.p`
+  ${typography.body2Regular};
+  color: ${semantic.textNormalNormal};
+`;
+
+export const ViewAllButtonWrapper = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${measurement.spacing2};
+  padding: ${measurement.spacing4};
+  border: none;
+  background-color: transparent;
 
   p {
-    ${typography.caption1Regular}
+    ${typography.body2Semibold}
     color: ${semantic.textNormalNormal};
   }
 `;
 
-export const SectionHeader = styled.h2`
-  ${typography.headline2Semibold};
-  color: ${semantic.textNormalStrong};
+export const SponsorItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${measurement.spacing8};
+`;
+
+export const SponsorItemThumbnail = styled.div`
+  width: 70px;
+  height: 70px;
+  border-radius: ${measurement.borderRadiusRounded};
+  overflow: hidden;
+  border: ${measurement.borderWidthSm} solid
+    ${({ isSelected }) =>
+      isSelected ? semantic.borderPrimaryNormal : semantic.borderNormalStrong};
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const SponsorName = styled.p`
+  ${({ isSelected }) =>
+    isSelected ? typography.caption1Medium : typography.caption1Regular};
+  color: ${({ isSelected }) =>
+    isSelected ? semantic.textNormalStrong : semantic.textNormalNormal};
+`;
+
+export const SponsorListSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing20};
+`;
+
+export const SponsorListScroll = styled.div`
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-inline: ${measurement.spacing16};
+  margin-inline: -${measurement.spacing16};
+
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const SponsorDescriptionButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: ${measurement.spacing16};
+  gap: ${measurement.spacing12};
+  border: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
+  border-radius: ${measurement.borderRadiusXl};
+  background-color: ${semantic.fillNormalWhite};
+
+  p {
+    ${typography.caption2Regular}
+    color: ${semantic.textNormalNormal};
+    text-align: left;
+
+    line-height: 1.5;
+    max-height: 3em;
+    overflow: hidden;
+    flex: 1;
+  }
 `;
