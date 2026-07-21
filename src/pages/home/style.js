@@ -190,7 +190,7 @@ export const SponsorListSection = styled.div`
   gap: ${measurement.spacing20};
 `;
 
-export const SponsorListScroll = styled.div`
+export const ListScroll = styled.div`
   display: flex;
   gap: 16px;
   overflow-x: auto;
@@ -225,4 +225,20 @@ export const SponsorDescriptionButton = styled.button`
     overflow: hidden;
     flex: 1;
   }
+`;
+
+export const EventSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing12};
+`;
+
+export const EventTabsContainer = styled.div`
+  display: flex;
+  gap: ${measurement.spacing8};
+`;
+
+export const EventListItem = styled.div`
+  flex-shrink: 0;
+  width: 90%;
 `;

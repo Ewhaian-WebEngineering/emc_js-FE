@@ -1,9 +1,9 @@
 import Placeholder from '@/designsystem/components/Placeholder';
 import {
+  ListScroll,
   SponsorDescriptionButton,
   SponsorItemContainer,
   SponsorItemThumbnail,
-  SponsorListScroll,
   SponsorListSection,
   SponsorName,
 } from '../style';
@@ -17,7 +17,7 @@ export default function SponsorList({ list }) {
 
   return (
     <SponsorListSection>
-      <SponsorListScroll>
+      <ListScroll>
         {list.map((sponsor) => (
           <SponsorItem
             key={sponsor.sponsorName}
@@ -27,7 +27,7 @@ export default function SponsorList({ list }) {
             onClick={() => setSelectedSponsor(sponsor.sponsorName)}
           />
         ))}
-      </SponsorListScroll>
+      </ListScroll>
       {selected && (
         <SponsorDescriptionButton
           onClick={() => {

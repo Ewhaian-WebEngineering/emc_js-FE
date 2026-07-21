@@ -24,6 +24,8 @@ import PopularBoothRanking from './components/PopularBoothRanking';
 import ViewAllButton from './components/ViewAllButton';
 import SponsorList from './components/SponsorList';
 import { SPONSOR_LIST } from '@/constants/home/sponsor';
+import EventTabs from './components/EventList';
+import { EVENT_LIST } from '@/constants/home/event';
 
 export default function HomeScreen() {
   return (
@@ -88,6 +90,24 @@ export default function HomeScreen() {
           />
         </SectionHeader>
         <SponsorList list={SPONSOR_LIST} />
+      </SectionContainer>
+
+      <Divider size="lg" />
+
+      <SectionContainer>
+        <SectionHeader>
+          <SectionTitleWrapper>
+            <SectionTitle>EVENT</SectionTitle>
+            <SectionSubTitle>이벤트 관련 멘트 영역입니다.</SectionSubTitle>
+          </SectionTitleWrapper>
+          <ViewAllButton
+            onClick={() => {
+              // TODO: 이벤트 전체보기 페이지 이동
+              alert('view all event button clicked');
+            }}
+          />
+        </SectionHeader>
+        <EventTabs list={EVENT_LIST} />
       </SectionContainer>
     </>
   );
