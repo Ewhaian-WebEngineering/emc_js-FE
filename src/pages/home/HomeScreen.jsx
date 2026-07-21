@@ -1,14 +1,20 @@
 import HomeHeader from '@/designsystem/components/header/HomeHeader';
 import Placeholder from '@/assets/img/img_checker.png';
+import ArrowRightIconSmall from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import ArrowRightIcon from '@/assets/svg/24px/ic_arrow_right.svg?react';
+import KakaoOpenChannelLogo from '@/assets/img/home/img_contact_us.png';
 import {
+  AdminCertificationSection,
   ArrowRightIconButton,
+  ContactUsSection,
   HomeIconButtonSection,
   HomeNoticeContainer,
   HomeNoticeSubtitle,
   HomeNoticeTitle,
   HomeNoticeTitleWrapper,
   IntroImage,
+  KakaoOpenChannelButton,
+  KakaoOpenChannelContent,
   PopularBoothUpdateTime,
   SectionContainer,
   SectionHeader,
@@ -28,6 +34,7 @@ import EventTabs from './components/EventList';
 import { EVENT_LIST } from '@/constants/home/event';
 import { FAQ_LIST } from '@/constants/home/faq';
 import FaqList from './components/FaqList';
+import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
 
 export default function HomeScreen() {
   return (
@@ -128,6 +135,36 @@ export default function HomeScreen() {
         </SectionHeader>
         <FaqList list={FAQ_LIST} />
       </SectionContainer>
+
+      <ContactUsSection>
+        <KakaoOpenChannelButton
+          onClick={() => {
+            // TODO: 카카오톡 오픈채널 페이지 이동
+            alert('kakao open channel button clicked');
+          }}
+        >
+          <KakaoOpenChannelContent>
+            <img src={KakaoOpenChannelLogo} alt="카카오톡 오픈채널" />
+            <p>
+              원하는 답변이 없다면?
+              <br />
+              EMC 카카오톡 오픈채널에 문의하기
+            </p>
+          </KakaoOpenChannelContent>
+          <ArrowRightIconSmall />
+        </KakaoOpenChannelButton>
+        <AdminCertificationSection>
+          <p>부스 또는 EMC 운영진이신가요?</p>
+          <LinkButton
+            variant="secondary"
+            size="sm"
+            // TODO: 셀러/관리자 인증 페이지 이동
+            onClick={() => alert('admin certification button clicked')}
+          >
+            셀러/관리자 인증
+          </LinkButton>
+        </AdminCertificationSection>
+      </ContactUsSection>
     </>
   );
 }

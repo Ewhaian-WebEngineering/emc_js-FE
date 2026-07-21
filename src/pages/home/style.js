@@ -253,3 +253,54 @@ export const FaqAnswer = styled.p`
   ${typography.body2Regular}
   color: ${semantic.textNormalNormal};
 `;
+
+export const ContactUsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing96};
+  padding: ${measurement.spacing16} ${measurement.spacing16}
+    ${measurement.spacing24} ${measurement.spacing16};
+  background-color: ${semantic.fillNormalNormal};
+`;
+
+export const KakaoOpenChannelButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ${measurement.spacing16};
+  gap: ${measurement.spacing12};
+  border: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
+  border-radius: ${measurement.borderRadiusXl};
+  background-color: ${semantic.fillNormalWhite};
+`;
+
+export const KakaoOpenChannelContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
+
+  p {
+    flex: 1;
+    ${typography.caption1Medium}
+    color: ${semantic.textNormalNormal};
+    text-align: left;
+  }
+`;
+
+export const AdminCertificationSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${measurement.spacing4};
+
+  p {
+    ${typography.body2Regular}
+    color: ${semantic.textNormalNormal};
+  }
+`;
