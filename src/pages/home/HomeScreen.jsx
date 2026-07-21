@@ -23,18 +23,19 @@ import {
   SectionTitleWrapper,
 } from './style';
 import HomeIconButton from './components/HomeIconButton';
-import { ICON_LIST } from '@/constants/home/icon';
+import { ICON_LIST } from '@/pages/home/constants/icon';
 import Divider from '@/designsystem/components/divider/Divider';
-import { POPULAR_BOOTH_LIST } from '@/constants/home/popularBooth';
+import { POPULAR_BOOTH_LIST } from '@/pages/home/constants/popularBooth';
 import PopularBoothRanking from './components/PopularBoothRanking';
 import ViewAllButton from './components/ViewAllButton';
 import SponsorList from './components/SponsorList';
-import { SPONSOR_LIST } from '@/constants/home/sponsor';
+import { SPONSOR_LIST } from '@/pages/home/constants/sponsor';
 import EventTabs from './components/EventList';
-import { EVENT_LIST } from '@/constants/home/event';
-import { FAQ_LIST } from '@/constants/home/faq';
+import { EVENT_LIST } from '@/pages/home/constants/event';
+import { FAQ_LIST } from '@/pages/home/constants/faq';
 import FaqList from './components/FaqList';
 import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
+import { semantic } from '@/designsystem/tokens/semantic';
 
 export default function HomeScreen() {
   return (
@@ -62,7 +63,7 @@ export default function HomeScreen() {
             alert('notice button clicked');
           }}
         >
-          <ArrowRightIcon />
+          <ArrowRightIcon color={semantic.iconNormalStrong} />
         </ArrowRightIconButton>
       </HomeNoticeContainer>
 
