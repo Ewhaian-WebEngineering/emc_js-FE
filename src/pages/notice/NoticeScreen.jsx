@@ -16,6 +16,7 @@ import {
   GuideList,
   NoticeDescription,
   NoticeSectionsGroup,
+  DividerWrapper,
 } from './style';
 
 import { ENTRY_TYPES, GUIDE_ITEMS, NOTICE_SECTIONS } from './constants/notice';
@@ -75,7 +76,9 @@ export default function NoticeScreen() {
           </GuideList>
         </EntrySection>
 
-        <Divider size="sm" />
+        <DividerWrapper>
+          <Divider size="sm" />
+        </DividerWrapper>
 
         <NoticeSectionsGroup>
           {NOTICE_SECTIONS[selectedType].map((section) => (

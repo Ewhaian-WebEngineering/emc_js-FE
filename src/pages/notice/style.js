@@ -3,13 +3,6 @@ import { semantic } from '@/designsystem/tokens/semantic';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { typography } from '@/designsystem/tokens/typography';
 
-const font = (token) => `
-  font-family: ${token.fontFamily};
-  font-weight: ${token.fontWeight};
-  font-size: ${token.fontSize};
-  line-height: ${token.lineHeight};
-`;
-
 export const NoticeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -17,13 +10,13 @@ export const NoticeContainer = styled.div`
   margin: 0 auto;
   min-height: 100vh;
   background-color: ${semantic.fillNormalWhite};
-  padding-inline: ${measurement.spacing16};
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding-block: ${measurement.spacing32};
+  padding: ${measurement.spacing32} ${measurement.spacing16}
+    ${measurement.spacing88} ${measurement.spacing16};
   border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
 `;
 
@@ -41,7 +34,7 @@ export const NoticeSection = styled.div`
 `;
 
 export const SectionTitle = styled.h2`
-  ${font(typography.body1Semibold)}
+  ${typography.body1Semibold}
   color: ${semantic.textNormalStrong};
 `;
 
@@ -58,7 +51,7 @@ export const GuideList = styled.div`
 `;
 
 export const NoticeDescription = styled.p`
-  ${font(typography.body2Regular)}
+  ${typography.body2Regular}
   color: ${semantic.textNormalStrong};
   white-space: pre-line;
 `;
@@ -69,6 +62,10 @@ export const NoticeSectionsGroup = styled.div`
   gap: ${measurement.spacing24};
   padding-top: ${measurement.spacing32};
   padding-bottom: ${measurement.spacing48};
+`;
+
+export const DividerWrapper = styled.div`
+  margin-inline: -${measurement.spacing16};
 `;
 
 export const GuideItemWrapper = styled.div`
