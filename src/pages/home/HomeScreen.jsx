@@ -36,14 +36,16 @@ import { FAQ_LIST } from '@/pages/home/constants/faq';
 import FaqList from './components/FaqList';
 import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
 import { semantic } from '@/designsystem/tokens/semantic';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomeScreen() {
+  const navigate = useNavigate();
+
   return (
     <>
       <HomeHeader
         onSearchClick={() => {
-          // TODO: 검색 페이지 이동
-          alert('search button clicked');
+          navigate('/search');
         }}
       />
 
