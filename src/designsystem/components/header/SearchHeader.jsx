@@ -18,6 +18,7 @@ export default function SearchHeader({
   onChange,
   onDelete,
   onSearch,
+  border = false,
 }) {
   return (
     <Header
@@ -33,6 +34,7 @@ export default function SearchHeader({
         />
       }
       gap
+      border={border}
     />
   );
 }

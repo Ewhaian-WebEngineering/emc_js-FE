@@ -10,7 +10,12 @@ import { semantic } from '@/designsystem/tokens/semantic';
  * @param {string} title - 타이틀 텍스트
  * @param {React.ReactNode} [right] - 오른쪽 영역에 표시할 콘텐츠, 생략하면 비워둠
  */
-export default function FillCenterHeader({ onBack, title, right }) {
+export default function FillCenterHeader({
+  onBack,
+  title,
+  right,
+  border = false,
+}) {
   return (
     <Header
       left={
@@ -20,6 +25,7 @@ export default function FillCenterHeader({ onBack, title, right }) {
       }
       center={<HeaderTitle>{title}</HeaderTitle>}
       right={right}
+      border={border}
     />
   );
 }

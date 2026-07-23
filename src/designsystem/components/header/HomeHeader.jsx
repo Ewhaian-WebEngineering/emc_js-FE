@@ -8,13 +8,14 @@ import { semantic } from '@/designsystem/tokens/semantic';
  *
  * @param {function} onSearchClick - 검색 버튼 클릭 이벤트 핸들러
  */
-export default function HomeHeader({ onSearchClick }) {
+export default function HomeHeader({ onSearchClick, border = false }) {
   return (
     <Header
       left={<LogoText />}
       right={
         <SearchIcon onClick={onSearchClick} color={semantic.iconNormalNormal} />
       }
+      border={border}
     />
   );
 }
