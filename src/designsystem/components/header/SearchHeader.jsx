@@ -11,6 +11,7 @@ import { semantic } from '@/designsystem/tokens/semantic';
  * @param {function} onChange - 검색어 변경 이벤트 핸들러
  * @param {function} [onDelete] - 검색어 삭제 버튼 클릭 이벤트 핸들러
  * @param {function} [onSearch] - 검색 버튼 클릭 이벤트 핸들러
+ * @param {boolean} [border=false] - Header 하단에 border를 표시할지 여부
  */
 export default function SearchHeader({
   onBack,

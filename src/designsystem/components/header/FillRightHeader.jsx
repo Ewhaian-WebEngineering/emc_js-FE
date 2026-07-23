@@ -6,6 +6,7 @@ import { HeaderTitle } from './style';
  *
  * @param {string} title - 타이틀 텍스트
  * @param {React.ReactNode} right - 오른쪽 영역에 표시할 콘텐츠
+ * @param {boolean} [border=false] - Header 하단에 border를 표시할지 여부
  */
 export default function FillRightHeader({ title, right, border = false }) {
   return (
