@@ -20,6 +20,7 @@ import { useGoBack } from '@/hooks/useGoBack';
 
 export default function SearchScreen() {
   const navigate = useNavigate();
+  const handleBack = useGoBack();
   const [searchValue, setSearchValue] = useState('');
   const [recentSearches, setRecentSearches] = useState([
     '최근검색어1',
@@ -30,15 +31,16 @@ export default function SearchScreen() {
   return (
     <>
       <SearchHeader
-        onBack={useGoBack()}
+        onBack={handleBack}
         value={searchValue}
         onChange={setSearchValue}
         onDelete={() => setSearchValue('')}
         onSearch={() => {
           const trimmed = searchValue.trim();
           if (!trimmed) return;
-          setSearchValue('');
-          navigate(`/search/result?query=${encodeURIComponent(trimmed)}`);
+          navigate(`/search/result?query=${encodeURIComponent(trimmed)}`, {
+            replace: true,
+          });
         }}
       />
 

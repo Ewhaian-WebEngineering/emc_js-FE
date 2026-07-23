@@ -7,9 +7,11 @@ import { DUMMY_BOOTHS } from './constants/dummyBooths';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 import SearchBoothList from './components/SearchBoothList';
 import { useGoBack } from '@/hooks/useGoBack';
+import { SEARCH_ROUTES } from '@/constants/routes';
 
 export default function SearchResultScreen() {
   const navigate = useNavigate();
+  const handleBack = useGoBack();
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query') || '';
   const [searchValue, setSearchValue] = useState(query);
@@ -23,11 +25,11 @@ export default function SearchResultScreen() {
   return (
     <>
       <SearchHeader
-        onBack={useGoBack()}
+        onBack={handleBack}
         value={searchValue}
         onChange={setSearchValue}
         onDelete={() => {
-          setSearchValue('');
+          navigate(SEARCH_ROUTES.SEARCH, { replace: true });
         }}
         onSearch={() => {
           const trimmed = searchValue.trim();
