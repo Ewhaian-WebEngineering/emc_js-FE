@@ -1,0 +1,97 @@
+import styled from '@emotion/styled';
+import { semantic } from '@/designsystem/tokens/semantic';
+import { measurement } from '@/designsystem/tokens/measurement';
+import { typography } from '@/designsystem/tokens/typography';
+
+export const NoticeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: ${semantic.fillNormalWhite};
+`;
+
+export const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: ${measurement.spacing32} ${measurement.spacing16}
+    ${measurement.spacing88} ${measurement.spacing16};
+  border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
+`;
+
+export const EntrySection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing16};
+  padding-bottom: ${measurement.spacing48};
+`;
+
+export const NoticeSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing8};
+`;
+
+export const SectionTitle = styled.h2`
+  ${typography.body1Semibold}
+  color: ${semantic.textNormalStrong};
+`;
+
+export const TagRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${measurement.spacing8};
+`;
+
+export const GuideList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing16};
+`;
+
+export const NoticeDescription = styled.p`
+  ${typography.body2Regular}
+  color: ${semantic.textNormalStrong};
+  white-space: pre-line;
+`;
+
+export const NoticeSectionsGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing24};
+  padding-top: ${measurement.spacing32};
+  padding-bottom: ${measurement.spacing48};
+`;
+
+export const DividerWrapper = styled.div`
+  margin-inline: -${measurement.spacing16};
+`;
+
+export const GuideItemWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: ${measurement.spacing12};
+`;
+
+export const GuideItemBadge = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: ${measurement.borderRadiusSm};
+  background-color: ${semantic.fillPrimaryAssistive};
+  ${typography.caption1Regular}
+  color: ${semantic.textPrimaryNormal};
+`;
+
+export const GuideItemContent = styled.p`
+  ${typography.body2Regular}
+  color: ${semantic.textNormalStrong};
+
+  span {
+    ${typography.body2Semibold}
+  }
+`;
