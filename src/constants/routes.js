@@ -7,3 +7,4 @@ export const TAB_ROUTES = {
 };
 
 export const NOTICE_ROUTE = '/notice';
+export const SPONSOR_ROUTE = '/sponsor';
