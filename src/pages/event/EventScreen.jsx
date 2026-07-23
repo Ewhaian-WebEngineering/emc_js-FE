@@ -5,6 +5,12 @@ import * as S from './style';
 import Header from '@/designsystem/components/header/FillRightHeader';
 import Tab from '@/designsystem/components/tab/Tab';
 import EventCard from '@/designsystem/components/card/event/EventCard';
+import {
+  DEFAULT_EVENT_TAB,
+  EVENT_DATA,
+  EVENT_TAB_DESCRIPTIONS,
+  EVENT_TABS,
+} from '@/constants/event';
 
 export default function EventScreen() {
   const navigate = useNavigate();
@@ -35,63 +41,12 @@ export default function EventScreen() {
   }, []);
 
   // 3. 탭 바 상태
-  const [activeTab, setActiveTab] = useState('pre');
+  const [activeTab, setActiveTab] = useState(DEFAULT_EVENT_TAB);
 
-  const tabs = [
-    { id: 'pre', label: '사전 이벤트' },
-    { id: 'onsite', label: '현장 이벤트' },
-    { id: 'post', label: '사후 이벤트' },
-  ];
+  const tabs = EVENT_TABS;
 
-  // 4. 이벤트 데이터 (향후 Admin Accordion과 맞춰야 함)
-  const rawEvents = {
-    pre: [
-      {
-        id: 1,
-        eventTitle: '이벤트 타이틀 영역 입니다',
-        startDate: '2026-01-01',
-        endDate: '2026-01-01',
-        status: 'ended',
-        thumbnail: '',
-      },
-      {
-        id: 2,
-        eventTitle: '이벤트 타이틀 영역 입니다',
-        startDate: '2026-01-01',
-        endDate: '2026-01-01',
-        status: 'ongoing',
-        thumbnail: '',
-      },
-    ],
-    onsite: [
-      {
-        id: 3,
-        eventTitle: '이벤트 타이틀 영역 입니다',
-        startDate: '2026-01-01',
-        endDate: '2026-01-01',
-        status: 'ongoing',
-        thumbnail: '',
-      },
-      {
-        id: 4,
-        eventTitle: '이벤트 타이틀 영역 입니다',
-        startDate: '2026-01-01',
-        endDate: '2026-01-01',
-        status: 'ongoing',
-        thumbnail: '',
-      },
-    ],
-    post: [
-      {
-        id: 5,
-        eventTitle: '이벤트 타이틀 영역 입니다',
-        startDate: '2026-01-01',
-        endDate: '2026-01-01',
-        status: 'upcoming',
-        thumbnail: '',
-      },
-    ],
-  };
+  // 4. 이벤트 데이터
+  const rawEvents = EVENT_DATA;
 
   const sortEvents = (events) => {
     return [...events].sort((a, b) => a.eventTitle.localeCompare(b.eventTitle));
@@ -105,14 +60,7 @@ export default function EventScreen() {
   const currentEvents = sortEvents(rawEvents[activeTab]);
   const currentTabLabel = tabs.find((tab) => tab.id === activeTab)?.label;
 
-  const tabDescriptions = {
-    pre: '사전 이벤트에 대한 소개글입니다. 사전 이벤트에 대한 소개글입니다. 사전 이벤트에 대한 소개글입니다.',
-    onsite:
-      '현장 이벤트에 대한 소개글입니다. 현장 이벤트에 대한 소개글입니다. 현장 이벤트에 대한 소개글입니다.',
-    post: '사후 이벤트에 대한 소개글입니다. 사후 이벤트에 대한 소개글입니다. 사후 이벤트에 대한 소개글입니다.',
-  };
-
-  const currentTabDescription = tabDescriptions[activeTab] || '';
+  const currentTabDescription = EVENT_TAB_DESCRIPTIONS[activeTab] || '';
 
   // 6. 화면 렌더링 영역
   return (
