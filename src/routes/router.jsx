@@ -6,8 +6,11 @@ import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
-import { TAB_ROUTES, NOTICE_ROUTE } from '../constants/routes';
+import { TAB_ROUTES, NOTICE_ROUTE, SEARCH_ROUTES } from '../constants/routes';
 import NoticeScreen from '../pages/notice/NoticeScreen';
+import SearchScreen from '@/pages/search/SearchScreen';
+import SearchResultScreen from '@/pages/search/SearchResultScreen';
+import { searchRoutes } from '@/pages/search/routes';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -31,6 +34,7 @@ export const router = createBrowserRouter([
         ],
       },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
+      ...searchRoutes.full,
     ],
   },
 ]);
