@@ -34,10 +34,10 @@ export default function SearchScreen() {
         onChange={setSearchValue}
         onDelete={() => setSearchValue('')}
         onSearch={() => {
-          if (!searchValue.trim()) return;
-          // TODO: 검색 API 호출
-          alert(`검색어: ${searchValue}`);
+          const trimmed = searchValue.trim();
+          if (!trimmed) return;
           setSearchValue('');
+          navigate(`/search/result?query=${encodeURIComponent(trimmed)}`);
         }}
       />
 
