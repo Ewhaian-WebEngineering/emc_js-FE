@@ -74,6 +74,11 @@ export default function SearchScreen() {
                     newSearches.splice(index, 1);
                     setRecentSearches(newSearches);
                   }}
+                  onClick={() => {
+                    navigate(
+                      `/search/result?query=${encodeURIComponent(search)}`,
+                    );
+                  }}
                 />
               ))
             )}

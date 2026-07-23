@@ -21,7 +21,13 @@ export default function Tag({
     <TagWrapper variant={variant} selected={selected} onClick={onClick}>
       {label}
       {onDelete && (
-        <CloseButton onClick={onDelete} style={{ cursor: 'pointer' }} />
+        <CloseButton
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          style={{ cursor: 'pointer' }}
+        />
       )}
     </TagWrapper>
   );
