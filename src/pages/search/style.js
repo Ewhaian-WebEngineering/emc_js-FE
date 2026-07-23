@@ -79,3 +79,14 @@ export const TrendingBoothGrid = styled.div`
   column-gap: ${measurement.spacing24};
   row-gap: ${measurement.spacing8};
 `;
+
+export const SearchBoothListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-inline: ${measurement.spacing16};
+  padding-bottom: 120px;
+`;
+
+export const BoothListCardWrapper = styled.div`
+  margin-block: ${measurement.spacing20};
+`;
