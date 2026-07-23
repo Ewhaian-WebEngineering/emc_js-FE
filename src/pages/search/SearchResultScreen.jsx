@@ -6,6 +6,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { DUMMY_BOOTHS } from './constants/dummyBooths';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 import SearchBoothList from './components/SearchBoothList';
+import { useGoBack } from '@/hooks/useGoBack';
 
 export default function SearchResultScreen() {
   const navigate = useNavigate();
@@ -22,9 +23,7 @@ export default function SearchResultScreen() {
   return (
     <>
       <SearchHeader
-        onBack={() => {
-          navigate(-1);
-        }}
+        onBack={useGoBack()}
         value={searchValue}
         onChange={setSearchValue}
         onDelete={() => {

@@ -16,6 +16,7 @@ import {
 import { SectionTitle } from '../home/style';
 import TrendingBoothList from './components/TrendingBoothList';
 import { TRENDING_BOOTHS } from './constants/trendingBooths';
+import { useGoBack } from '@/hooks/useGoBack';
 
 export default function SearchScreen() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function SearchScreen() {
   return (
     <>
       <SearchHeader
-        onBack={() => navigate(-1)}
+        onBack={useGoBack()}
         value={searchValue}
         onChange={setSearchValue}
         onDelete={() => setSearchValue('')}
