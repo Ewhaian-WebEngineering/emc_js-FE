@@ -6,8 +6,9 @@ import { TabMenu, TabMenuItem, TabIndicator } from './style';
  *
  * @param {Array<{label: string, content: ReactNode}>} tabs - 탭 목록
  * @param {'default'|'categoryFilter'} [variant="default"] - 탭 스타일
+ * @param {Function} [onChange] - 탭 변경 시 호출되는 콜백 함수
  */
-export default function Tab({ tabs, variant = 'default' }) {
+export default function Tab({ tabs, variant = 'default', onChange }) {
   const [activeTab, setActiveTab] = useState(0);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
   const tabMenuRef = useRef(null);
@@ -15,6 +16,7 @@ export default function Tab({ tabs, variant = 'default' }) {
 
   const selectTabHandler = (index) => {
     setActiveTab(index);
+    onChange?.(tabs[index]);
   };
 
   useLayoutEffect(() => {
@@ -56,7 +58,6 @@ export default function Tab({ tabs, variant = 'default' }) {
         ))}
         <TabIndicator left={indicator.left} width={indicator.width} />
       </TabMenu>
-      <div>{tabs[activeTab].content}</div>
     </>
   );
 }
