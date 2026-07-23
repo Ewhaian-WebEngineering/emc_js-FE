@@ -1,19 +1,19 @@
-export const DEFAULT_EVENT_TAB = 'pre';
+export const defaultEventTab = 'pre';
 
-export const EVENT_TABS = [
+export const eventTabs = [
   { id: 'pre', label: '사전 이벤트' },
   { id: 'onsite', label: '현장 이벤트' },
   { id: 'post', label: '사후 이벤트' },
 ];
 
-export const EVENT_TAB_DESCRIPTIONS = {
+export const eventTabDescriptions = {
   pre: '사전 이벤트에 대한 소개글입니다. 사전 이벤트에 대한 소개글입니다. 사전 이벤트에 대한 소개글입니다.',
   onsite:
     '현장 이벤트에 대한 소개글입니다. 현장 이벤트에 대한 소개글입니다. 현장 이벤트에 대한 소개글입니다.',
   post: '사후 이벤트에 대한 소개글입니다. 사후 이벤트에 대한 소개글입니다. 사후 이벤트에 대한 소개글입니다.',
 };
 
-export const EVENT_DATA = {
+export const eventData = {
   pre: [
     {
       id: 1,

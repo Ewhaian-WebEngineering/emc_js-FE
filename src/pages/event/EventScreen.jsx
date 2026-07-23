@@ -6,10 +6,10 @@ import Header from '@/designsystem/components/header/FillRightHeader';
 import Tab from '@/designsystem/components/tab/Tab';
 import EventCard from '@/designsystem/components/card/event/EventCard';
 import {
-  DEFAULT_EVENT_TAB,
-  EVENT_DATA,
-  EVENT_TAB_DESCRIPTIONS,
-  EVENT_TABS,
+  defaultEventTab,
+  eventData,
+  eventTabDescriptions,
+  eventTabs,
 } from '@/constants/event';
 
 export default function EventScreen() {
@@ -41,26 +41,21 @@ export default function EventScreen() {
   }, []);
 
   // 3. 탭 바 상태
-  const [activeTab, setActiveTab] = useState(DEFAULT_EVENT_TAB);
+  const [activeTab, setActiveTab] = useState(defaultEventTab);
 
-  const tabs = EVENT_TABS;
+  const tabs = eventTabs;
 
   // 4. 이벤트 데이터
-  const rawEvents = EVENT_DATA;
-
-  const sortEvents = (events) => {
-    return [...events].sort((a, b) => a.eventTitle.localeCompare(b.eventTitle));
-  }; // 가나다순 정렬
+  const rawEvents = eventData;
 
   const handleCardClick = (eventId) => {
     navigate(`/event/${eventId}`);
   }; // 카드 클릭 시 상세 페이지로 이동
 
   //5. 현재 탭에 따른 이벤트 데이터와 설명 가져오기
-  const currentEvents = sortEvents(rawEvents[activeTab]);
+  const currentEvents = rawEvents[activeTab];
   const currentTabLabel = tabs.find((tab) => tab.id === activeTab)?.label;
-
-  const currentTabDescription = EVENT_TAB_DESCRIPTIONS[activeTab] || '';
+  const currentTabDescription = eventTabDescriptions[activeTab] || '';
 
   // 6. 화면 렌더링 영역
   return (
