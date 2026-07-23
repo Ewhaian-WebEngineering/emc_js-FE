@@ -65,12 +65,7 @@ export default function EventScreen() {
   // 6. 화면 렌더링 영역
   return (
     <S.ScreenContainer>
-      <S.HeaderWrapper
-        isHeaderVisible={isHeaderVisible}
-        style={{
-          transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
-        }}
-      >
+      <S.HeaderWrapper isHeaderVisible={isHeaderVisible}>
         <Header title="이벤트" />
       </S.HeaderWrapper>
 
