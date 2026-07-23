@@ -10,7 +10,12 @@ import {
   SearchSectionHeader,
   SearchSectionTitle,
   RecentSearchList,
+  TrendingBoothSection,
+  UpdateTimeStamp,
 } from './style';
+import { SectionTitle } from '../home/style';
+import TrendingBoothList from './components/TrendingBoothList';
+import { TRENDING_BOOTHS } from './constants/trendingBooths';
 
 export default function SearchScreen() {
   const navigate = useNavigate();
@@ -35,6 +40,7 @@ export default function SearchScreen() {
           setSearchValue('');
         }}
       />
+
       <SearchContent>
         <RecentSearchSection>
           <SearchSectionHeader>
@@ -44,7 +50,7 @@ export default function SearchScreen() {
               size="sm"
               onClick={() => setRecentSearches([])}
             >
-              전체 삭제
+              모두 삭제
             </LinkButton>
           </SearchSectionHeader>
           <RecentSearchList>
@@ -70,6 +76,17 @@ export default function SearchScreen() {
             )}
           </RecentSearchList>
         </RecentSearchSection>
+
+        <TrendingBoothSection>
+          <SearchSectionHeader>
+            <SectionTitle>실시간 인기 부스</SectionTitle>
+            <UpdateTimeStamp>
+              {/* TODO: 실시간 업데이트 시간 표시 */}
+              오늘 HH:MM 기준
+            </UpdateTimeStamp>
+          </SearchSectionHeader>
+          <TrendingBoothList trendingBooths={TRENDING_BOOTHS} />
+        </TrendingBoothSection>
       </SearchContent>
     </>
   );
