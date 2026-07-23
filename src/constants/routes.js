@@ -5,3 +5,5 @@ export const TAB_ROUTES = {
   SCRAP: '/scrap',
   MY: '/my',
 };
+
+export const NOTICE_ROUTE = '/notice';
