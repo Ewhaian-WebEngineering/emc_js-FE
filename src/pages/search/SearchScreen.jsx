@@ -85,7 +85,15 @@ export default function SearchScreen() {
               오늘 HH:MM 기준
             </UpdateTimeStamp>
           </SearchSectionHeader>
-          <TrendingBoothList trendingBooths={TRENDING_BOOTHS} />
+          {TRENDING_BOOTHS.length === 0 ? (
+            <EmptyState
+              variant="sm"
+              description="인기 부스를 집계 중이에요. 잠시 후 다시 확인해주세요."
+              height={132}
+            />
+          ) : (
+            <TrendingBoothList trendingBooths={TRENDING_BOOTHS} />
+          )}
         </TrendingBoothSection>
       </SearchContent>
     </>
