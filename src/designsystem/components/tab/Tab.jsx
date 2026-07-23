@@ -18,17 +18,12 @@ export default function Tab({
   onTabChange,
 }) {
   const [internalActiveTab, setInternalActiveTab] = useState(0);
+
+export default function Tab({ tabs, variant = 'default' }) {
+  const [activeTab, setActiveTab] = useState(0);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
   const tabMenuRef = useRef(null);
   const tabRefs = useRef([]);
-
-  const isControlled = controlledActiveTab !== undefined;
-  const activeTabIndex = isControlled
-    ? tabs.findIndex(
-        (tab) => (tab.id ?? tab.value ?? tab.key) === controlledActiveTab,
-      )
-    : internalActiveTab;
-  const resolvedActiveTab = activeTabIndex >= 0 ? activeTabIndex : 0;
 
   const selectTabHandler = (index) => {
     if (!isControlled) {
@@ -41,11 +36,12 @@ export default function Tab({
 
     onChange?.(selectedTab);
     onTabChange?.(tabKey);
+    setActiveTab(index);
   };
 
   useLayoutEffect(() => {
     const updateIndicator = () => {
-      const activeTabNode = tabRefs.current[resolvedActiveTab];
+      const activeTabNode = tabRefs.current[activeTab];
       if (!activeTabNode) return;
 
       setIndicator({
@@ -64,7 +60,7 @@ export default function Tab({
       resizeObserver.disconnect();
       window.removeEventListener('resize', updateIndicator);
     };
-  }, [resolvedActiveTab, tabs]);
+  }, [activeTab, tabs]);
 
   return (
     <>
@@ -83,8 +79,20 @@ export default function Tab({
           ))}
           <TabIndicator left={indicator.left} width={indicator.width} />
         </TabList>
+        {tabs.map((tab, index) => (
+          <TabMenuItem
+            key={index}
+            ref={(node) => (tabRefs.current[index] = node)}
+            variant={variant}
+            isActive={activeTab === index}
+            onClick={() => selectTabHandler(index)}
+          >
+            {tab.label}
+          </TabMenuItem>
+        ))}
+        <TabIndicator left={indicator.left} width={indicator.width} />
       </TabMenu>
-      <div>{tabs[resolvedActiveTab]?.content}</div>
+      <div>{tabs[activeTab].content}</div>
     </>
   );
 }
