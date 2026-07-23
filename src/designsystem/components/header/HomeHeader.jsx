@@ -1,5 +1,5 @@
 import Header from './Header';
-import LogoText from '@/assets/svg/logo/ic_logo_text.svg?react';
+import LogoText from '@/assets/svg/logo/ic_logo_main.svg?react';
 import SearchIcon from '@/assets/svg/28px/ic_search.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 
