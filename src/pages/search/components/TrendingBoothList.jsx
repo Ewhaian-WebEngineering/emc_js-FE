@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
   TrendingBoothWrapper,
   Ranking,
@@ -6,6 +7,8 @@ import {
 } from '../style';
 
 export default function TrendingBoothList({ trendingBooths }) {
+  const navigate = useNavigate();
+
   return (
     <TrendingBoothGrid>
       {trendingBooths.slice(0, 10).map((booth, index) => (
@@ -13,15 +16,16 @@ export default function TrendingBoothList({ trendingBooths }) {
           key={booth.boothId}
           ranking={index + 1}
           boothName={booth.boothName}
+          onClick={() => navigate(`/booth/${booth.boothId}`)}
         />
       ))}
     </TrendingBoothGrid>
   );
 }
 
-function TrendingBooth({ ranking, boothName }) {
+function TrendingBooth({ ranking, boothName, onClick }) {
   return (
-    <TrendingBoothWrapper>
+    <TrendingBoothWrapper onClick={onClick}>
       <Ranking ranking={ranking}>{ranking}</Ranking>
       <BoothName>{boothName}</BoothName>
     </TrendingBoothWrapper>
