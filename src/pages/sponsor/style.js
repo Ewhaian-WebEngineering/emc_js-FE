@@ -13,15 +13,17 @@ export const SponsorContainer = styled.div`
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1;g
 `;
 
 export const IntroSection = styled.section`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  padding: ${measurement.spacing20} ${measurement.spacing24};
+  padding: ${measurement.spacing40} ${measurement.spacing24};
+  gap: ${measurement.spacing20};
   background: #fff7e6;
 `;
 
@@ -62,7 +64,7 @@ export const SponsorList = styled.div`
   flex-direction: column;
 
   padding: ${measurement.spacing20} ${measurement.spacing16}
-    ${measurement.spacing16} ${measurement.spacing16};
+    ${measurement.spacing72} ${measurement.spacing16};
 
   gap: ${measurement.spacing36};
 `;

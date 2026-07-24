@@ -7,4 +7,7 @@ export const TAB_ROUTES = {
 };
 
 export const NOTICE_ROUTE = '/notice';
-export const SPONSOR_ROUTE = '/sponsor';
+export const SPONSOR_ROUTES = {
+  LIST: '/sponsor',
+  DETAIL: (id) => `/sponsor/${id}`,
+};

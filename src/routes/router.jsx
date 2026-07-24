@@ -8,7 +8,7 @@ import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
-import { TAB_ROUTES, NOTICE_ROUTE, SPONSOR_ROUTE } from '../constants/routes';
+import { TAB_ROUTES, NOTICE_ROUTE, SPONSOR_ROUTES } from '../constants/routes';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -32,7 +32,8 @@ export const router = createBrowserRouter([
         ],
       },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
-      { path: SPONSOR_ROUTE, element: <SponsorScreen /> },
+      { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
+      { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
     ],
   },
 ]);

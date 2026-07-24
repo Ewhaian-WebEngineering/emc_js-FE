@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import GiftIcon from '@/assets/svg/event/ic_gift.svg?react';
 import SponsorCard from '@/designsystem/components/card/sponsor/SponsorCard';
+import { SPONSORS } from './constants/sponsor';
 
 import {
   SponsorContainer,
@@ -24,35 +25,8 @@ export default function SponsorScreen() {
     }
   };
 
-  const sponsors = [
-    {
-      sponsorName: '협찬사 이름 영역입니다. 협찬사 이름 영역입니다.',
-      sponsorDescription:
-        '협찬사 소개글 최대 2줄입니다. 협찬사 소개글 최대 2줄입니다.',
-      thumbnails: ['', '', ''],
-    },
-    {
-      sponsorName: '협찬사 이름 영역입니다. 협찬사 이름 영역입니다.',
-      sponsorDescription:
-        '협찬사 소개글 최대 2줄입니다. 협찬사 소개글 최대 2줄입니다.',
-      thumbnails: ['', '', ''],
-    },
-    {
-      sponsorName: '협찬사 이름 영역입니다. 협찬사 이름 영역입니다.',
-      sponsorDescription:
-        '협찬사 소개글 최대 2줄입니다. 협찬사 소개글 최대 2줄입니다.',
-      thumbnails: ['', '', ''],
-    },
-    {
-      sponsorName: '협찬사 이름 영역입니다. 협찬사 이름 영역입니다.',
-      sponsorDescription:
-        '협찬사 소개글 최대 2줄입니다. 협찬사 소개글 최대 2줄입니다.',
-      thumbnails: ['', '', ''],
-    },
-  ];
-
-  const handleSponsorClick = (index) => {
-    console.log(index);
+  const handleSponsorClick = () => {
+    // TODO: 협찬사 상세 페이지 이동 로직 추가
   };
 
   return (
@@ -69,21 +43,21 @@ export default function SponsorScreen() {
               <br />
               다양한 협찬사가 소개합니다.
             </IntroTitle>
-
-            <IntroDescription>
-              다양한 협찬품과 이벤트로 종손을 200% 즐겨보세요!
-            </IntroDescription>
           </IntroContent>
+
+          <IntroDescription>
+            다양한 협찬품과 이벤트로 종손을 200% 즐겨보세요!
+          </IntroDescription>
         </IntroSection>
 
         <SponsorList>
-          {sponsors.map((sponsor, index) => (
+          {SPONSORS.map((sponsor, index) => (
             <SponsorCard
               key={index}
               sponsorName={sponsor.sponsorName}
               sponsorDescription={sponsor.sponsorDescription}
               thumbnails={sponsor.thumbnails}
-              onClick={() => handleSponsorClick(index)}
+              onClick={handleSponsorClick}
             />
           ))}
         </SponsorList>
