@@ -30,6 +30,7 @@ export const AdminAuthTitle = styled.h2`
 
 export const AdminAuthFooter = styled.div`
   padding: ${measurement.spacing16};
+  padding-bottom: ${measurement.spacing6};
   margin-top: auto;
 
   & > button {
