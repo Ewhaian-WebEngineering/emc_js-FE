@@ -7,7 +7,8 @@ import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
-import { TAB_ROUTES, ADMIN_ROUTES } from '../constants/routes';
+import { TAB_ROUTES, NOTICE_ROUTE, ADMIN_ROUTES } from '../constants/routes';
+import NoticeScreen from '../pages/notice/NoticeScreen';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
         ],
       },
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
+      { path: NOTICE_ROUTE, element: <NoticeScreen /> },
     ],
   },
 ]);

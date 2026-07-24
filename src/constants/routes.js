@@ -9,3 +9,4 @@ export const TAB_ROUTES = {
 export const ADMIN_ROUTES = {
   CODE: '/admin',
 };
+export const NOTICE_ROUTE = '/notice';
