@@ -7,7 +7,6 @@ export const AdminAuthContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding-bottom: ${measurement.spacing6};
 `;
 
 export const AdminAuthContent = styled.div`
