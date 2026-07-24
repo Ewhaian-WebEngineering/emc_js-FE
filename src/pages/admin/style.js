@@ -37,7 +37,3 @@ export const AdminAuthFooter = styled.div`
     width: 100%;
   }
 `;
-
-export const AdminAuthHeaderTitle = styled.span`
-  ${typography.headline2Semibold};
-`;
