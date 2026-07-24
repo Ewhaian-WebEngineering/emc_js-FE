@@ -7,7 +7,6 @@ export const AdminAuthContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding-bottom: ${measurement.spacing6};
 `;
 
 export const AdminAuthContent = styled.div`
@@ -30,9 +29,9 @@ export const AdminAuthTitle = styled.h2`
 
 export const AdminAuthFooter = styled.div`
   padding: ${measurement.spacing16};
+  padding-bottom: ${measurement.spacing6};
   margin-top: auto;
 
-  width: 100%;
   & > button {
     width: 100%;
   }

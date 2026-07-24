@@ -184,27 +184,3 @@ export const TextAreaInput = styled.textarea`
     cursor: pointer;
   }
 `;
-
-export const CodeInputWrapper = styled.div`
-  & > div > div:last-child > span:last-child {
-    display: none;
-  }
-`;
-
-export const CodeInputIconGroup = styled.div`
-  position: absolute;
-  right: ${measurement.spacing12};
-  display: flex;
-  align-items: center;
-  gap: ${measurement.spacing12};
-`;
-
-export const CodeInputIconButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  padding: 0;
-  color: ${semantic.iconNormalNormal};
-`;
