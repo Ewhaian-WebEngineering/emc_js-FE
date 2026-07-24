@@ -7,7 +7,6 @@ import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
-import AdminDashboardScreen from '../pages/admin/AdminDashboardScreen';
 import { TAB_ROUTES, ADMIN_ROUTES } from '../constants/routes';
 
 /**
@@ -32,7 +31,6 @@ export const router = createBrowserRouter([
         ],
       },
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
-      { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
     ],
   },
 ]);
