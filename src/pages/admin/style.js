@@ -32,7 +32,6 @@ export const AdminAuthFooter = styled.div`
   padding: ${measurement.spacing16};
   margin-top: auto;
 
-  width: 100%;
   & > button {
     width: 100%;
   }
