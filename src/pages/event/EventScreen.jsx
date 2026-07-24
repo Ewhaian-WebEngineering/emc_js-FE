@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './style';
 
 import Header from '@/designsystem/components/header/FillRightHeader';
 import Tab from '@/designsystem/components/tab/Tab';
 import EventCard from '@/designsystem/components/card/event/EventCard';
+import Divider from '@/designsystem/components/divider/Divider';
 import {
   defaultEventTab,
   eventData,
@@ -17,82 +18,157 @@ export default function EventScreen() {
 
   // 1. 헤더 상태
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const lastScrollYRef = useRef(0);
 
-  // 2. 다이내믹 스크롤
+  const lastScrollYRef = useRef(0);
+  const sectionRefs = useRef({});
+  const tabMenuWrapperRef = useRef(null);
+  const isSyncOnlyRef = useRef(false);
+  const activeTabTrackerRef = useRef(defaultEventTab); //
+
+  // 2. 탭 바 상태
+  const [activeTab, setActiveTab] = useState(defaultEventTab);
+  const tabs = eventTabs;
+
+  // 3. 스크롤 처리
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY < 0) return; // 스크롤이 음수로 내려가는 경우는 무시 (예: iOS or safari)
+      if (currentScrollY < 0) return; // iOS Safari에서 overscroll 시 음수값이 들어오는 경우 방지
 
+      //3-1 헤더 숨김/보임 처리
       const last = lastScrollYRef.current;
-
       if (currentScrollY > last && currentScrollY > 50) {
         setIsHeaderVisible(false);
       } else if (currentScrollY < last) {
         setIsHeaderVisible(true);
       }
+      lastScrollYRef.current = currentScrollY;
 
-      lastScrollYRef.current = currentScrollY; // 마지막 스크롤 위치 업데이트
+      // 3-2 스크롤 스파이 처리
+      const scrollOffset = 140;
+      let visibleTab = tabs[0]?.id;
+
+      for (const tab of tabs) {
+        const section = sectionRefs.current[tab.id];
+        if (!section) continue;
+
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+
+        if (sectionTop - scrollOffset <= currentScrollY) {
+          visibleTab = tab.id;
+        }
+      }
+
+      //3-3 스크롤 스파이로 탭 변경 시, synthetic click 발생
+      if (activeTabTrackerRef.current !== visibleTab) {
+        activeTabTrackerRef.current = visibleTab;
+        setActiveTab(visibleTab);
+
+        const index = tabs.findIndex((tab) => tab.id === visibleTab);
+        const button =
+          tabMenuWrapperRef.current?.querySelectorAll('button')[index];
+        if (button) {
+          isSyncOnlyRef.current = true;
+          button.click();
+        }
+      }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true }); // 성능 최적화를 위해 passive 옵션 사용
-    return () => window.removeEventListener('scroll', handleScroll); // 컴포넌트 언마운트 시 이벤트 리스너 제거
-  }, []);
-
-  // 3. 탭 바 상태
-  const [activeTab, setActiveTab] = useState(defaultEventTab);
-
-  const tabs = eventTabs;
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [tabs]);
 
   // 4. 이벤트 데이터
   const rawEvents = eventData;
 
   const handleCardClick = (eventId) => {
     navigate(`/event/${eventId}`);
-  }; // 카드 클릭 시 상세 페이지로 이동
+  };
 
-  //5. 현재 탭에 따른 이벤트 데이터와 설명 가져오기
-  const currentEvents = rawEvents[activeTab];
-  const currentTabLabel = tabs.find((tab) => tab.id === activeTab)?.label;
-  const currentTabDescription = eventTabDescriptions[activeTab] || '';
+  const handleTabChange = (nextTab) => {
+    activeTabTrackerRef.current = nextTab;
+    setActiveTab(nextTab);
+    const targetSection = sectionRefs.current[nextTab];
+    if (!targetSection) return;
 
-  // 6. 화면 렌더링 영역
+    const offset = 140;
+    const top =
+      targetSection.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
+  const handleTabWrapperClick = (event) => {
+    const button = event.target.closest('button');
+    if (!button || !tabMenuWrapperRef.current) return;
+
+    const buttons = Array.from(
+      tabMenuWrapperRef.current.querySelectorAll('button'),
+    );
+    const index = buttons.indexOf(button);
+    const clickedTab = tabs[index];
+    if (!clickedTab) return;
+
+    if (isSyncOnlyRef.current) {
+      isSyncOnlyRef.current = false;
+      return;
+    }
+
+    handleTabChange(clickedTab.id);
+  };
+
+  // 5. 화면 렌더링 영역
   return (
     <S.ScreenContainer>
       <S.HeaderWrapper isHeaderVisible={isHeaderVisible}>
         <Header title="이벤트" />
       </S.HeaderWrapper>
 
-      <S.TabWrapper isHeaderVisible={isHeaderVisible}>
+      <S.TabWrapper
+        isHeaderVisible={isHeaderVisible}
+        ref={tabMenuWrapperRef}
+        onClick={handleTabWrapperClick}
+      >
         <Tab
           tabs={tabs}
           variant="default"
           activeTab={activeTab}
-          onTabChange={setActiveTab}
+          onTabChange={handleTabChange}
         />
       </S.TabWrapper>
 
       <S.ContentWrapper>
-        <S.EventSection>
-          <S.SectionHeader>
-            <S.SectionTitle>{currentTabLabel}</S.SectionTitle>
-            <S.TabDescription>{currentTabDescription}</S.TabDescription>
-          </S.SectionHeader>
-          <S.CardList>
-            {currentEvents.map((event) => (
-              <div key={event.id} onClick={() => handleCardClick(event.id)}>
-                <EventCard
-                  eventTitle={event.eventTitle}
-                  startDate={event.startDate}
-                  endDate={event.endDate}
-                  status={event.status}
-                  thumbnail={event.thumbnail}
-                />
-              </div>
-            ))}
-          </S.CardList>
-        </S.EventSection>
+        {tabs.map((tab, index) => (
+          <Fragment key={tab.id}>
+            <S.EventSection
+              ref={(element) => {
+                sectionRefs.current[tab.id] = element;
+              }}
+              style={{ scrollMarginTop: 140 }}
+            >
+              <S.SectionHeader>
+                <S.SectionTitle>{tab.label}</S.SectionTitle>
+                <S.TabDescription>
+                  {eventTabDescriptions[tab.id]}
+                </S.TabDescription>
+              </S.SectionHeader>
+              <S.CardList>
+                {rawEvents[tab.id].map((event) => (
+                  <div key={event.id} onClick={() => handleCardClick(event.id)}>
+                    <EventCard
+                      eventTitle={event.eventTitle}
+                      startDate={event.startDate}
+                      endDate={event.endDate}
+                      status={event.status}
+                      thumbnail={event.thumbnail}
+                    />
+                  </div>
+                ))}
+              </S.CardList>
+            </S.EventSection>
+
+            {index < tabs.length - 1 && <Divider size="lg" />}
+          </Fragment>
+        ))}
       </S.ContentWrapper>
     </S.ScreenContainer>
   );
