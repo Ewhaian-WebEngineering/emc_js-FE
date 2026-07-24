@@ -10,3 +10,7 @@ export const ADMIN_ROUTES = {
   CODE: '/admin',
 };
 export const NOTICE_ROUTE = '/notice';
+export const SPONSOR_ROUTES = {
+  LIST: '/sponsor',
+  DETAIL: (id) => `/sponsor/${id}`,
+};
