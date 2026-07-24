@@ -6,14 +6,9 @@ import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
-<<<<<<< HEAD
-import Admin from '../pages/admin/AdminCode';
-import { TAB_ROUTES } from '../constants/routes';
-=======
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
 import AdminDashboardScreen from '../pages/admin/AdminDashboardScreen';
 import { TAB_ROUTES, ADMIN_ROUTES } from '../constants/routes';
->>>>>>> 1df6d17 (feature(#91): 코드 리뷰 후 수정)
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -36,12 +31,8 @@ export const router = createBrowserRouter([
           { path: TAB_ROUTES.MY, element: <MyScreen /> },
         ],
       },
-<<<<<<< HEAD
-      { path: '/admin', element: <Admin /> },
-=======
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
->>>>>>> 1df6d17 (feature(#91): 코드 리뷰 후 수정)
     ],
   },
 ]);
