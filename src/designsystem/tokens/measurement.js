@@ -18,6 +18,7 @@ export const measurement = {
   spacing72: '72px',
   spacing88: '88px',
   spacing96: '96px',
+  spacing110: '110px',
 
   borderRadiusRectangle: '0px',
   borderRadiusSm: '2px',
