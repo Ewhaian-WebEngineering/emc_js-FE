@@ -13,7 +13,7 @@ export const SponsorContainer = styled.div`
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;g
+  flex: 1;
 `;
 
 export const IntroSection = styled.section`
