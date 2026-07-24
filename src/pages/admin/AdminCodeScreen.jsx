@@ -34,7 +34,12 @@ export default function AdminCodeScreen() {
 
   return (
     <AdminAuthContainer>
-      <Header onBack={() => {}} title="관리자 인증" />
+      <Header
+        onBack={() => {
+          // TODO: 마이페이지로 이동하는 라우트 추가
+        }}
+        title="관리자 인증"
+      />
 
       <AdminAuthContent>
         <AdminAuthTitle>
