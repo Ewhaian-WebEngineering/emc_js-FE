@@ -14,7 +14,7 @@ export const ScreenContainer = styled.div`
   background-color: ${semantic.fillNormalWhite};
 `;
 
-// 헤더 영역 (고정)
+// 헤더 영역
 export const HeaderWrapper = styled.div`
   position: fixed;
   top: 0;
@@ -29,7 +29,7 @@ export const HeaderWrapper = styled.div`
   );
 `;
 
-// 탭바 영역 (고정)
+// 탭바 영역
 export const TabWrapper = styled.div`
   position: sticky;
   top: ${({ isHeaderVisible }) => (isHeaderVisible ? '64px' : '0')};
@@ -58,33 +58,38 @@ export const ContentWrapper = styled.main`
 
 // 각 이벤트(사전/현장/사후) 섹션 영역
 export const EventSection = styled.section`
-  padding: 0 ${measurement.spacing16};
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing24};
+  padding: ${measurement.spacing20} ${measurement.spacing16};
+  background-color: ${semantic.fillNormalWhite};
+  width: 100%;
+  box-sizing: border-box;
 `;
 
-// 섹션 헤더 영역
+// 섹션 헤더 영역 (섹션 머리말 묶음)
 export const SectionHeader = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing4};
-  margin-bottom: ${measurement.spacing24};
   width: 100%;
 `;
 
-// 섹션 타이틀
+// 섹션 타이틀 (섹션 제목)
 export const SectionTitle = styled.h2`
   margin: 0;
   color: ${semantic.textNormalStrong};
   ${typography.headline2Semibold};
 `;
 
-// 섹션 설명 텍스트
+// 섹션 설명 텍스트 (섹션 설명글)
 export const TabDescription = styled.p`
   margin: 0;
   color: ${semantic.textNormalNormal};
   ${typography.body2Regular};
 `;
 
-// 카드 리스트 영역
+// 카드 리스트 영역 (카드 묶음)
 export const CardList = styled.div`
   display: flex;
   flex-direction: column;
