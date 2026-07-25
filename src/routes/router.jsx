@@ -8,7 +8,7 @@ import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
 import { TAB_ROUTES, NOTICE_ROUTE, ADMIN_ROUTES } from '../constants/routes';
 import NoticeScreen from '../pages/notice/NoticeScreen';
-import EventFormScreen from '../pages/admin/event/EventFormScreen';
+import EventForm from '../pages/admin/event/EventForm';
 /**
  * 앱 전체 라우트 트리입니다.
  * RootLayout(공통 좌우 여백/최대 너비)이 모든 화면을 감싸고,
@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
         ],
       },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
-      { path: ADMIN_ROUTES.EVENT, element: <EventFormScreen /> },
+      { path: ADMIN_ROUTES.EVENT, element: <EventForm /> },
     ],
   },
 ]);
