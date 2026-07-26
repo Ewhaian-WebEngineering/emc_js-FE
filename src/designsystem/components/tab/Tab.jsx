@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { TabMenu, TabMenuItem, TabIndicator } from './style';
+import { TabMenu, TabMenuItem, TabIndicator, TabList } from './style';
 
 /**
  * 탭 컴포넌트입니다.
@@ -54,18 +54,20 @@ export default function Tab({
   return (
     <>
       <TabMenu ref={tabMenuRef} variant={variant}>
-        {tabs.map((tab, index) => (
-          <TabMenuItem
-            key={index}
-            ref={(node) => (tabRefs.current[index] = node)}
-            variant={variant}
-            isActive={activeTab === index}
-            onClick={() => selectTabHandler(index)}
-          >
-            {tab.label}
-          </TabMenuItem>
-        ))}
-        <TabIndicator left={indicator.left} width={indicator.width} />
+        <TabList>
+          {tabs.map((tab, index) => (
+            <TabMenuItem
+              key={index}
+              ref={(node) => (tabRefs.current[index] = node)}
+              variant={variant}
+              isActive={activeTab === index}
+              onClick={() => selectTabHandler(index)}
+            >
+              {tab.label}
+            </TabMenuItem>
+          ))}
+          <TabIndicator left={indicator.left} width={indicator.width} />
+        </TabList>
       </TabMenu>
     </>
   );
