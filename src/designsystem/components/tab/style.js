@@ -4,9 +4,6 @@ import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
 
 export const TabMenu = styled.div`
-  position: relative;
-  display: flex;
-
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -16,11 +13,18 @@ export const TabMenu = styled.div`
   }
 
   background-color: ${semantic.fillNormalWhite};
+
+  padding-inline: ${({ variant }) =>
+    variant === 'categoryFilter' && `${measurement.spacing16}`};
+`;
+
+export const TabList = styled.div`
+  position: relative;
+  display: flex;
+  width: fit-content;
+
   border-bottom: ${measurement.borderWidthSm} solid
     ${semantic.borderNormalNormal};
-
-  margin-inline: ${({ variant }) =>
-    variant === 'categoryFilter' && `${measurement.spacing16}`};
 `;
 
 export const TabMenuItem = styled.button`
@@ -46,6 +50,7 @@ export const TabMenuItem = styled.button`
 
 export const TabIndicator = styled.div`
   position: absolute;
+  left: 0;
   bottom: 0;
   height: ${measurement.borderWidthMd};
 
