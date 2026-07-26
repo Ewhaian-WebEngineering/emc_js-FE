@@ -102,7 +102,7 @@ export const SelectTrigger = styled.div`
         ? semantic.textNormalAssistive
         : hasValue
           ? semantic.textNormalStrong
-          : semantic.textNormalAssistive};
+          : semantic.textNormalNormal};
 
     ${({ size }) =>
       size === 'md'
