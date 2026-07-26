@@ -22,6 +22,7 @@ export const TabList = styled.div`
   position: relative;
   display: flex;
   width: fit-content;
+  min-width: 100%;
 
   border-bottom: ${measurement.borderWidthSm} solid
     ${semantic.borderNormalNormal};
