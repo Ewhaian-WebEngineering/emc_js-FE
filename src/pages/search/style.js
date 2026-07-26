@@ -90,3 +90,20 @@ export const SearchBoothListWrapper = styled.div`
 export const BoothListCardWrapper = styled.div`
   margin-block: ${measurement.spacing20};
 `;
+
+export const SearchToolBarWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${measurement.spacing8} ${measurement.spacing16};
+`;
+
+export const BoothCount = styled.p`
+  ${typography.caption1Regular};
+  color: ${semantic.textNormalNormal};
+`;
+
+export const ToolBarActions = styled.div`
+  display: flex;
+  gap: 14px;
+`;
