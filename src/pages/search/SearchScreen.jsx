@@ -42,6 +42,7 @@ export default function SearchScreen() {
             replace: true,
           });
         }}
+        border
       />
 
       <SearchContent>
