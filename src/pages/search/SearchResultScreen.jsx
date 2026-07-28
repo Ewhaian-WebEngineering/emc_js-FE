@@ -1,15 +1,13 @@
-import { CATEGORY_TABS } from '@/constants/categoryTabs';
 import SearchHeader from '@/designsystem/components/header/SearchHeader';
-import Tab from '@/designsystem/components/tab/Tab';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { DUMMY_BOOTHS } from './constants/dummyBooths';
+import { DUMMY_BOOTHS } from '../../constants/dummyBooths';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
-import SearchBoothList from './components/SearchBoothList';
+import SearchBoothList from '../../components/BoothList';
 import { useGoBack } from '@/hooks/useGoBack';
 import { SEARCH_ROUTES } from '@/constants/routes';
-import SearchToolBar from './components/SearchToolBar';
-import { OPERATING_TIME_OPTIONS, SORT_OPTIONS } from '@/constants/filter';
+import { useBoothFilter } from '@/hooks/useBoothFilter';
+import BoothFilterBar from '../../components/BoothFilterBar';
 
 export default function SearchResultScreen() {
   const navigate = useNavigate();
@@ -17,14 +15,14 @@ export default function SearchResultScreen() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query') || '';
   const [searchValue, setSearchValue] = useState(query);
-  const [category, setCategory] = useState('all');
-  const [sortOption, setSortOption] = useState(SORT_OPTIONS[0]);
-  const [filterOption, setFilterOption] = useState(OPERATING_TIME_OPTIONS[0]);
-
-  const booths = useMemo(() => {
-    if (category === 'all') return DUMMY_BOOTHS;
-    return DUMMY_BOOTHS.filter((booth) => booth.badges.includes(category));
-  }, [category]);
+  const {
+    setCategory,
+    sortOption,
+    setSortOption,
+    filterOption,
+    setFilterOption,
+    booths,
+  } = useBoothFilter(DUMMY_BOOTHS);
 
   return (
     <>
@@ -42,13 +40,9 @@ export default function SearchResultScreen() {
         }}
         border
       />
-      <Tab
-        variant="categoryFilter"
-        tabs={CATEGORY_TABS}
-        onChange={(tab) => setCategory(tab.value)}
-      />
-      <SearchToolBar
+      <BoothFilterBar
         count={booths.length}
+        onCategoryChange={setCategory}
         sortValue={sortOption}
         onSortChange={setSortOption}
         filterValue={filterOption}

@@ -1,11 +1,11 @@
 import { Fragment } from 'react';
 import BoothListCard from '@/designsystem/components/card/booth/BoothListCard';
-import { BoothListCardWrapper, SearchBoothListWrapper } from '../style';
 import Divider from '@/designsystem/components/divider/Divider';
+import { BoothListCardWrapper, BoothListWrapper } from './style';
 
-export default function SearchBoothList({ booths }) {
+export default function BoothList({ booths }) {
   return (
-    <SearchBoothListWrapper>
+    <BoothListWrapper>
       {booths.map((booth, index) => (
         <Fragment key={booth.id}>
           <BoothListCardWrapper>
@@ -28,6 +28,6 @@ export default function SearchBoothList({ booths }) {
           {index < booths.length - 1 && <Divider size="sm" />}
         </Fragment>
       ))}
-    </SearchBoothListWrapper>
+    </BoothListWrapper>
   );
 }

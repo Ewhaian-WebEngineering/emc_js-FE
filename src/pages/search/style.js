@@ -79,31 +79,3 @@ export const TrendingBoothGrid = styled.div`
   column-gap: ${measurement.spacing24};
   row-gap: ${measurement.spacing8};
 `;
-
-export const SearchBoothListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-inline: ${measurement.spacing16};
-  padding-bottom: 120px;
-`;
-
-export const BoothListCardWrapper = styled.div`
-  margin-block: ${measurement.spacing20};
-`;
-
-export const SearchToolBarWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: ${measurement.spacing8} ${measurement.spacing16};
-`;
-
-export const BoothCount = styled.p`
-  ${typography.caption1Regular};
-  color: ${semantic.textNormalNormal};
-`;
-
-export const ToolBarActions = styled.div`
-  display: flex;
-  gap: 14px;
-`;
