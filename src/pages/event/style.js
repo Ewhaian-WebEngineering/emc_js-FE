@@ -3,7 +3,6 @@ import { semantic } from '../../designsystem/tokens/semantic.js';
 import { measurement } from '../../designsystem/tokens/measurement.js';
 import { typography } from '../../designsystem/tokens/typography.js';
 
-// 전체 화면 컨테이너
 export const ScreenContainer = styled.div`
   width: 100%;
   max-width: 100%;
@@ -14,7 +13,6 @@ export const ScreenContainer = styled.div`
   background-color: ${semantic.fillNormalWhite};
 `;
 
-// 헤더 영역
 export const HeaderWrapper = styled.div`
   position: fixed;
   top: 0;
@@ -29,7 +27,6 @@ export const HeaderWrapper = styled.div`
   );
 `;
 
-// 탭바 영역
 export const TabWrapper = styled.div`
   position: sticky;
   top: ${({ isHeaderVisible }) => (isHeaderVisible ? '64px' : '0')};
@@ -40,7 +37,6 @@ export const TabWrapper = styled.div`
   border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
 `;
 
-// 콘텐츠 영역
 export const ContentWrapper = styled.main`
   padding-top: 84px;
   padding-bottom: 50px;
@@ -56,7 +52,6 @@ export const ContentWrapper = styled.main`
   );
 `;
 
-// 각 이벤트(사전/현장/사후) 섹션 영역
 export const EventSection = styled.section`
   display: flex;
   flex-direction: column;
@@ -67,7 +62,6 @@ export const EventSection = styled.section`
   box-sizing: border-box;
 `;
 
-// 섹션 헤더 영역 (섹션 머리말 묶음)
 export const SectionHeader = styled.div`
   display: flex;
   flex-direction: column;
@@ -75,21 +69,18 @@ export const SectionHeader = styled.div`
   width: 100%;
 `;
 
-// 섹션 타이틀 (섹션 제목)
 export const SectionTitle = styled.h2`
   margin: 0;
   color: ${semantic.textNormalStrong};
   ${typography.headline2Semibold};
 `;
 
-// 섹션 설명 텍스트 (섹션 설명글)
 export const TabDescription = styled.p`
   margin: 0;
   color: ${semantic.textNormalNormal};
   ${typography.body2Regular};
 `;
 
-// 카드 리스트 영역 (카드 묶음)
 export const CardList = styled.div`
   display: flex;
   flex-direction: column;

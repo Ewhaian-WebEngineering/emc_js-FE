@@ -11,31 +11,26 @@ import {
   eventData,
   eventTabDescriptions,
   eventTabs,
-} from '@/constants/event';
+} from '@/pages/event/event';
 
 export default function EventScreen() {
   const navigate = useNavigate();
 
-  // 1. 헤더 상태
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
   const lastScrollYRef = useRef(0);
   const sectionRefs = useRef({});
   const tabMenuWrapperRef = useRef(null);
   const isSyncOnlyRef = useRef(false);
-  const activeTabTrackerRef = useRef(defaultEventTab); //
+  const activeTabTrackerRef = useRef(defaultEventTab);
 
-  // 2. 탭 바 상태
   const [activeTab, setActiveTab] = useState(defaultEventTab);
   const tabs = eventTabs;
 
-  // 3. 스크롤 처리
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY < 0) return; // iOS Safari에서 overscroll 시 음수값이 들어오는 경우 방지
-
-      //3-1 헤더 숨김/보임 처리
+      if (currentScrollY < 0) return;
       const last = lastScrollYRef.current;
       if (currentScrollY > last && currentScrollY > 50) {
         setIsHeaderVisible(false);
@@ -44,7 +39,6 @@ export default function EventScreen() {
       }
       lastScrollYRef.current = currentScrollY;
 
-      // 3-2 스크롤 스파이 처리
       const scrollOffset = 140;
       let visibleTab = tabs[0]?.id;
 
@@ -59,7 +53,6 @@ export default function EventScreen() {
         }
       }
 
-      //3-3 스크롤 스파이로 탭 변경 시, synthetic click 발생
       if (activeTabTrackerRef.current !== visibleTab) {
         activeTabTrackerRef.current = visibleTab;
         setActiveTab(visibleTab);
@@ -78,7 +71,6 @@ export default function EventScreen() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [tabs]);
 
-  // 4. 이벤트 데이터
   const rawEvents = eventData;
 
   const handleCardClick = (eventId) => {
@@ -116,7 +108,6 @@ export default function EventScreen() {
     handleTabChange(clickedTab.id);
   };
 
-  // 5. 화면 렌더링 영역
   return (
     <S.ScreenContainer>
       <S.HeaderWrapper isHeaderVisible={isHeaderVisible}>
