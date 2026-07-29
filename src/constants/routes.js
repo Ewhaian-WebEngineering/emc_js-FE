@@ -6,6 +6,8 @@ export const TAB_ROUTES = {
   MY: '/my',
 };
 
+export const BOOTH_ROUTE = (boothId) => `/booth/${boothId}`;
+
 export const SEARCH_ROUTES = {
   SEARCH: '/search',
   SEARCH_RESULT: '/search/result',
