@@ -96,3 +96,13 @@ export const NoticeContent = styled.p`
   overflow: hidden;
   white-space: nowrap;
 `;
+
+export const TabWrapper = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 1;
+`;
+
+export const TabSection = styled.section`
+  padding-inline: ${measurement.spacing16};
+`;

@@ -18,51 +18,58 @@ export const DUMMY_BOOTH_DETAIL = {
   allergyInfo: '밀가루, 설탕, 우유, 계란, 견과류',
   productGroups: [
     {
+      id: 1,
       name: '제품 그룹 1',
       description:
         '제품 그룹 1 설명입니다. 제품 그룹 1 설명입니다. 제품 그룹 1 설명입니다.',
       products: [
         {
+          id: 1,
           name: '제품 1',
           description:
             '제품 1 설명입니다. 제품 1 설명입니다. 제품 1 설명입니다.',
           price: 10000,
-          image: '',
+          thumbnail: '',
         },
         {
+          id: 2,
           name: '제품 2',
           description:
             '제품 2 설명입니다. 제품 2 설명입니다. 제품 2 설명입니다.',
           price: 20000,
-          image: '',
+          thumbnail: '',
         },
       ],
     },
     {
+      id: 2,
       name: '제품 그룹 2',
       description:
         '제품 그룹 2 설명입니다. 제품 그룹 2 설명입니다. 제품 그룹 2 설명입니다.',
       products: [
         {
+          id: 3,
           name: '제품 3',
           description:
             '제품 3 설명입니다. 제품 3 설명입니다. 제품 3 설명입니다.',
           price: 30000,
-          image: '',
+          thumbnail: '',
         },
         {
+          id: 4,
           name: '제품 4',
           description:
             '제품 4 설명입니다. 제품 4 설명입니다. 제품 4 설명입니다.',
           price: 40000,
-          image: '',
+          thumbnail: '',
         },
         {
+          id: 5,
           name: '제품 5',
           description:
             '제품 5 설명입니다. 제품 5 설명입니다. 제품 5 설명입니다.',
           price: 50000,
-          image: '',
+          thumbnail: '',
         },
       ],
     },

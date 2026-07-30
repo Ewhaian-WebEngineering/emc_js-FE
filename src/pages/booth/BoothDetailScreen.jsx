@@ -6,10 +6,23 @@ import NoticeIcon from '@/assets/svg/16px/ic_announce.svg?react';
 import { useGoBack } from '@/hooks/useGoBack';
 import { useParams } from 'react-router-dom';
 import { DUMMY_BOOTH_DETAIL } from './constants/dummyBoothDetail';
-import { Badges, BoothMarks, RepresentativeImageWrapper } from './style';
+import {
+  Badges,
+  BoothMarks,
+  RepresentativeImageWrapper,
+  TabSection,
+  TabWrapper,
+} from './style';
 import { MARK_ICON_LG } from '@/constants/marks';
 import { semantic } from '@/designsystem/tokens/semantic';
 import Badge from '@/designsystem/components/badge/Badge';
+import { OPERATING_TIME_OPTIONS } from '@/constants/filter';
+import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
+import Divider from '@/designsystem/components/divider/Divider';
+import AccordionDescription from '@/designsystem/components/accordion/AccordionDescription';
+import { useEffect, useRef, useState } from 'react';
+import Tab from '@/designsystem/components/tab/Tab';
+import { BOOTH_DETAIL_TABS } from './constants/tabs';
 import {
   BoothInfo,
   BoothInfoHeader,
@@ -21,11 +34,7 @@ import {
   NoticeCard,
   NoticeContent,
 } from './style';
-import { OPERATING_TIME_OPTIONS } from '@/constants/filter';
-import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
-import Divider from '@/designsystem/components/divider/Divider';
-import AccordionDescription from '@/designsystem/components/accordion/AccordionDescription';
-import { useState } from 'react';
+import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
 
 export default function BoothDetailScreen() {
   const { boothId } = useParams();
@@ -34,6 +43,23 @@ export default function BoothDetailScreen() {
     useState(false);
   const [allergyDescriptionExpanded, setAllergyDescriptionExpanded] =
     useState(false);
+
+  const tabBarRef = useRef(null);
+  const [tabBarHeight, setTabBarHeight] = useState(0);
+
+  useEffect(() => {
+    if (!tabBarRef.current) return;
+    const update = () => setTabBarHeight(tabBarRef.current.offsetHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(tabBarRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const { activeTab, scrollToTab, registerSection } = useScrollSpyTabs(
+    BOOTH_DETAIL_TABS,
+    tabBarHeight,
+  );
 
   // TODO: 실제 데이터로 교체
   const booth = DUMMY_BOOTH_DETAIL;
@@ -123,6 +149,24 @@ export default function BoothDetailScreen() {
       )}
 
       <Divider size="lg" />
+
+      <TabWrapper ref={tabBarRef}>
+        <Tab
+          tabs={BOOTH_DETAIL_TABS}
+          activeTab={BOOTH_DETAIL_TABS.findIndex((tab) => tab.id === activeTab)}
+          onChange={(tab) => scrollToTab(tab.id)}
+        />
+      </TabWrapper>
+
+      {BOOTH_DETAIL_TABS.map(({ id, render }) => (
+        <TabSection
+          key={id}
+          ref={registerSection(id)}
+          style={{ scrollMarginTop: tabBarHeight }}
+        >
+          {render(booth)}
+        </TabSection>
+      ))}
     </>
   );
 }
