@@ -111,7 +111,7 @@ export default function BoothDetailScreen() {
 
       <Divider size="lg" />
 
-      {booth.allergyInfo && (
+      {booth.tags.includes('food') && booth.allergyInfo && (
         <AccordionDescription
           title="원재료 / 알레르기 정보"
           description={booth.allergyInfo}
