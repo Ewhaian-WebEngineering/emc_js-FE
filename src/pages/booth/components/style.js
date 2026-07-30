@@ -8,7 +8,9 @@ export const NoticeTabContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing16};
-  padding: ${measurement.spacing24} 0 ${measurement.spacing72} 0;
+  margin-inline: -${measurement.spacing16};
+  padding: ${measurement.spacing24} ${measurement.spacing16}
+    ${measurement.spacing72} ${measurement.spacing16};
   background-color: ${semantic.fillNormalStrong};
 `;
 

@@ -82,11 +82,9 @@ export function useScrollSpyTabs(tabs, offset = 0) {
       const top = el.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
 
-      if (!('onscrollend' in window)) {
-        fallbackTimerRef.current = setTimeout(() => {
-          isProgrammaticScrollRef.current = false;
-        }, 500);
-      }
+      fallbackTimerRef.current = setTimeout(() => {
+        isProgrammaticScrollRef.current = false;
+      }, 500);
     },
     [offset],
   );

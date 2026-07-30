@@ -190,6 +190,7 @@ export default function BoothDetailScreen() {
           ))}
         </RecommendBoothList>
       </RecommendBooths>
+      <div style={{ height: '1000px' }} />
     </>
   );
 }
