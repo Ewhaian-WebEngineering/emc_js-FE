@@ -106,3 +106,29 @@ export const TabWrapper = styled.div`
 export const TabSection = styled.section`
   padding-inline: ${measurement.spacing16};
 `;
+
+export const RecommendBooths = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing16};
+  padding: ${measurement.spacing24} ${measurement.spacing16}
+    ${measurement.spacing128} ${measurement.spacing16};
+`;
+
+export const RecommendBoothTitle = styled.h2`
+  ${typography.headline1Semibold};
+  color: ${semantic.textNormalStrong};
+  text-align: left;
+`;
+
+export const RecommendBoothList = styled.div`
+  display: flex;
+  gap: ${measurement.spacing12};
+  margin-inline: -${measurement.spacing16};
+  padding-inline: ${measurement.spacing16};
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;

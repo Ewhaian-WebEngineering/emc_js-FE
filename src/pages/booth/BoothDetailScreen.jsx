@@ -9,6 +9,9 @@ import { DUMMY_BOOTH_DETAIL } from './constants/dummyBoothDetail';
 import {
   Badges,
   BoothMarks,
+  RecommendBoothList,
+  RecommendBooths,
+  RecommendBoothTitle,
   RepresentativeImageWrapper,
   TabSection,
   TabWrapper,
@@ -35,6 +38,7 @@ import {
   NoticeContent,
 } from './style';
 import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
+import BoothDetailCard from '@/designsystem/components/card/booth/BoothDetailCard';
 
 export default function BoothDetailScreen() {
   const { boothId } = useParams();
@@ -167,6 +171,25 @@ export default function BoothDetailScreen() {
           {render(booth)}
         </TabSection>
       ))}
+
+      <Divider size="lg" />
+
+      <RecommendBooths>
+        <RecommendBoothTitle>이 부스는 어때요?</RecommendBoothTitle>
+        <RecommendBoothList>
+          {booth.recommendations?.map((recommendation) => (
+            <BoothDetailCard
+              key={recommendation.id}
+              boothNumber={recommendation.boothNumber}
+              boothName={recommendation.boothName}
+              thumbnail={recommendation.thumbnail}
+              marks={recommendation.marks}
+              badges={recommendation.tags}
+              onClick={() => {}}
+            />
+          ))}
+        </RecommendBoothList>
+      </RecommendBooths>
     </>
   );
 }
