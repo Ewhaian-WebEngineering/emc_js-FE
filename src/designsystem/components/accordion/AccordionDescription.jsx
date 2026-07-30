@@ -60,7 +60,7 @@ export default function AccordionDescription({
 
   return (
     <AccordionDescriptionWrapper>
-      <AccordionDescriptionTitle>{title}</AccordionDescriptionTitle>
+      {title && <AccordionDescriptionTitle>{title}</AccordionDescriptionTitle>}
       <motion.div
         initial={false}
         animate={{ height: expanded ? fullHeight : COLLAPSED_HEIGHT }}
