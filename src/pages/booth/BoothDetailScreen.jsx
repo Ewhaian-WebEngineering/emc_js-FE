@@ -24,10 +24,16 @@ import {
 import { OPERATING_TIME_OPTIONS } from '@/constants/filter';
 import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
 import Divider from '@/designsystem/components/divider/Divider';
+import AccordionDescription from '@/designsystem/components/accordion/AccordionDescription';
+import { useState } from 'react';
 
 export default function BoothDetailScreen() {
   const { boothId } = useParams();
   const handleBack = useGoBack();
+  const [boothDescriptionExpanded, setBoothDescriptionExpanded] =
+    useState(false);
+  const [allergyDescriptionExpanded, setAllergyDescriptionExpanded] =
+    useState(false);
 
   // TODO: 실제 데이터로 교체
   const booth = DUMMY_BOOTH_DETAIL;
@@ -48,6 +54,7 @@ export default function BoothDetailScreen() {
           })}
         </BoothMarks>
       </RepresentativeImageWrapper>
+
       <BoothInfo>
         <BoothInfoHeader>
           <BoothName>{booth.boothName}</BoothName>
@@ -93,6 +100,28 @@ export default function BoothDetailScreen() {
           </NoticeContent>
         </NoticeCard>
       </BoothInfo>
+
+      <Divider size="lg" />
+
+      <AccordionDescription
+        description={booth.description}
+        expanded={boothDescriptionExpanded}
+        onToggle={() => setBoothDescriptionExpanded(!boothDescriptionExpanded)}
+      />
+
+      <Divider size="lg" />
+
+      {booth.allergyInfo && (
+        <AccordionDescription
+          title="원재료 / 알레르기 정보"
+          description={booth.allergyInfo}
+          expanded={allergyDescriptionExpanded}
+          onToggle={() =>
+            setAllergyDescriptionExpanded(!allergyDescriptionExpanded)
+          }
+        />
+      )}
+
       <Divider size="lg" />
     </>
   );
