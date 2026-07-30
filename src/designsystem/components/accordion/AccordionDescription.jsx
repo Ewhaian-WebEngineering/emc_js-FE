@@ -10,6 +10,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const COLLAPSED_HEIGHT = 38; // caption2Regular line-height * 2
 const ANIMATION_DURATION = 0.25;
+const OVERFLOW_THRESHOLD = 1;
 
 /**
  * 설명 영역이 있는 아코디언 컴포넌트입니다.
@@ -55,6 +56,8 @@ export default function AccordionDescription({
     }
   }, [expanded]);
 
+  const isOverflowing = fullHeight > COLLAPSED_HEIGHT + OVERFLOW_THRESHOLD;
+
   return (
     <AccordionDescriptionWrapper>
       <AccordionDescriptionTitle>{title}</AccordionDescriptionTitle>
@@ -85,10 +88,12 @@ export default function AccordionDescription({
         {description}
       </AccordionDescriptionText>
 
-      <AccordionDescriptionButton onClick={onToggle} expanded={expanded}>
-        {expanded ? '접기' : '더보기'}
-        <ArrowDownIcon />
-      </AccordionDescriptionButton>
+      {isOverflowing && (
+        <AccordionDescriptionButton onClick={onToggle} expanded={expanded}>
+          {expanded ? '접기' : '더보기'}
+          <ArrowDownIcon />
+        </AccordionDescriptionButton>
+      )}
     </AccordionDescriptionWrapper>
   );
 }
