@@ -127,8 +127,4 @@ export const RecommendBoothList = styled.div`
   margin-inline: -${measurement.spacing16};
   padding-inline: ${measurement.spacing16};
   overflow-x: auto;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;

@@ -6,11 +6,6 @@ import { typography } from '../../tokens/typography';
 export const TabMenu = styled.div`
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   background-color: ${semantic.fillNormalWhite};
 
