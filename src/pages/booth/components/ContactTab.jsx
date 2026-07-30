@@ -19,7 +19,11 @@ export default function ContactTab({ contactUrl }) {
           창구를 이용해 주세요.
         </p>
       </ContactTabTextWrapper>
-      <ContactButton>
+      <ContactButton
+        onClick={() => {
+          if (contactUrl) window.open(contactUrl, '_self');
+        }}
+      >
         <InquiryIconWrapper>
           <InquiryIcon color={semantic.secondaryYellowDefault} />
         </InquiryIconWrapper>
