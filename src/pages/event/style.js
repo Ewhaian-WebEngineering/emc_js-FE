@@ -18,7 +18,7 @@ export const HeaderWrapper = styled.div`
   top: 0;
   width: 100%;
   z-index: 10;
-  height: 64px;
+  height: ${measurement.spacing64};
   max-width: 100%;
   background-color: ${semantic.fillNormalWhite};
   transition: transform 0.3s ease-in-out;
@@ -38,8 +38,8 @@ export const TabWrapper = styled.div`
 `;
 
 export const ContentWrapper = styled.main`
-  padding-top: 84px;
-  padding-bottom: 50px;
+  padding-top: ${({ isHeaderVisible }) => (isHeaderVisible ? '0' : '64px')};
+  padding-bottom: ${measurement.spacing56};
   display: flex;
   flex-direction: column;
   width: 100%;
