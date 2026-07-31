@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Fragment } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './style';
 
@@ -6,6 +6,7 @@ import Header from '@/designsystem/components/header/FillRightHeader';
 import Tab from '@/designsystem/components/tab/Tab';
 import EventCard from '@/designsystem/components/card/event/EventCard';
 import Divider from '@/designsystem/components/divider/Divider';
+import { EVENT_ROUTES } from '@/constants/routes';
 import {
   defaultEventTab,
   eventData,
@@ -13,137 +14,135 @@ import {
   eventTabs,
 } from '@/pages/event/event';
 
+const headerHideScrollThreshold = 50;
+const tabScrollResetTimeoutMs = 2000;
+
 export default function EventScreen() {
   const navigate = useNavigate();
 
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [activeTab, setActiveTab] = useState(defaultEventTab);
 
   const lastScrollYRef = useRef(0);
   const sectionRefs = useRef({});
-  const tabMenuWrapperRef = useRef(null);
-  const isSyncOnlyRef = useRef(false);
-  const activeTabTrackerRef = useRef(defaultEventTab);
+  const sectionTopsRef = useRef({});
+  const stickyHeaderRef = useRef(null);
+  const tabWrapperRef = useRef(null);
+  const stickyOffsetRef = useRef(0);
+  const isTabScrollingRef = useRef(false);
 
-  const [activeTab, setActiveTab] = useState(defaultEventTab);
-  const tabs = eventTabs;
+  useLayoutEffect(() => {
+    const updateSectionTops = () => {
+      const tops = {};
+      for (const tab of eventTabs) {
+        const section = sectionRefs.current[tab.id];
+        if (section) {
+          tops[tab.id] = section.getBoundingClientRect().top + window.scrollY;
+        }
+      }
+      sectionTopsRef.current = tops;
+    };
+
+    updateSectionTops();
+    window.addEventListener('resize', updateSectionTops);
+    return () => window.removeEventListener('resize', updateSectionTops);
+  }, [eventTabs]);
+
+  useLayoutEffect(() => {
+    const blockHeight = stickyHeaderRef.current?.offsetHeight ?? 0;
+    const tabHeight = tabWrapperRef.current?.offsetHeight ?? 0;
+    stickyOffsetRef.current = isHeaderVisible ? blockHeight : tabHeight;
+  }, [isHeaderVisible]);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY < 0) return;
+      if (isTabScrollingRef.current) return;
       const last = lastScrollYRef.current;
-      if (currentScrollY > last && currentScrollY > 50) {
+      if (currentScrollY > last && currentScrollY > headerHideScrollThreshold) {
         setIsHeaderVisible(false);
       } else if (currentScrollY < last) {
         setIsHeaderVisible(true);
       }
       lastScrollYRef.current = currentScrollY;
 
-      const scrollOffset = 140;
-      let visibleTab = tabs[0]?.id;
+      let visibleTab = eventTabs[0]?.id;
+      const stickyOffset = stickyOffsetRef.current;
 
-      for (const tab of tabs) {
-        const section = sectionRefs.current[tab.id];
-        if (!section) continue;
-
-        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-
-        if (sectionTop - scrollOffset <= currentScrollY) {
+      for (const tab of eventTabs) {
+        const sectionTop = sectionTopsRef.current[tab.id];
+        if (sectionTop === undefined) continue;
+        if (sectionTop - stickyOffset <= currentScrollY) {
           visibleTab = tab.id;
         }
       }
 
-      if (activeTabTrackerRef.current !== visibleTab) {
-        activeTabTrackerRef.current = visibleTab;
-        setActiveTab(visibleTab);
-
-        const index = tabs.findIndex((tab) => tab.id === visibleTab);
-        const button =
-          tabMenuWrapperRef.current?.querySelectorAll('button')[index];
-        if (button) {
-          isSyncOnlyRef.current = true;
-          button.click();
-        }
-      }
+      setActiveTab(visibleTab);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [tabs]);
-
-  const rawEvents = eventData;
+  }, [eventTabs]);
 
   const handleCardClick = (eventId) => {
-    navigate(`/event/${eventId}`);
+    navigate(EVENT_ROUTES.DETAIL(eventId));
   };
 
-  const handleTabChange = (nextTab) => {
-    activeTabTrackerRef.current = nextTab;
-    setActiveTab(nextTab);
-    const targetSection = sectionRefs.current[nextTab];
-    if (!targetSection) return;
+  const handleTabChange = (newTabId) => {
+    setIsHeaderVisible(false);
+    setActiveTab(newTabId);
 
-    const offset = 140;
-    const top =
-      targetSection.getBoundingClientRect().top + window.scrollY - offset;
+    if (sectionTopsRef.current[newTabId] === undefined) return;
+
+    const tabHeight = tabWrapperRef.current?.offsetHeight ?? 0;
+    const top = sectionTopsRef.current[newTabId] - tabHeight;
+
+    isTabScrollingRef.current = true;
     window.scrollTo({ top, behavior: 'smooth' });
-  };
 
-  const handleTabWrapperClick = (event) => {
-    const button = event.target.closest('button');
-    if (!button || !tabMenuWrapperRef.current) return;
-
-    const buttons = Array.from(
-      tabMenuWrapperRef.current.querySelectorAll('button'),
-    );
-    const index = buttons.indexOf(button);
-    const clickedTab = tabs[index];
-    if (!clickedTab) return;
-
-    if (isSyncOnlyRef.current) {
-      isSyncOnlyRef.current = false;
-      return;
+    const resetTabScrolling = () => {
+      isTabScrollingRef.current = false;
+      lastScrollYRef.current = window.scrollY;
+    };
+    if ('onscrollend' in window) {
+      window.addEventListener('scrollend', resetTabScrolling, { once: true });
     }
-
-    handleTabChange(clickedTab.id);
+    window.setTimeout(resetTabScrolling, tabScrollResetTimeoutMs);
   };
+
+  const activeTabIndex = eventTabs.findIndex((tab) => tab.id === activeTab);
 
   return (
     <S.ScreenContainer>
-      <S.HeaderWrapper isHeaderVisible={isHeaderVisible}>
-        <Header title="이벤트" />
-      </S.HeaderWrapper>
-
-      <S.TabWrapper
-        isHeaderVisible={isHeaderVisible}
-        ref={tabMenuWrapperRef}
-        onClick={handleTabWrapperClick}
-      >
-        <Tab
-          tabs={tabs}
-          variant="default"
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-        />
-      </S.TabWrapper>
+      <S.StickyHeader ref={stickyHeaderRef} isHeaderVisible={isHeaderVisible}>
+        <Header title="이벤트" border />
+        <div ref={tabWrapperRef}>
+          <Tab
+            tabs={eventTabs}
+            variant="default"
+            activeTab={activeTabIndex}
+            onChange={(tab) => handleTabChange(tab.id)}
+          />
+        </div>
+      </S.StickyHeader>
 
       <S.ContentWrapper>
-        {tabs.map((tab, index) => (
+        {eventTabs.map((tab, index) => (
           <Fragment key={tab.id}>
             <S.EventSection
               ref={(element) => {
                 sectionRefs.current[tab.id] = element;
               }}
-              style={{ scrollMarginTop: 140 }}
             >
               <S.SectionHeader>
                 <S.SectionTitle>{tab.label}</S.SectionTitle>
-                <S.TabDescription>
+                <S.SectionDescription>
                   {eventTabDescriptions[tab.id]}
-                </S.TabDescription>
+                </S.SectionDescription>
               </S.SectionHeader>
               <S.CardList>
-                {rawEvents[tab.id].map((event) => (
+                {(eventData[tab.id] ?? []).map((event) => (
                   <div key={event.id} onClick={() => handleCardClick(event.id)}>
                     <EventCard
                       eventTitle={event.eventTitle}
@@ -157,7 +156,7 @@ export default function EventScreen() {
               </S.CardList>
             </S.EventSection>
 
-            {index < tabs.length - 1 && <Divider size="lg" />}
+            {index < eventTabs.length - 1 && <Divider size="lg" />}
           </Fragment>
         ))}
       </S.ContentWrapper>

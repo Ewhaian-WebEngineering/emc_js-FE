@@ -6,6 +6,11 @@ export const TAB_ROUTES = {
   MY: '/my',
 };
 
+export const EVENT_ROUTES = {
+  LIST: '/event',
+  DETAIL: (id) => `/event/${id}`,
+};
+
 export const SEARCH_ROUTES = {
   SEARCH: '/search',
   SEARCH_RESULT: '/search/result',

@@ -1,12 +1,10 @@
 import styled from '@emotion/styled';
-import { semantic } from '../../designsystem/tokens/semantic.js';
-import { measurement } from '../../designsystem/tokens/measurement.js';
-import { typography } from '../../designsystem/tokens/typography.js';
+import { semantic } from '@/designsystem/tokens/semantic';
+import { measurement } from '@/designsystem/tokens/measurement';
+import { typography } from '@/designsystem/tokens/typography';
 
 export const ScreenContainer = styled.div`
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   background-color: ${semantic.fillNormalWhite};
 `;
 
@@ -21,14 +19,8 @@ export const StickyHeader = styled.div`
   );
 `;
 
-export const TabWrapper = styled.div`
-  z-index: 5;
-`;
-
-export const ContentWrapper = styled.main`
+export const ContentWrapper = styled.div`
   padding-bottom: ${measurement.spacing56};
-  display: flex;
-  flex-direction: column;
 `;
 
 export const EventSection = styled.section`
