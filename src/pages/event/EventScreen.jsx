@@ -97,16 +97,19 @@ export default function EventScreen() {
   };
 
   const handleTabChange = (newTabId) => {
-    setIsHeaderVisible(false);
     setActiveTab(newTabId);
 
     if (sectionTopsRef.current[newTabId] === undefined) return;
 
+    const isFirstTab = newTabId === eventTabs[0]?.id;
     const tabHeight = tabWrapperRef.current?.offsetHeight ?? 0;
-    const top = sectionTopsRef.current[newTabId] - tabHeight;
+
+    setIsHeaderVisible(isFirstTab);
+
+    const top = isFirstTab ? 0 : sectionTopsRef.current[newTabId] - tabHeight;
 
     isTabScrollingRef.current = true;
-    window.scrollTo({ top, behavior: 'smooth' });
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
 
     const resetTabScrolling = () => {
       isTabScrollingRef.current = false;
