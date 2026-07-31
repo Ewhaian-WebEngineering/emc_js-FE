@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { semantic } from '../../designsystem/tokens/semantic.js';
 import { measurement } from '../../designsystem/tokens/measurement.js';
 import { typography } from '../../designsystem/tokens/typography.js';
-import { layout } from '../../designsystem/tokens/layout.js';
 
 export const ScreenContainer = styled.div`
   min-height: 100vh;
@@ -11,32 +10,23 @@ export const ScreenContainer = styled.div`
   background-color: ${semantic.fillNormalWhite};
 `;
 
-export const HeaderWrapper = styled.div`
-  position: fixed;
+export const StickyHeader = styled.div`
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  max-width: ${layout.containerMax};
-  margin: 0 auto;
   z-index: 10;
   transition: transform 0.3s ease-in-out;
   transform: translateY(
-    ${({ isHeaderVisible }) => (isHeaderVisible ? '0' : '-100%')}
+    ${({ isHeaderVisible }) =>
+      isHeaderVisible ? '0' : `-${measurement.spacing64}`}
   );
 `;
 
 export const TabWrapper = styled.div`
-  position: sticky;
-  top: ${({ isHeaderVisible }) => (isHeaderVisible ? '64px' : '0')};
   z-index: 5;
-  transition: top 0.3s ease-in-out;
 `;
 
 export const ContentWrapper = styled.main`
-  padding-top: ${({ isHeaderVisible }) =>
-    isHeaderVisible ? measurement.spacing64 : measurement.spacing0};
   padding-bottom: ${measurement.spacing56};
-  transition: padding-top 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
 `;
