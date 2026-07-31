@@ -12,7 +12,7 @@ import {
   eventData,
   eventTabDescriptions,
   eventTabs,
-} from '@/pages/event/event';
+} from '@/pages/event/constants/event';
 
 const headerHideScrollThreshold = 50;
 const tabScrollResetTimeoutMs = 2000;
