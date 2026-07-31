@@ -78,6 +78,13 @@ export default function EventScreen() {
         }
       }
 
+      const isAtBottom =
+        window.innerHeight + currentScrollY >=
+        document.documentElement.scrollHeight - 1;
+      if (isAtBottom) {
+        visibleTab = eventTabs[eventTabs.length - 1]?.id ?? visibleTab;
+      }
+
       setActiveTab(visibleTab);
     };
 
