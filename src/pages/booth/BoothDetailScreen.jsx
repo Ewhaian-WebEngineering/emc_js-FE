@@ -190,6 +190,7 @@ export default function BoothDetailScreen() {
           ))}
         </RecommendBoothList>
       </RecommendBooths>
+      {/* TODO: 테스트용 여백 삭제 */}
       <div style={{ height: '1000px' }} />
     </>
   );
