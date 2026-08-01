@@ -22,7 +22,7 @@ export default function BoothList({ booths }) {
               marks={booth.marks}
               isBookmarked={booth.isBookmarked}
               onClick={() => {
-                navigate(BOOTH_ROUTE(':boothId', booth.id));
+                navigate(BOOTH_ROUTE(booth.id));
               }}
               onBookmarkClick={() => {
                 // TODO: 북마크 API 호출
