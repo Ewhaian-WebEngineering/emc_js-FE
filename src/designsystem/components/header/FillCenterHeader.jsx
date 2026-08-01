@@ -21,7 +21,11 @@ export default function FillCenterHeader({
     <Header
       left={
         onBack && (
-          <ArrowLeftIcon onClick={onBack} color={semantic.iconNormalNormal} />
+          <ArrowLeftIcon
+            onClick={onBack}
+            color={semantic.iconNormalNormal}
+            style={{ cursor: 'pointer' }}
+          />
         )
       }
       center={<HeaderTitle>{title}</HeaderTitle>}
