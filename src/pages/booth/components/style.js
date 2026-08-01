@@ -35,7 +35,9 @@ export const ContactTabContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing20};
+  margin-inline: -${measurement.spacing16};
   padding-block: ${measurement.spacing24};
+  padding-inline: ${measurement.spacing16};
   background-color: ${semantic.fillNormalWhite};
 `;
 
