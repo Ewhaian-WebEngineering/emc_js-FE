@@ -7,6 +7,7 @@ import PeopleIcon from '@/assets/svg/24px/ic_people.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { CONGESTION_TOOLTIP, VISITOR_TOOLTIP } from '@/constants/tooltip';
 import { CONGESTION_LEVEL } from '@/constants/congestionLevel';
+import CongestionBottomSheet from '../components/CongestionBottomSheet';
 import SponsorSection from './SponsorSection';
 import EventSection from './EventSection';
 import BannerSection from './BannerSection';
@@ -20,11 +21,17 @@ import {
 } from '../style.js';
 
 export default function AdminDashboardScreen() {
-  const [congestionLevel] = useState('crowded');
+  const [congestionLevel, setCongestionLevel] = useState('crowded');
   const [visitorCount] = useState(0);
+  const [isCongestionSheetOpen, setIsCongestionSheetOpen] = useState(false);
+
   const congestion = CONGESTION_LEVEL[congestionLevel];
 
-  const handleCongestionClick = () => {}; // TODO(API)
+  const handleCongestionClick = () => setIsCongestionSheetOpen(true);
+  const handleCongestionSheetClose = () => setIsCongestionSheetOpen(false);
+  const handleCongestionSave = (value) => {
+    if (value) setCongestionLevel(value);
+  };
 
   return (
     <DashboardContainer>
@@ -60,6 +67,13 @@ export default function AdminDashboardScreen() {
       <BannerSection />
       <FaqSection />
       <BoothSection />
+
+      <CongestionBottomSheet
+        isOpen={isCongestionSheetOpen}
+        onClose={handleCongestionSheetClose}
+        value={congestionLevel}
+        onSave={handleCongestionSave}
+      />
     </DashboardContainer>
   );
 }
