@@ -17,10 +17,19 @@ import {
 
 export default function AdminDashboardScreen() {
   const [sponsorExpanded, setSponsorExpanded] = useState(false);
+  const [sponsorCount, setSponsorCount] = useState(0);
+
   const [eventExpanded, setEventExpanded] = useState(false);
+  const [eventCount, setEventCount] = useState(0);
+
   const [bannerExpanded, setBannerExpanded] = useState(false);
+  const [bannerCount, setBannerCount] = useState(0);
+
   const [faqExpanded, setFaqExpanded] = useState(false);
+  const [faqCount, setFaqCount] = useState(0);
+
   const [boothExpanded, setBoothExpanded] = useState(false);
+  const [boothCount, setBoothCount] = useState(0);
 
   const [congestionLevel, setCongestionLevel] = useState('crowded');
   const [visitorCount, setVisitorCount] = useState(0);
@@ -62,6 +71,7 @@ export default function AdminDashboardScreen() {
         onToggle={() => setSponsorExpanded((prev) => !prev)}
         size="lg"
         title="협찬사 등록/수정"
+        count={sponsorCount}
       >
         <Accordion.ActionButton buttonText="텍스트 +" onClick={() => {}} />
       </Accordion>
@@ -71,6 +81,7 @@ export default function AdminDashboardScreen() {
         onToggle={() => setEventExpanded((prev) => !prev)}
         size="lg"
         title="이벤트 등록/수정"
+        count={eventCount}
       >
         <Accordion.ActionButton buttonText="텍스트 +" onClick={() => {}} />
       </Accordion>
@@ -80,6 +91,7 @@ export default function AdminDashboardScreen() {
         onToggle={() => setBannerExpanded((prev) => !prev)}
         size="lg"
         title="배너 등록/수정"
+        count={bannerCount}
       >
         <Accordion.ActionButton buttonText="텍스트 +" onClick={() => {}} />
       </Accordion>
@@ -89,6 +101,7 @@ export default function AdminDashboardScreen() {
         onToggle={() => setFaqExpanded((prev) => !prev)}
         size="lg"
         title="FAQ 등록/수정"
+        count={faqCount}
       >
         <Accordion.ActionButton buttonText="텍스트 +" onClick={() => {}} />
       </Accordion>
@@ -98,6 +111,7 @@ export default function AdminDashboardScreen() {
         onToggle={() => setBoothExpanded((prev) => !prev)}
         size="lg"
         title="부스 관리"
+        count={boothCount}
       ></Accordion>
     </DashboardContainer>
   );
