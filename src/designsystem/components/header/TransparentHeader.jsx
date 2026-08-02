@@ -15,12 +15,17 @@ export default function TransparentHeader({ onBack, title, right }) {
     <Header
       left={
         onBack && (
-          <ArrowLeftIcon onClick={onBack} color={semantic.iconNormalInverse} />
+          <ArrowLeftIcon
+            onClick={onBack}
+            color={semantic.iconNormalInverse}
+            style={{ cursor: 'pointer' }}
+          />
         )
       }
       center={<HeaderTitle $inverse>{title}</HeaderTitle>}
       right={right}
       transparent
+      overlay
     />
   );
 }

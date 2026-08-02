@@ -8,11 +8,12 @@ export const ProductVerticalCardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${measurement.spacing8};
+  width: 100%;
 `;
 
 export const ProductVerticalCardThumbnail = styled.div`
-  width: 164px;
-  height: 164px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,7 +41,9 @@ export const ProductVerticalCardContent = styled.div`
 export const ProductVerticalCardName = styled.h3`
   ${typography.body1Medium};
   color: ${semantic.textNormalStrong};
+  text-align: left;
 
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -51,7 +54,9 @@ export const ProductVerticalCardName = styled.h3`
 export const ProductVerticalCardDescription = styled.p`
   ${typography.body2Regular};
   color: ${semantic.textNormalNormal};
+  text-align: left;
 
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

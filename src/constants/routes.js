@@ -10,6 +10,7 @@ export const EVENT_ROUTES = {
   LIST: '/event',
   DETAIL: (id) => `/event/${id}`,
 };
+export const BOOTH_ROUTE = (boothId) => `/booth/${boothId}`;
 
 export const SEARCH_ROUTES = {
   SEARCH: '/search',

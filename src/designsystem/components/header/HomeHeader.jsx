@@ -14,7 +14,11 @@ export default function HomeHeader({ onSearchClick, border = false }) {
     <Header
       left={<LogoText />}
       right={
-        <SearchIcon onClick={onSearchClick} color={semantic.iconNormalNormal} />
+        <SearchIcon
+          onClick={onSearchClick}
+          color={semantic.iconNormalNormal}
+          style={{ cursor: 'pointer' }}
+        />
       }
       border={border}
     />
