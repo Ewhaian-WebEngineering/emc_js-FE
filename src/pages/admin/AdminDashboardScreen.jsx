@@ -34,8 +34,7 @@ export default function AdminDashboardScreen() {
   return (
     <DashboardContainer>
       <DashboardHeaderWrapper>
-        <Header onBack={() => {}} title="대시보드" />
-        <Divider size="sm" />
+        <Header onBack={() => {}} title="대시보드" border />
       </DashboardHeaderWrapper>
       <FestivalInfo>
         <DashboardTitle>
