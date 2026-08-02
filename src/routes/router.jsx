@@ -6,9 +6,20 @@ import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
-import { TAB_ROUTES, NOTICE_ROUTE, ADMIN_ROUTES } from '../constants/routes';
 import NoticeScreen from '../pages/notice/NoticeScreen';
+import { searchRoutes } from '@/pages/search/routes';
+import SponsorScreen from '../pages/sponsor/SponsorScreen';
+import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
 import EventForm from '../pages/admin/event/EventForm';
+import {
+  TAB_ROUTES,
+  NOTICE_ROUTE,
+  SPONSOR_ROUTES,
+  ADMIN_ROUTES,
+  BOOTH_ROUTE,
+} from '../constants/routes';
+import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
+
 /**
  * 앱 전체 라우트 트리입니다.
  * RootLayout(공통 좌우 여백/최대 너비)이 모든 화면을 감싸고,
@@ -30,8 +41,13 @@ export const router = createBrowserRouter([
           { path: TAB_ROUTES.MY, element: <MyScreen /> },
         ],
       },
+      { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: ADMIN_ROUTES.EVENT, element: <EventForm /> },
+      { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
+      { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
+      { path: BOOTH_ROUTE(':boothId'), element: <BoothDetailScreen /> },
+      ...searchRoutes.full,
     ],
   },
 ]);

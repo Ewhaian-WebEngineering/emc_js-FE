@@ -48,11 +48,6 @@ export const BottomSheetContentsSection = styled.div`
   transition: ${({ isDragging }) => (isDragging ? 'none' : 'height 0.3s ease')};
 
   overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export const BottomSheetContainer = styled.div`

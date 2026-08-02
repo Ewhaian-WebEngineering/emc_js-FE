@@ -12,6 +12,7 @@ import { EmptyStateContainer, EmptyStateText } from './style';
  * @param {string} [height] - 컴포넌트 높이
  */
 export default function EmptyState({
+  variant = 'md',
   Icon,
   title,
   description,
@@ -20,9 +21,9 @@ export default function EmptyState({
   height,
 }) {
   return (
-    <EmptyStateContainer height={height}>
+    <EmptyStateContainer height={height} $variant={variant}>
       {Icon && <Icon />}
-      <EmptyStateText>
+      <EmptyStateText $variant={variant}>
         {title && <h2>{title}</h2>}
         {description && <p>{description}</p>}
       </EmptyStateText>
