@@ -37,15 +37,11 @@ export const AdminAuthFooter = styled.div`
   }
 `;
 
-export const DashboardHeaderWrapper = styled.div`
-  flex-shrink: 0;
-`;
-
 export const DashboardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  padding-bottom: ${measurement.spacing144};
+  min-height: 100vh;
+  padding-bottom: ${measurement.spacing110};
 `;
 
 export const FestivalInfo = styled.div`
@@ -64,12 +60,12 @@ export const ManagementCardStats = styled.div`
   background-color: ${semantic.fillNormalStrong};
 `;
 
-export const DashboardTitle = styled.p`
+export const DashboardTitle = styled.h1`
   color: ${semantic.textNormalStrong};
   ${typography.title3Semibold};
   margin-bottom: ${measurement.spacing36};
-`;
 
-export const DashboardTitleHighlight = styled.span`
-  color: ${semantic.textPrimaryNormal};
+  span {
+    color: ${semantic.textPrimaryNormal};
+  }
 `;

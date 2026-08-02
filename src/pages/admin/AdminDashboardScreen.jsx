@@ -13,8 +13,6 @@ import {
   DashboardContainer,
   ManagementCardStats,
   DashboardTitle,
-  DashboardTitleHighlight,
-  DashboardHeaderWrapper,
 } from './style.js';
 
 export default function AdminDashboardScreen() {
@@ -33,12 +31,10 @@ export default function AdminDashboardScreen() {
 
   return (
     <DashboardContainer>
-      <DashboardHeaderWrapper>
-        <Header onBack={() => {}} title="대시보드" border />
-      </DashboardHeaderWrapper>
+      <Header onBack={() => {}} title="대시보드" border />
       <FestivalInfo>
         <DashboardTitle>
-          <DashboardTitleHighlight>14th 종합손물세트</DashboardTitleHighlight>
+          <span>14th 종합손물세트</span>
           <br />
           관리자용 대시보드
         </DashboardTitle>
