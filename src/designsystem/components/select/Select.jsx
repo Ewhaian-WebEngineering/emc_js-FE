@@ -32,6 +32,7 @@ export default function Select({
   defaultValue,
   onChange,
   placeholder,
+  prefix,
   error,
   disabled,
   showActions,
@@ -42,6 +43,9 @@ export default function Select({
   const [selectedValue, setSelectedValue] = useState(value || defaultValue);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
+  const triggerLabel = selectedValue
+    ? [prefix, selectedValue.label].filter(Boolean).join(' ')
+    : placeholder;
 
   // 외부 클릭 감지
   useEffect(() => {
@@ -80,7 +84,7 @@ export default function Select({
         disabled={disabled}
         hasValue={!!selectedValue}
       >
-        <span>{selectedValue?.label || placeholder}</span>
+        <span>{triggerLabel}</span>
         <button onClick={() => setIsOpen(!isOpen)}>
           {size === 'sm' ? (
             <ChevronDownIcon16px

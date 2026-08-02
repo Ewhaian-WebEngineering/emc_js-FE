@@ -14,3 +14,24 @@ export const MY_ROUTES = {
   ADMIN: '/myadmin',
 };
 
+export const EVENT_ROUTES = {
+  LIST: '/event',
+  DETAIL: (id) => `/event/${id}`,
+};
+export const BOOTH_ROUTE = (boothId) => `/booth/${boothId}`;
+
+export const SEARCH_ROUTES = {
+  SEARCH: '/search',
+  SEARCH_RESULT: '/search/result',
+};
+
+export const ADMIN_ROUTES = {
+  CODE: '/admin',
+};
+
+export const NOTICE_ROUTE = '/notice';
+
+export const SPONSOR_ROUTES = {
+  LIST: '/sponsor',
+  DETAIL: (id) => `/sponsor/${id}`,
+};

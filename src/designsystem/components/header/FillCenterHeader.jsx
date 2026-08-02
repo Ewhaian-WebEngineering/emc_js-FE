@@ -9,17 +9,28 @@ import { semantic } from '@/designsystem/tokens/semantic';
  * @param {function} [onBack] - 뒤로가기 버튼 클릭 이벤트 핸들러, 생략하면 뒤로가기 버튼을 표시하지 않음
  * @param {string} title - 타이틀 텍스트
  * @param {React.ReactNode} [right] - 오른쪽 영역에 표시할 콘텐츠, 생략하면 비워둠
+ * @param {boolean} [border=false] - Header 하단에 border를 표시할지 여부
  */
-export default function FillCenterHeader({ onBack, title, right }) {
+export default function FillCenterHeader({
+  onBack,
+  title,
+  right,
+  border = false,
+}) {
   return (
     <Header
       left={
         onBack && (
-          <ArrowLeftIcon onClick={onBack} color={semantic.iconNormalNormal} />
+          <ArrowLeftIcon
+            onClick={onBack}
+            color={semantic.iconNormalNormal}
+            style={{ cursor: 'pointer' }}
+          />
         )
       }
       center={<HeaderTitle>{title}</HeaderTitle>}
       right={right}
+      border={border}
     />
   );
 }

@@ -17,6 +17,11 @@ export const HeaderContainer = styled.header`
       ? `${measurement.borderWidthSm} solid ${semantic.borderNormalNormal}`
       : 'none'};
   gap: ${({ $gap }) => ($gap ? measurement.spacing4 : measurement.spacing0)};
+  position: ${({ $overlay }) => ($overlay ? 'absolute' : 'sticky')};
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
 `;
 
 export const HeaderLeft = styled.div`

@@ -10,7 +10,19 @@ import MyLoginScreen from '@/pages/my/MyLoginScreen';
 import MyLogoutScreen from '@/pages/my/MyLogoutScreen';
 import MyAdminScreen from '@/pages/my/MyAdminScreen';
 import MySellerScreen from '@/pages/my/MySellerScreen';
-import { TAB_ROUTES, MY_ROUTES } from '../constants/routes';
+import NoticeScreen from '../pages/notice/NoticeScreen';
+import { searchRoutes } from '@/pages/search/routes';
+import SponsorScreen from '../pages/sponsor/SponsorScreen';
+import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
+import {
+  TAB_ROUTES,
+  NOTICE_ROUTE,
+  SPONSOR_ROUTES,
+  ADMIN_ROUTES,
+  BOOTH_ROUTE,
+  MY_ROUTES,
+} from '../constants/routes';
+import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -33,15 +45,16 @@ export const router = createBrowserRouter([
           { path: TAB_ROUTES.MY, element: <MyScreen /> },
         ],
       },
-<<<<<<< HEAD
-=======
-      { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
-      { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
       { path: MY_ROUTES.LOGIN, element: <MyLoginScreen /> },
       { path: MY_ROUTES.LOGOUT, element: <MyLogoutScreen /> },
       { path: MY_ROUTES.SELLER, element: <MySellerScreen /> },
       { path: MY_ROUTES.ADMIN, element: <MyAdminScreen /> },
->>>>>>> 9d153da (feature(#100): 마이페이지 UI 구현)
+      { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
+      { path: NOTICE_ROUTE, element: <NoticeScreen /> },
+      { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
+      { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
+      { path: BOOTH_ROUTE(':boothId'), element: <BoothDetailScreen /> },
+      ...searchRoutes.full,
     ],
   },
 ]);

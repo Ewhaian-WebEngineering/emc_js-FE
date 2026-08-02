@@ -19,11 +19,17 @@ export default function Search({ value, onChange, onDelete, onSearch }) {
     <SearchWrapper focused={focused}>
       <input
         type="text"
+        enterKeyHint="search"
         value={value}
-        onChange={onChange}
+        onChange={(e) => onChange(e.target.value)}
         placeholder="내용을 입력해 주세요."
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+            onSearch();
+          }
+        }}
       />
       <SearchIconGroup>
         {value && (

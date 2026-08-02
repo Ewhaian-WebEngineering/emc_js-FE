@@ -30,8 +30,12 @@ export const EmptyStateText = styled.div`
   }
 
   p {
-    ${typography.body1Regular};
-    color: ${semantic.textNormalNormal};
+    ${({ $variant }) =>
+      $variant === 'sm' ? typography.caption1Medium : typography.body1Regular};
+    color: ${({ $variant }) =>
+      $variant === 'sm'
+        ? semantic.textNormalAssistive
+        : semantic.textNormalNormal};
   }
 `;
 
