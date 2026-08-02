@@ -73,7 +73,10 @@ export default function AdminDashboardScreen() {
         title="협찬사 등록/수정"
         count={sponsorCount}
       >
-        <Accordion.ActionButton buttonText="텍스트 +" onClick={() => {}} />
+        <Accordion.ActionButton
+          buttonText="협찬사 등록하기 +"
+          onClick={() => {}}
+        />
       </Accordion>
 
       <Accordion
@@ -83,7 +86,10 @@ export default function AdminDashboardScreen() {
         title="이벤트 등록/수정"
         count={eventCount}
       >
-        <Accordion.ActionButton buttonText="텍스트 +" onClick={() => {}} />
+        <Accordion.ActionButton
+          buttonText="이벤트 등록하기 +"
+          onClick={() => {}}
+        />
       </Accordion>
 
       <Accordion
@@ -93,7 +99,10 @@ export default function AdminDashboardScreen() {
         title="배너 등록/수정"
         count={bannerCount}
       >
-        <Accordion.ActionButton buttonText="텍스트 +" onClick={() => {}} />
+        <Accordion.ActionButton
+          buttonText="배너 등록하기 +"
+          onClick={() => {}}
+        />
       </Accordion>
 
       <Accordion
@@ -103,7 +112,10 @@ export default function AdminDashboardScreen() {
         title="FAQ 등록/수정"
         count={faqCount}
       >
-        <Accordion.ActionButton buttonText="텍스트 +" onClick={() => {}} />
+        <Accordion.ActionButton
+          buttonText="FAQ 등록하기 +"
+          onClick={() => {}}
+        />
       </Accordion>
 
       <Accordion
