@@ -6,6 +6,7 @@ import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import TextArea from '@/designsystem/components/textinput/textarea/TextArea';
 import Tag from '@/designsystem/components/tag/Tag';
 import DatePicker from '@/designsystem/components/datepicker/DatePicker';
+import Editor from '../components/Editor';
 import {
   EventFormContainer,
   CategoryContainer,
@@ -147,6 +148,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
             내용
             <span>*</span>
           </CategoryTitle>
+          <Editor content={content} onChange={setContent} />
         </CategoryContainer>
 
         <TextArea
