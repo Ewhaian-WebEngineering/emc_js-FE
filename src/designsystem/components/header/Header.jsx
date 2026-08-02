@@ -22,6 +22,7 @@ export default function Header({
   gap = false,
   border = false,
   transparent = false,
+  overlay = false,
   ...rest
 }) {
   return (
@@ -29,6 +30,7 @@ export default function Header({
       $gap={gap}
       $border={border}
       $transparent={transparent}
+      $overlay={overlay}
       {...rest}
     >
       <HeaderLeft $gap={gap}>{left}</HeaderLeft>

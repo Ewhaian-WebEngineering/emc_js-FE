@@ -9,13 +9,16 @@ import MyScreen from '../pages/my/MyScreen';
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
 import AdminDashboardScreen from '../pages/admin/AdminDashboardScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
+import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
 import {
   TAB_ROUTES,
   NOTICE_ROUTE,
   SPONSOR_ROUTES,
   ADMIN_ROUTES,
+  BOOTH_ROUTE,
 } from '../constants/routes';
+import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -43,6 +46,8 @@ export const router = createBrowserRouter([
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
+      { path: BOOTH_ROUTE(':boothId'), element: <BoothDetailScreen /> },
+      ...searchRoutes.full,
     ],
   },
 ]);

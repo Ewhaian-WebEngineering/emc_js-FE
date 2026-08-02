@@ -49,6 +49,7 @@ export default function BoothListCard({
     { length: THUMBNAIL_SLOT_COUNT },
     (_, index) => thumbnails[index] ?? null,
   );
+  const formattedBoothNumber = String(boothNumber).padStart(2, '0');
 
   return (
     <BoothListCardContainer onClick={onClick}>
@@ -75,7 +76,7 @@ export default function BoothListCard({
         <BoothCardTextWrapper>
           <BoothListCardInfoWrapper>
             <BoothListCardTitleWrapper>
-              <BoothListCardTitle>{boothNumber}.</BoothListCardTitle>
+              <BoothListCardTitle>{formattedBoothNumber}.</BoothListCardTitle>
               <BoothListCardTitle>{boothName}</BoothListCardTitle>
             </BoothListCardTitleWrapper>
             <BoothListCardBookmarkIcon
