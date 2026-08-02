@@ -10,14 +10,15 @@ export const EditorWrapper = styled.div`
   gap: ${measurement.spacing8};
   align-self: stretch;
   border-radius: ${measurement.spacing20};
-  border: 1px solid #e0e0e0;
-  background: #fff;
+  border: ${measurement.borderRadiusSm} solid ${semantic.borderNormalNormal};
+  background: ${semantic.fillNormalWhite};
   overflow: hidden;
 `;
 
 export const Toolbar = styled.div`
   display: flex;
-  padding: ${measurement.spacing8};
+  padding: ${measurement.spacing12} 0 ${measurement.spacing8}
+    ${measurement.spacing16};
   align-items: center;
   gap: ${measurement.spacing8};
   align-self: stretch;
@@ -30,8 +31,9 @@ export const ToolbarButton = styled.button`
   width: ${measurement.spacing28};
   height: ${measurement.spacing28};
   border: none;
-  background: ${({ active }) => (active ? '#f0f0f0' : 'transparent')};
-  border-radius: 6px;
+  background: ${({ active }) =>
+    active ? semantic.fillInteractionDisabled : 'transparent'};
+  border-radius: ${measurement.borderRadiusSm};
   cursor: pointer;
   color: #333;
 
@@ -41,19 +43,20 @@ export const ToolbarButton = styled.button`
   }
 
   &:hover {
-    background: #f5f5f5;
+    background: ${semantic.fillInteractionDisabled};
   }
 `;
 
 export const Divider = styled.div`
   align-self: stretch;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: ${measurement.borderRadiusSm} solid
+    ${semantic.borderNormalNormal};
 `;
 
 export const ContentArea = styled.div`
   display: flex;
   height: 220px;
-  padding: 12px 16px;
+  padding: ${measurement.spacing12} ${measurement.spacing16};
   align-items: flex-start;
   gap: 62px;
   flex-shrink: 0;
@@ -64,13 +67,13 @@ export const ContentArea = styled.div`
     width: 100%;
     outline: none;
     font-size: 15px;
-    color: #333;
+    color: ${semantic.textNormalStrong};
   }
 
   .ProseMirror p.is-editor-empty:first-of-type::before {
     content: attr(data-placeholder);
     float: left;
-    color: #b3b3b3;
+    color: ${semantic.textNormalAssistive};
     pointer-events: none;
     height: 0;
   }
@@ -78,14 +81,27 @@ export const ContentArea = styled.div`
   .ProseMirror hr {
     width: 100%;
     border: none;
-    border-top: 1px solid #e0e0e0;
-    margin: 12px 0;
+    border-top: ${measurement.borderRadiusSm} solid
+      ${semantic.borderNormalNormal};
+    margin: ${measurement.spacing12} 0;
   }
 
   .ProseMirror blockquote {
-    border-left: 3px solid #e0e0e0;
+    border-left: 3px solid ${semantic.borderNormalNormal};
     padding-left: 12px;
     margin-left: 0;
     color: #666;
+  }
+
+  .ProseMirror a {
+    color: ${semantic.textPrimaryNormal};
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .ProseMirror img {
+    max-width: 100%;
+    height: auto;
+    margin: 8px 0;
   }
 `;

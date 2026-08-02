@@ -23,6 +23,10 @@ import {
   PiMinusLight,
 } from 'react-icons/pi';
 
+const EXCLUSIVE_MARKS = ['bold', 'italic', 'underline', 'strike'];
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+const preventMouseDown = (e) => e.preventDefault();
+
 export default function Editor({ content = '', onChange }) {
   const fileInputRef = useRef(null);
 
@@ -30,7 +34,15 @@ export default function Editor({ content = '', onChange }) {
     extensions: [
       StarterKit,
       Underline,
-      Link.configure({ openOnClick: false }),
+      Link.configure({
+        openOnClick: true,
+        autolink: false,
+        linkOnPaste: false,
+        HTMLAttributes: {
+          target: '_blank',
+          rel: 'noopener noreferrer',
+        },
+      }),
       Image,
       Placeholder.configure({
         placeholder: '이벤트에 대한 상세 내용을 작성해주세요.',
@@ -52,17 +64,48 @@ export default function Editor({ content = '', onChange }) {
       isStrike: ctx.editor?.isActive('strike') ?? false,
       isLink: ctx.editor?.isActive('link') ?? false,
       isBlockquote: ctx.editor?.isActive('blockquote') ?? false,
+      isImage: ctx.editor?.isActive('image') ?? false,
+      isHorizontalRule: ctx.editor?.isActive('horizontalRule') ?? false,
     }),
   });
 
   if (!editor) return null;
 
+  const toggleExclusive = (name) => {
+    let chain = editor.chain().focus();
+
+    EXCLUSIVE_MARKS.forEach((mark) => {
+      if (mark !== name && editorState[`is${capitalize(mark)}`]) {
+        chain = chain[`unset${capitalize(mark)}`]();
+      }
+    });
+
+    chain = chain[`toggle${capitalize(name)}`]();
+    chain.run();
+  };
+
   const setLink = () => {
+    if (editor.isActive('link')) {
+      editor.chain().focus().unsetLink().run();
+      return;
+    }
+
+    const { from, to } = editor.state.selection;
+    if (from === to) {
+      alert('링크를 적용할 텍스트를 먼저 드래그해주세요.');
+      return;
+    }
+
     const url = window.prompt('링크 URL을 입력하세요');
-    if (url) editor.chain().focus().setLink({ href: url }).run();
+    if (!url) return;
+    editor.chain().focus().setLink({ href: url }).run();
   };
 
   const handleImageClick = () => {
+    if (editor.isActive('image')) {
+      editor.chain().focus().deleteSelection().run();
+      return;
+    }
     fileInputRef.current?.click();
   };
 
@@ -70,15 +113,21 @@ export default function Editor({ content = '', onChange }) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // TODO: 실제 서비스에서는 여기서 서버에 업로드하고
-    // 반환받은 URL을 setImage({ src: uploadedUrl })에 넣는 게 맞습니다.
     const reader = new FileReader();
     reader.onload = () => {
       editor.chain().focus().setImage({ src: reader.result }).run();
     };
     reader.readAsDataURL(file);
 
-    e.target.value = ''; // 같은 파일 다시 선택 가능하도록 초기화
+    e.target.value = '';
+  };
+
+  const handleHorizontalRuleClick = () => {
+    if (editor.isActive('horizontalRule')) {
+      editor.chain().focus().deleteSelection().run();
+      return;
+    }
+    editor.chain().focus().setHorizontalRule().run();
   };
 
   return (
@@ -86,32 +135,44 @@ export default function Editor({ content = '', onChange }) {
       <Toolbar>
         <ToolbarButton
           active={editorState.isBold}
-          onClick={() => editor.chain().focus().toggleBold().run()}
+          onMouseDown={preventMouseDown}
+          onClick={() => toggleExclusive('bold')}
         >
           <PiTextBLight />
         </ToolbarButton>
         <ToolbarButton
           active={editorState.isItalic}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
+          onMouseDown={preventMouseDown}
+          onClick={() => toggleExclusive('italic')}
         >
           <PiTextItalicLight />
         </ToolbarButton>
         <ToolbarButton
           active={editorState.isUnderline}
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          onMouseDown={preventMouseDown}
+          onClick={() => toggleExclusive('underline')}
         >
           <PiTextUnderlineLight />
         </ToolbarButton>
         <ToolbarButton
           active={editorState.isStrike}
-          onClick={() => editor.chain().focus().toggleStrike().run()}
+          onMouseDown={preventMouseDown}
+          onClick={() => toggleExclusive('strike')}
         >
           <PiTextStrikethroughLight />
         </ToolbarButton>
-        <ToolbarButton onClick={setLink} active={editorState.isLink}>
+        <ToolbarButton
+          onMouseDown={preventMouseDown}
+          onClick={setLink}
+          active={editorState.isLink}
+        >
           <PiLinkSimpleLight />
         </ToolbarButton>
-        <ToolbarButton onClick={handleImageClick}>
+        <ToolbarButton
+          active={editorState.isImage}
+          onMouseDown={preventMouseDown}
+          onClick={handleImageClick}
+        >
           <PiImageLight />
         </ToolbarButton>
         <input
@@ -123,12 +184,15 @@ export default function Editor({ content = '', onChange }) {
         />
         <ToolbarButton
           active={editorState.isBlockquote}
+          onMouseDown={preventMouseDown}
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
         >
           <PiQuotesLight />
         </ToolbarButton>
         <ToolbarButton
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          active={editorState.isHorizontalRule}
+          onMouseDown={preventMouseDown}
+          onClick={handleHorizontalRuleClick}
         >
           <PiMinusLight />
         </ToolbarButton>
