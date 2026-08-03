@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { typography } from '@/designsystem/tokens/typography';
@@ -34,6 +35,14 @@ export const Text = styled.span`
   ${({ lineHeight }) => lineHeight && `line-height: ${lineHeight}px;`};
   ${({ mb }) => mb && `margin-bottom: ${mb};`};
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth}px;`};
+  ${({ lineClamp }) =>
+    lineClamp &&
+    `
+    display: -webkit-box;
+    -webkit-line-clamp: ${lineClamp};
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  `}
 `;
 
 export const RowBox = styled.div`
@@ -46,6 +55,7 @@ export const ColumnBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ gap }) => gap};
+  width: ${({ width }) => width && `${width}px`};
 `;
 
 export const Icon = styled.img`
@@ -74,10 +84,6 @@ export const EventTypeBadge = styled.span`
   margin-bottom: ${measurement.spacing16};
 `;
 
-export const EventPeriod = styled(RowBox)`
-  gap: ${measurement.spacing4};
-`;
-
 export const EventContent = styled.section`
   ${sectionColumn};
   justify-content: center;
@@ -95,6 +101,11 @@ export const SponsorContent = styled(ColumnBox)`
   align-items: flex-start;
   gap: ${measurement.spacing20};
   padding: ${measurement.spacing32} 0;
+`;
+
+export const SponsorButton = styled(BoxButton)`
+  width: 335px;
+  gap: ${measurement.spacing4};
 `;
 
 export const ShareSection = styled.section`
