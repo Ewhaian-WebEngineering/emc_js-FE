@@ -31,6 +31,7 @@ export default function ScrapScreen() {
       <ScrapContentWrapper>
         {booths.length === 0 ? (
           <EmptyState
+            // TODO: 아이콘 추가
             title="아직 스크랩한 부스가 없어요!"
             description={
               <>

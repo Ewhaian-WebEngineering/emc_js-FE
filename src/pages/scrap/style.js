@@ -3,12 +3,14 @@ import styled from '@emotion/styled';
 export const ScrapScreenContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 export const ScrapContentWrapper = styled.div`
   flex: 1;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const EmptyStateButtonTextWrapper = styled.div`
