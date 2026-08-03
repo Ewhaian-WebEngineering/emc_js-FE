@@ -5,7 +5,8 @@ import { typography } from '../../tokens/typography';
 
 export const EmptyStateContainer = styled.div`
   width: 100%;
-  height: ${({ height }) => (height ? `${height}px` : 'auto')};
+  flex: 1;
+  height: ${({ height }) => (height ? `${height}px` : '100%')};
   display: flex;
   flex-direction: column;
   align-items: center;
