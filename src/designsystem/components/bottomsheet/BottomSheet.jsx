@@ -42,6 +42,7 @@ export default function BottomSheet({
   children,
 }) {
   const allowedSnaps = snapPoints ?? DEFAULT_SNAPS[variant];
+  const hasSnapPoints = allowedSnaps.length > 0;
 
   const { heightPx, onDrag, resolveAfterDrag } = useSnapPoint({
     allowedSnaps,
@@ -70,10 +71,13 @@ export default function BottomSheet({
       {showScrim && <Scrim onClick={onClose} />}
       <BottomSheetContainer
         variant={variant}
-        heightPx={heightPx}
+        heightPx={hasSnapPoints ? heightPx : 'auto'}
         isDragging={isDragging}
       >
-        <BottomSheetContentsSection heightPx={heightPx} isDragging={isDragging}>
+        <BottomSheetContentsSection
+          heightPx={hasSnapPoints ? heightPx : 'auto'}
+          isDragging={isDragging}
+        >
           {(variant === 'handle' || variant === 'handleWithHeader') && (
             <BottomSheetHandle onPointerDown={handlePointerDown} />
           )}
