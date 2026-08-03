@@ -11,8 +11,11 @@ import {
   ScrapContentWrapper,
   ScrapScreenContainer,
 } from './style';
+import { useNavigate } from 'react-router-dom';
+import { TAB_ROUTES } from '@/constants/routes';
 
 export default function ScrapScreen() {
+  const navigate = useNavigate();
   const {
     setCategory,
     sortOption,
@@ -43,7 +46,7 @@ export default function ScrapScreen() {
               </EmptyStateButtonTextWrapper>
             }
             onButtonClick={() => {
-              // TODO: 부스 페이지 이동
+              navigate(TAB_ROUTES.BOOTH);
             }}
           />
         ) : (
