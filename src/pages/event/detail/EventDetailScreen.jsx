@@ -137,7 +137,8 @@ export default function EventDetailScreen() {
               color="textNormalStrong"
               lineHeight={46}
             >
-              {event.sponsor.name}에 대해 더 궁금하다면?
+              {event.sponsor.name}에 대해
+              <br />더 궁금하다면?
             </S.Text>
             <S.SponsorButton
               variant="primary"
