@@ -16,27 +16,39 @@ const flexColumn = css`
   align-items: center;
 `;
 
-const centerText = css`
-  text-align: center;
-`;
-
 const sectionBase = css`
   width: 100%;
   ${flexCenter};
 `;
 
-const RowBox = styled.div`
+const sectionColumn = css`
+  width: 100%;
+  ${flexColumn};
+`;
+
+export const Text = styled.span`
+  ${({ typo }) => typography[typo]};
+  color: ${({ color }) => semantic[color] || semantic.textNormalStrong};
+  text-align: ${({ align }) => align || 'left'};
+  white-space: pre-wrap;
+  ${({ lineHeight }) => lineHeight && `line-height: ${lineHeight}px;`};
+  ${({ mb }) => mb && `margin-bottom: ${mb};`};
+  ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth}px;`};
+`;
+
+export const RowBox = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ gap }) => gap};
 `;
 
-const ColumnBox = styled.div`
+export const ColumnBox = styled.div`
   display: flex;
   flex-direction: column;
+  gap: ${({ gap }) => gap};
 `;
 
-const Icon = styled.img`
+export const Icon = styled.img`
   object-fit: contain;
 `;
 
@@ -45,9 +57,8 @@ export const HeaderSpacer = styled.div`
 `;
 
 export const EventHero = styled.section`
-  width: 100%;
+  ${sectionColumn};
   height: 224px;
-  ${flexColumn};
   padding: ${measurement.spacing40} 0;
   background-color: ${semantic.fillPrimaryAssistive};
 `;
@@ -60,62 +71,18 @@ export const EventTypeBadge = styled.span`
   background-color: ${semantic.fillPrimaryNormal};
   color: ${semantic.textNormalInverse};
   ${typography.body2Medium};
-  margin-bottom: 16px;
-`;
-
-export const EventTypeBadgeText = styled.span`
-  width: 61px;
-  height: 20px;
-  ${flexCenter};
-`;
-
-export const EventTitle = styled.h1`
-  width: 326px;
-  height: 56px;
-  ${flexCenter};
-  ${typography.headline1Semibold};
-  color: ${semantic.textNormalStrong};
-  ${centerText};
-  margin-bottom: 20px;
+  margin-bottom: ${measurement.spacing16};
 `;
 
 export const EventPeriod = styled(RowBox)`
-  width: 144px;
-  height: 20px;
   gap: ${measurement.spacing4};
 `;
 
-export const EventPeriodText = styled.span`
-  height: 20px;
-  ${flexCenter};
-  ${({ $isDate }) =>
-    $isDate
-      ? css`
-          width: 88px;
-          ${typography.body2Medium};
-          color: ${semantic.textNormalStrong};
-        `
-      : css`
-          width: 52px;
-          ${typography.body2Regular};
-          color: ${semantic.textNormalNormal};
-        `}
-`;
-
 export const EventContent = styled.section`
-  ${sectionBase};
+  ${sectionColumn};
+  justify-content: center;
   min-height: 720px;
   background-color: ${semantic.fillNormalNormal};
-`;
-
-export const EventContentText = styled.div`
-  width: 120px;
-  height: 26.5px;
-  ${flexColumn};
-  justify-content: center;
-  ${typography.caption1Regular};
-  color: ${semantic.textNormalNormal};
-  ${centerText};
 `;
 
 export const SponsorSection = styled.section`
@@ -128,13 +95,6 @@ export const SponsorContent = styled(ColumnBox)`
   align-items: flex-start;
   gap: ${measurement.spacing20};
   padding: ${measurement.spacing32} 0;
-`;
-
-export const SponsorTitle = styled.h2`
-  width: 149px;
-  ${typography.title3Semibold};
-  color: ${semantic.textNormalStrong};
-  line-height: 46px;
 `;
 
 export const ShareSection = styled.section`
@@ -150,14 +110,6 @@ export const ShareBox = styled.div`
   padding: ${measurement.spacing32} ${measurement.spacing40};
   border-radius: ${measurement.borderRadius3xl};
   background-color: ${semantic.fillPrimaryAssistive};
-`;
-
-export const ShareTitle = styled.h2`
-  width: 206px;
-  height: 20px;
-  ${typography.body1Medium};
-  color: ${semantic.textNormalStrong};
-  ${centerText};
 `;
 
 export const ShareActions = styled.div`
@@ -184,48 +136,14 @@ export const ShareActionIcon = styled(Icon)`
   height: 56px;
 `;
 
-export const ShareActionLabel = styled.span`
-  ${typography.body2Medium};
-  color: ${semantic.textNormalNormal};
-  ${centerText};
-`;
-
 export const NoticeBox = styled.section`
-  width: 100%;
+  ${sectionColumn};
   height: 260px;
-  ${flexColumn};
   padding: ${measurement.spacing24} ${measurement.spacing16};
   background-color: ${semantic.fillNormalStrong};
-`;
-
-export const NoticeContainer = styled(ColumnBox)`
-  width: 343px;
-  height: 92px;
-  gap: ${measurement.spacing16};
-`;
-
-export const NoticeTitleRow = styled(RowBox)`
-  width: 343px;
-  height: 20px;
-  gap: ${measurement.spacing2};
 `;
 
 export const NoticeTitleIcon = styled(Icon)`
   width: 16px;
   height: 16px;
-`;
-
-export const NoticeTitle = styled.h2`
-  width: 89px;
-  height: 20px;
-  ${typography.body2Semibold};
-  color: ${semantic.textNormalStrong};
-`;
-
-export const NoticeContent = styled.p`
-  width: 335px;
-  height: 56px;
-  ${typography.caption1Regular};
-  color: ${semantic.textNormalStrong};
-  white-space: pre-wrap;
 `;
