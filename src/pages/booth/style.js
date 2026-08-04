@@ -86,6 +86,9 @@ export const NoticeCard = styled.div`
   padding: ${measurement.spacing8} ${measurement.spacing12};
   border-radius: ${measurement.borderRadiusLg};
   background-color: ${semantic.fillPrimaryAssistive};
+  border: none;
+  width: 100%;
+  cursor: pointer;
 `;
 
 export const NoticeContent = styled.p`
