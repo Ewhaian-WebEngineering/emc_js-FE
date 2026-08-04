@@ -86,6 +86,9 @@ export const NoticeCard = styled.div`
   padding: ${measurement.spacing8} ${measurement.spacing12};
   border-radius: ${measurement.borderRadiusLg};
   background-color: ${semantic.fillPrimaryAssistive};
+  border: none;
+  width: 100%;
+  cursor: pointer;
 `;
 
 export const NoticeContent = styled.p`
@@ -129,4 +132,13 @@ export const RecommendBoothList = styled.div`
   margin-inline: -${measurement.spacing16};
   padding-inline: ${measurement.spacing16};
   overflow-x: auto;
+`;
+
+export const NoticeContentText = styled.p`
+  ${typography.body2Regular};
+  color: ${semantic.textNormalNormal};
+`;
+
+export const WhiteSpace = styled.div`
+  height: ${measurement.spacing128};
 `;

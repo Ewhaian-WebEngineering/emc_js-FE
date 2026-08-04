@@ -3,7 +3,7 @@ import BoothListCard from '@/designsystem/components/card/booth/BoothListCard';
 import Divider from '@/designsystem/components/divider/Divider';
 import { BoothListCardWrapper, BoothListWrapper } from './style';
 import { useNavigate } from 'react-router-dom';
-import { BOOTH_ROUTE } from '@/constants/routes';
+import { BOOTH_ROUTES } from '@/constants/routes';
 
 export default function BoothList({ booths }) {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function BoothList({ booths }) {
               marks={booth.marks}
               isBookmarked={booth.isBookmarked}
               onClick={() => {
-                navigate(BOOTH_ROUTE(booth.id));
+                navigate(BOOTH_ROUTES.DETAIL(booth.id));
               }}
               onBookmarkClick={() => {
                 // TODO: 북마크 API 호출

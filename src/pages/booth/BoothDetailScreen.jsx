@@ -4,7 +4,7 @@ import BookMarkStroke from '@/assets/svg/24px/ic_scrap_stroke.svg?react';
 import BookMarkFill from '@/assets/svg/24px/ic_scrap_fill.svg?react';
 import NoticeIcon from '@/assets/svg/16px/ic_announce.svg?react';
 import { useGoBack } from '@/hooks/useGoBack';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DUMMY_BOOTH_DETAIL } from './constants/dummyBoothDetail';
 import {
   Badges,
@@ -39,8 +39,10 @@ import {
 } from './style';
 import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
 import BoothDetailCard from '@/designsystem/components/card/booth/BoothDetailCard';
+import { BOOTH_ROUTES } from '@/constants/routes';
 
 export default function BoothDetailScreen() {
+  const navigate = useNavigate();
   const { boothId } = useParams();
   const handleBack = useGoBack();
   const [boothDescriptionExpanded, setBoothDescriptionExpanded] =
@@ -123,7 +125,11 @@ export default function BoothDetailScreen() {
             </LinkButton>
           </InfoRow>
         </InfoList>
-        <NoticeCard>
+        <NoticeCard
+          onClick={() => {
+            navigate(BOOTH_ROUTES.NOTICE(boothId));
+          }}
+        >
           <NoticeIcon color={semantic.iconPrimaryNormal} />
           <NoticeContent announcement={booth.announcement}>
             {booth.announcement[0] || '등록된 공지가 없습니다.'}
