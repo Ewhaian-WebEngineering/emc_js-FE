@@ -133,3 +133,12 @@ export const RecommendBoothList = styled.div`
   padding-inline: ${measurement.spacing16};
   overflow-x: auto;
 `;
+
+export const NoticeContentText = styled.p`
+  ${typography.body2Regular};
+  color: ${semantic.textNormalNormal};
+`;
+
+export const WhiteSpace = styled.div`
+  height: ${measurement.spacing128};
+`;
