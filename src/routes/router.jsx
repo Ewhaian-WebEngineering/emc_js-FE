@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
 import MainLayout from '../layouts/MainLayout';
+import FooterLayout from '@/layouts/FooterLayout';
 import HomeScreen from '../pages/home/HomeScreen';
 import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
@@ -32,18 +33,29 @@ export const router = createBrowserRouter([
       {
         element: <MainLayout />,
         children: [
-          { path: TAB_ROUTES.HOME, element: <HomeScreen /> },
-          { path: TAB_ROUTES.EVENT, element: <EventScreen /> },
-          { path: TAB_ROUTES.BOOTH, element: <BoothScreen /> },
-          { path: TAB_ROUTES.SCRAP, element: <ScrapScreen /> },
-          { path: TAB_ROUTES.MY, element: <MyScreen /> },
+          {
+            element: <FooterLayout />,
+            children: [
+              { path: TAB_ROUTES.HOME, element: <HomeScreen /> },
+              { path: TAB_ROUTES.EVENT, element: <EventScreen /> },
+              { path: TAB_ROUTES.BOOTH, element: <BoothScreen /> },
+              { path: TAB_ROUTES.SCRAP, element: <ScrapScreen /> },
+              { path: TAB_ROUTES.MY, element: <MyScreen /> },
+            ],
+          },
+        ],
+      },
+      {
+        element: <FooterLayout />,
+        children: [
+          { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
+          ...boothRoutes.withFooter,
         ],
       },
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
-      { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
-      ...boothRoutes.full,
+      ...boothRoutes.withoutFooter,
       ...searchRoutes.full,
     ],
   },
