@@ -30,3 +30,7 @@ export const SPONSOR_ROUTES = {
   LIST: '/sponsor',
   DETAIL: (id) => `/sponsor/${id}`,
 };
+
+export const MAKERS_ROUTES = {
+  LIST: '/makers',
+};
