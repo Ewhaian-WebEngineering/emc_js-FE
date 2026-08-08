@@ -7,7 +7,6 @@ import { makers } from './constants/makers';
 
 import {
   MakersContainer,
-  ContentWrapper,
   OrganizationSection,
   OrganizationTitle,
   TeamWrapper,
@@ -37,40 +36,38 @@ export default function MakersScreen() {
     <MakersContainer>
       <FillCenterHeader title="만든이들" onBack={handleBack} />
 
-      <ContentWrapper>
-        {makers.map((organization, organizationIndex) => (
-          <div key={organization.organization}>
-            <OrganizationSection>
-              <OrganizationTitle>{organization.organization}</OrganizationTitle>
+      {makers.map((organization, organizationIndex) => (
+        <div key={organization.organization}>
+          <OrganizationSection>
+            <OrganizationTitle>{organization.organization}</OrganizationTitle>
 
-              <TeamWrapper>
-                {organization.teams.map((team) => (
-                  <TeamSection key={team.title}>
-                    <TeamTitleWrapper>
-                      <Dot />
-                      <TeamTitle>{team.title}</TeamTitle>
-                    </TeamTitleWrapper>
+            <TeamWrapper>
+              {organization.teams.map((team) => (
+                <TeamSection key={team.title}>
+                  <TeamTitleWrapper>
+                    <Dot />
+                    <TeamTitle>{team.title}</TeamTitle>
+                  </TeamTitleWrapper>
 
-                    <MemberList>
-                      {team.members.map((member) => (
-                        <MemberRow key={member.studentId + member.name}>
-                          <Name>{member.name}</Name>
+                  <MemberList>
+                    {team.members.map((member) => (
+                      <MemberRow key={member.studentId + member.name}>
+                        <Name>{member.name}</Name>
 
-                          <StudentId>{member.studentId}</StudentId>
+                        <StudentId>{member.studentId}</StudentId>
 
-                          <Major>{member.major}</Major>
-                        </MemberRow>
-                      ))}
-                    </MemberList>
-                  </TeamSection>
-                ))}
-              </TeamWrapper>
-            </OrganizationSection>
+                        <Major>{member.major}</Major>
+                      </MemberRow>
+                    ))}
+                  </MemberList>
+                </TeamSection>
+              ))}
+            </TeamWrapper>
+          </OrganizationSection>
 
-            {organizationIndex !== makers.length - 1 && <Divider size="sm" />}
-          </div>
-        ))}
-      </ContentWrapper>
+          {organizationIndex !== makers.length - 1 && <Divider size="sm" />}
+        </div>
+      ))}
     </MakersContainer>
   );
 }

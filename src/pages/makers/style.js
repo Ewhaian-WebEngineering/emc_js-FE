@@ -8,54 +8,52 @@ export const MakersContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  background: ${semantic.fillNormalWhite};
-`;
-
-export const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  background: ${semantic.fillNormalNormal};
+  padding-bottom: ${measurement.spacing128};
 `;
 
 export const OrganizationSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing20};
-  padding: ${measurement.spacing20} ${measurement.spacing16};
+  padding: ${measurement.spacing24} ${measurement.spacing16}
+    ${measurement.spacing40} ${measurement.spacing16};
 `;
 
 export const OrganizationTitle = styled.h2`
-  ${typography.headline2Semibold};
+  ${typography.bodySemibold};
   color: ${semantic.textNormalStrong};
-  margin: 0;
 `;
 
 export const TeamWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing20};
+  padding-left: ${measurement.spacing4};
 `;
 
 export const TeamSection = styled.div`
   display: flex;
   flex-direction: column;
+  gap: ${measurement.spacing12};
 `;
 
 export const TeamTitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: ${measurement.spacing8};
+  gap: ${measurement.spacing6};
 `;
 
 export const Dot = styled.div`
-  width: ${measurement.spacing4};
-  height: ${measurement.spacing4};
-  border-radius: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: ${measurement.borderRadiusRounded};
   background: ${semantic.iconNormalAssistive};
   flex-shrink: 0;
 `;
 
-export const TeamTitle = styled.p`
-  ${typography.body1Semibold};
+export const TeamTitle = styled.h3`
+  ${typography.body2Semibold};
   color: ${semantic.textNormalNormal};
   margin: 0;
 `;
@@ -64,14 +62,13 @@ export const MemberList = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing6};
-  margin-top: ${measurement.spacing12};
+  padding-left: ${measurement.spacing16};
 `;
 
 export const MemberRow = styled.div`
   display: flex;
   align-items: center;
   gap: ${measurement.spacing2};
-  height: ${measurement.spacing20};
 `;
 
 export const Name = styled.div`
