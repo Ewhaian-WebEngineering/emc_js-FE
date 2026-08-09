@@ -127,7 +127,6 @@ export const NoticeTitle = styled.h2`
 export const NoticeText = styled(Text)`
   ${typography.caption1Regular};
   color: ${semantic.textNormalStrong};
-  max-width: 335px;
 `;
 
 export const RowBox = styled.div`
@@ -160,7 +159,7 @@ export const LinkShareIconCircle = styled(ShareIconCircle)`
 
 export const EventHero = styled.section`
   ${sectionColumn};
-  padding: ${measurement.spacing40} 0;
+  padding: ${measurement.spacing40} 24.5px;
   background-color: ${semantic.fillPrimaryAssistive};
 `;
 
@@ -185,12 +184,14 @@ export const SponsorSection = styled.section`
 `;
 
 export const SponsorContent = styled(ColumnBox)`
+  width: 100%;
   align-items: flex-start;
   gap: ${measurement.spacing20};
   padding: ${measurement.spacing32} ${measurement.spacing16};
 `;
 
 export const SponsorButton = styled(BoxButton)`
+  width: 100%;
   gap: ${measurement.spacing4};
 `;
 
@@ -201,6 +202,7 @@ export const ShareSection = styled.section`
 
 export const ShareBox = styled.div`
   ${flexColumn};
+  width: 100%;
   gap: ${measurement.spacing24};
   padding: ${measurement.spacing32} ${measurement.spacing40};
   border-radius: ${measurement.borderRadius3xl};
@@ -220,6 +222,7 @@ export const ShareAction = styled.div`
 
 export const NoticeBox = styled.section`
   ${sectionColumn};
+  align-items: stretch;
   padding: ${measurement.spacing24} ${measurement.spacing16}
     ${measurement.spacing128};
   background-color: ${semantic.fillNormalStrong};

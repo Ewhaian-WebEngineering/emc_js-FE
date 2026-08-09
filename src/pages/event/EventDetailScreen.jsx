@@ -106,7 +106,11 @@ export default function EventDetailScreen() {
               >
                 <KakaoIcon />
               </S.KakaoShareIconCircle>
-              <S.ShareActionLabel>카카오톡 공유하기</S.ShareActionLabel>
+              <S.ShareActionLabel>
+                카카오톡
+                <br />
+                공유하기
+              </S.ShareActionLabel>
             </S.ShareAction>
             <S.ShareAction>
               <S.LinkShareIconCircle
