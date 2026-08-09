@@ -206,6 +206,7 @@ export const SponsorButton = styled(BoxButton)`
 
 export const ShareSection = styled.section`
   ${sectionBase};
+  padding: ${measurement.spacing20} ${measurement.spacing16};
 `;
 
 export const ShareBox = styled.div`
