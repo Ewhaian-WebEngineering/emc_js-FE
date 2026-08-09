@@ -86,7 +86,7 @@ export default function EventDetailScreen() {
               size="md"
               onClick={handleSponsorClick}
             >
-              {event.sponsor.name} 부스 바로가기
+              협찬사 바로가기
               <ArrowRightIcon />
             </S.SponsorButton>
           </S.SponsorContent>
