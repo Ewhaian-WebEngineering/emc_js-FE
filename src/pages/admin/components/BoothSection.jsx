@@ -6,7 +6,7 @@ import { mockBooths } from '../constants/dashboardDummy';
 // TODO: mockBooths 대신 실제 API 데이터로 교체
 export default function BoothSection() {
   const [expanded, setExpanded] = useState(false);
-  const [booths] = useState(mockBooths);
+  const booths = mockBooths;
 
   // TODO: id로 수정 화면 라우팅
   const handleEdit = (id) => {};

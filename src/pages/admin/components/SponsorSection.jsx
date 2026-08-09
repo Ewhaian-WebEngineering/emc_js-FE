@@ -10,7 +10,7 @@ import { ButtonContent } from './style';
 
 export default function SponsorSection() {
   const [expanded, setExpanded] = useState(false);
-  const [sponsors] = useState(mockSponsors);
+  const sponsors = mockSponsors;
 
   // TODO: 등록 화면 이동 로직 연결
   const handleAdd = () => {};

@@ -9,7 +9,7 @@ import { ButtonContent } from './style';
 // TODO: mockBanners 대신 실제 API 데이터로 교체
 export default function BannerSection() {
   const [expanded, setExpanded] = useState(false);
-  const [banners] = useState(mockBanners);
+  const banners = mockBanners;
 
   // TODO: 등록 화면 이동 로직 연결
   const handleAdd = () => {};

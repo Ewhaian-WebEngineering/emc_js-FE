@@ -9,7 +9,7 @@ import { ButtonContent } from './style';
 // TODO: mockEvents 대신 실제 API 데이터로 교체
 export default function EventSection() {
   const [expanded, setExpanded] = useState(false);
-  const [events] = useState(mockEvents);
+  const events = mockEvents;
 
   // TODO: 등록 화면 이동 로직 연결
   const handleAdd = () => {};
