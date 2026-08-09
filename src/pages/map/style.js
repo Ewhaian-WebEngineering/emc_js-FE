@@ -12,6 +12,7 @@ export const MapScreenWrapper = styled.div`
 export const MapArea = styled.div`
   min-height: 0;
   overflow: hidden;
+  position: relative;
 `;
 
 export const InstructionsContainer = styled.div`
@@ -63,4 +64,11 @@ export const BoothListContainer = styled.div`
   grid-template-rows: repeat(26, auto);
   gap: ${measurement.spacing12} ${measurement.spacing16};
   padding: ${measurement.spacing20};
+`;
+
+export const NoticeTagWrapper = styled.div`
+  position: absolute;
+  top: 10px;
+  left: ${measurement.spacing16};
+  z-index: 10;
 `;
