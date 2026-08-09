@@ -17,7 +17,6 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   padding: ${measurement.spacing32} ${measurement.spacing16}
     ${measurement.spacing88} ${measurement.spacing16};
-  border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
 `;
 
 export const EntrySection = styled.div`
