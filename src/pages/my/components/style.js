@@ -48,12 +48,12 @@ export const MyUserName = styled.h2`
 
 export const MyUserNameHighlight = styled.span`
   color: ${semantic.textPrimaryNormal};
-  ${typography.headlineBd};
+  ${typography.title3Semibold};
 `;
 
 export const MyUserNameSuffix = styled.span`
-  color: #242628;
-  ${typography.headlineBd};
+  color: ${semantic.title3Semibold};
+  ${typography.title3Semibold};
 `;
 
 export const MyLogoutGroup = styled.div`
