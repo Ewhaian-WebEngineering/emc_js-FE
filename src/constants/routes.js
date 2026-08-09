@@ -10,7 +10,10 @@ export const EVENT_ROUTES = {
   LIST: '/event',
   DETAIL: (id) => `/event/${id}`,
 };
-export const BOOTH_ROUTE = (boothId) => `/booth/${boothId}`;
+export const BOOTH_ROUTES = {
+  DETAIL: (boothId) => `/booth/${boothId}`,
+  NOTICE: (boothId) => `/booth/${boothId}/notice`,
+};
 
 export const SEARCH_ROUTES = {
   SEARCH: '/search',
