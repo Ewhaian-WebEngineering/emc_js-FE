@@ -7,13 +7,13 @@ export const CongestionListWrapper = styled.ul`
   display: flex;
   flex-direction: column;
 
-  padding: ${measurement.spacing24} ${measurement.spacing16} 0;
+  padding: ${measurement.spacing24} ${measurement.spacing16}
+    ${measurement.spacing40} ${measurement.spacing16};
 `;
 
 export const CongestionButtonWrapper = styled.div`
   padding: ${measurement.spacing12} ${measurement.spacing16}
     ${measurement.spacing40} ${measurement.spacing16};
-  margin-top: ${measurement.spacing40};
 
   & > button {
     width: 100%;
