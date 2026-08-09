@@ -65,5 +65,5 @@ export const BottomSheetContainer = styled.div`
     0;
 
   overflow: hidden;
-  z-index: 100;
+  z-index: 10;
 `;
