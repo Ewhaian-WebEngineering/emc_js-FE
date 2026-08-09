@@ -24,6 +24,7 @@ const parseMonthDay = (dateString) => {
 /**
  * 이벤트 진행기간을 포맷팅합니다.
  * 현장 이벤트는 'M월 D일' 형식으로, 나머지는 'M.D - M.D' 형식으로 반환합니다.
+ * endDate가 없으면 시작일만 'M.D' 형식으로 반환합니다.
  *
  * @param {string} eventType - 이벤트 유형 ('onsite' | 'pre' | 'post')
  * @param {string} startDate - 시작일 문자열
@@ -39,7 +40,12 @@ export function formatEventPeriod(eventType, startDate, endDate) {
   }
 
   const { month: startMonth, day: startDay } = parseMonthDay(startDate);
-  const { month: endMonth, day: endDay } = parseMonthDay(endDate || startDate);
+
+  if (!endDate) {
+    return `${startMonth}.${startDay}`;
+  }
+
+  const { month: endMonth, day: endDay } = parseMonthDay(endDate);
 
   return `${startMonth}.${startDay} - ${endMonth}.${endDay}`;
 }
