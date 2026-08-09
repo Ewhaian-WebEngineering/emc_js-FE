@@ -19,7 +19,7 @@ import {
   BOOTH_ROUTE,
 } from '../constants/routes';
 import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
-import EventDetailScreen from '@/pages/event/detail/EventDetailScreen';
+import EventDetailScreen from '@/pages/event/EventDetailScreen';
 
 /**
  * 앱 전체 라우트 트리입니다.
