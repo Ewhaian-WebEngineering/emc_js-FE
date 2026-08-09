@@ -4,7 +4,7 @@ import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
 import { mockFaqs } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { ButtonContent } from './style';
+import { ButtonContent, CardWrapper } from './style';
 
 // TODO: mockFaqs 대신 실제 API 데이터로 교체
 export default function FaqSection() {
@@ -36,16 +36,18 @@ export default function FaqSection() {
         }
         onClick={handleAdd}
       />
-      {faqs.map((faq) => (
-        <SpCard
-          key={faq.id}
-          content={faq.content}
-          title={faq.title}
-          onClick={() => handleClick(faq.id)}
-          onDelete={() => handleDelete(faq.id)}
-          onEdit={() => handleEdit(faq.id)}
-        />
-      ))}
+      <CardWrapper>
+        {faqs.map((faq) => (
+          <SpCard
+            key={faq.id}
+            content={faq.content}
+            title={faq.title}
+            onClick={() => handleClick(faq.id)}
+            onDelete={() => handleDelete(faq.id)}
+            onEdit={() => handleEdit(faq.id)}
+          />
+        ))}
+      </CardWrapper>
     </Accordion>
   );
 }

@@ -4,7 +4,7 @@ import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
 import { mockSponsors } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { ButtonContent } from './style';
+import { ButtonContent, CardWrapper } from './style';
 
 //TODO: mockSponsors 대신 실제 API 데이터로 교체
 
@@ -37,16 +37,18 @@ export default function SponsorSection() {
         }
         onClick={handleAdd}
       />
-      {sponsors.map((sponsor) => (
-        <SpCard
-          key={sponsor.id}
-          content={sponsor.content}
-          title={sponsor.title}
-          onClick={() => handleClick(sponsor.id)}
-          onDelete={() => handleDelete(sponsor.id)}
-          onEdit={() => handleEdit(sponsor.id)}
-        />
-      ))}
+      <CardWrapper>
+        {sponsors.map((sponsor) => (
+          <SpCard
+            key={sponsor.id}
+            content={sponsor.content}
+            title={sponsor.title}
+            onClick={() => handleClick(sponsor.id)}
+            onDelete={() => handleDelete(sponsor.id)}
+            onEdit={() => handleEdit(sponsor.id)}
+          />
+        ))}
+      </CardWrapper>
     </Accordion>
   );
 }

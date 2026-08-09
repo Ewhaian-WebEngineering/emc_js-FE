@@ -4,7 +4,7 @@ import EventBannerCard from '../../../designsystem/components/card/admin/AdminEv
 import { mockBanners } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { ButtonContent } from './style';
+import { ButtonContent, CardWrapper } from './style';
 
 // TODO: mockBanners 대신 실제 API 데이터로 교체
 export default function BannerSection() {
@@ -36,17 +36,19 @@ export default function BannerSection() {
         }
         onClick={handleAdd}
       />
-      {banners.map((banner) => (
-        <EventBannerCard
-          key={banner.id}
-          endDate={banner.endDate}
-          startDate={banner.startDate}
-          title={banner.title}
-          onClick={() => handleClick(banner.id)}
-          onDelete={() => handleDelete(banner.id)}
-          onEdit={() => handleEdit(banner.id)}
-        />
-      ))}
+      <CardWrapper>
+        {banners.map((banner) => (
+          <EventBannerCard
+            key={banner.id}
+            endDate={banner.endDate}
+            startDate={banner.startDate}
+            title={banner.title}
+            onClick={() => handleClick(banner.id)}
+            onDelete={() => handleDelete(banner.id)}
+            onEdit={() => handleEdit(banner.id)}
+          />
+        ))}
+      </CardWrapper>
     </Accordion>
   );
 }
