@@ -15,7 +15,7 @@ export default function EventSection() {
   const handleAdd = () => {};
   // TODO: id로 수정 화면 라우팅
   const handleEdit = (id) => {};
-  // TODO: DELETE 요청 후 목록 refetch
+  // TODO: DELETE 요청 시 모달 노출
   const handleDelete = (id) => {};
   const handleClick = (id) => {};
 
