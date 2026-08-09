@@ -77,19 +77,7 @@ const sectionColumn = css`
 `;
 
 export const Text = styled.span`
-  ${({ typo }) => typography[typo]};
-  color: ${({ color }) => semantic[color] || semantic.textNormalStrong};
-  text-align: ${({ align }) => align || 'left'};
   white-space: pre-wrap;
-  ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth}px;`};
-  ${({ lineClamp }) =>
-    lineClamp &&
-    `
-    display: -webkit-box;
-    -webkit-line-clamp: ${lineClamp};
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  `}
 `;
 
 export const EventTitle = styled.h1`
