@@ -6,7 +6,6 @@ import { typography } from '../../designsystem/tokens/typography';
 export const MyContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
 `;
 
 export const MyContentContainer = styled.div`
