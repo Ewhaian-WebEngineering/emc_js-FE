@@ -1,15 +1,23 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import EventBannerCard from '../../../designsystem/components/card/admin/AdminEventBannerCard';
-import { mockEvents } from '../constants/dashboardDummy';
+import { mockEvents, EVENT_PHASE_LABEL } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { ButtonContent } from './style';
+import { ButtonContent, SectionTitle, CardWrapper } from './style';
+
+const PHASE_ORDER = ['pre', 'onsite', 'post'];
 
 // TODO: mockEvents 대신 실제 API 데이터로 교체
 export default function EventSection() {
   const [expanded, setExpanded] = useState(false);
   const events = mockEvents;
+
+  const groupedEvents = PHASE_ORDER.map((phase) => ({
+    phase,
+    label: EVENT_PHASE_LABEL[phase],
+    items: events.filter((event) => event.phase === phase),
+  }));
 
   // TODO: 등록 화면 이동 로직 연결
   const handleAdd = () => {};
@@ -36,17 +44,26 @@ export default function EventSection() {
         }
         onClick={handleAdd}
       />
-      {events.map((event) => (
-        <EventBannerCard
-          key={event.id}
-          endDate={event.endDate}
-          startDate={event.startDate}
-          title={event.title}
-          onClick={() => handleClick(event.id)}
-          onDelete={() => handleDelete(event.id)}
-          onEdit={() => handleEdit(event.id)}
-        />
-      ))}
+      <CardWrapper>
+        {groupedEvents
+          .filter((group) => group.items.length > 0)
+          .map(({ phase, label, items }, index) => (
+            <Fragment key={phase}>
+              <SectionTitle isFirst={index === 0}>{label}</SectionTitle>
+              {items.map((event) => (
+                <EventBannerCard
+                  key={event.id}
+                  endDate={event.endDate}
+                  startDate={event.startDate}
+                  title={event.title}
+                  onClick={() => handleClick(event.id)}
+                  onDelete={() => handleDelete(event.id)}
+                  onEdit={() => handleEdit(event.id)}
+                />
+              ))}
+            </Fragment>
+          ))}
+      </CardWrapper>
     </Accordion>
   );
 }

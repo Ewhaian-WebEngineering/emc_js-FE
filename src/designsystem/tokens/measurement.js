@@ -8,6 +8,7 @@ export const measurement = {
   spacing16: '16px',
   spacing20: '20px',
   spacing24: '24px',
+  spacing28: '28px',
   spacing32: '32px',
   spacing36: '36px',
   spacing40: '40px',

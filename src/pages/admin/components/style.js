@@ -23,5 +23,18 @@ export const CongestionButtonWrapper = styled.div`
 export const ButtonContent = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: ${measurement.spacing4};
+`;
+
+export const SectionTitle = styled.p`
+  ${typography.body2Medium};
+  color: ${semantic.textNormalNormal};
+  margin-top: ${({ isFirst }) => (isFirst ? 0 : `${measurement.spacing28}`)};
+`;
+
+export const CardWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing8};
 `;
