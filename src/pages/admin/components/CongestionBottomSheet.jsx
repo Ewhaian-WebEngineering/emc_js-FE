@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
 import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 import { CONGESTION_LEVEL } from '@/constants/congestionLevel';
@@ -25,7 +25,16 @@ export default function CongestionBottomSheet({
 }) {
   const [selected, setSelected] = useState(value);
 
+  useEffect(() => {
+    if (isOpen) {
+      setSelected(value);
+    }
+  }, [isOpen, value]);
+
+  const isChanged = selected !== value;
+
   const handleSave = () => {
+    if (!isChanged) return;
     onSave?.(selected);
     onClose();
   };
@@ -50,7 +59,12 @@ export default function CongestionBottomSheet({
       </CongestionListWrapper>
 
       <CongestionButtonWrapper>
-        <BoxButton variant="primary" size="md" onClick={handleSave}>
+        <BoxButton
+          variant="primary"
+          size="md"
+          onClick={handleSave}
+          disabled={!isChanged}
+        >
           저장하기
         </BoxButton>
       </CongestionButtonWrapper>
