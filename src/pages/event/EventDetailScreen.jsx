@@ -8,10 +8,10 @@ import { EVENT_ROUTES, SPONSOR_ROUTES } from '@/constants/routes';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { formatEventPeriod } from './utils/formatEventPeriod';
-import KakaoIconContainer from './image/kakaoIconContainer.png';
-import LinkIconContainer from './image/linkIconContainer.png';
 import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import InfoIcon from '@/assets/svg/16px/ic_information.svg?react';
+import KakaoIcon from '@/assets/svg/20px/ic_kakao.svg?react';
+import LinkIcon from '@/assets/svg/20px/ic_link.svg?react';
 import {
   eventDetailMessages,
   eventTypeLabel,
@@ -167,7 +167,9 @@ export default function EventDetailScreen() {
           </S.Text>
           <S.ShareActions>
             <S.ShareAction onClick={handleKakaoShare}>
-              <S.ShareActionIcon src={KakaoIconContainer} alt="카카오톡" />
+              <S.KakaoShareIconCircle>
+                <KakaoIcon />
+              </S.KakaoShareIconCircle>
               <S.Text
                 typo="body2Medium"
                 color="textNormalNormal"
@@ -177,7 +179,9 @@ export default function EventDetailScreen() {
               </S.Text>
             </S.ShareAction>
             <S.ShareAction onClick={handleCopyLink}>
-              <S.ShareActionIcon src={LinkIconContainer} alt="링크" />
+              <S.LinkShareIconCircle>
+                <LinkIcon color={semantic.secondaryYellowDefault} />
+              </S.LinkShareIconCircle>
               <S.Text
                 typo="body2Medium"
                 color="textNormalNormal"

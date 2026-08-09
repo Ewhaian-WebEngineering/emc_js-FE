@@ -107,8 +107,19 @@ export const ColumnBox = styled.div`
   width: ${({ width }) => width && `${width}px`};
 `;
 
-export const Icon = styled.img`
-  object-fit: contain;
+export const ShareIconCircle = styled.div`
+  width: 56px;
+  height: 56px;
+  ${flexCenter};
+  border-radius: ${measurement.borderRadiusRounded};
+`;
+
+export const KakaoShareIconCircle = styled(ShareIconCircle)`
+  background-color: #fee500;
+`;
+
+export const LinkShareIconCircle = styled(ShareIconCircle)`
+  background-color: ${semantic.fillNormalWhite};
 `;
 
 export const HeaderSpacer = styled.div`
@@ -189,11 +200,6 @@ export const ShareAction = styled.button`
   border: none;
   cursor: pointer;
   color: ${semantic.textNormalNormal};
-`;
-
-export const ShareActionIcon = styled(Icon)`
-  width: 56px;
-  height: 56px;
 `;
 
 export const NoticeBox = styled.section`
