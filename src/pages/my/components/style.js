@@ -52,7 +52,7 @@ export const MyUserNameHighlight = styled.span`
 `;
 
 export const MyUserNameSuffix = styled.span`
-  color: ${semantic.title3Semibold};
+  color: ${semantic.textNormalStrong};
   ${typography.title3Semibold};
 `;
 
