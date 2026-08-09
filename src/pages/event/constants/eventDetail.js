@@ -8,9 +8,6 @@ export const eventDetailMessages = {
   notFound: '존재하지 않는 이벤트입니다.',
   noNotice: '이벤트 유의사항이 없습니다.',
   shareTitle: '이벤트를 친구에게 공유해보세요!',
-  kakaoUnsupported: '카카오톡 공유하기는 앱에서 지원됩니다.',
-  linkCopied: '링크가 복사되었습니다.',
-  linkCopyFailed: '링크 복사에 실패했습니다.',
 };
 
 export const eventDetails = {
