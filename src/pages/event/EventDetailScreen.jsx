@@ -39,13 +39,8 @@ export default function EventDetailScreen() {
     // TODO: 카카오 SDK 연결
   };
 
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      alert(eventDetailMessages.linkCopied);
-    } catch {
-      alert(eventDetailMessages.linkCopyFailed);
-    }
+  const handleCopyLink = () => {
+    // TODO: copyToClipboard 추가
   };
 
   if (!event) {
