@@ -14,3 +14,29 @@ export function formatDate(dateString) {
 
   return `${yyyy}. ${mm}. ${dd}`;
 }
+
+const formatMonthDay = (dateString) => {
+  if (!dateString) return '';
+  const [, month, day] = dateString.split('-');
+  return `${month}.${day}`;
+};
+
+/**
+ * 이벤트 진행기간을 포맷팅합니다.
+ * 현장 이벤트는 'M월 D일' 형식으로, 나머지는 'M.D - M.D' 형식으로 반환합니다.
+ *
+ * @param {string} eventType - 이벤트 유형 ('onsite' | 'pre' | 'post')
+ * @param {string} startDate - 시작일 문자열
+ * @param {string} endDate - 종료일 문자열
+ * @returns {string} 포맷팅된 진행기간 문자열, startDate가 없으면 빈 문자열
+ */
+export function formatEventPeriod(eventType, startDate, endDate) {
+  if (!startDate) return '';
+
+  if (eventType === 'onsite') {
+    const [, month, day] = startDate.split('-');
+    return `${Number(month)}월 ${Number(day)}일`;
+  }
+
+  return `${formatMonthDay(startDate)} - ${formatMonthDay(endDate || startDate)}`;
+}

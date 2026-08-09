@@ -7,7 +7,7 @@ import { useGoBack } from '@/hooks/useGoBack';
 import { EVENT_ROUTES, SPONSOR_ROUTES } from '@/constants/routes';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { formatEventPeriod } from './utils/formatEventPeriod';
+import { formatEventPeriod } from '@/utils/formatDate';
 import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import InfoIcon from '@/assets/svg/16px/ic_information.svg?react';
 import KakaoIcon from '@/assets/svg/20px/ic_kakao.svg?react';
