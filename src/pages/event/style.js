@@ -81,8 +81,6 @@ export const Text = styled.span`
   color: ${({ color }) => semantic[color] || semantic.textNormalStrong};
   text-align: ${({ align }) => align || 'left'};
   white-space: pre-wrap;
-  ${({ lineHeight }) => lineHeight && `line-height: ${lineHeight}px;`};
-  ${({ mb }) => mb && `margin-bottom: ${mb};`};
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth}px;`};
   ${({ lineClamp }) =>
     lineClamp &&
@@ -92,6 +90,62 @@ export const Text = styled.span`
     -webkit-box-orient: vertical;
     overflow: hidden;
   `}
+`;
+
+export const EventTitle = styled(Text).attrs({ as: 'h1' })`
+  ${typography.headline1Semibold};
+  color: ${semantic.textNormalStrong};
+  text-align: center;
+  max-width: 326px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: ${measurement.spacing20};
+`;
+
+export const EventPeriodLabel = styled(Text)`
+  ${typography.body2Regular};
+  color: ${semantic.textNormalNormal};
+`;
+
+export const EventPeriodValue = styled(Text)`
+  ${typography.body2Medium};
+  color: ${semantic.textNormalStrong};
+`;
+
+export const EventContentText = styled(Text)`
+  ${typography.caption1Regular};
+  color: ${semantic.textNormalNormal};
+  text-align: center;
+`;
+
+export const SponsorTitle = styled(Text).attrs({ as: 'h2' })`
+  ${typography.title3Semibold};
+  color: ${semantic.textNormalStrong};
+`;
+
+export const ShareTitle = styled(Text).attrs({ as: 'h2' })`
+  ${typography.body1Medium};
+  color: ${semantic.textNormalStrong};
+  text-align: center;
+`;
+
+export const ShareActionLabel = styled(Text)`
+  ${typography.body2Medium};
+  color: ${semantic.textNormalNormal};
+  text-align: center;
+`;
+
+export const NoticeTitle = styled(Text).attrs({ as: 'h2' })`
+  ${typography.body2Semibold};
+  color: ${semantic.textNormalStrong};
+`;
+
+export const NoticeText = styled(Text)`
+  ${typography.caption1Regular};
+  color: ${semantic.textNormalStrong};
+  max-width: 335px;
 `;
 
 export const RowBox = styled.div`

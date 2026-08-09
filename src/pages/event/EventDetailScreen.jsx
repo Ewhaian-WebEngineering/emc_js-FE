@@ -88,24 +88,14 @@ export default function EventDetailScreen() {
 
       <S.EventHero>
         <S.EventTypeBadge>{eventTypeLabel[event.eventType]}</S.EventTypeBadge>
-        <S.Text
-          as="h1"
-          typo="headline1Semibold"
-          color="textNormalStrong"
-          align="center"
-          mb={measurement.spacing20}
-          maxWidth={326}
-          lineClamp={2}
-        >
+        <S.EventTitle>
           {event.eventTitle?.slice(0, eventTitleMaxLength)}
-        </S.Text>
+        </S.EventTitle>
         <S.RowBox gap={measurement.spacing4}>
-          <S.Text typo="body2Regular" color="textNormalNormal">
-            진행기간
-          </S.Text>
-          <S.Text typo="body2Medium" color="textNormalStrong">
+          <S.EventPeriodLabel>진행기간</S.EventPeriodLabel>
+          <S.EventPeriodValue>
             {formatEventPeriod(event.eventType, event.startDate, event.endDate)}
-          </S.Text>
+          </S.EventPeriodValue>
         </S.RowBox>
       </S.EventHero>
 
@@ -117,14 +107,7 @@ export default function EventDetailScreen() {
             ) : null;
           }
           return (
-            <S.Text
-              key={index}
-              typo="caption1Regular"
-              color="textNormalNormal"
-              align="center"
-            >
-              {block.text}
-            </S.Text>
+            <S.EventContentText key={index}>{block.text}</S.EventContentText>
           );
         })}
       </S.EventContent>
@@ -132,15 +115,10 @@ export default function EventDetailScreen() {
       {hasSponsor && (
         <S.SponsorSection>
           <S.SponsorContent>
-            <S.Text
-              as="h2"
-              typo="title3Semibold"
-              color="textNormalStrong"
-              lineHeight={46}
-            >
+            <S.SponsorTitle>
               {event.sponsor.name}에 대해
               <br />더 궁금하다면?
-            </S.Text>
+            </S.SponsorTitle>
             <S.SponsorButton
               variant="primary"
               size="md"
@@ -157,40 +135,23 @@ export default function EventDetailScreen() {
 
       <S.ShareSection>
         <S.ShareBox>
-          <S.Text
-            as="h2"
-            typo="body1Medium"
-            color="textNormalStrong"
-            align="center"
-          >
-            {eventDetailMessages.shareTitle}
-          </S.Text>
+          <S.ShareTitle>{eventDetailMessages.shareTitle}</S.ShareTitle>
           <S.ShareActions>
             <S.ShareAction onClick={handleKakaoShare}>
               <S.KakaoShareIconCircle>
                 <KakaoIcon />
               </S.KakaoShareIconCircle>
-              <S.Text
-                typo="body2Medium"
-                color="textNormalNormal"
-                align="center"
-              >
-                카카오톡 공유하기
-              </S.Text>
+              <S.ShareActionLabel>카카오톡 공유하기</S.ShareActionLabel>
             </S.ShareAction>
             <S.ShareAction onClick={handleCopyLink}>
               <S.LinkShareIconCircle>
                 <LinkIcon color={semantic.secondaryYellowDefault} />
               </S.LinkShareIconCircle>
-              <S.Text
-                typo="body2Medium"
-                color="textNormalNormal"
-                align="center"
-              >
+              <S.ShareActionLabel>
                 링크
                 <br />
                 복사하기
-              </S.Text>
+              </S.ShareActionLabel>
             </S.ShareAction>
           </S.ShareActions>
         </S.ShareBox>
@@ -200,18 +161,11 @@ export default function EventDetailScreen() {
         <S.ColumnBox gap={measurement.spacing16} width={343}>
           <S.RowBox gap={measurement.spacing2}>
             <InfoIcon color={semantic.iconNormalAssistive} />
-            <S.Text as="h2" typo="body2Semibold" color="textNormalStrong">
-              이벤트 유의사항
-            </S.Text>
+            <S.NoticeTitle>이벤트 유의사항</S.NoticeTitle>
           </S.RowBox>
-          <S.Text
-            as="p"
-            typo="caption1Regular"
-            color="textNormalStrong"
-            maxWidth={335}
-          >
+          <S.NoticeText>
             {hasNotice ? event.notice : eventDetailMessages.noNotice}
-          </S.Text>
+          </S.NoticeText>
         </S.ColumnBox>
       </S.NoticeBox>
     </>
