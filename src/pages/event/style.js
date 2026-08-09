@@ -197,7 +197,7 @@ export const SponsorSection = styled.section`
 export const SponsorContent = styled(ColumnBox)`
   align-items: flex-start;
   gap: ${measurement.spacing20};
-  padding: ${measurement.spacing32} 0;
+  padding: ${measurement.spacing32} ${measurement.spacing16};
 `;
 
 export const SponsorButton = styled(BoxButton)`
