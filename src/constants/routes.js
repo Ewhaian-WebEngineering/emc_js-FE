@@ -22,6 +22,7 @@ export const SEARCH_ROUTES = {
 
 export const ADMIN_ROUTES = {
   CODE: '/admin',
+  BANNER: '/admin/banner',
 };
 
 export const NOTICE_ROUTE = '/notice';

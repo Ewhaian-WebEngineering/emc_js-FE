@@ -11,6 +11,7 @@ import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
+import BannerForm from '../pages/admin/banner/BannerForm';
 import {
   TAB_ROUTES,
   NOTICE_ROUTE,
@@ -53,6 +54,7 @@ export const router = createBrowserRouter([
         ],
       },
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
+      { path: ADMIN_ROUTES.BANNER, element: <BannerForm /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       ...boothRoutes.withoutFooter,
