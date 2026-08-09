@@ -25,7 +25,7 @@ export const MyFooter = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${measurement.spacing4};
-  margin-bottom: ${measurement.spacing88};
+  padding-bottom: ${measurement.spacing112};
 
   p {
     color: ${semantic.textNormalNormal};
