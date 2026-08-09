@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useGoBack } from '@/hooks/useGoBack';
 
 import emcIntroductionImage from '../../assets/img/emcIntroduction/img_emc_introduction.png';
 import FillCenterHeader from '../../designsystem/components/header/FillCenterHeader';
@@ -6,13 +6,13 @@ import FillCenterHeader from '../../designsystem/components/header/FillCenterHea
 import * as S from './style';
 
 export default function EmcIntroductionScreen() {
-  const navigate = useNavigate();
+  const handleBack = useGoBack();
 
   return (
-    <S.Page>
-      <FillCenterHeader title="EMC 소개" onBack={() => navigate(-1)} />
+    <>
+      <FillCenterHeader title="EMC 소개" onBack={handleBack} />
 
       <S.Image src={emcIntroductionImage} alt="EMC 소개" />
-    </S.Page>
+    </>
   );
 }

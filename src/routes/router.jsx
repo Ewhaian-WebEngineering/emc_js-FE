@@ -20,7 +20,7 @@ import {
   MAKERS_ROUTES,
   ADMIN_ROUTES,
   MAP_ROUTE,
-  EMC_INTRODUCTION_ROUTES,
+  EMC_INTRODUCTION_ROUTE,
 } from '../constants/routes';
 import { boothRoutes } from '@/pages/booth/routes';
 import MapScreen from '@/pages/map/MapScreen';
@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
       { path: MAP_ROUTE, element: <MapScreen /> },
       {
-        path: EMC_INTRODUCTION_ROUTES.LIST,
+        path: EMC_INTRODUCTION_ROUTE,
         element: <EmcIntroductionScreen />,
       },
       ...boothRoutes.withoutFooter,
