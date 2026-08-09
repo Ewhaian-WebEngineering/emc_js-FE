@@ -23,7 +23,7 @@ export default function CongestionBottomSheet({
   value,
   onSave,
 }) {
-  const [selected, setSelected] = useState(value ?? null);
+  const [selected, setSelected] = useState(value);
 
   const handleSave = () => {
     onSave?.(selected);
