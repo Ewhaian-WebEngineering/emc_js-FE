@@ -7,7 +7,6 @@ import IconButton from '../../designsystem/components/button/iconbutton/IconButt
 import InquiryList from './components/InquiryList';
 import {
   MyContainer,
-  MyHeaderWrapper,
   MyContentContainer,
   MyFooter,
   LoginGroup,
@@ -17,9 +16,8 @@ import {
 export default function MyLogoutScreen() {
   return (
     <MyContainer>
-      <MyHeaderWrapper>
-        <Header title="마이페이지" border />
-      </MyHeaderWrapper>
+      <Header title="마이페이지" border />
+
       <MyContentContainer>
         <LoginGroup>
           <LoginText>로그인</LoginText>

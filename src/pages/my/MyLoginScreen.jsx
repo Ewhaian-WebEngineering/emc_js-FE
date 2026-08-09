@@ -5,12 +5,7 @@ import Banner from '../../designsystem/components/banner/Banner';
 import NavigationBar from '../../designsystem/components/navigationbar/NavigationBar';
 import MyUser from './components/MyUserRow';
 import InquiryList from './components/InquiryList';
-import {
-  MyContainer,
-  MyHeaderWrapper,
-  MyContentContainer,
-  MyFooter,
-} from './style.js';
+import { MyContainer, MyContentContainer, MyFooter } from './style.js';
 
 export default function MyLoginScreen() {
   const [userName, setUserName] = useState('김이화');
@@ -25,9 +20,7 @@ export default function MyLoginScreen() {
 
   return (
     <MyContainer>
-      <MyHeaderWrapper>
-        <Header title="마이페이지" border />
-      </MyHeaderWrapper>
+      <Header title="마이페이지" border />
       <MyContentContainer>
         <MyUser userName={userName} onLogout={handleLogout} />
         <Banner />

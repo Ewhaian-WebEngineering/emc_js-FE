@@ -5,14 +5,26 @@ import NavigationBar from '../../designsystem/components/navigationbar/Navigatio
 import ManagementBoothCard from '../../designsystem/components/card/management/ManagementBoothCard';
 import ManagementFairCard from '../../designsystem/components/card/management/ManagementFairCard';
 import MyUser from './components/MyUserRow';
-import { MyContainer, MyHeaderWrapper, MyContentContainer } from './style.js';
+import { MyContainer, MyContentContainer } from './style.js';
+
+const MOCK_ADMIN_DATA = {
+  userName: '김이화',
+  fairVisitorCount: 46,
+  boothName: 'EMC 운영 부스',
+  scrapCount: 46,
+  boothVisitorCount: 10999,
+};
 
 export default function MyAdminScreen() {
-  const [userName, setUserName] = useState('김이화');
-  const [fairVisitorCount, setFairVisitorCount] = useState(46);
-  const [boothName, setBoothName] = useState('EMC 운영 부스');
-  const [scrapCount, setScrapCount] = useState(46);
-  const [boothVisitorCount, setBoothVisitorCount] = useState(10999);
+  const [userName, setUserName] = useState(MOCK_ADMIN_DATA.userName);
+  const [fairVisitorCount, setFairVisitorCount] = useState(
+    MOCK_ADMIN_DATA.fairVisitorCount,
+  );
+  const [boothName, setBoothName] = useState(MOCK_ADMIN_DATA.boothName);
+  const [scrapCount, setScrapCount] = useState(MOCK_ADMIN_DATA.scrapCount);
+  const [boothVisitorCount, setBoothVisitorCount] = useState(
+    MOCK_ADMIN_DATA.boothVisitorCount,
+  );
 
   useEffect(() => {
     // TODO: 유저 이름
@@ -26,9 +38,8 @@ export default function MyAdminScreen() {
 
   return (
     <MyContainer>
-      <MyHeaderWrapper>
-        <Header title="마이페이지" border />
-      </MyHeaderWrapper>
+      <Header title="마이페이지" border />
+
       <MyContentContainer>
         <MyUser userName={userName} onLogout={handleLogout} />
         <ManagementFairCard

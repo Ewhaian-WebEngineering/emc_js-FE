@@ -3,10 +3,6 @@ import { semantic } from '../../designsystem/tokens/semantic';
 import { measurement } from '../../designsystem/tokens/measurement';
 import { typography } from '../../designsystem/tokens/typography';
 
-export const MyHeaderWrapper = styled.div`
-  flex-shrink: 0;
-`;
-
 export const MyContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -20,7 +16,7 @@ export const MyContentContainer = styled.div`
   min-height: 0;
   overflow-y: auto;
   padding: ${measurement.spacing20} ${measurement.spacing16}
-    ${measurement.spacing0} ${measurement.spacing16};
+    ${measurement.spacing144} ${measurement.spacing16};
   gap: ${measurement.spacing32};
 `;
 

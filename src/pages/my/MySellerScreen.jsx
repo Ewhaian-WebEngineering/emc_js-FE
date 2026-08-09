@@ -5,7 +5,7 @@ import NavigationBar from '../../designsystem/components/navigationbar/Navigatio
 import ManagementBoothCard from '../../designsystem/components/card/management/ManagementBoothCard';
 import MyUser from './components/MyUserRow';
 import InquiryList from './components/InquiryList';
-import { MyContainer, MyHeaderWrapper, MyContentContainer } from './style.js';
+import { MyContainer, MyContentContainer } from './style.js';
 
 const MOCK_SELLER_DATA = {
   userName: '김이화',
@@ -33,9 +33,8 @@ export default function MySellerScreen() {
 
   return (
     <MyContainer>
-      <MyHeaderWrapper>
-        <Header title="마이페이지" border />
-      </MyHeaderWrapper>
+      <Header title="마이페이지" border />
+
       <MyContentContainer>
         <MyUser userName={userName} onLogout={handleLogout} />
         <Banner />
