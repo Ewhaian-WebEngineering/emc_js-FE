@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import BoothCard from '../../../designsystem/components/card/admin/AdminBoothCard';
 import { mockBooths } from '../constants/dashboardDummy';
-import CardWrapper from './style';
+import { CardWrapper } from './style';
 
 // TODO: mockBooths 대신 실제 API 데이터로 교체
 export default function BoothSection() {
