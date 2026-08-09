@@ -58,14 +58,8 @@ export const MyUserName = styled.h2`
   }
 `;
 
-export const MyLogoutGroup = styled.div`
+export const MyLogout = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-`;
-
-export const MyLogoutIcon = styled.span`
-  display: flex;
-  align-items: center;
-  color: ${semantic.iconNormalNormal};
+  gap: ${measurement.spacing2};
 `;

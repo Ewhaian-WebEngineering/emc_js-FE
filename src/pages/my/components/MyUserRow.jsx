@@ -1,7 +1,7 @@
 import TextButton from '../../../designsystem/components/button/textbutton/TextButton';
 import LogoutIcon from '@/assets/svg/16px/ic_logout.svg?react';
 import { semantic } from '../../../designsystem/tokens/semantic';
-import { UserRow, MyUserName, MyLogoutGroup, MyLogoutIcon } from './style.js';
+import { UserRow, MyUserName, MyLogout } from './style.js';
 
 export default function MyUserRow({ userName = '김이화', onLogout }) {
   return (
@@ -10,14 +10,13 @@ export default function MyUserRow({ userName = '김이화', onLogout }) {
         <span>{userName}</span>
         <span>님</span>
       </MyUserName>
-      <MyLogoutGroup>
-        <TextButton size="sm" variant="secondary" onClick={onLogout}>
+
+      <TextButton size="sm" variant="secondary" onClick={onLogout}>
+        <MyLogout>
           로그아웃
-        </TextButton>
-        <MyLogoutIcon>
           <LogoutIcon color={semantic.iconNormalNormal} />
-        </MyLogoutIcon>
-      </MyLogoutGroup>
+        </MyLogout>
+      </TextButton>
     </UserRow>
   );
 }
