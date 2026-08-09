@@ -40,6 +40,7 @@ export default function BottomSheet({
   snapPoints,
   defaultSnap = 'half',
   children,
+  ...rest
 }) {
   const allowedSnaps = snapPoints ?? DEFAULT_SNAPS[variant];
   const hasSnapPoints = allowedSnaps.length > 0;
@@ -73,6 +74,7 @@ export default function BottomSheet({
         variant={variant}
         heightPx={hasSnapPoints ? heightPx : 'auto'}
         isDragging={isDragging}
+        {...rest}
       >
         <BottomSheetContentsSection
           heightPx={hasSnapPoints ? heightPx : 'auto'}
