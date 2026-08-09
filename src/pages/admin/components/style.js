@@ -10,22 +10,6 @@ export const CongestionListWrapper = styled.ul`
   padding: ${measurement.spacing24} ${measurement.spacing16} 0;
 `;
 
-export const CongestionItem = styled.li`
-  display: flex;
-  align-items: center;
-
-  padding: ${measurement.spacing16} ${measurement.spacing8};
-  border-radius: ${measurement.borderRadiusLg};
-
-  background-color: ${({ selected }) =>
-    selected ? semantic.fillNormalStrong : 'transparent'};
-
-  cursor: pointer;
-
-  ${typography.body1Regular}
-  color: ${semantic.textNormalStrong};
-`;
-
 export const CongestionButtonWrapper = styled.div`
   padding: ${measurement.spacing12} ${measurement.spacing16}
     ${measurement.spacing40} ${measurement.spacing16};

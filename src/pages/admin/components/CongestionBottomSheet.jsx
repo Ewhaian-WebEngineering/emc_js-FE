@@ -2,11 +2,8 @@ import { useState, useEffect } from 'react';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
 import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 import { CONGESTION_LEVEL } from '@/constants/congestionLevel';
-import {
-  CongestionListWrapper,
-  CongestionItem,
-  CongestionButtonWrapper,
-} from './style.js';
+import SelectItem from '@/designsystem/components/select/SelectItem.jsx';
+import { CongestionListWrapper, CongestionButtonWrapper } from './style.js';
 
 /**
  * 혼잡도를 선택/저장하는 바텀시트 컴포넌트
@@ -48,13 +45,13 @@ export default function CongestionBottomSheet({
     >
       <CongestionListWrapper>
         {Object.entries(CONGESTION_LEVEL).map(([key, { label }]) => (
-          <CongestionItem
+          <SelectItem
             key={key}
+            label={label}
+            size="lg"
             selected={selected === key}
             onClick={() => setSelected(key)}
-          >
-            {label}
-          </CongestionItem>
+          />
         ))}
       </CongestionListWrapper>
 
