@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useGoBack } from '@/hooks/useGoBack';
 
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import Divider from '@/designsystem/components/divider/Divider';
@@ -22,15 +22,7 @@ import {
 } from './style';
 
 export default function MakersScreen() {
-  const navigate = useNavigate();
-
-  const handleBack = () => {
-    if (window.history.state && window.history.state.idx > 0) {
-      navigate(-1);
-    } else {
-      navigate('/');
-    }
-  };
+  const handleBack = useGoBack();
 
   return (
     <MakersContainer>

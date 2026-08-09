@@ -21,7 +21,7 @@ export const OrganizationSection = styled.section`
 `;
 
 export const OrganizationTitle = styled.h2`
-  ${typography.bodySemibold};
+  ${typography.body1Semibold};
   color: ${semantic.textNormalStrong};
 `;
 
@@ -55,7 +55,6 @@ export const Dot = styled.div`
 export const TeamTitle = styled.h3`
   ${typography.body2Semibold};
   color: ${semantic.textNormalNormal};
-  margin: 0;
 `;
 
 export const MemberList = styled.div`
