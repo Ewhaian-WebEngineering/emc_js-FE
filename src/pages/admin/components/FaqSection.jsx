@@ -2,6 +2,9 @@ import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
 import { mockFaqs } from '../constants/dashboardDummy';
+import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
+import { semantic } from '@/designsystem/tokens/semantic';
+import { ButtonContent } from './style';
 
 // TODO: mockFaqs 대신 실제 API 데이터로 교체
 export default function FaqSection() {
@@ -24,7 +27,15 @@ export default function FaqSection() {
       title="FAQ 등록/수정"
       count={faqs.length}
     >
-      <Accordion.ActionButton buttonText="FAQ 등록하기 +" onClick={handleAdd} />
+      <Accordion.ActionButton
+        buttonText={
+          <ButtonContent>
+            FAQ 등록하기
+            <AddIcon color={semantic.iconNormalInverse} />
+          </ButtonContent>
+        }
+        onClick={handleAdd}
+      />
       {faqs.map((faq) => (
         <SpCard
           key={faq.id}

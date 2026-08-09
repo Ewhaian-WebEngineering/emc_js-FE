@@ -35,3 +35,9 @@ export const CongestionButtonWrapper = styled.div`
     width: 100%;
   }
 `;
+
+export const ButtonContent = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+`;

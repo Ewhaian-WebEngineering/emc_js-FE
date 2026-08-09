@@ -2,6 +2,9 @@ import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import EventBannerCard from '../../../designsystem/components/card/admin/AdminEventBannerCard';
 import { mockEvents } from '../constants/dashboardDummy';
+import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
+import { semantic } from '@/designsystem/tokens/semantic';
+import { ButtonContent } from './style';
 
 // TODO: mockEvents 대신 실제 API 데이터로 교체
 export default function EventSection() {
@@ -25,7 +28,12 @@ export default function EventSection() {
       count={events.length}
     >
       <Accordion.ActionButton
-        buttonText="이벤트 등록하기 +"
+        buttonText={
+          <ButtonContent>
+            이벤트 등록하기
+            <AddIcon color={semantic.iconNormalInverse} />
+          </ButtonContent>
+        }
         onClick={handleAdd}
       />
       {events.map((event) => (

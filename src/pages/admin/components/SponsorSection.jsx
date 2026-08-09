@@ -2,6 +2,9 @@ import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
 import { mockSponsors } from '../constants/dashboardDummy';
+import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
+import { semantic } from '@/designsystem/tokens/semantic';
+import { ButtonContent } from './style';
 
 //TODO: mockSponsors 대신 실제 API 데이터로 교체
 
@@ -26,7 +29,12 @@ export default function SponsorSection() {
       count={sponsors.length}
     >
       <Accordion.ActionButton
-        buttonText="협찬사 등록하기 +"
+        buttonText={
+          <ButtonContent>
+            협찬사 등록하기
+            <AddIcon color={semantic.iconNormalInverse} />
+          </ButtonContent>
+        }
         onClick={handleAdd}
       />
       {sponsors.map((sponsor) => (
