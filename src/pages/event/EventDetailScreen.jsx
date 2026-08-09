@@ -84,8 +84,6 @@ export default function EventDetailScreen() {
     <>
       <FillCenterHeader title="이벤트 상세" onBack={handleBack} border />
 
-      <S.HeaderSpacer />
-
       <S.EventHero>
         <S.EventTypeBadge>{eventTypeLabel[event.eventType]}</S.EventTypeBadge>
         <S.EventTitle>

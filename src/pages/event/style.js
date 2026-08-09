@@ -176,10 +176,6 @@ export const LinkShareIconCircle = styled(ShareIconCircle)`
   background-color: ${semantic.fillNormalWhite};
 `;
 
-export const HeaderSpacer = styled.div`
-  height: 100px;
-`;
-
 export const EventHero = styled.section`
   ${sectionColumn};
   height: 224px;
