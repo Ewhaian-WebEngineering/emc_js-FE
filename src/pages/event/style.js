@@ -158,13 +158,11 @@ export const ColumnBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ gap }) => gap};
-  width: ${({ width }) => width && `${width}px`};
 `;
 
 export const ShareIconCircle = styled.div`
-  width: 56px;
-  height: 56px;
   ${flexCenter};
+  padding: 18px;
   border-radius: ${measurement.borderRadiusRounded};
 `;
 
@@ -183,20 +181,17 @@ export const EventHero = styled.section`
 `;
 
 export const EventTypeBadge = styled.span`
-  width: 85px;
-  height: 32px;
   ${flexCenter};
   border-radius: ${measurement.borderRadiusRounded};
   background-color: ${semantic.fillPrimaryNormal};
   color: ${semantic.textNormalInverse};
   ${typography.body2Medium};
+  padding: ${measurement.spacing6} ${measurement.spacing16};
   margin-bottom: ${measurement.spacing16};
 `;
 
 export const EventContent = styled.section`
   ${sectionColumn};
-  justify-content: center;
-  min-height: 720px;
   background-color: ${semantic.fillNormalNormal};
 `;
 
@@ -206,25 +201,20 @@ export const SponsorSection = styled.section`
 `;
 
 export const SponsorContent = styled(ColumnBox)`
-  width: 335px;
   align-items: flex-start;
   gap: ${measurement.spacing20};
   padding: ${measurement.spacing32} 0;
 `;
 
 export const SponsorButton = styled(BoxButton)`
-  width: 335px;
   gap: ${measurement.spacing4};
 `;
 
 export const ShareSection = styled.section`
   ${sectionBase};
-  height: 260px;
 `;
 
 export const ShareBox = styled.div`
-  width: 343px;
-  height: 220px;
   ${flexColumn};
   gap: ${measurement.spacing24};
   padding: ${measurement.spacing32} ${measurement.spacing40};
@@ -233,15 +223,11 @@ export const ShareBox = styled.div`
 `;
 
 export const ShareActions = styled.div`
-  width: 168px;
-  height: 112px;
   display: flex;
   gap: ${measurement.spacing24};
 `;
 
 export const ShareAction = styled.button`
-  width: 72px;
-  height: 112px;
   ${flexColumn};
   gap: ${measurement.spacing16};
   padding: 0 ${measurement.spacing8};
@@ -253,7 +239,6 @@ export const ShareAction = styled.button`
 
 export const NoticeBox = styled.section`
   ${sectionColumn};
-  height: 260px;
   padding: ${measurement.spacing24} ${measurement.spacing16};
   background-color: ${semantic.fillNormalStrong};
 `;

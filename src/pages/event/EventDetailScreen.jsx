@@ -22,7 +22,8 @@ import * as S from './style';
 const eventTitleMaxLength = 36;
 
 const EventContentImage = styled.img`
-  width: 335px;
+  max-width: 335px;
+  width: 100%;
   object-fit: contain;
 `;
 
@@ -156,7 +157,7 @@ export default function EventDetailScreen() {
       </S.ShareSection>
 
       <S.NoticeBox>
-        <S.ColumnBox gap={measurement.spacing16} width={343}>
+        <S.ColumnBox gap={measurement.spacing16}>
           <S.RowBox gap={measurement.spacing2}>
             <InfoIcon color={semantic.iconNormalAssistive} />
             <S.NoticeTitle>이벤트 유의사항</S.NoticeTitle>
