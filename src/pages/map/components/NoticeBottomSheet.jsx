@@ -17,6 +17,7 @@ export default function NoticeBottomSheet({ onClose }) {
       onFull={() => {
         navigate(NOTICE_ROUTE);
       }}
+      dismissible={false}
       style={{ zIndex: 100 }}
     >
       <NoticeContent />

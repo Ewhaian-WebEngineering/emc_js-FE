@@ -39,6 +39,7 @@ export default function MapBottomSheet() {
       isOpen={true}
       defaultSnap="min"
       showScrim="none"
+      dismissible={false}
       style={{ zIndex: 10 }}
     >
       <InstructionsContainer>

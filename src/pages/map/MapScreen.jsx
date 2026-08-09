@@ -9,10 +9,12 @@ import NoticeIcon from '@/assets/svg/16px/ic_announce.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { useState } from 'react';
 import NoticeBottomSheet from './components/NoticeBottomSheet';
+import { snapToPx } from '@/constants/bottomSheet';
 
 export default function MapScreen() {
   const handleBack = useGoBack();
   const [showNotice, setShowNotice] = useState(false);
+  const bottomSheetMinHeight = snapToPx('min');
 
   return (
     <MapScreenWrapper>
@@ -48,7 +50,9 @@ export default function MapScreen() {
           doubleClick={{ disabled: true }}
         >
           <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }}>
-            <BoothMap />
+            <div style={{ paddingBottom: bottomSheetMinHeight }}>
+              <BoothMap />
+            </div>
           </TransformComponent>
         </TransformWrapper>
       </MapArea>
