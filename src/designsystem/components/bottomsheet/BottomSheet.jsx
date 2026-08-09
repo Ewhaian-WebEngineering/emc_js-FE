@@ -29,6 +29,7 @@ const DEFAULT_SNAPS = {
  * @param {string} [title] - 바텀시트 헤더에 표시될 제목
  * @param {Array<string>} [snapPoints] - 바텀시트 스냅 포인트 목록, 미지정 시 variant별 기본 스냅 포인트 사용
  * @param {string} [defaultSnap='half'] - 바텀시트 초기 스냅 포인트
+ * @param {boolean} [dismissible=true] - 바텀시트 닫기 가능 여부
  * @param {React.ReactNode} children - 바텀시트 내부에 렌더링할 콘텐츠
  */
 
@@ -41,6 +42,7 @@ export default function BottomSheet({
   title,
   snapPoints,
   defaultSnap = 'half',
+  dismissible = true,
   children,
   ...rest
 }) {
@@ -55,10 +57,10 @@ export default function BottomSheet({
   const allowedSnaps = snapPoints ?? DEFAULT_SNAPS[variant];
   const hasSnapPoints = allowedSnaps.length > 0;
 
-  const { heightPx, onDrag, resolveAfterDrag } = useSnapPoint({
+  const { currentSnap, heightPx, onDrag, resolveAfterDrag } = useSnapPoint({
     allowedSnaps,
     defaultSnap,
-    onClose: requestClose,
+    onClose: dismissible ? requestClose : undefined,
     onFull,
   });
 
@@ -108,6 +110,7 @@ export default function BottomSheet({
             <BottomSheetContentsSection
               heightPx={hasSnapPoints ? heightPx : 'auto'}
               isDragging={isDragging}
+              scrollLocked={currentSnap === 'min'}
             >
               {children}
             </BottomSheetContentsSection>
