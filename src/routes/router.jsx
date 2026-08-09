@@ -20,7 +20,7 @@ import {
   NOTICE_ROUTE,
   SPONSOR_ROUTES,
   ADMIN_ROUTES,
-  BOOTH_ROUTE,
+  BOOTH_ROUTES,
   MY_ROUTES,
 } from '../constants/routes';
 import { boothRoutes } from '@/pages/booth/routes';
