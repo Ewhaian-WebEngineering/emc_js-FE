@@ -32,17 +32,3 @@ export const MyFooter = styled.div`
     ${typography.body2Regular};
   }
 `;
-
-export const LoginGroup = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  align-self: stretch;
-`;
-
-export const LoginText = styled.h2`
-  display: flex;
-  align-items: center;
-  color: ${semantic.textPrimaryNormal};
-  ${typography.title3Semibold};
-`;

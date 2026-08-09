@@ -7,10 +7,6 @@ import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
-import MyLoginScreen from '@/pages/my/MyLoginScreen';
-import MyLogoutScreen from '@/pages/my/MyLogoutScreen';
-import MyAdminScreen from '@/pages/my/MyAdminScreen';
-import MySellerScreen from '@/pages/my/MySellerScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
@@ -21,7 +17,6 @@ import {
   SPONSOR_ROUTES,
   ADMIN_ROUTES,
   BOOTH_ROUTES,
-  MY_ROUTES,
 } from '../constants/routes';
 import { boothRoutes } from '@/pages/booth/routes';
 
@@ -58,10 +53,6 @@ export const router = createBrowserRouter([
           ...boothRoutes.withFooter,
         ],
       },
-      { path: MY_ROUTES.LOGIN, element: <MyLoginScreen /> },
-      { path: MY_ROUTES.LOGOUT, element: <MyLogoutScreen /> },
-      { path: MY_ROUTES.SELLER, element: <MySellerScreen /> },
-      { path: MY_ROUTES.ADMIN, element: <MyAdminScreen /> },
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },

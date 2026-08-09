@@ -53,7 +53,7 @@ export const MyUserName = styled.h2`
     color: ${semantic.textPrimaryNormal};
   }
 
-  span:last-of-type {
+  span:second-of-type {
     color: ${semantic.textNormalStrong};
   }
 `;
