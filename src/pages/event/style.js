@@ -202,8 +202,3 @@ export const NoticeBox = styled.section`
   padding: ${measurement.spacing24} ${measurement.spacing16};
   background-color: ${semantic.fillNormalStrong};
 `;
-
-export const NoticeTitleIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
-`;

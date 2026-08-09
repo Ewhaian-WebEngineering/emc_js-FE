@@ -6,11 +6,12 @@ import Divider from '@/designsystem/components/divider/Divider';
 import { useGoBack } from '@/hooks/useGoBack';
 import { EVENT_ROUTES, SPONSOR_ROUTES } from '@/constants/routes';
 import { measurement } from '@/designsystem/tokens/measurement';
+import { semantic } from '@/designsystem/tokens/semantic';
 import { formatEventPeriod } from './utils/formatEventPeriod';
 import KakaoIconContainer from './image/kakaoIconContainer.png';
 import LinkIconContainer from './image/linkIconContainer.png';
-import InformationIcon from './image/informationIcon.png';
 import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
+import InfoIcon from '@/assets/svg/16px/ic_information.svg?react';
 import {
   eventDetailMessages,
   eventTypeLabel,
@@ -194,7 +195,7 @@ export default function EventDetailScreen() {
       <S.NoticeBox>
         <S.ColumnBox gap={measurement.spacing16} width={343}>
           <S.RowBox gap={measurement.spacing2}>
-            <S.NoticeTitleIcon src={InformationIcon} alt="안내" />
+            <InfoIcon color={semantic.iconNormalAssistive} />
             <S.Text as="h2" typo="body2Semibold" color="textNormalStrong">
               이벤트 유의사항
             </S.Text>
