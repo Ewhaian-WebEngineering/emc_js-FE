@@ -18,8 +18,6 @@ export const eventDetails = {
       '글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자',
     startDate: '2026-09-01',
     endDate: '2026-09-25',
-    status: 'ended',
-    thumbnail: '',
     content: [
       {
         type: 'paragraph',
@@ -42,8 +40,6 @@ export const eventDetails = {
       '글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자',
     startDate: '2026-09-01',
     endDate: '2026-09-25',
-    status: 'ongoing',
-    thumbnail: '',
     content: [
       {
         type: 'paragraph',
@@ -60,8 +56,6 @@ export const eventDetails = {
       '글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자',
     startDate: '2026-09-01',
     endDate: '2026-09-25',
-    status: 'ongoing',
-    thumbnail: '',
     content: [
       {
         type: 'paragraph',
@@ -80,8 +74,6 @@ export const eventDetails = {
       '글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자',
     startDate: '2026-09-01',
     endDate: '2026-09-25',
-    status: 'ongoing',
-    thumbnail: '',
     content: [
       {
         type: 'paragraph',
@@ -99,8 +91,6 @@ export const eventDetails = {
       '글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자글자',
     startDate: '2026-09-01',
     endDate: '2026-09-25',
-    status: 'upcoming',
-    thumbnail: '',
     content: [
       {
         type: 'paragraph',

@@ -17,7 +17,7 @@ import {
   eventTypeLabel,
   getEventById,
 } from './constants/eventDetail';
-import * as S from './style';
+import * as S from './constants/style';
 
 export default function EventDetailScreen() {
   const { id } = useParams();
