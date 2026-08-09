@@ -49,5 +49,5 @@ export const LoginText = styled.h2`
   display: flex;
   align-items: center;
   color: ${semantic.textPrimaryNormal};
-  ${typography.headlineBd};
+  ${typography.title3Semibold};
 `;
