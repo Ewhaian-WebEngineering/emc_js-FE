@@ -35,20 +35,8 @@ export default function EventDetailScreen() {
     navigate(SPONSOR_ROUTES.DETAIL(event.sponsor.id));
   };
 
-  const handleKakaoShare = async () => {
-    if (!navigator.share) {
-      alert(eventDetailMessages.kakaoUnsupported);
-      return;
-    }
-    try {
-      await navigator.share({
-        title: event.eventTitle,
-        text: event.eventTitle,
-        url: window.location.href,
-      });
-    } catch {
-      return;
-    }
+  const handleKakaoShare = () => {
+    // TODO: 카카오 SDK 연결
   };
 
   const handleCopyLink = async () => {
