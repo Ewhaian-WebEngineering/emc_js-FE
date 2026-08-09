@@ -6,11 +6,10 @@ import { typography } from '@/designsystem/tokens/typography';
 export const MapScreenWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
 `;
 
 export const MapArea = styled.div`
-  flex: 1;
   min-height: 0;
   overflow: hidden;
 `;
