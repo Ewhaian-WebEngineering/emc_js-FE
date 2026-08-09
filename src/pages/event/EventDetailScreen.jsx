@@ -19,8 +19,6 @@ import {
 } from './constants/eventDetail';
 import * as S from './style';
 
-const eventTitleMaxLength = 36;
-
 const EventContentImage = styled.img`
   max-width: 335px;
   width: 100%;
@@ -87,9 +85,7 @@ export default function EventDetailScreen() {
 
       <S.EventHero>
         <S.EventTypeBadge>{eventTypeLabel[event.eventType]}</S.EventTypeBadge>
-        <S.EventTitle as="h1">
-          {event.eventTitle?.slice(0, eventTitleMaxLength)}
-        </S.EventTitle>
+        <S.EventTitle as="h1">{event.eventTitle}</S.EventTitle>
         <S.RowBox gap={measurement.spacing4}>
           <S.EventPeriodLabel>진행기간</S.EventPeriodLabel>
           <S.EventPeriodValue>
