@@ -125,7 +125,7 @@ export const ShareTitle = styled.h2`
   text-align: center;
 `;
 
-export const ShareActionLabel = styled(Text)`
+export const ShareActionLabel = styled.p`
   ${typography.body2Medium};
   color: ${semantic.textNormalNormal};
   text-align: center;
@@ -154,9 +154,11 @@ export const ColumnBox = styled.div`
   gap: ${({ gap }) => gap};
 `;
 
-export const ShareIconCircle = styled.div`
+export const ShareIconCircle = styled.button`
   ${flexCenter};
   padding: 18px;
+  border: none;
+  cursor: pointer;
   border-radius: ${measurement.borderRadiusRounded};
 `;
 
@@ -222,14 +224,10 @@ export const ShareActions = styled.div`
   gap: ${measurement.spacing24};
 `;
 
-export const ShareAction = styled.button`
+export const ShareAction = styled.div`
   ${flexColumn};
   gap: ${measurement.spacing16};
   padding: 0 ${measurement.spacing8};
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: ${semantic.textNormalNormal};
 `;
 
 export const NoticeBox = styled.section`

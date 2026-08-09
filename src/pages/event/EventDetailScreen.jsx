@@ -99,14 +99,14 @@ export default function EventDetailScreen() {
         <S.ShareBox>
           <S.ShareTitle>{eventDetailMessages.shareTitle}</S.ShareTitle>
           <S.ShareActions>
-            <S.ShareAction onClick={handleKakaoShare}>
-              <S.KakaoShareIconCircle>
+            <S.ShareAction>
+              <S.KakaoShareIconCircle onClick={handleKakaoShare}>
                 <KakaoIcon />
               </S.KakaoShareIconCircle>
               <S.ShareActionLabel>카카오톡 공유하기</S.ShareActionLabel>
             </S.ShareAction>
-            <S.ShareAction onClick={handleCopyLink}>
-              <S.LinkShareIconCircle>
+            <S.ShareAction>
+              <S.LinkShareIconCircle onClick={handleCopyLink}>
                 <LinkIcon color={semantic.secondaryYellowDefault} />
               </S.LinkShareIconCircle>
               <S.ShareActionLabel>
