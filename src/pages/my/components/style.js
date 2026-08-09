@@ -44,16 +44,18 @@ export const MyUserName = styled.h2`
   display: flex;
   align-items: center;
   gap: ${measurement.spacing4};
-`;
 
-export const MyUserNameHighlight = styled.span`
-  color: ${semantic.textPrimaryNormal};
-  ${typography.title3Semibold};
-`;
+  span {
+    ${typography.title3Semibold};
+  }
 
-export const MyUserNameSuffix = styled.span`
-  color: ${semantic.textNormalStrong};
-  ${typography.title3Semibold};
+  span:first-of-type {
+    color: ${semantic.textPrimaryNormal};
+  }
+
+  span:last-of-type {
+    color: ${semantic.textNormalStrong};
+  }
 `;
 
 export const MyLogoutGroup = styled.div`
