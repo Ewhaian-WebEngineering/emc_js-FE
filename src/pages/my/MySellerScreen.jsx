@@ -26,8 +26,7 @@ export default function MySellerScreen() {
   return (
     <MyContainer>
       <MyHeaderWrapper>
-        <Header title="마이페이지" />
-        <Divider size="sm" />
+        <Header title="마이페이지" border />
       </MyHeaderWrapper>
       <MyContentContainer>
         <MyUser userName={userName} onLogout={handleLogout} />

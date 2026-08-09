@@ -20,8 +20,7 @@ export default function MyLogoutScreen() {
   return (
     <MyContainer>
       <MyHeaderWrapper>
-        <Header title="마이페이지" />
-        <Divider size="sm" />
+        <Header title="마이페이지" border />
       </MyHeaderWrapper>
       <MyContentContainer>
         <LoginGroup>
