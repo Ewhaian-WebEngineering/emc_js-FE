@@ -84,7 +84,6 @@ export const EventTitle = styled.h1`
   ${typography.headline1Semibold};
   color: ${semantic.textNormalStrong};
   text-align: center;
-  max-width: 326px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
