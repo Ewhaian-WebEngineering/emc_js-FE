@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import Divider from '@/designsystem/components/divider/Divider';
+import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 import { useGoBack } from '@/hooks/useGoBack';
 import { EVENT_ROUTES, SPONSOR_ROUTES } from '@/constants/routes';
 import { measurement } from '@/designsystem/tokens/measurement';
@@ -47,7 +48,8 @@ export default function EventDetailScreen() {
     return (
       <>
         <FillCenterHeader title="이벤트 상세" onBack={handleBack} border />
-        <S.EventContent>{eventDetailMessages.notFound}</S.EventContent>
+        {/* TODO: 엣지 케이스 디자인 확정 시 수정 */}
+        <EmptyState title={eventDetailMessages.notFound} />
       </>
     );
   }
