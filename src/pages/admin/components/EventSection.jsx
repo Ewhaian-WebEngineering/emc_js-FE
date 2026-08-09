@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import EventBannerCard from '../../../designsystem/components/card/admin/AdminEventBannerCard';
-import { mockBanners } from '../constants/dashboardDumy';
+import { mockEvents } from '../constants/dashboardDummy';
 
-// TODO: mockBanners 대신 실제 API 데이터로 교체
-export default function BannerSection() {
+// TODO: mockEvents 대신 실제 API 데이터로 교체
+export default function EventSection() {
   const [expanded, setExpanded] = useState(false);
-  const [banners] = useState(mockBanners);
+  const [events] = useState(mockEvents);
 
   // TODO: 등록 화면 이동 로직 연결
   const handleAdd = () => {};
@@ -21,22 +21,22 @@ export default function BannerSection() {
       expanded={expanded}
       onToggle={() => setExpanded((prev) => !prev)}
       size="lg"
-      title="배너 등록/수정"
-      count={banners.length}
+      title="이벤트 등록/수정"
+      count={events.length}
     >
       <Accordion.ActionButton
         buttonText="이벤트 등록하기 +"
         onClick={handleAdd}
       />
-      {banners.map((banner) => (
+      {events.map((event) => (
         <EventBannerCard
-          key={banner.id}
-          endDate={banner.endDate}
-          startDate={banner.startDate}
-          title={banner.title}
-          onClick={() => handleClick(banner.id)}
-          onDelete={() => handleDelete(banner.id)}
-          onEdit={() => handleEdit(banner.id)}
+          key={event.id}
+          endDate={event.endDate}
+          startDate={event.startDate}
+          title={event.title}
+          onClick={() => handleClick(event.id)}
+          onDelete={() => handleDelete(event.id)}
+          onEdit={() => handleEdit(event.id)}
         />
       ))}
     </Accordion>

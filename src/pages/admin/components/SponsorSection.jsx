@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
-import { mockSponsors } from '../constants/dashboardDumy';
+import { mockSponsors } from '../constants/dashboardDummy';
 
 //TODO: mockSponsors 대신 실제 API 데이터로 교체
 

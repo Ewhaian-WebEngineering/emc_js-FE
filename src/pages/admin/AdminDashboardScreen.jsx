@@ -1,24 +1,24 @@
 import { useState } from 'react';
-import Header from '../../../designsystem/components/header/FillCenterHeader';
-import ManagementStatRow from '../../../designsystem/components/card/management/ManagementStatRow';
-import Divider from '../../../designsystem/components/divider/Divider';
+import Header from '@/designsystem/components/header/FillCenterHeader';
+import ManagementStatRow from '@/designsystem/components/card/management/ManagementStatRow';
+import Divider from '@/designsystem/components/divider/Divider';
 import ChartIcon from '@/assets/svg/24px/ic_chart_bar.svg?react';
 import PeopleIcon from '@/assets/svg/24px/ic_people.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { CONGESTION_TOOLTIP, VISITOR_TOOLTIP } from '@/constants/tooltip';
 import { CONGESTION_LEVEL } from '@/constants/congestionLevel';
-import CongestionBottomSheet from '../components/CongestionBottomSheet';
-import SponsorSection from './SponsorSection';
-import EventSection from './EventSection';
-import BannerSection from './BannerSection';
-import FaqSection from './FaqSection';
-import BoothSection from './BoothSection';
+import CongestionBottomSheet from './components/CongestionBottomSheet';
+import SponsorSection from './components/SponsorSection';
+import EventSection from './components/EventSection';
+import BannerSection from './components/BannerSection';
+import FaqSection from './components/FaqSection';
+import BoothSection from './components/BoothSection';
 import {
   FestivalInfo,
   DashboardContainer,
   ManagementCardStats,
   DashboardTitle,
-} from '../style.js';
+} from './style.js';
 
 export default function AdminDashboardScreen() {
   const [congestionLevel, setCongestionLevel] = useState('crowded');

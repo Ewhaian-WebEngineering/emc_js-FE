@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
-import { mockFaqs } from '../constants/dashboardDumy';
+import { mockFaqs } from '../constants/dashboardDummy';
 
 // TODO: mockFaqs 대신 실제 API 데이터로 교체
 export default function FaqSection() {
