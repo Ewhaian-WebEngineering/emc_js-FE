@@ -178,7 +178,6 @@ export const LinkShareIconCircle = styled(ShareIconCircle)`
 
 export const EventHero = styled.section`
   ${sectionColumn};
-  height: 224px;
   padding: ${measurement.spacing40} 0;
   background-color: ${semantic.fillPrimaryAssistive};
 `;
