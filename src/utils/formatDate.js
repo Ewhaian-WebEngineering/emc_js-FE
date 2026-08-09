@@ -15,10 +15,10 @@ export function formatDate(dateString) {
   return `${yyyy}. ${mm}. ${dd}`;
 }
 
-const formatMonthDay = (dateString) => {
-  if (!dateString) return '';
+const parseMonthDay = (dateString) => {
+  if (!dateString) return null;
   const [, month, day] = dateString.split('-');
-  return `${month}.${day}`;
+  return { month: Number(month), day: Number(day) };
 };
 
 /**
@@ -34,9 +34,12 @@ export function formatEventPeriod(eventType, startDate, endDate) {
   if (!startDate) return '';
 
   if (eventType === 'onsite') {
-    const [, month, day] = startDate.split('-');
-    return `${Number(month)}월 ${Number(day)}일`;
+    const { month, day } = parseMonthDay(startDate);
+    return `${month}월 ${day}일`;
   }
 
-  return `${formatMonthDay(startDate)} - ${formatMonthDay(endDate || startDate)}`;
+  const { month: startMonth, day: startDay } = parseMonthDay(startDate);
+  const { month: endMonth, day: endDay } = parseMonthDay(endDate || startDate);
+
+  return `${startMonth}.${startDay} - ${endMonth}.${endDay}`;
 }
