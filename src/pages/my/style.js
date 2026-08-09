@@ -30,12 +30,12 @@ export const MyFooter = styled.div`
   align-items: center;
   gap: ${measurement.spacing4};
   margin-bottom: ${measurement.spacing88};
-`;
 
-export const MyFooterText = styled.div`
-  color: ${semantic.textNormalNormal};
-  text-align: center;
-  ${typography.body2Regular};
+  p {
+    color: ${semantic.textNormalNormal};
+    text-align: center;
+    ${typography.body2Regular};
+  }
 `;
 
 export const LoginGroup = styled.div`

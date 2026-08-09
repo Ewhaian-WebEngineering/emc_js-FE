@@ -1,5 +1,4 @@
 import Header from '../../designsystem/components/header/FillRightHeader';
-import Divider from '../../designsystem/components/divider/Divider';
 import LinkButton from '../../designsystem/components/button/linkbutton/LinkButton';
 import Banner from '../../designsystem/components/banner/Banner';
 import NavigationBar from '../../designsystem/components/navigationbar/NavigationBar';
@@ -11,7 +10,6 @@ import {
   MyHeaderWrapper,
   MyContentContainer,
   MyFooter,
-  MyFooterText,
   LoginGroup,
   LoginText,
 } from './style.js';
@@ -33,7 +31,7 @@ export default function MyLogoutScreen() {
         <InquiryList />
       </MyContentContainer>
       <MyFooter>
-        <MyFooterText>부스 또는 EMC 운영진이신가요?</MyFooterText>
+        <p>부스 또는 EMC 운영진이신가요?</p>
         <LinkButton href="https://example.com" size="sm" variant="secondary">
           셀러/관리자 인증
         </LinkButton>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Header from '../../designsystem/components/header/FillRightHeader';
-import Divider from '../../designsystem/components/divider/Divider';
 import Banner from '../../designsystem/components/banner/Banner';
 import NavigationBar from '../../designsystem/components/navigationbar/NavigationBar';
 import ManagementBoothCard from '../../designsystem/components/card/management/ManagementBoothCard';
