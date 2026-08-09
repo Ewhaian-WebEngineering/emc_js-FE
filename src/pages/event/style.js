@@ -232,6 +232,7 @@ export const ShareAction = styled.div`
 
 export const NoticeBox = styled.section`
   ${sectionColumn};
-  padding: ${measurement.spacing24} ${measurement.spacing16};
+  padding: ${measurement.spacing24} ${measurement.spacing16}
+    ${measurement.spacing128};
   background-color: ${semantic.fillNormalStrong};
 `;
