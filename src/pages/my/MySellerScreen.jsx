@@ -7,11 +7,20 @@ import MyUser from './components/MyUserRow';
 import InquiryList from './components/InquiryList';
 import { MyContainer, MyHeaderWrapper, MyContentContainer } from './style.js';
 
+const MOCK_SELLER_DATA = {
+  userName: '김이화',
+  boothName: 'EMC 이벤트 부스',
+  scrapCount: 46,
+  visitorCount: 10999,
+};
+
 export default function MySellerScreen() {
-  const [userName, setUserName] = useState('김이화');
-  const [boothName, setBoothName] = useState('EMC 이벤트 부스');
-  const [scrapCount, setScrapCount] = useState(46);
-  const [visitorCount, setVisitorCount] = useState(10999);
+  const [userName, setUserName] = useState(MOCK_SELLER_DATA.userName);
+  const [boothName, setBoothName] = useState(MOCK_SELLER_DATA.boothName);
+  const [scrapCount, setScrapCount] = useState(MOCK_SELLER_DATA.scrapCount);
+  const [visitorCount, setVisitorCount] = useState(
+    MOCK_SELLER_DATA.visitorCount,
+  );
 
   useEffect(() => {
     // TODO: 유저 이름
