@@ -87,7 +87,7 @@ export default function EventDetailScreen() {
         <S.EventTypeBadge>{eventTypeLabel[event.eventType]}</S.EventTypeBadge>
         <S.EventTitle as="h1">{event.eventTitle}</S.EventTitle>
         <S.RowBox gap={measurement.spacing4}>
-          <S.EventPeriodLabel>진행기간</S.EventPeriodLabel>
+          <S.EventPeriodLabel>진행 기간</S.EventPeriodLabel>
           <S.EventPeriodValue>
             {formatEventPeriod(event.eventType, event.startDate, event.endDate)}
           </S.EventPeriodValue>
