@@ -87,7 +87,7 @@ export default function EventDetailScreen() {
 
       <S.EventHero>
         <S.EventTypeBadge>{eventTypeLabel[event.eventType]}</S.EventTypeBadge>
-        <S.EventTitle>
+        <S.EventTitle as="h1">
           {event.eventTitle?.slice(0, eventTitleMaxLength)}
         </S.EventTitle>
         <S.RowBox gap={measurement.spacing4}>
@@ -114,7 +114,7 @@ export default function EventDetailScreen() {
       {hasSponsor && (
         <S.SponsorSection>
           <S.SponsorContent>
-            <S.SponsorTitle>
+            <S.SponsorTitle as="h2">
               {event.sponsor.name}에 대해
               <br />더 궁금하다면?
             </S.SponsorTitle>
@@ -134,7 +134,7 @@ export default function EventDetailScreen() {
 
       <S.ShareSection>
         <S.ShareBox>
-          <S.ShareTitle>{eventDetailMessages.shareTitle}</S.ShareTitle>
+          <S.ShareTitle as="h2">{eventDetailMessages.shareTitle}</S.ShareTitle>
           <S.ShareActions>
             <S.ShareAction onClick={handleKakaoShare}>
               <S.KakaoShareIconCircle>
@@ -160,7 +160,7 @@ export default function EventDetailScreen() {
         <S.ColumnBox gap={measurement.spacing16}>
           <S.RowBox gap={measurement.spacing2}>
             <InfoIcon color={semantic.iconNormalAssistive} />
-            <S.NoticeTitle>이벤트 유의사항</S.NoticeTitle>
+            <S.NoticeTitle as="h2">이벤트 유의사항</S.NoticeTitle>
           </S.RowBox>
           <S.NoticeText>
             {hasNotice ? event.notice : eventDetailMessages.noNotice}

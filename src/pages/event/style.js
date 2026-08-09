@@ -92,7 +92,7 @@ export const Text = styled.span`
   `}
 `;
 
-export const EventTitle = styled(Text).attrs({ as: 'h1' })`
+export const EventTitle = styled(Text)`
   ${typography.headline1Semibold};
   color: ${semantic.textNormalStrong};
   text-align: center;
@@ -120,12 +120,12 @@ export const EventContentText = styled(Text)`
   text-align: center;
 `;
 
-export const SponsorTitle = styled(Text).attrs({ as: 'h2' })`
+export const SponsorTitle = styled(Text)`
   ${typography.title3Semibold};
   color: ${semantic.textNormalStrong};
 `;
 
-export const ShareTitle = styled(Text).attrs({ as: 'h2' })`
+export const ShareTitle = styled(Text)`
   ${typography.body1Medium};
   color: ${semantic.textNormalStrong};
   text-align: center;
@@ -137,7 +137,7 @@ export const ShareActionLabel = styled(Text)`
   text-align: center;
 `;
 
-export const NoticeTitle = styled(Text).attrs({ as: 'h2' })`
+export const NoticeTitle = styled(Text)`
   ${typography.body2Semibold};
   color: ${semantic.textNormalStrong};
 `;
