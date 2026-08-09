@@ -114,12 +114,6 @@ export const EventPeriodValue = styled(Text)`
   color: ${semantic.textNormalStrong};
 `;
 
-export const EventContentText = styled(Text)`
-  ${typography.caption1Regular};
-  color: ${semantic.textNormalNormal};
-  text-align: center;
-`;
-
 export const SponsorTitle = styled(Text)`
   ${typography.title3Semibold};
   color: ${semantic.textNormalStrong};

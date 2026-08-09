@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import Divider from '@/designsystem/components/divider/Divider';
@@ -18,12 +17,6 @@ import {
   getEventById,
 } from './constants/eventDetail';
 import * as S from './style';
-
-const EventContentImage = styled.img`
-  max-width: 335px;
-  width: 100%;
-  object-fit: contain;
-`;
 
 export default function EventDetailScreen() {
   const { id } = useParams();
@@ -94,18 +87,7 @@ export default function EventDetailScreen() {
         </S.RowBox>
       </S.EventHero>
 
-      <S.EventContent>
-        {event.content?.map((block, index) => {
-          if (block.type === 'image') {
-            return block.image ? (
-              <EventContentImage key={index} src={block.image} alt="" />
-            ) : null;
-          }
-          return (
-            <S.EventContentText key={index}>{block.text}</S.EventContentText>
-          );
-        })}
-      </S.EventContent>
+      <S.EventContent>{/* TODO: RTE 데이터 가져오기 */}</S.EventContent>
 
       {hasSponsor && (
         <S.SponsorSection>
