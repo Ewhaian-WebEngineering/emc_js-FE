@@ -55,7 +55,7 @@ export const TagWrapper = styled.button`
   ${({ variant, selected }) => {
     const { border, background, color } = getColorStyle(variant, selected);
     return css`
-      border: ${measurement.borderRadiusSm} solid ${border};
+      border: ${measurement.borderWidthXs} solid ${border};
       background-color: ${background};
       color: ${color};
     `;
