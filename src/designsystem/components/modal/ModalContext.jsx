@@ -19,17 +19,22 @@ export function ModalProvider({ children }) {
     });
   }, []);
 
-  const handleConfirm = useCallback((value) => {
-    resolverRef.current?.({ confirmed: true, value });
-    resolverRef.current = null;
-    setModalState(null);
-  }, []);
+  const handleConfirm = useCallback(
+    (value) => {
+      modalState?.onConfirm?.(value);
+      resolverRef.current?.({ confirmed: true, value });
+      resolverRef.current = null;
+      setModalState(null);
+    },
+    [modalState],
+  );
 
   const handleCancel = useCallback(() => {
+    modalState?.onCancel?.();
     resolverRef.current?.({ confirmed: false });
     resolverRef.current = null;
     setModalState(null);
-  }, []);
+  }, [modalState]);
 
   return (
     <ModalContext.Provider value={{ showModal }}>
