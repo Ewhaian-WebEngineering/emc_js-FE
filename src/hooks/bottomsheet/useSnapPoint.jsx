@@ -42,7 +42,12 @@ export const useSnapPoint = ({
       const isBelowMin = currentPx < minSnapPx * 0.6;
 
       if (isDraggingDown && isBelowMin) {
-        onClose?.();
+        if (onClose) {
+          onClose();
+        } else {
+          setCurrentSnap(allowedSnaps[0]);
+          setHeightPx(minSnapPx);
+        }
         return;
       }
 

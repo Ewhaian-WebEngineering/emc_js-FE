@@ -19,9 +19,11 @@ import {
   MAKERS_ROUTES,
   ADMIN_ROUTES,
   MAP_ROUTES,
+  MAP_ROUTE,
 } from '../constants/routes';
 import { boothRoutes } from '@/pages/booth/routes';
-import MapsScreen from '@/pages/maps/MapsScreen';
+import MapScreen from '@/pages/map/MapScreen';
+develop
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -60,7 +62,7 @@ export const router = createBrowserRouter([
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
-      { path: MAP_ROUTES, element: <MapsScreen /> },
+      { path: MAP_ROUTE, element: <MapScreen /> },
       ...boothRoutes.withoutFooter,
       ...searchRoutes.full,
     ],
