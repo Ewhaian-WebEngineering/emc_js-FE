@@ -16,8 +16,10 @@ import {
   SPONSOR_ROUTES,
   ADMIN_ROUTES,
   BOOTH_ROUTE,
+  BOOTH_NOTICE_ROUTES,
 } from '../constants/routes';
 import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
+import BoothNoticeFormScreen from '@/pages/booth/BoothNoticeFormScreen';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -45,6 +47,14 @@ export const router = createBrowserRouter([
       { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       { path: BOOTH_ROUTE(':boothId'), element: <BoothDetailScreen /> },
+      {
+        path: BOOTH_NOTICE_ROUTES.REGISTER(':boothId'),
+        element: <BoothNoticeFormScreen mode="register" />,
+      },
+      {
+        path: BOOTH_NOTICE_ROUTES.EDIT(':boothId', ':noticeId'),
+        element: <BoothNoticeFormScreen mode="edit" />,
+      },
       ...searchRoutes.full,
     ],
   },

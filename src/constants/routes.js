@@ -12,6 +12,11 @@ export const EVENT_ROUTES = {
 };
 export const BOOTH_ROUTE = (boothId) => `/booth/${boothId}`;
 
+export const BOOTH_NOTICE_ROUTES = {
+  REGISTER: (boothId) => `/booth/${boothId}/notice/register`,
+  EDIT: (boothId, noticeId) => `/booth/${boothId}/notice/${noticeId}/edit`,
+};
+
 export const SEARCH_ROUTES = {
   SEARCH: '/search',
   SEARCH_RESULT: '/search/result',

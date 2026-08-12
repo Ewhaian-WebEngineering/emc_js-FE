@@ -130,3 +130,24 @@ export const RecommendBoothList = styled.div`
   padding-inline: ${measurement.spacing16};
   overflow-x: auto;
 `;
+
+export const NoticeFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+export const NoticeFormContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing20};
+  padding: ${measurement.spacing24} ${measurement.spacing16};
+`;
+
+export const NoticeDeleteWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: ${measurement.spacing16};
+  margin-top: auto;
+  border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
+`;
