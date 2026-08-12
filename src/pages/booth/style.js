@@ -152,7 +152,7 @@ export const NavigationBarWrapper = styled.div`
   bottom: ${measurement.spacing24};
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 10;
   transform: translateZ(0);
 `;
 
