@@ -1,7 +1,6 @@
 import { gray } from '@/designsystem/tokens/colors';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { shadow } from '@/designsystem/tokens/shadow';
 import { typography } from '@/designsystem/tokens/typography';
 import styled from '@emotion/styled';
 

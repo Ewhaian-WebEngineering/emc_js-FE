@@ -4,30 +4,21 @@ import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader'
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
-import { BOOTH_ROUTE } from '@/constants/routes';
+import { BOOTH_ROUTES } from '@/constants/routes';
 import NoticeForm from './components/NoticeForm';
 import {
-  NoticeDeleteWrapper,
   NoticeFormContainer,
   NoticeFormContent,
+  NavigationBarWrapper,
 } from './style';
-import {
-  deleteConfirmModal,
-  exitConfirmModal,
-  submitFailModal,
-} from './constants/noticeForm';
+import { exitConfirmModal, submitFailModal } from './constants/noticeForm';
 import {
   createBoothNotice,
-  deleteBoothNotice,
   fetchBoothNotice,
   updateBoothNotice,
 } from '@/api/notice';
+import NavigationBar from '@/designsystem/components/navigationbar/NavigationBar';
 
-/**
- * 부스 공지사항 등록/수정 화면입니다.
- *
- * @param {'register'|'edit'} mode - 화면 모드
- */
 export default function BoothNoticeFormScreen({ mode }) {
   const { boothId, noticeId } = useParams();
   const navigate = useNavigate();
@@ -55,7 +46,6 @@ export default function BoothNoticeFormScreen({ mode }) {
   const isFormFilled = title.trim().length > 0 && content.trim().length > 0;
   const hasChanges = title !== initial.title || content !== initial.content;
   const isDirty = isEdit ? hasChanges : isFormFilled;
-  const isSubmitEnabled = isEdit ? hasChanges : isFormFilled;
 
   const handleFieldChange = (field, value) => {
     if (field === 'title') setTitle(value);
@@ -90,20 +80,12 @@ export default function BoothNoticeFormScreen({ mode }) {
       } else {
         await createBoothNotice({ boothId, title, content });
       }
-      navigate(BOOTH_ROUTE(boothId));
+      navigate(BOOTH_ROUTES.DETAIL(boothId));
     } catch {
       await showModal(submitFailModal);
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleDelete = async () => {
-    const result = await showModal(deleteConfirmModal);
-    if (!result.confirmed) return;
-
-    await deleteBoothNotice({ boothId, noticeId });
-    navigate(BOOTH_ROUTE(boothId));
   };
 
   const actionLabel = isEdit ? '저장' : '등록';
@@ -112,12 +94,12 @@ export default function BoothNoticeFormScreen({ mode }) {
     <NoticeFormContainer>
       <FillCenterHeader
         onBack={handleExit}
-        title={isEdit ? '공지사항' : '공지사항'}
+        title="공지사항"
         right={
           <TextButton
             variant="primary"
             size="sm"
-            disabled={!isSubmitEnabled || isSubmitting}
+            disabled={!isDirty || isSubmitting}
             onClick={handleSubmit}
           >
             {actionLabel}
@@ -134,13 +116,10 @@ export default function BoothNoticeFormScreen({ mode }) {
         />
       </NoticeFormContent>
 
-      {isEdit && (
-        <NoticeDeleteWrapper>
-          <TextButton variant="secondary" size="sm" onClick={handleDelete}>
-            삭제하기
-          </TextButton>
-        </NoticeDeleteWrapper>
-      )}
+      {/* TODO: '마이' 탭 활성화 필요 — NavigationBar의 활성 경로 매칭 처리 필요 */}
+      <NavigationBarWrapper>
+        <NavigationBar />
+      </NavigationBarWrapper>
     </NoticeFormContainer>
   );
 }

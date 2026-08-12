@@ -143,16 +143,17 @@ export const NoticeFormContainer = styled.div`
 export const NoticeFormContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${measurement.spacing20};
+  gap: ${measurement.spacing40};
   padding: ${measurement.spacing24} ${measurement.spacing16};
 `;
 
-export const NoticeDeleteWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: ${measurement.spacing16};
-  margin-top: auto;
-  border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
+export const NavigationBarWrapper = styled.div`
+  position: fixed;
+  bottom: ${measurement.spacing24};
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transform: translateZ(0);
 `;
 
 export const NoticeContentText = styled.p`
