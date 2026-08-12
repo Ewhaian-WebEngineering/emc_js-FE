@@ -10,17 +10,23 @@ import MyScreen from '../pages/my/MyScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
+import MakersScreen from '../pages/makers/MakersScreen';
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
 import {
   TAB_ROUTES,
   EVENT_ROUTES,
   NOTICE_ROUTE,
   SPONSOR_ROUTES,
+  MAKERS_ROUTES,
   ADMIN_ROUTES,
+  MAP_ROUTES,
+  MAP_ROUTE,
 } from '../constants/routes';
 import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
 import EventDetailScreen from '@/pages/event/EventDetailScreen';
 import { boothRoutes } from '@/pages/booth/routes';
+import MapScreen from '@/pages/map/MapScreen';
+develop
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -60,6 +66,8 @@ export const router = createBrowserRouter([
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       { path: BOOTH_ROUTE(':boothId'), element: <BoothDetailScreen /> },
       { path: EVENT_ROUTES.DETAIL(':id'), element: <EventDetailScreen /> },
+      { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
+      { path: MAP_ROUTE, element: <MapScreen /> },
       ...boothRoutes.withoutFooter,
       ...searchRoutes.full,
     ],

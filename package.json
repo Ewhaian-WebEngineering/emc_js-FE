@@ -20,8 +20,9 @@
     "framer-motion": "^12.42.2",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "^7.18.1"
-    },
+    "react-router-dom": "^7.18.1",
+    "react-zoom-pan-pinch": "^4.0.4"
+  },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.2.1",
     "@eslint/js": "^10.0.1",

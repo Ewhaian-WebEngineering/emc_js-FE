@@ -7,7 +7,8 @@ export const ScrimContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: ${semantic.materialNormal};
+  background-color: ${({ visible }) =>
+    visible ? semantic.materialNormal : 'transparent'};
   display: flex;
   justify-content: center;
   align-items: center;

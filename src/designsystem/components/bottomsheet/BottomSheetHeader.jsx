@@ -4,6 +4,7 @@ import {
   BottomSheetHeaderTitle,
   BottomSheetHeaderWrapper,
 } from './style';
+import { semantic } from '@/designsystem/tokens/semantic';
 
 /**
  * 바텀시트 헤더 컴포넌트입니다.
@@ -23,8 +24,11 @@ export default function SheetHeader({ variant, title, onClose }) {
         </BottomSheetHeaderTitle>
       )}
       {(variant === 'handleWithHeader' || variant === 'header') && (
-        <BottomSheetHeaderCloseButton onClick={onClose}>
-          <CloseIcon />
+        <BottomSheetHeaderCloseButton
+          onClick={onClose}
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          <CloseIcon color={semantic.iconNormalNormal} />
         </BottomSheetHeaderCloseButton>
       )}
     </BottomSheetHeaderWrapper>
