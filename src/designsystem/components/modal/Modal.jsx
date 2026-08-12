@@ -12,7 +12,7 @@ import {
 /**
  * 알림 또는 입력 폼을 보여주는 Modal 컴포넌트입니다.
  *
- * @param {'confirmation'|'alert'|'form'} variant - 모달의 종류
+ * @param {'confirmation'|'alert'|'form'|'danger'} variant - 모달의 종류
  * @param {string} title - 모달 제목
  * @param {string} [description] - 모달 설명
  * @param {string} [placeholder] - variant가 'form'일 때 Select에 표시할 placeholder
@@ -75,7 +75,11 @@ export default function Modal({
               <BoxButton variant="secondary" size="md" onClick={handleCancel}>
                 {cancelText}
               </BoxButton>
-              <BoxButton variant="primary" size="md" onClick={handleConfirm}>
+              <BoxButton
+                variant={variant === 'danger' ? 'error' : 'primary'}
+                size="md"
+                onClick={handleConfirm}
+              >
                 {confirmText}
               </BoxButton>
             </ModalButtonGroup>

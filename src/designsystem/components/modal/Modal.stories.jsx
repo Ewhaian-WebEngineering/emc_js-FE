@@ -107,3 +107,25 @@ export const Alert = {
     );
   },
 };
+
+export const Danger = {
+  render: () => {
+    const { showModal } = useModal();
+
+    const handleClick = async () => {
+      await showModal({
+        variant: 'danger',
+        title: '해당 제품을 삭제하시겠습니까?',
+        description: '이 작업은 되돌릴 수 없습니다.',
+        confirmText: '삭제하기',
+        cancelText: '취소',
+      });
+    };
+
+    return (
+      <button style={buttonStyle} onClick={handleClick}>
+        모달 열기
+      </button>
+    );
+  },
+};

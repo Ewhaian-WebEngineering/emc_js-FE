@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
 import MainLayout from '../layouts/MainLayout';
+import FooterLayout from '@/layouts/FooterLayout';
 import HomeScreen from '../pages/home/HomeScreen';
 import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
@@ -9,17 +10,20 @@ import MyScreen from '../pages/my/MyScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
+import MakersScreen from '../pages/makers/MakersScreen';
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
 import {
   TAB_ROUTES,
   NOTICE_ROUTE,
   SPONSOR_ROUTES,
+  MAKERS_ROUTES,
   ADMIN_ROUTES,
-  BOOTH_ROUTE,
   BOOTH_NOTICE_ROUTES,
+  MAP_ROUTE,
 } from '../constants/routes';
-import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
+import { boothRoutes } from '@/pages/booth/routes';
 import BoothNoticeFormScreen from '@/pages/booth/BoothNoticeFormScreen';
+import MapScreen from '@/pages/map/MapScreen';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -35,18 +39,30 @@ export const router = createBrowserRouter([
       {
         element: <MainLayout />,
         children: [
-          { path: TAB_ROUTES.HOME, element: <HomeScreen /> },
-          { path: TAB_ROUTES.EVENT, element: <EventScreen /> },
-          { path: TAB_ROUTES.BOOTH, element: <BoothScreen /> },
-          { path: TAB_ROUTES.SCRAP, element: <ScrapScreen /> },
-          { path: TAB_ROUTES.MY, element: <MyScreen /> },
+          {
+            element: <FooterLayout />,
+            children: [
+              { path: TAB_ROUTES.HOME, element: <HomeScreen /> },
+              { path: TAB_ROUTES.EVENT, element: <EventScreen /> },
+              { path: TAB_ROUTES.BOOTH, element: <BoothScreen /> },
+              { path: TAB_ROUTES.SCRAP, element: <ScrapScreen /> },
+              { path: TAB_ROUTES.MY, element: <MyScreen /> },
+            ],
+          },
+        ],
+      },
+      {
+        element: <FooterLayout />,
+        children: [
+          { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
+          ...boothRoutes.withFooter,
         ],
       },
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
-      { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
-      { path: BOOTH_ROUTE(':boothId'), element: <BoothDetailScreen /> },
+      { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
+      { path: MAP_ROUTE, element: <MapScreen /> },
       {
         path: BOOTH_NOTICE_ROUTES.REGISTER(':boothId'),
         element: <BoothNoticeFormScreen mode="register" />,
@@ -55,6 +71,7 @@ export const router = createBrowserRouter([
         path: BOOTH_NOTICE_ROUTES.EDIT(':boothId', ':noticeId'),
         element: <BoothNoticeFormScreen mode="edit" />,
       },
+      ...boothRoutes.withoutFooter,
       ...searchRoutes.full,
     ],
   },
