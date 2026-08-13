@@ -1,6 +1,6 @@
-import ContactTab from '../components/ContactTab';
-import NoticeTab from '../components/NoticeTab';
-import ProductListTab from '../components/ProductListTab';
+import ContactTab from './components/ContactTab';
+import NoticeTab from './components/NoticeTab';
+import ProductListTab from './components/ProductListTab';
 
 export const BOOTH_DETAIL_TABS = [
   {
