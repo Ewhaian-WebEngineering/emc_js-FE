@@ -37,3 +37,8 @@ export const SPONSOR_ROUTES = {
 export const MAKERS_ROUTES = {
   LIST: '/makers',
 };
+
+export const MANAGE_ROUTES = {
+  BOOTH_PREVIEW: (boothId) => `/booth/${boothId}/preview`,
+  BOOTH_EDIT: (boothId) => `/booth/${boothId}/edit`,
+};

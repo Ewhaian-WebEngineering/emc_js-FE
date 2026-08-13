@@ -18,12 +18,11 @@ import {
   SPONSOR_ROUTES,
   MAKERS_ROUTES,
   ADMIN_ROUTES,
-  MAP_ROUTES,
   MAP_ROUTE,
 } from '../constants/routes';
 import { boothRoutes } from '@/pages/booth/routes';
 import MapScreen from '@/pages/map/MapScreen';
-develop
+import { manageRoutes } from '@/pages/manage/routes';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -56,6 +55,7 @@ export const router = createBrowserRouter([
         children: [
           { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
           ...boothRoutes.withFooter,
+          ...manageRoutes.withFooter,
         ],
       },
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
@@ -64,6 +64,7 @@ export const router = createBrowserRouter([
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
       { path: MAP_ROUTE, element: <MapScreen /> },
       ...boothRoutes.withoutFooter,
+      ...manageRoutes.withoutFooter,
       ...searchRoutes.full,
     ],
   },
