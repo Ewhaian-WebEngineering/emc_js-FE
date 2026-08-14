@@ -37,3 +37,5 @@ export const SPONSOR_ROUTES = {
 export const MAKERS_ROUTES = {
   LIST: '/makers',
 };
+
+export const EMC_INTRODUCTION_ROUTE = '/emc';
