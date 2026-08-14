@@ -2,12 +2,30 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import TransparentHeader from '@/designsystem/components/header/TransparentHeader';
+import Tab from '@/designsystem/components/tab/Tab';
+import Divider from '@/designsystem/components/divider/Divider';
+import ProductHorizontalCard from '@/designsystem/components/card/product/ProductHorizontalCard';
+import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
 
-import RepresentativeImageSrc from '@/assets/img/img_rectangle_xl.png';
+import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
+import DefaultRepresentativeImage from '@/assets/img/img_rectangle_lg.png';
 
+import { TAB_ROUTES } from '@/constants/routes';
 import { SPONSOR_DETAIL } from './constants/sponsorDetail';
+
 import * as S from './style';
+
+const DETAIL_TABS = [
+  {
+    label: '소개',
+    content: null,
+  },
+  {
+    label: '제품 목록',
+    content: null,
+  },
+];
 
 export default function SponsorDetailScreen() {
   const navigate = useNavigate();
@@ -15,23 +33,33 @@ export default function SponsorDetailScreen() {
   const introductionRef = useRef(null);
   const productRef = useRef(null);
 
-  const [activeTab, setActiveTab] = useState('introduction');
+  const [activeTab, setActiveTab] = useState(0);
 
   const handleBack = () => {
-    navigate(-1);
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate(TAB_ROUTES.HOME);
+    }
   };
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
+  const handleTabChange = (selectedTab) => {
+    const selectedIndex = DETAIL_TABS.findIndex(
+      (tab) => tab.label === selectedTab.label,
+    );
 
-    if (tab === 'introduction') {
+    setActiveTab(selectedIndex);
+
+    if (selectedTab.label === '소개') {
       introductionRef.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       });
+
+      return;
     }
 
-    if (tab === 'product') {
+    if (selectedTab.label === '제품 목록') {
       productRef.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
@@ -39,160 +67,165 @@ export default function SponsorDetailScreen() {
     }
   };
 
+  const getSnsUrl = (sns) => {
+    if (!sns) return '';
+
+    if (sns.startsWith('http://') || sns.startsWith('https://')) {
+      return sns;
+    }
+
+    if (sns.startsWith('@')) {
+      return `https://www.instagram.com/${sns.slice(1)}`;
+    }
+
+    return `https://www.instagram.com/${sns}`;
+  };
+
+  const representativeImageSrc =
+    SPONSOR_DETAIL.representativeImage || DefaultRepresentativeImage;
+
+  const introductionTitle = SPONSOR_DETAIL.introduction.replace(
+    '{협찬사 이름}',
+    SPONSOR_DETAIL.sponsorName,
+  );
+
+  const introductionContent =
+    SPONSOR_DETAIL.introductionContent ||
+    '협찬사 설명영역\n(Text Editor로 작성)';
+
+  const eventTitle = SPONSOR_DETAIL.event.title.replace(
+    '{협찬사}',
+    SPONSOR_DETAIL.sponsorName,
+  );
+
   return (
     <S.SponsorDetailContainer>
       <S.HeroSection>
         <S.RepresentativeImage
-          src={RepresentativeImageSrc}
+          src={representativeImageSrc}
           alt={`${SPONSOR_DETAIL.sponsorName} 대표 이미지`}
         />
 
         <S.HeaderWrapper>
-          <TransparentHeader onBack={handleBack} />
+          <TransparentHeader onBack={handleBack} title="" />
         </S.HeaderWrapper>
       </S.HeroSection>
 
       <S.SponsorInfoSection>
         <S.SponsorName>{SPONSOR_DETAIL.sponsorName}</S.SponsorName>
 
-        <S.SponsorInfoList>
-          <S.SponsorInfoRow>
-            <S.SponsorInfoLabel>운영 시간</S.SponsorInfoLabel>
+        <S.InfoList>
+          <S.InfoRow>
+            <S.InfoLabel>운영 시간</S.InfoLabel>
+            <S.InfoValue>{SPONSOR_DETAIL.info.type}</S.InfoValue>
+          </S.InfoRow>
 
-            <S.SponsorInfoValue>{SPONSOR_DETAIL.info.type}</S.SponsorInfoValue>
-          </S.SponsorInfoRow>
+          <S.InfoRow>
+            <S.InfoLabel>위치</S.InfoLabel>
+            <LinkButton
+              variant="secondary"
+              size="sm"
+              href="#"
+              onClick={(event) => event.preventDefault()}
+            >
+              {SPONSOR_DETAIL.info.location}
+            </LinkButton>
+          </S.InfoRow>
 
-          <S.SponsorInfoRow>
-            <S.SponsorInfoLabel>위치</S.SponsorInfoLabel>
+          <S.InfoRow>
+            <S.InfoLabel>SNS</S.InfoLabel>
+            <LinkButton
+              variant="secondary"
+              size="sm"
+              href={getSnsUrl(SPONSOR_DETAIL.info.sns)}
+              target="_blank"
+            >
+              {SPONSOR_DETAIL.info.sns}
+            </LinkButton>
+          </S.InfoRow>
 
-            <S.SponsorInfoLink>
-              <LinkButton
-                href="#"
-                variant="secondary"
-                size="sm"
-                onClick={(event) => event.preventDefault()}
-              >
-                {SPONSOR_DETAIL.info.location}
-              </LinkButton>
-            </S.SponsorInfoLink>
-          </S.SponsorInfoRow>
-
-          <S.SponsorInfoRow>
-            <S.SponsorInfoLabel>SNS</S.SponsorInfoLabel>
-
-            <S.SponsorInfoLink>
-              <LinkButton
-                href="#"
-                variant="secondary"
-                size="sm"
-                onClick={(event) => event.preventDefault()}
-              >
-                {SPONSOR_DETAIL.info.sns}
-              </LinkButton>
-            </S.SponsorInfoLink>
-          </S.SponsorInfoRow>
-
-          <S.SponsorInfoRow>
-            <S.SponsorInfoLabel>URL</S.SponsorInfoLabel>
-
-            <S.SponsorInfoLink>
-              <LinkButton
-                href={SPONSOR_DETAIL.info.url}
-                target="_blank"
-                variant="secondary"
-                size="sm"
-              >
-                {SPONSOR_DETAIL.info.url}
-              </LinkButton>
-            </S.SponsorInfoLink>
-          </S.SponsorInfoRow>
-        </S.SponsorInfoList>
+          <S.InfoRow>
+            <S.InfoLabel>URL</S.InfoLabel>
+            <LinkButton
+              variant="secondary"
+              size="sm"
+              href={SPONSOR_DETAIL.info.url}
+              target="_blank"
+            >
+              {SPONSOR_DETAIL.info.url}
+            </LinkButton>
+          </S.InfoRow>
+        </S.InfoList>
       </S.SponsorInfoSection>
 
-      <S.TabSection>
-        <S.TabButton
-          type="button"
-          $active={activeTab === 'introduction'}
-          onClick={() => handleTabClick('introduction')}
-        >
-          소개
-        </S.TabButton>
+      <Divider size="lg" />
 
-        <S.TabButton
-          type="button"
-          $active={activeTab === 'product'}
-          onClick={() => handleTabClick('product')}
-        >
-          제품 목록
-        </S.TabButton>
-      </S.TabSection>
+      <Tab
+        tabs={DETAIL_TABS}
+        activeTab={activeTab}
+        onChange={handleTabChange}
+      />
 
       <S.IntroductionSection ref={introductionRef}>
-        <S.IntroductionTitle>{SPONSOR_DETAIL.introduction}</S.IntroductionTitle>
+        <S.SectionTitle>{introductionTitle}</S.SectionTitle>
 
-        <S.IntroductionContent>
-          <span>
-            협찬사 설명영역
-            <br />
-            (Text Editor로 작성)
-          </span>
-        </S.IntroductionContent>
+        <S.IntroductionContent>{introductionContent}</S.IntroductionContent>
       </S.IntroductionSection>
 
-      <S.SectionDivider />
+      <Divider size="lg" />
 
       <S.ProductSection ref={productRef}>
-        <S.ProductSectionTitle>
-          {SPONSOR_DETAIL.productSectionTitle}
-        </S.ProductSectionTitle>
+        <S.SectionTitle>{SPONSOR_DETAIL.productSectionTitle}</S.SectionTitle>
 
-        {SPONSOR_DETAIL.productGroups.map((group, groupIndex) => (
-          <S.ProductGroup key={groupIndex}>
-            <S.ProductGroupHeader>
-              <S.ProductGroupName>{group.groupName}</S.ProductGroupName>
+        <S.ProductGroups>
+          {SPONSOR_DETAIL.productGroups.map((group, groupIndex) => (
+            <S.ProductGroupBlock key={`${group.groupName}-${groupIndex}`}>
+              <S.ProductGroup>
+                <S.ProductGroupHeader>
+                  <S.ProductGroupName>{group.groupName}</S.ProductGroupName>
 
-              <S.ProductGroupDescription>
-                {group.groupDescription}
-              </S.ProductGroupDescription>
-            </S.ProductGroupHeader>
+                  <S.ProductGroupDescription>
+                    {group.groupDescription}
+                  </S.ProductGroupDescription>
+                </S.ProductGroupHeader>
 
-            <S.ProductList>
-              {group.products.map((product, productIndex) => (
-                <S.ProductItem key={productIndex}>
-                  <S.ProductThumbnail
-                    src={RepresentativeImageSrc}
-                    alt={product.productName}
-                  />
+                <S.ProductList>
+                  {group.products.map((product, productIndex) => (
+                    <ProductHorizontalCard
+                      key={`${product.productName}-${productIndex}`}
+                      thumbnail={product.thumbnail}
+                      productName={product.productName}
+                      productDescription={product.productDescription}
+                    />
+                  ))}
+                </S.ProductList>
+              </S.ProductGroup>
 
-                  <S.ProductText>
-                    <S.ProductName>{product.productName}</S.ProductName>
-
-                    <S.ProductDescription>
-                      {product.productDescription}
-                    </S.ProductDescription>
-                  </S.ProductText>
-                </S.ProductItem>
-              ))}
-            </S.ProductList>
-          </S.ProductGroup>
-        ))}
+              {groupIndex < SPONSOR_DETAIL.productGroups.length - 1 && (
+                <Divider size="lg" />
+              )}
+            </S.ProductGroupBlock>
+          ))}
+        </S.ProductGroups>
       </S.ProductSection>
 
-      <S.SectionDivider />
+      <Divider size="lg" />
 
       <S.EventSection>
-        <S.EventTitle>
-          {SPONSOR_DETAIL.event.title.split('\n').map((line, index) => (
-            <span key={index}>
-              {line}
-              {index === 0 && <br />}
-            </span>
-          ))}
-        </S.EventTitle>
+        <S.EventContent>
+          <S.EventTitle>{eventTitle}</S.EventTitle>
 
-        <S.EventButton type="button">
-          {SPONSOR_DETAIL.event.buttonText} 〉
-        </S.EventButton>
+          <BoxButton
+            variant="primary"
+            size="md"
+            onClick={() => navigate(TAB_ROUTES.EVENT)}
+          >
+            <S.EventButtonContent>
+              <span>{SPONSOR_DETAIL.event.buttonText}</span>
+              <ArrowRightIcon />
+            </S.EventButtonContent>
+          </BoxButton>
+        </S.EventContent>
       </S.EventSection>
     </S.SponsorDetailContainer>
   );
