@@ -10,10 +10,6 @@ export const SPONSOR_DETAIL = {
     url: 'htts://www.website.com',
   },
 
-  introduction: '{협찬사 이름}을 소개합니다.',
-
-  productSectionTitle: '협찬품을 소개합니다',
-
   productGroups: [
     {
       groupName: '제품 그룹',
@@ -65,7 +61,6 @@ export const SPONSOR_DETAIL = {
   ],
 
   event: {
-    title: '{협찬사}와 EMC가 준비한\n다양한 이벤트를 만나보세요.',
     buttonText: '이벤트 보러가기',
   },
 };

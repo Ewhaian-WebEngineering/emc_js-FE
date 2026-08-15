@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGoBack } from '@/hooks/useGoBack';
 
 import TransparentHeader from '@/designsystem/components/header/TransparentHeader';
 import Tab from '@/designsystem/components/tab/Tab';
@@ -35,13 +36,7 @@ export default function SponsorDetailScreen() {
 
   const [activeTab, setActiveTab] = useState(0);
 
-  const handleBack = () => {
-    if (window.history.state && window.history.state.idx > 0) {
-      navigate(-1);
-    } else {
-      navigate(TAB_ROUTES.HOME);
-    }
-  };
+  const handleBack = useGoBack();
 
   const handleTabChange = (selectedTab) => {
     const selectedIndex = DETAIL_TABS.findIndex(
@@ -84,32 +79,19 @@ export default function SponsorDetailScreen() {
   const representativeImageSrc =
     SPONSOR_DETAIL.representativeImage || DefaultRepresentativeImage;
 
-  const introductionTitle = SPONSOR_DETAIL.introduction.replace(
-    '{협찬사 이름}',
-    SPONSOR_DETAIL.sponsorName,
-  );
-
+  //TODO: html 태그 받아 표시
   const introductionContent =
     SPONSOR_DETAIL.introductionContent ||
     '협찬사 설명영역\n(Text Editor로 작성)';
 
-  const eventTitle = SPONSOR_DETAIL.event.title.replace(
-    '{협찬사}',
-    SPONSOR_DETAIL.sponsorName,
-  );
-
   return (
     <S.SponsorDetailContainer>
-      <S.HeroSection>
-        <S.RepresentativeImage
-          src={representativeImageSrc}
-          alt={`${SPONSOR_DETAIL.sponsorName} 대표 이미지`}
-        />
+      <TransparentHeader onBack={handleBack} />
 
-        <S.HeaderWrapper>
-          <TransparentHeader onBack={handleBack} title="" />
-        </S.HeaderWrapper>
-      </S.HeroSection>
+      <S.RepresentativeImage
+        src={representativeImageSrc}
+        alt={`${SPONSOR_DETAIL.sponsorName} 대표 이미지`}
+      />
 
       <S.SponsorInfoSection>
         <S.SponsorName>{SPONSOR_DETAIL.sponsorName}</S.SponsorName>
@@ -122,44 +104,51 @@ export default function SponsorDetailScreen() {
 
           <S.InfoRow>
             <S.InfoLabel>위치</S.InfoLabel>
-            <LinkButton
-              variant="secondary"
-              size="sm"
-              href="#"
-              onClick={(event) => event.preventDefault()}
-            >
-              {SPONSOR_DETAIL.info.location}
-            </LinkButton>
+            <S.InfoValue>
+              <LinkButton
+                variant="secondary"
+                size="sm"
+                href="#"
+                onClick={(event) => event.preventDefault()}
+              >
+                {SPONSOR_DETAIL.info.location}
+              </LinkButton>
+            </S.InfoValue>
           </S.InfoRow>
 
           <S.InfoRow>
             <S.InfoLabel>SNS</S.InfoLabel>
-            <LinkButton
-              variant="secondary"
-              size="sm"
-              href={getSnsUrl(SPONSOR_DETAIL.info.sns)}
-              target="_blank"
-            >
-              {SPONSOR_DETAIL.info.sns}
-            </LinkButton>
+            <S.InfoValue>
+              <LinkButton
+                variant="secondary"
+                size="sm"
+                href={getSnsUrl(SPONSOR_DETAIL.info.sns)}
+                target="_blank"
+              >
+                {SPONSOR_DETAIL.info.sns}
+              </LinkButton>
+            </S.InfoValue>
           </S.InfoRow>
 
           <S.InfoRow>
             <S.InfoLabel>URL</S.InfoLabel>
-            <LinkButton
-              variant="secondary"
-              size="sm"
-              href={SPONSOR_DETAIL.info.url}
-              target="_blank"
-            >
-              {SPONSOR_DETAIL.info.url}
-            </LinkButton>
+            <S.InfoValue>
+              <LinkButton
+                variant="secondary"
+                size="sm"
+                href={SPONSOR_DETAIL.info.url}
+                target="_blank"
+              >
+                {SPONSOR_DETAIL.info.url}
+              </LinkButton>
+            </S.InfoValue>
           </S.InfoRow>
         </S.InfoList>
       </S.SponsorInfoSection>
 
       <Divider size="lg" />
 
+      {/*TODO: Tab이 섹션 이동 후에도 상단에 노출되도록 Wrapper 적용*/}
       <Tab
         tabs={DETAIL_TABS}
         activeTab={activeTab}
@@ -167,7 +156,9 @@ export default function SponsorDetailScreen() {
       />
 
       <S.IntroductionSection ref={introductionRef}>
-        <S.SectionTitle>{introductionTitle}</S.SectionTitle>
+        <S.SectionTitle>
+          {SPONSOR_DETAIL.sponsorName}을 소개합니다.
+        </S.SectionTitle>
 
         <S.IntroductionContent>{introductionContent}</S.IntroductionContent>
       </S.IntroductionSection>
@@ -175,36 +166,30 @@ export default function SponsorDetailScreen() {
       <Divider size="lg" />
 
       <S.ProductSection ref={productRef}>
-        <S.SectionTitle>{SPONSOR_DETAIL.productSectionTitle}</S.SectionTitle>
+        <S.SectionTitle>협찬품을 소개합니다</S.SectionTitle>
 
         <S.ProductGroups>
           {SPONSOR_DETAIL.productGroups.map((group, groupIndex) => (
-            <S.ProductGroupBlock key={`${group.groupName}-${groupIndex}`}>
-              <S.ProductGroup>
-                <S.ProductGroupHeader>
-                  <S.ProductGroupName>{group.groupName}</S.ProductGroupName>
+            <S.ProductGroup key={`${group.groupName}-${groupIndex}`}>
+              <S.ProductGroupHeader>
+                <S.ProductGroupName>{group.groupName}</S.ProductGroupName>
 
-                  <S.ProductGroupDescription>
-                    {group.groupDescription}
-                  </S.ProductGroupDescription>
-                </S.ProductGroupHeader>
+                <S.ProductGroupDescription>
+                  {group.groupDescription}
+                </S.ProductGroupDescription>
+              </S.ProductGroupHeader>
 
-                <S.ProductList>
-                  {group.products.map((product, productIndex) => (
-                    <ProductHorizontalCard
-                      key={`${product.productName}-${productIndex}`}
-                      thumbnail={product.thumbnail}
-                      productName={product.productName}
-                      productDescription={product.productDescription}
-                    />
-                  ))}
-                </S.ProductList>
-              </S.ProductGroup>
-
-              {groupIndex < SPONSOR_DETAIL.productGroups.length - 1 && (
-                <Divider size="lg" />
-              )}
-            </S.ProductGroupBlock>
+              <S.ProductList>
+                {group.products.map((product, productIndex) => (
+                  <ProductHorizontalCard
+                    key={`${product.productName}-${productIndex}`}
+                    thumbnail={product.thumbnail}
+                    productName={product.productName}
+                    productDescription={product.productDescription}
+                  />
+                ))}
+              </S.ProductList>
+            </S.ProductGroup>
           ))}
         </S.ProductGroups>
       </S.ProductSection>
@@ -212,20 +197,22 @@ export default function SponsorDetailScreen() {
       <Divider size="lg" />
 
       <S.EventSection>
-        <S.EventContent>
-          <S.EventTitle>{eventTitle}</S.EventTitle>
+        <S.EventTitle>
+          {SPONSOR_DETAIL.sponsorName}와 EMC가 준비한
+          {'\n'}
+          다양한 이벤트를 만나보세요.
+        </S.EventTitle>
 
-          <BoxButton
-            variant="primary"
-            size="md"
-            onClick={() => navigate(TAB_ROUTES.EVENT)}
-          >
-            <S.EventButtonContent>
-              <span>{SPONSOR_DETAIL.event.buttonText}</span>
-              <ArrowRightIcon />
-            </S.EventButtonContent>
-          </BoxButton>
-        </S.EventContent>
+        <BoxButton
+          variant="primary"
+          size="md"
+          onClick={() => navigate(TAB_ROUTES.EVENT)}
+        >
+          <S.EventButtonContent>
+            {SPONSOR_DETAIL.event.buttonText}
+            <ArrowRightIcon />
+          </S.EventButtonContent>
+        </BoxButton>
       </S.EventSection>
     </S.SponsorDetailContainer>
   );

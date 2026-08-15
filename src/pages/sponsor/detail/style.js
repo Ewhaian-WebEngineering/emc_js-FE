@@ -9,12 +9,8 @@ export const SponsorDetailContainer = styled.div`
   flex-direction: column;
   width: 100%;
   min-height: 100%;
+  margin-bottom: 144px;
   background: ${semantic.fillNormalWhite};
-`;
-
-export const HeroSection = styled.section`
-  position: relative;
-  width: 100%;
 `;
 
 export const RepresentativeImage = styled.img`
@@ -26,31 +22,23 @@ export const RepresentativeImage = styled.img`
   border-radius: ${measurement.borderRadiusRectangle};
 `;
 
-export const HeaderWrapper = styled.div`
-  position: absolute;
-  top: ${measurement.spacing0};
-  left: ${measurement.spacing0};
-  z-index: 1;
-  width: 100%;
-`;
-
 export const SponsorInfoSection = styled.section`
   display: flex;
   flex-direction: column;
   padding: ${measurement.spacing20} ${measurement.spacing16};
-  gap: ${measurement.spacing24};
+  gap: ${measurement.spacing20};
 `;
 
 export const SponsorName = styled.h1`
   ${typography.headline2Semibold};
   color: ${semantic.textNormalStrong};
-  line-height: 24px;
 `;
 
-export const InfoList = styled.div`
+export const InfoList = styled.dl`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin: 0;
   gap: ${measurement.spacing16};
 `;
 
@@ -65,14 +53,15 @@ export const InfoRow = styled.div`
   }
 `;
 
-export const InfoLabel = styled.span`
-  ${typography.caption1Medium};
+export const InfoLabel = styled.dt`
+  ${typography.caption1Regular};
   color: ${semantic.textNormalNormal};
 `;
 
-export const InfoValue = styled.span`
+export const InfoValue = styled.dd`
   ${typography.caption1Medium};
   min-width: ${measurement.spacing0};
+  margin: 0;
   color: ${semantic.textNormalStrong};
   justify-self: start;
 `;
@@ -81,8 +70,7 @@ export const IntroductionSection = styled.section`
   display: flex;
   flex-direction: column;
   padding: ${measurement.spacing24} ${measurement.spacing16};
-  gap: ${measurement.spacing40};
-  scroll-margin-top: ${measurement.spacing0};
+  gap: ${measurement.spacing24};
 `;
 
 export const SectionTitle = styled.h2`
@@ -107,7 +95,7 @@ export const ProductSection = styled.section`
   display: flex;
   flex-direction: column;
   padding: ${measurement.spacing24} ${measurement.spacing16};
-  gap: ${measurement.spacing40};
+  gap: ${measurement.spacing24};
   scroll-margin-top: ${measurement.spacing0};
 `;
 
@@ -115,12 +103,6 @@ export const ProductGroups = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${measurement.spacing40};
-`;
-
-export const ProductGroupBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${measurement.spacing24};
 `;
 
 export const ProductGroup = styled.div`
@@ -157,33 +139,16 @@ export const EventSection = styled.section`
   display: flex;
   flex-direction: column;
   padding: ${measurement.spacing32} ${measurement.spacing16};
-  background: ${semantic.fillNormalWhite};
-  border-bottom: ${measurement.borderWidthSm} solid
-    ${semantic.borderNormalAssistive};
-`;
-
-export const EventContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
   gap: ${measurement.spacing20};
 `;
 
 export const EventTitle = styled.h2`
   ${typography.title3Semibold};
   color: ${semantic.textNormalStrong};
-  line-height: ${measurement.spacing36};
   white-space: pre-line;
 `;
 
-export const EventButtonContent = styled.span`
+export const EventButtonContent = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
   gap: ${measurement.spacing4};
-  svg {
-    width: ${measurement.spacing20};
-    height: ${measurement.spacing20};
-    flex-shrink: 0;
-  }
 `;
