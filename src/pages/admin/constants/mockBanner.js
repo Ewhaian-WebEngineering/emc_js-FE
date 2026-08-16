@@ -1,4 +1,5 @@
 export const mockBanner = {
+  bannerId: 1,
   imageUrl: '',
   title: '배너 예시',
   period: {
