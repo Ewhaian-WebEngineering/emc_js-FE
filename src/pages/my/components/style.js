@@ -44,17 +44,10 @@ export const MyUserName = styled.h2`
   display: flex;
   align-items: center;
   gap: ${measurement.spacing4};
-
+  ${typography.title3Semibold};
+  color: ${semantic.textNormalStrong};
   span {
-    ${typography.title3Semibold};
-  }
-
-  span:first-of-type {
     color: ${semantic.textPrimaryNormal};
-  }
-
-  span:second-of-type {
-    color: ${semantic.textNormalStrong};
   }
 `;
 

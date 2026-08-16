@@ -32,8 +32,7 @@ export default function MyUserRow({
   return (
     <UserRow>
       <MyUserName>
-        <span>{userName}</span>
-        <span>님</span>
+        <span>{userName}</span>님
       </MyUserName>
       <TextButton size="sm" variant="secondary" onClick={onLogout}>
         <MyLogout>
