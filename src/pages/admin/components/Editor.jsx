@@ -23,8 +23,6 @@ import {
   PiMinusLight,
 } from 'react-icons/pi';
 
-const EXCLUSIVE_MARKS = ['bold', 'italic', 'underline', 'strike'];
-const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 const preventMouseDown = (e) => e.preventDefault();
 
 export default function Editor({ content = '', onChange }) {
@@ -70,19 +68,6 @@ export default function Editor({ content = '', onChange }) {
   });
 
   if (!editor) return null;
-
-  const toggleExclusive = (name) => {
-    let chain = editor.chain().focus();
-
-    EXCLUSIVE_MARKS.forEach((mark) => {
-      if (mark !== name && editorState[`is${capitalize(mark)}`]) {
-        chain = chain[`unset${capitalize(mark)}`]();
-      }
-    });
-
-    chain = chain[`toggle${capitalize(name)}`]();
-    chain.run();
-  };
 
   const setLink = () => {
     if (editor.isActive('link')) {
@@ -136,28 +121,28 @@ export default function Editor({ content = '', onChange }) {
         <ToolbarButton
           active={editorState.isBold}
           onMouseDown={preventMouseDown}
-          onClick={() => toggleExclusive('bold')}
+          onClick={() => editor.chain().focus().toggleBold().run()}
         >
           <PiTextBLight />
         </ToolbarButton>
         <ToolbarButton
           active={editorState.isItalic}
           onMouseDown={preventMouseDown}
-          onClick={() => toggleExclusive('italic')}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
         >
           <PiTextItalicLight />
         </ToolbarButton>
         <ToolbarButton
           active={editorState.isUnderline}
           onMouseDown={preventMouseDown}
-          onClick={() => toggleExclusive('underline')}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
         >
           <PiTextUnderlineLight />
         </ToolbarButton>
         <ToolbarButton
           active={editorState.isStrike}
           onMouseDown={preventMouseDown}
-          onClick={() => toggleExclusive('strike')}
+          onClick={() => editor.chain().focus().toggleStrike().run()}
         >
           <PiTextStrikethroughLight />
         </ToolbarButton>
