@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import DatePicker from '@/designsystem/components/datepicker/DatePicker';
+import Modal from '@/designsystem/components/modal/Modal';
 import { BannerFormContainer, ContentContainer } from './style';
 
 /**
@@ -23,10 +25,12 @@ function createInitialFormData(initialData) {
 
 export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState(() =>
     createInitialFormData(initialData),
   );
+  const [isBackModalOpen, setIsBackModalOpen] = useState(false);
   const { imageUrl, title, period, url } = formData;
 
   const updateField = (field) => (value) => {
@@ -53,10 +57,22 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     });
   };
 
+  const handleBack = () => {
+    setIsBackModalOpen(true);
+  };
+
+  const handleBackConfirm = () => {
+    setIsBackModalOpen(false);
+  };
+
+  const handleBackCancel = () => {
+    navigate('/admin/dashboard');
+  };
+
   return (
     <BannerFormContainer>
       <FillCenterHeader
-        onBack={() => {}}
+        onBack={handleBack}
         right={
           <TextButton
             disabled={hasError}
@@ -103,6 +119,18 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
           helperText={isEdit && !url.trim() ? '내용을 입력해주세요' : ''}
         />
       </ContentContainer>
+
+      {isBackModalOpen && (
+        <Modal
+          variant="confirmation"
+          title="작성 중인 내용이 있어요."
+          description="나가면 작성 중인 내용이 저장되지 않아요."
+          confirmText="계속 작성하기"
+          cancelText="나가기"
+          onConfirm={handleBackConfirm}
+          onCancel={handleBackCancel}
+        />
+      )}
     </BannerFormContainer>
   );
 }
