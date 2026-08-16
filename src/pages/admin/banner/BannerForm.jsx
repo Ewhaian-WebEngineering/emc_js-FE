@@ -12,15 +12,27 @@ import { BannerFormContainer, ContentContainer } from './style';
  * @param {function} onSubmit - 등록/수정 완료 시 호출되는 콜백
  */
 
+function createInitialFormData(initialData) {
+  return {
+    imageUrl: initialData?.imageUrl ?? '',
+    title: initialData?.title ?? '',
+    period: initialData?.period ?? { start: null, end: null },
+    url: initialData?.url ?? '',
+  };
+}
+
 export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
 
-  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl ?? '');
-  const [title, setTitle] = useState(initialData?.title ?? '');
-  const [period, setPeriod] = useState(
-    initialData?.period ?? { start: null, end: null },
+  const [formData, setFormData] = useState(() =>
+    createInitialFormData(initialData),
   );
-  const [url, setUrl] = useState(initialData?.url ?? '');
+  const { imageUrl, title, period, url } = formData;
+
+  const updateField = (field) => (value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
   const isPeriodInvalid =
     period.start && period.end && period.start > period.end;
 
@@ -35,9 +47,8 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     if (hasError) return;
 
     onSubmit?.({
-      imageUrl,
+      ...formData,
       title: title.trim(),
-      period,
       url: url.trim(),
     });
   };
@@ -60,13 +71,13 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
       />
       <MainImageUploader
         imageUrl={imageUrl}
-        onDelete={() => setImageUrl('')}
-        onUpload={(url) => setImageUrl(url)}
+        onDelete={() => updateField('imageUrl')('')}
+        onUpload={updateField('imageUrl')}
       />
       <ContentContainer>
         <TextField
           maxLength={36}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => updateField('title')(e.target.value)}
           placeholder="배너 제목을 작성해주세요."
           required
           title="제목"
@@ -79,11 +90,11 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
           label="기간 설정"
           required
           value={period}
-          onChange={setPeriod}
+          onChange={updateField('period')}
         />
 
         <TextField
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => updateField('url')(e.target.value)}
           placeholder="https:// 또는 /path 형태로 입력해주세요."
           required
           title="URL"
