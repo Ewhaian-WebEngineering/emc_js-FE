@@ -11,10 +11,15 @@ import { BottomSheetContentsSection } from './style';
 export default function BottomSheetContents({
   isDragging,
   heightPx,
+  scrollLocked,
   children,
 }) {
   return (
-    <BottomSheetContentsSection heightPx={heightPx} isDragging={isDragging}>
+    <BottomSheetContentsSection
+      heightPx={heightPx}
+      isDragging={isDragging}
+      scrollLocked={scrollLocked}
+    >
       {children}
     </BottomSheetContentsSection>
   );
