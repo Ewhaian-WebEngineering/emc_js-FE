@@ -12,7 +12,7 @@ import { BannerFormContainer, ContentContainer } from './style';
  * @param {function} onSubmit - 등록/수정 완료 시 호출되는 콜백
  */
 
-export default function EventForm({ mode = 'create', initialData, onSubmit }) {
+export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
 
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl ?? '');
