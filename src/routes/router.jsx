@@ -12,7 +12,8 @@ import AdminDashboardScreen from '../pages/admin/AdminDashboardScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
-import EventForm from '../pages/admin/event/EventForm';
+import EventCreateScreen from '../pages/admin/event/EventCreateScreen';
+import EventEditScreen from '../pages/admin/event/EventEditScreen';
 import MakersScreen from '../pages/makers/MakersScreen';
 import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
 import {
@@ -63,7 +64,11 @@ export const router = createBrowserRouter([
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
-      { path: ADMIN_ROUTES.EVENT, element: <EventForm /> },
+      { path: ADMIN_ROUTES.EVENT, element: <EventCreateScreen /> },
+      {
+        path: ADMIN_ROUTES.EVENTEDIT(':eventId'),
+        element: <EventEditScreen />,
+      },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
       { path: MAP_ROUTE, element: <MapScreen /> },

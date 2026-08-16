@@ -26,6 +26,7 @@ export const SEARCH_ROUTES = {
 export const ADMIN_ROUTES = {
   CODE: '/admin',
   EVENT: '/admin/event',
+  EVENTEDIT: (eventId) => `/admin/event/${eventId}/edit`,
   DASHBOARD: '/admin/dashboard',
 };
 
