@@ -56,7 +56,6 @@ export const Normal = {
           variant="normal"
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          showScrim
         >
           <ContentArea />
         </BottomSheet>
@@ -78,7 +77,7 @@ export const Handle = {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           defaultSnap="half"
-          showScrim
+          showScrim="dim"
         >
           <ContentArea />
         </BottomSheet>
@@ -105,7 +104,7 @@ export const HandleWithHeader = {
             setIsOpen(false);
             alert('Full Screen');
           }}
-          showScrim
+          showScrim="dim"
         >
           <ContentArea />
         </BottomSheet>

@@ -37,7 +37,7 @@ export const TextFieldInputWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  border: ${measurement.borderRadiusSm} solid ${semantic.borderNormalNormal};
+  border: ${measurement.borderWidthXs} solid ${semantic.borderNormalNormal};
   border-radius: ${measurement.borderRadiusXl};
   background-color: ${semantic.fillNormalWhite};
 
@@ -124,7 +124,7 @@ export const TextInputMaxLength = styled.span`
 
 export const TextAreaWrapper = styled.div`
   position: relative;
-  border: ${measurement.borderRadiusSm} solid ${semantic.borderNormalNormal};
+  border: ${measurement.borderWidthXs} solid ${semantic.borderNormalNormal};
   border-radius: ${measurement.borderRadiusXl};
   background-color: ${semantic.fillNormalWhite};
   padding-right: 3px;
