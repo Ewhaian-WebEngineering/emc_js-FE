@@ -6,6 +6,7 @@ import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
+import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 import {
   EditorWrapper,
   Toolbar,
@@ -35,6 +36,7 @@ export default function Editor({ content = '', onChange }) {
   const savedSelectionRef = useRef(null);
   const [linkUrl, setLinkUrl] = useState('');
   const [showLinkMenu, setShowLinkMenu] = useState(false);
+  const { toast } = useToastContext();
 
   const editor = useEditor({
     extensions: [
@@ -75,7 +77,6 @@ export default function Editor({ content = '', onChange }) {
     }),
   });
 
-  //수정: 아래 두 useEffect를 `if (!editor) return null;` 위로 이동 (훅은 조건부 리턴보다 항상 위에 있어야 함)
   useEffect(() => {
     if (showLinkMenu && savedSelectionRef.current && editor) {
       const { from, to } = savedSelectionRef.current;
@@ -83,7 +84,6 @@ export default function Editor({ content = '', onChange }) {
     }
   }, [showLinkMenu, editor]);
 
-  //수정: 이 useEffect도 위로 이동
   useEffect(() => {
     if (!showLinkMenu) return;
 
@@ -102,20 +102,18 @@ export default function Editor({ content = '', onChange }) {
     };
   }, [showLinkMenu]);
 
-  if (!editor) return null; //수정: 모든 훅 호출이 끝난 뒤로 위치 이동
+  if (!editor) return null;
 
   const setLink = () => {
-    // 이미 링크가 적용되어 있다면 링크 해제
     if (editor.isActive('link')) {
       editor.chain().focus().unsetLink().run();
       setLinkUrl('');
       setShowLinkMenu(false);
       return;
     }
-    // 텍스트가 선택되어 있는지 확인
     const { from, to } = editor.state.selection;
     if (from === to) {
-      alert('링크를 적용할 텍스트를 먼저 드래그해주세요.');
+      toast({ message: '링크를 적용할 텍스트를 먼저 드래그해주세요.' });
       return;
     }
     savedSelectionRef.current = { from, to };
