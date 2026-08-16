@@ -25,6 +25,7 @@ export const AdminCardRowContainer = styled.div`
     ${({ selected }) =>
       selected ? semantic.textPrimaryNormal : semantic.borderNormalStrong};
   border-radius: ${measurement.borderRadiusLg};
+  background: ${semantic.fillNormalWhite};
 `;
 
 export const AdminProductCardThumbnail = styled.div`
@@ -108,6 +109,7 @@ export const AdminCardColumnContainer = styled.div`
     ${({ selected }) =>
       selected ? semantic.textPrimaryNormal : semantic.borderNormalStrong};
   border-radius: ${measurement.borderRadiusLg};
+  background: ${semantic.fillNormalWhite};
 `;
 
 export const AdminCardContent = styled.p`

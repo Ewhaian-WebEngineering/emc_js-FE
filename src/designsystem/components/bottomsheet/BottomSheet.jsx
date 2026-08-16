@@ -7,6 +7,8 @@ import BottomSheetContentsSection from './BottomSheetContentsSection';
 import BottomSheetHandle from './BottomSheetHandle';
 import BottomSheetHeader from './BottomSheetHeader';
 import { BottomSheetContainer } from './style';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 const DEFAULT_SNAPS = {
   normal: [],
@@ -23,10 +25,11 @@ const DEFAULT_SNAPS = {
  * @param {boolean} isOpen - 바텀시트 열림 여부
  * @param {function} onClose - 바텀시트 닫기 이벤트 핸들러
  * @param {function} [onFull] - 바텀시트가 full 스냅 포인트에 도달했을 때 호출되는 이벤트 핸들러
- * @param {boolean} [showScrim=true] - 스크림 표시 여부
+ * @param {'dim'|'transparent'|'none'} [showScrim='dim'] - 스크림 표시 여부
  * @param {string} [title] - 바텀시트 헤더에 표시될 제목
  * @param {Array<string>} [snapPoints] - 바텀시트 스냅 포인트 목록, 미지정 시 variant별 기본 스냅 포인트 사용
  * @param {string} [defaultSnap='half'] - 바텀시트 초기 스냅 포인트
+ * @param {boolean} [dismissible=true] - 바텀시트 닫기 가능 여부
  * @param {React.ReactNode} children - 바텀시트 내부에 렌더링할 콘텐츠
  */
 
@@ -35,18 +38,29 @@ export default function BottomSheet({
   isOpen,
   onClose,
   onFull,
-  showScrim = true,
+  showScrim = 'dim',
   title,
   snapPoints,
   defaultSnap = 'half',
+  dismissible = true,
   children,
+  ...rest
 }) {
-  const allowedSnaps = snapPoints ?? DEFAULT_SNAPS[variant];
+  const [internalOpen, setInternalOpen] = useState(isOpen);
 
-  const { heightPx, onDrag, resolveAfterDrag } = useSnapPoint({
+  useEffect(() => {
+    if (isOpen) setInternalOpen(true);
+  }, [isOpen]);
+
+  const requestClose = () => setInternalOpen(false);
+
+  const allowedSnaps = snapPoints ?? DEFAULT_SNAPS[variant];
+  const hasSnapPoints = allowedSnaps.length > 0;
+
+  const { currentSnap, heightPx, onDrag, resolveAfterDrag } = useSnapPoint({
     allowedSnaps,
     defaultSnap,
-    onClose,
+    onClose: dismissible ? requestClose : undefined,
     onFull,
   });
 
@@ -61,32 +75,48 @@ export default function BottomSheet({
     onDragEnd: resolveAfterDrag,
   });
 
-  usePreventScroll(isOpen);
-
-  if (!isOpen) return null;
+  usePreventScroll(internalOpen);
 
   return (
-    <>
-      {showScrim && <Scrim onClick={onClose} />}
-      <BottomSheetContainer
-        variant={variant}
-        heightPx={heightPx}
-        isDragging={isDragging}
-      >
-        <BottomSheetContentsSection heightPx={heightPx} isDragging={isDragging}>
-          {(variant === 'handle' || variant === 'handleWithHeader') && (
-            <BottomSheetHandle onPointerDown={handlePointerDown} />
+    <AnimatePresence onExitComplete={onClose}>
+      {internalOpen && (
+        <>
+          {showScrim !== 'none' && (
+            <Scrim onClick={requestClose} visible={showScrim === 'dim'} />
           )}
-          {(variant === 'handleWithHeader' || variant === 'header') && (
-            <BottomSheetHeader
-              variant={variant}
-              title={title}
-              onClose={onClose}
-            />
-          )}
-          {children}
-        </BottomSheetContentsSection>
-      </BottomSheetContainer>
-    </>
+          <BottomSheetContainer
+            as={motion.div}
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'tween', duration: 0.28, ease: 'easeInOut' }}
+            variant={variant}
+            heightPx={hasSnapPoints ? heightPx : 'auto'}
+            isDragging={isDragging}
+            {...rest}
+          >
+            <div onPointerDown={handlePointerDown}>
+              {(variant === 'handle' || variant === 'handleWithHeader') && (
+                <BottomSheetHandle onPointerDown={handlePointerDown} />
+              )}
+              {(variant === 'handleWithHeader' || variant === 'header') && (
+                <BottomSheetHeader
+                  variant={variant}
+                  title={title}
+                  onClose={requestClose}
+                />
+              )}
+            </div>
+            <BottomSheetContentsSection
+              heightPx={hasSnapPoints ? heightPx : 'auto'}
+              isDragging={isDragging}
+              scrollLocked={currentSnap === 'min'}
+            >
+              {children}
+            </BottomSheetContentsSection>
+          </BottomSheetContainer>
+        </>
+      )}
+    </AnimatePresence>
   );
 }
