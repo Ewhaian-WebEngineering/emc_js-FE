@@ -140,3 +140,35 @@ export const CardWrapper = styled.div`
   flex-direction: column;
   gap: ${measurement.spacing8};
 `;
+
+export const LinkBubbleMenu = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  background: ${semantic.fillNormalWhite}; // TODO: 실제 토큰 경로/이름에 맞게 수정
+  border: 1px solid ${semantic.borderNormalNormal};
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+export const LinkInput = styled.input`
+  width: 220px;
+  padding: 6px 8px;
+  border: 1px solid ${semantic.fillNormalStrong};
+  border-radius: 4px;
+  outline: none;
+  ${typography.body2};
+`;
+
+export const LinkActionButton = styled.button`
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  background: ${semantic.fillNormalNormal};
+  cursor: pointer;
+
+  &:hover {
+    background: ${semantic.fillNormalStrong};
+  }
+`;

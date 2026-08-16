@@ -1,5 +1,6 @@
 import { useEditor, EditorContent, useEditorState } from '@tiptap/react';
-import { useRef } from 'react';
+import { BubbleMenu } from '@tiptap/react/menus';
+import { useEffect, useRef, useState } from 'react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
@@ -11,6 +12,9 @@ import {
   ToolbarButton,
   Divider,
   ContentArea,
+  LinkBubbleMenu,
+  LinkInput,
+  LinkActionButton,
 } from './style';
 import {
   PiTextBLight,
@@ -27,6 +31,10 @@ const preventMouseDown = (e) => e.preventDefault();
 
 export default function Editor({ content = '', onChange }) {
   const fileInputRef = useRef(null);
+  const linkMenuRef = useRef(null);
+  const savedSelectionRef = useRef(null);
+  const [linkUrl, setLinkUrl] = useState('');
+  const [showLinkMenu, setShowLinkMenu] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -67,23 +75,59 @@ export default function Editor({ content = '', onChange }) {
     }),
   });
 
-  if (!editor) return null;
+  //수정: 아래 두 useEffect를 `if (!editor) return null;` 위로 이동 (훅은 조건부 리턴보다 항상 위에 있어야 함)
+  useEffect(() => {
+    if (showLinkMenu && savedSelectionRef.current && editor) {
+      const { from, to } = savedSelectionRef.current;
+      editor.chain().setTextSelection({ from, to }).focus().run();
+    }
+  }, [showLinkMenu, editor]);
+
+  //수정: 이 useEffect도 위로 이동
+  useEffect(() => {
+    if (!showLinkMenu) return;
+
+    const handleClickOutside = (e) => {
+      if (linkMenuRef.current && !linkMenuRef.current.contains(e.target)) {
+        setShowLinkMenu(false);
+        setLinkUrl('');
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    };
+  }, [showLinkMenu]);
+
+  if (!editor) return null; //수정: 모든 훅 호출이 끝난 뒤로 위치 이동
 
   const setLink = () => {
+    // 이미 링크가 적용되어 있다면 링크 해제
     if (editor.isActive('link')) {
       editor.chain().focus().unsetLink().run();
+      setLinkUrl('');
+      setShowLinkMenu(false);
       return;
     }
-
+    // 텍스트가 선택되어 있는지 확인
     const { from, to } = editor.state.selection;
     if (from === to) {
       alert('링크를 적용할 텍스트를 먼저 드래그해주세요.');
       return;
     }
+    savedSelectionRef.current = { from, to };
+    setLinkUrl('');
+    setShowLinkMenu(true);
+  };
 
-    const url = window.prompt('링크 URL을 입력하세요');
-    if (!url) return;
-    editor.chain().focus().setLink({ href: url }).run();
+  const applyLink = () => {
+    if (!linkUrl.trim()) return;
+    editor.chain().focus().setLink({ href: linkUrl.trim() }).run();
+    setLinkUrl('');
+    setShowLinkMenu(false);
   };
 
   const handleImageClick = () => {
@@ -161,9 +205,9 @@ export default function Editor({ content = '', onChange }) {
           <PiTextStrikethroughLight />
         </ToolbarButton>
         <ToolbarButton
+          active={editorState.isLink}
           onMouseDown={preventMouseDown}
           onClick={setLink}
-          active={editorState.isLink}
         >
           <PiLinkSimpleLight />
         </ToolbarButton>
@@ -198,6 +242,29 @@ export default function Editor({ content = '', onChange }) {
       </Toolbar>
       <Divider />
       <ContentArea>
+        <BubbleMenu editor={editor} shouldShow={() => showLinkMenu}>
+          <LinkBubbleMenu ref={linkMenuRef}>
+            <LinkInput
+              type="text"
+              value={linkUrl}
+              onChange={(e) => setLinkUrl(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  applyLink();
+                }
+              }}
+              placeholder="링크 URL을 입력하세요"
+            />
+            <LinkActionButton
+              type="button"
+              onMouseDown={preventMouseDown}
+              onClick={applyLink}
+            >
+              적용
+            </LinkActionButton>
+          </LinkBubbleMenu>
+        </BubbleMenu>
         <EditorContent editor={editor} style={{ width: '100%' }} />
       </ContentArea>
     </EditorWrapper>
