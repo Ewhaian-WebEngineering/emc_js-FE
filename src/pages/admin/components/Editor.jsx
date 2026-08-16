@@ -94,15 +94,29 @@ export default function Editor({ content = '', onChange }) {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e) => {
+  // TODO : S3 이미지 업로드로 변경
+  const uploadImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+
+      reader.onerror = reject;
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
+
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      editor.chain().focus().setImage({ src: reader.result }).run();
-    };
-    reader.readAsDataURL(file);
+    const imageUrl = await uploadImage(file);
+
+    editor.chain().focus().setImage({ src: imageUrl }).run();
 
     e.target.value = '';
   };
