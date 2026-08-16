@@ -8,6 +8,9 @@ import DatePicker from '@/designsystem/components/datepicker/DatePicker';
 import Modal from '@/designsystem/components/modal/Modal';
 import { BannerFormContainer, ContentContainer } from './style';
 
+const urlRegExp =
+  /(https?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/;
+
 /**
  * @param {'create' | 'edit'} mode - 등록/수정 모드
  * @param {object} [initialData] - 수정 모드일 때 미리 채울 기존 데이터
@@ -48,12 +51,15 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const isPeriodInvalid =
     period.start && period.end && period.start > period.end;
 
+  const isUrlInvalid = url.trim() !== '' && !urlRegExp.test(url.trim());
+
   const hasError =
     !title.trim() ||
     !period.start ||
     !period.end ||
     isPeriodInvalid ||
-    !url.trim();
+    !url.trim() ||
+    isUrlInvalid;
 
   const handleSubmit = () => {
     if (hasError) {
@@ -79,6 +85,14 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const handleBackCancel = () => {
     navigate('/admin/dashboard');
   };
+
+  const urlHelperText = touched.url
+    ? !url.trim()
+      ? '내용을 입력해주세요.'
+      : isUrlInvalid
+        ? '잘못된 URL 형식입니다.'
+        : ''
+    : '';
 
   return (
     <BannerFormContainer>
@@ -112,7 +126,7 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
           value={title}
           hasError={touched.title && !title.trim()}
           helperText={
-            touched.title && !title.trim() ? '내용을 입력해주세요' : ''
+            touched.title && !title.trim() ? '내용을 입력해주세요.' : ''
           }
         />
 
@@ -130,8 +144,8 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
           required
           title="URL"
           value={url}
-          hasError={touched.url && !url.trim()}
-          helperText={touched.url && !url.trim() ? '내용을 입력해주세요' : ''}
+          hasError={touched.url && (!url.trim() || isUrlInvalid)}
+          helperText={urlHelperText}
         />
       </ContentContainer>
 
