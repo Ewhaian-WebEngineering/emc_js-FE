@@ -14,7 +14,7 @@ export const EventFormContainer = styled.div`
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: ${measurement.spacing32};
   padding: ${measurement.spacing24} ${measurement.spacing16}
     ${measurement.spacing0} ${measurement.spacing16};
 `;
@@ -22,13 +22,13 @@ export const ContentContainer = styled.div`
 export const CategoryContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${measurement.spacing8};
 `;
 
 export const CategoryTitle = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: ${measurement.spacing4};
   ${typography.body1Semibold};
   color: ${semantic.textNormalNormal};
 
@@ -41,5 +41,5 @@ export const TagGroup = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: ${measurement.spacing8};
 `;
