@@ -33,19 +33,13 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
 
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl ?? '');
   const [title, setTitle] = useState(initialData?.title ?? '');
-  const [eventType, setEventType] = useState(initialData?.eventType ?? []);
+  const [eventType, setEventType] = useState(initialData?.eventType ?? null);
   const [host, setHost] = useState(initialData?.host ?? null);
   const [period, setPeriod] = useState(
     initialData?.period ?? { start: null, end: null },
   );
   const [content, setContent] = useState(initialData?.content ?? '');
   const [notice, setNotice] = useState(initialData?.notice ?? '');
-
-  const toggleEventType = (type) => {
-    setEventType((prev) =>
-      prev.includes(type) ? prev.filter((v) => v !== type) : [...prev, type],
-    );
-  };
 
   const isPeriodInvalid =
     period.start && period.end && period.start > period.end;
@@ -127,8 +121,8 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
                 key={type}
                 label={type}
                 variant="button"
-                selected={eventType.includes(type)}
-                onClick={() => toggleEventType(type)}
+                selected={eventType === type}
+                onClick={() => setEventType(type)}
               />
             ))}
           </TagGroup>

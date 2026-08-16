@@ -3,7 +3,7 @@ export const mockEvent = {
   eventId: 1,
   imageUrl: '',
   title: '이벤트 예시',
-  eventType: ['사전', '현장'],
+  eventType: '사전',
   host: 'EMC 주최',
   period: {
     start: new Date('2026-09-01'),
