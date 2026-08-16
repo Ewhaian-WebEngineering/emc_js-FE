@@ -17,7 +17,12 @@ export default function MyUserRow({
         <MyUserName>
           <span>로그인</span>
         </MyUserName>
-        <IconButton size="md" variant="transparent" onClick={onLoginClick}>
+        <IconButton
+          size="md"
+          variant="transparent"
+          onClick={onLoginClick}
+          color={semantic.iconNormalNormal}
+        >
           <ArrowRightIcon />
         </IconButton>
       </UserRow>
