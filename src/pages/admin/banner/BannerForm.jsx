@@ -30,11 +30,19 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const [formData, setFormData] = useState(() =>
     createInitialFormData(initialData),
   );
+  const [touched, setTouched] = useState({
+    title: false,
+    url: false,
+  });
   const [isBackModalOpen, setIsBackModalOpen] = useState(false);
   const { imageUrl, title, period, url } = formData;
 
   const updateField = (field) => (value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleBlur = (field) => () => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
   const isPeriodInvalid =
@@ -48,7 +56,10 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     !url.trim();
 
   const handleSubmit = () => {
-    if (hasError) return;
+    if (hasError) {
+      setTouched({ title: true, url: true });
+      return;
+    }
 
     onSubmit?.({
       ...formData,
@@ -94,12 +105,15 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
         <TextField
           maxLength={36}
           onChange={(e) => updateField('title')(e.target.value)}
+          onBlur={handleBlur('title')}
           placeholder="배너 제목을 작성해주세요."
           required
           title="제목"
           value={title}
-          hasError={isEdit && !title.trim()}
-          helperText={isEdit && !title.trim() ? '내용을 입력해주세요' : ''}
+          hasError={touched.title && !title.trim()}
+          helperText={
+            touched.title && !title.trim() ? '내용을 입력해주세요' : ''
+          }
         />
 
         <DatePicker
@@ -111,12 +125,13 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
 
         <TextField
           onChange={(e) => updateField('url')(e.target.value)}
+          onBlur={handleBlur('url')}
           placeholder="https:// 또는 /path 형태로 입력해주세요."
           required
           title="URL"
           value={url}
-          hasError={isEdit && !url.trim()}
-          helperText={isEdit && !url.trim() ? '내용을 입력해주세요' : ''}
+          hasError={touched.url && !url.trim()}
+          helperText={touched.url && !url.trim() ? '내용을 입력해주세요' : ''}
         />
       </ContentContainer>
 
