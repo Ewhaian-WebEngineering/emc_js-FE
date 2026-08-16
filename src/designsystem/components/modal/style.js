@@ -44,6 +44,7 @@ export const ModalContent = styled.div`
     ${typography.body2Regular};
     text-align: center;
     color: ${semantic.textNormalNormal};
+    white-space: pre-line;
   }
 `;
 

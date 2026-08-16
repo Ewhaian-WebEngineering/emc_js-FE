@@ -7,18 +7,24 @@ import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
+import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
+import AdminDashboardScreen from '../pages/admin/AdminDashboardScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
-import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
+import MakersScreen from '../pages/makers/MakersScreen';
+import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
 import {
   TAB_ROUTES,
   NOTICE_ROUTE,
   SPONSOR_ROUTES,
+  MAKERS_ROUTES,
   ADMIN_ROUTES,
-  BOOTH_ROUTES,
+  MAP_ROUTE,
+  EMC_INTRODUCTION_ROUTE,
 } from '../constants/routes';
 import { boothRoutes } from '@/pages/booth/routes';
+import MapScreen from '@/pages/map/MapScreen';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -54,8 +60,15 @@ export const router = createBrowserRouter([
         ],
       },
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
+      { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
+      { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
+      { path: MAP_ROUTE, element: <MapScreen /> },
+      {
+        path: EMC_INTRODUCTION_ROUTE,
+        element: <EmcIntroductionScreen />,
+      },
       ...boothRoutes.withoutFooter,
       ...searchRoutes.full,
     ],

@@ -13,7 +13,7 @@ export const SearchWrapper = styled.div`
 
   background-color: ${semantic.fillNormalNormal};
 
-  border: ${measurement.borderRadiusSm} solid ${semantic.borderNormalNormal};
+  border: ${measurement.borderWidthXs} solid ${semantic.borderNormalNormal};
   border-radius: ${measurement.borderRadiusLg};
 
   input {

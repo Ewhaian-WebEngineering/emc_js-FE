@@ -72,7 +72,7 @@ export const SelectTrigger = styled.div`
   gap: ${({ size }) =>
     size === 'md' ? measurement.spacing8 : measurement.spacing2};
 
-  border: ${measurement.borderRadiusSm} solid
+  border: ${measurement.borderWidthSm} solid
     ${({ size, error, isOpen }) =>
       size === 'sm'
         ? 'transparent'
