@@ -36,9 +36,9 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
 
     onSubmit?.({
       imageUrl,
-      title,
+      title: title.trim(),
       period,
-      url,
+      url: url.trim(),
     });
   };
 
