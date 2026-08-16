@@ -12,7 +12,7 @@ export const BannerFormContainer = styled.div`
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: ${measurement.spacing36};
   padding: ${measurement.spacing24} ${measurement.spacing16}
     ${measurement.spacing0} ${measurement.spacing16};
 `;
