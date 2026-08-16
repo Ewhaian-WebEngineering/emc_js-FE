@@ -56,7 +56,7 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
             {isEdit ? '저장' : '등록'}
           </TextButton>
         }
-        title="이벤트"
+        title="배너"
       />
       <MainImageUploader
         imageUrl={imageUrl}
