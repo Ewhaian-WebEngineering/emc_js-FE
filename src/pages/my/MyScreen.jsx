@@ -21,7 +21,11 @@ const CONTENT_BY_ROLE = {
   admin: MyAdminContent,
 };
 
-export default function MyScreen({ isLoggedIn = false, userRole = 'user' }) {
+export default function MyScreen({
+  isLoggedIn: initialIsLoggedIn = true,
+  userRole = 'user',
+}) {
+  const [isLoggedIn, setIsLoggedIn] = useState(initialIsLoggedIn);
   const [data, setData] = useState(MOCK_DATA);
 
   useEffect(() => {
@@ -29,7 +33,8 @@ export default function MyScreen({ isLoggedIn = false, userRole = 'user' }) {
   }, [isLoggedIn, userRole]);
 
   const handleLogout = () => {
-    // TODO: 로그아웃 모달 노출
+    // TODO: 로그아웃 API 호출
+    setIsLoggedIn(false);
   };
 
   const handleLoginClick = () => {
