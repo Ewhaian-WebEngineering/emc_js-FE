@@ -26,6 +26,8 @@ export const SEARCH_ROUTES = {
 export const ADMIN_ROUTES = {
   CODE: '/admin',
   DASHBOARD: '/admin/dashboard',
+  FAQ: '/admin/faq',
+  FAQEDIT: (faqId) => `/admin/faq/${faqId}/edit`,
 };
 
 export const NOTICE_ROUTE = '/notice';
