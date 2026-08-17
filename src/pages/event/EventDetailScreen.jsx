@@ -11,7 +11,7 @@ import { formatEventPeriod } from '@/utils/formatDate';
 import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import InfoIcon from '@/assets/svg/16px/ic_information.svg?react';
 import KakaoIcon from '@/assets/svg/20px/ic_kakao.svg?react';
-import LinkIcon from '@/assets/svg/20px/ic_link.svg?react';
+import LinkIcon from '@/assets/svg/28px/ic_link.svg?react';
 import {
   eventDetailMessages,
   eventTypeLabel,
