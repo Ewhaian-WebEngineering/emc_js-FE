@@ -131,7 +131,7 @@ export default function EventDetailScreen() {
 
       <S.NoticeBox>
         <S.ColumnBox gap={measurement.spacing16}>
-          <S.RowBox gap={measurement.spacing2}>
+          <S.RowBox gap={measurement.spacing6}>
             <InfoIcon color={semantic.iconNormalAssistive} />
             <S.NoticeTitle>이벤트 유의사항</S.NoticeTitle>
           </S.RowBox>
