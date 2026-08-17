@@ -144,7 +144,8 @@ export const ColumnBox = styled.div`
 
 export const ShareIconCircle = styled.button`
   ${flexCenter};
-  padding: 18px;
+  width: 56px;
+  height: 56px;
   border: none;
   cursor: pointer;
   border-radius: ${measurement.borderRadiusRounded};
