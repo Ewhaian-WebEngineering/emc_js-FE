@@ -72,10 +72,11 @@ export default function BoothNoticeFormScreen({ mode }) {
     try {
       if (isEdit) {
         await updateBoothNotice({ boothId, noticeId, title, content });
+        navigate(BOOTH_ROUTES.DETAIL(boothId));
       } else {
-        await createBoothNotice({ boothId, title, content });
+        const res = await createBoothNotice({ boothId, title, content });
+        navigate(BOOTH_ROUTES.EDIT(boothId, res.id));
       }
-      navigate(BOOTH_ROUTES.DETAIL(boothId));
     } catch {
       await showModal(submitFailModal);
     } finally {
