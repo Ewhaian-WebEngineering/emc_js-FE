@@ -17,6 +17,7 @@ import NavigationBar from '@/designsystem/components/navigationbar/NavigationBar
 
 export default function BoothNoticeFormScreen({ mode }) {
   const { boothId, noticeId } = useParams();
+  // TODO: API 연동 시 number 타입 변환 필요 — const parsedBoothId = Number(boothId);
   const navigate = useNavigate();
   const handleBack = useGoBack();
   const { showModal } = useModal();
