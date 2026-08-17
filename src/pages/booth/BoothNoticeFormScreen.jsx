@@ -16,7 +16,7 @@ import {
   createBoothNotice,
   fetchBoothNotice,
   updateBoothNotice,
-} from '@/api/notice';
+} from '../mock/notice';
 import NavigationBar from '@/designsystem/components/navigationbar/NavigationBar';
 
 export default function BoothNoticeFormScreen({ mode }) {
