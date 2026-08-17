@@ -20,7 +20,7 @@ import {
   SPONSOR_ROUTES,
   MAKERS_ROUTES,
   ADMIN_ROUTES,
-  BOOTH_NOTICE_ROUTES,
+  BOOTH_ROUTES,
   MAP_ROUTE,
   EMC_INTRODUCTION_ROUTE,
 } from '../constants/routes';
@@ -68,11 +68,11 @@ export const router = createBrowserRouter([
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
       { path: MAP_ROUTE, element: <MapScreen /> },
       {
-        path: BOOTH_NOTICE_ROUTES.REGISTER(':boothId'),
+        path: BOOTH_ROUTES.REGISTER(':boothId'),
         element: <BoothNoticeFormScreen mode="register" />,
       },
       {
-        path: BOOTH_NOTICE_ROUTES.EDIT(':boothId', ':noticeId'),
+        path: BOOTH_ROUTES.EDIT(':boothId', ':noticeId'),
         element: <BoothNoticeFormScreen mode="edit" />,
         path: EMC_INTRODUCTION_ROUTE,
         element: <EmcIntroductionScreen />,

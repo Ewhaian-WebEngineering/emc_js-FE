@@ -14,14 +14,11 @@ export const EVENT_ROUTES = {
 export const BOOTH_ROUTES = {
   DETAIL: (boothId) => `/booth/${boothId}`,
   NOTICE: (boothId) => `/booth/${boothId}/notice`,
-};
-
-export const MAP_ROUTE = '/map';
-
-export const BOOTH_NOTICE_ROUTES = {
   REGISTER: (boothId) => `/booth/${boothId}/notice/register`,
   EDIT: (boothId, noticeId) => `/booth/${boothId}/notice/${noticeId}/edit`,
 };
+
+export const MAP_ROUTE = '/map';
 
 export const SEARCH_ROUTES = {
   SEARCH: '/search',
