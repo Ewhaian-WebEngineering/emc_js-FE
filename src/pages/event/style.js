@@ -176,7 +176,7 @@ export const EventTypeBadge = styled.span`
   background-color: ${semantic.fillPrimaryNormal};
   color: ${semantic.textNormalInverse};
   ${typography.body2Medium};
-  padding: ${measurement.spacing6} ${measurement.spacing16};
+  padding: ${measurement.spacing6} ${measurement.spacing12};
   margin-bottom: ${measurement.spacing16};
 `;
 
