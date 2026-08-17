@@ -56,11 +56,22 @@ export default function BoothNoticeFormScreen({ mode }) {
 
     setIsSubmitting(true);
     try {
+      const trimmedTitle = title.trim();
+      const trimmedContent = content.trim();
       if (isEdit) {
-        await updateBoothNotice({ boothId, noticeId, title, content });
+        await updateBoothNotice({
+          boothId,
+          noticeId,
+          title: trimmedTitle,
+          content: trimmedContent,
+        });
         navigate(BOOTH_ROUTES.DETAIL(boothId));
       } else {
-        const res = await createBoothNotice({ boothId, title, content });
+        const res = await createBoothNotice({
+          boothId,
+          title: trimmedTitle,
+          content: trimmedContent,
+        });
         navigate(BOOTH_ROUTES.EDIT(boothId, res.id));
       }
     } catch {
