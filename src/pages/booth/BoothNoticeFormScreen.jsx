@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
@@ -12,11 +12,7 @@ import {
   NavigationBarWrapper,
 } from './style';
 import { exitConfirmModal, submitFailModal } from './constants/noticeForm';
-import {
-  createBoothNotice,
-  fetchBoothNotice,
-  updateBoothNotice,
-} from '../mock/notice';
+import { createBoothNotice, updateBoothNotice } from '../mock/notice';
 import NavigationBar from '@/designsystem/components/navigationbar/NavigationBar';
 
 export default function BoothNoticeFormScreen({ mode }) {
@@ -32,16 +28,6 @@ export default function BoothNoticeFormScreen({ mode }) {
   const [initial, setInitial] = useState({ title: '', content: '' });
   const [errors, setErrors] = useState({ title: false, content: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (!isEdit) return;
-
-    fetchBoothNotice({ boothId, noticeId }).then((notice) => {
-      setTitle(notice.title);
-      setContent(notice.content);
-      setInitial({ title: notice.title, content: notice.content });
-    });
-  }, [boothId, noticeId, isEdit]);
 
   const isFormFilled = title.trim().length > 0 && content.trim().length > 0;
   const hasChanges = title !== initial.title || content !== initial.content;
