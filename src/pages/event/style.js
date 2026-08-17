@@ -152,6 +152,11 @@ export const ShareIconCircle = styled.button`
 
 export const KakaoShareIconCircle = styled(ShareIconCircle)`
   background-color: #fee500;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 export const LinkShareIconCircle = styled(ShareIconCircle)`
