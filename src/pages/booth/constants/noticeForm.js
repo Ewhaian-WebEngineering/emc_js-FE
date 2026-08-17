@@ -6,21 +6,6 @@ export const noticeForm = {
   emptyFieldError: '내용을 입력해주세요.',
 };
 
-export const exitConfirmModal = {
-  variant: 'confirmation',
-  title: '작성 중인 내용이 있어요',
-  description: '나가면 작성 중인 내용이 저장되지 않아요.',
-  cancelText: '나가기',
-  confirmText: '계속 작성하기',
-};
-
-export const submitFailModal = {
-  variant: 'alert',
-  title: '등록에 실패했습니다.',
-  description: '잠시 후 다시 시도해주세요.',
-  cancelText: '확인',
-};
-
 export const deleteConfirmModal = {
   variant: 'danger',
   title: '공지사항을 삭제하시겠습니까?',
