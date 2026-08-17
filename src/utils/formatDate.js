@@ -18,7 +18,7 @@ export function formatDate(dateString) {
 const parseMonthDay = (dateString) => {
   if (!dateString) return null;
   const [, month, day] = dateString.split('-');
-  return { month: Number(month), day: Number(day) };
+  return { month, day };
 };
 
 /**
