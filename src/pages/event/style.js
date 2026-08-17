@@ -229,7 +229,6 @@ export const ShareAction = styled.div`
 
 export const NoticeBox = styled.section`
   ${sectionColumn};
-  /* 내용이 짧아도 중앙에 붙지 않게 가로를 꽉 채워 유/무 위치 통일 */
   align-items: stretch;
   padding: ${measurement.spacing24} ${measurement.spacing16}
     ${measurement.spacing128};
