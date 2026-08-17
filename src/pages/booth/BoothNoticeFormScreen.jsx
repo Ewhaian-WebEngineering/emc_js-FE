@@ -54,11 +54,6 @@ export default function BoothNoticeFormScreen({ mode }) {
   };
 
   const handleExit = async () => {
-    if (!isDirty) {
-      handleBack();
-      return;
-    }
-
     const result = await showModal(exitConfirmModal);
     if (!result.confirmed) {
       handleBack();
