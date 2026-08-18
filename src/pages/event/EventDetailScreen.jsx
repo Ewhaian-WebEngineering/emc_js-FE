@@ -136,7 +136,7 @@ export default function EventDetailScreen() {
             <S.NoticeTitle>이벤트 유의사항</S.NoticeTitle>
           </S.RowBox>
           <S.NoticeText>
-            {hasNotice ? event.notice : eventDetailMessages.noNotice}
+            {hasNotice ? event.notice.trim() : eventDetailMessages.noNotice}
           </S.NoticeText>
         </S.ColumnBox>
       </S.NoticeBox>
