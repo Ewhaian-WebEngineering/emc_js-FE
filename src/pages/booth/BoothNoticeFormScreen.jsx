@@ -6,13 +6,8 @@ import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
 import { BOOTH_ROUTES } from '@/constants/routes';
 import NoticeForm from './components/NoticeForm';
-import {
-  NoticeFormContainer,
-  NoticeFormContent,
-  NavigationBarWrapper,
-} from './style';
+import { NoticeFormContainer, NoticeFormContent } from './style';
 import { createBoothNotice, updateBoothNotice } from './mock/notice';
-import NavigationBar from '@/designsystem/components/navigationbar/NavigationBar';
 
 export default function BoothNoticeFormScreen({ mode }) {
   const { boothId, noticeId } = useParams();
@@ -120,11 +115,6 @@ export default function BoothNoticeFormScreen({ mode }) {
           onChange={handleFieldChange}
         />
       </NoticeFormContent>
-
-      {/* TODO: '마이' 탭 활성화 필요 — NavigationBar의 활성 경로 매칭 처리 필요 */}
-      <NavigationBarWrapper>
-        <NavigationBar />
-      </NavigationBarWrapper>
     </NoticeFormContainer>
   );
 }
