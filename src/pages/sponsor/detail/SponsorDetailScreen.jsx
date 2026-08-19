@@ -16,17 +16,7 @@ import { TAB_ROUTES } from '@/constants/routes';
 import { SPONSOR_DETAIL_MOCK } from './constants/sponsorDetail';
 
 import * as S from './style';
-
-const DETAIL_TABS = [
-  {
-    label: '소개',
-    content: null,
-  },
-  {
-    label: '제품 목록',
-    content: null,
-  },
-];
+import { SPONSOR_TABS } from './constants/sponsorTabs';
 
 export default function SponsorDetailScreen() {
   const { sponsorId } = useParams();
@@ -42,7 +32,7 @@ export default function SponsorDetailScreen() {
   const handleBack = useGoBack();
 
   const handleTabChange = (selectedTab) => {
-    const selectedIndex = DETAIL_TABS.findIndex(
+    const selectedIndex = SPONSOR_TABS.findIndex(
       (tab) => tab.label === selectedTab.label,
     );
 
@@ -150,7 +140,7 @@ export default function SponsorDetailScreen() {
 
       {/*TODO: Tab이 섹션 이동 후에도 상단에 노출되도록 Wrapper 적용*/}
       <Tab
-        tabs={DETAIL_TABS}
+        tabs={SPONSOR_TABS}
         activeTab={activeTab}
         onChange={handleTabChange}
       />
