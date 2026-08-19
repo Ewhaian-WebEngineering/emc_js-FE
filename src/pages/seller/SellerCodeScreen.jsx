@@ -24,7 +24,7 @@ export default function SellerCodeScreen() {
 
   const handleConfirm = () => {
     const matchedBooth = sellerBoothDummy.find(
-      (booth) => booth.admincode === code,
+      (booth) => booth.sellercode === code,
     );
 
     if (matchedBooth) {
