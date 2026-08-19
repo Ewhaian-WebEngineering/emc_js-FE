@@ -7,7 +7,7 @@ export const SPONSOR_DETAIL = {
     type: '종일',
     location: '1번 부스',
     sns: '@brandinsta',
-    url: 'htts://www.website.com',
+    url: 'https://www.website.com',
   },
 
   productGroups: [
