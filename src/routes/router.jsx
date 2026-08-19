@@ -68,7 +68,7 @@ export const router = createBrowserRouter([
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
 
       {
-        path: SPONSOR_ROUTES.DETAIL(':id'),
+        path: SPONSOR_ROUTES.DETAIL(':sponsorId'),
         element: <SponsorDetailScreen />,
       },
 

@@ -31,7 +31,7 @@ export const NOTICE_ROUTE = '/notice';
 
 export const SPONSOR_ROUTES = {
   LIST: '/sponsor',
-  DETAIL: (id) => `/sponsor/${id}`,
+  DETAIL: (sponsorId) => `/sponsor/${sponsorId}`,
 };
 
 export const MAKERS_ROUTES = {
