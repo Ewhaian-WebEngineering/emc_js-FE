@@ -16,6 +16,7 @@ import MakersScreen from '../pages/makers/MakersScreen';
 import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
 import {
   TAB_ROUTES,
+  EVENT_ROUTES,
   NOTICE_ROUTE,
   SPONSOR_ROUTES,
   MAKERS_ROUTES,
@@ -23,6 +24,8 @@ import {
   MAP_ROUTE,
   EMC_INTRODUCTION_ROUTE,
 } from '../constants/routes';
+import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
+import EventDetailScreen from '@/pages/event/EventDetailScreen';
 import { boothRoutes } from '@/pages/booth/routes';
 import MapScreen from '@/pages/map/MapScreen';
 
@@ -63,6 +66,8 @@ export const router = createBrowserRouter([
       { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
+      { path: BOOTH_ROUTE(':boothId'), element: <BoothDetailScreen /> },
+      { path: EVENT_ROUTES.DETAIL(':id'), element: <EventDetailScreen /> },
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
       { path: MAP_ROUTE, element: <MapScreen /> },
       {
