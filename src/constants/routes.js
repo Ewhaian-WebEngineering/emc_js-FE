@@ -40,3 +40,7 @@ export const MAKERS_ROUTES = {
 };
 
 export const EMC_INTRODUCTION_ROUTE = '/emc';
+
+export const SELLER_ROUTES = {
+  CODE: '/seller/code',
+};
