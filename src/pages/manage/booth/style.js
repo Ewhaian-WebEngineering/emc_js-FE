@@ -46,3 +46,43 @@ export const CategoryLabelOptions = styled.div`
   flex-wrap: wrap;
   gap: ${measurement.spacing8};
 `;
+
+export const ActionButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${measurement.spacing4};
+`;
+
+export const SortableProductWrapper = styled.div`
+  touch-action: none;
+`;
+
+export const GroupSectionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing8};
+`;
+
+export const GroupHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${measurement.spacing2};
+`;
+
+export const GroupHandle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${semantic.iconNormalNormal};
+`;
+
+export const GroupName = styled.h3`
+  ${typography.body2Medium};
+  color: ${semantic.textNormalNormal};
+`;
+
+export const GroupProductList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing8};
+`;
