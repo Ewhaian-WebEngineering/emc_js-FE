@@ -156,11 +156,14 @@ export default function Editor({ content = '', onChange }) {
 
     if (!file) return;
 
-    const imageUrl = await uploadImage(file);
-
-    editor.chain().focus().setImage({ src: imageUrl }).run();
-
-    e.target.value = '';
+    try {
+      const imageUrl = await uploadImage(file);
+      editor.chain().focus().setImage({ src: imageUrl }).run();
+    } catch {
+      toast({ message: '이미지를 불러오지 못했어요.' });
+    } finally {
+      e.target.value = '';
+    }
   };
 
   const handleHorizontalRuleClick = () => {
