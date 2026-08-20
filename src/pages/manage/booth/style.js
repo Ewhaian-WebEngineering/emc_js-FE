@@ -3,6 +3,12 @@ import { semantic } from '@/designsystem/tokens/semantic';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { typography } from '@/designsystem/tokens/typography';
 
+export const BoothEditContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-bottom: ${measurement.spacing110};
+`;
+
 export const CategoryContainer = styled.div`
   display: flex;
   flex-direction: column;

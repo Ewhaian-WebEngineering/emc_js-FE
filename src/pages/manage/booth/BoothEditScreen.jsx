@@ -2,7 +2,7 @@ import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import { useState } from 'react';
-import { CategoryContainer } from './style';
+import { CategoryContainer, BoothEditContainer } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DUMMY_BOOTH_DETAIL } from '@/pages/booth/constants/dummyBoothDetail';
 import { MANAGE_ROUTES } from '@/constants/routes';
@@ -143,7 +143,7 @@ export default function BoothEditScreen() {
   };
 
   return (
-    <>
+    <BoothEditContainer>
       <FillCenterHeader
         onBack={() => setShowBackModal(true)}
         title="부스 수정"
@@ -315,6 +315,6 @@ export default function BoothEditScreen() {
           maxLength={1000}
         />
       </AccordionLine>
-    </>
+    </BoothEditContainer>
   );
 }
