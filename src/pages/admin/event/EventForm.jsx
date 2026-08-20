@@ -41,16 +41,12 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const [content, setContent] = useState(initialData?.content ?? '');
   const [notice, setNotice] = useState(initialData?.notice ?? '');
 
-  const isPeriodInvalid =
-    period.start && period.end && period.start > period.end;
-
   const hasError =
     !title.trim() ||
     eventType.length === 0 ||
     !host ||
     !period.start ||
     !period.end ||
-    isPeriodInvalid ||
     !content.trim();
 
   const handleSubmit = () => {
