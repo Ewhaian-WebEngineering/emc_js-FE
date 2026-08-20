@@ -8,7 +8,7 @@ import TextArea from '@/designsystem/components/textinput/textarea/TextArea';
 import Tag from '@/designsystem/components/tag/Tag';
 import DatePicker from '@/designsystem/components/datepicker/DatePicker';
 import Editor from '../components/Editor';
-import Modal from '@/designsystem/components/modal/Modal';
+import useModal from '@/hooks/modal/useModal';
 import {
   EventFormContainer,
   CategoryContainer,
@@ -29,7 +29,7 @@ const HOST_TYPES = ['EMC 주최', '협찬사 주최'];
 export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
   const navigate = useNavigate();
-  const [isBackModalOpen, setIsBackModalOpen] = useState(false);
+  const { showModal } = useModal();
 
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl ?? '');
   const [title, setTitle] = useState(initialData?.title ?? '');
@@ -67,16 +67,18 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
     });
   };
 
-  const handleBack = () => {
-    setIsBackModalOpen(true);
-  };
+  const handleBack = async () => {
+    const { confirmed } = await showModal({
+      variant: 'confirmation',
+      title: '작성 중인 내용이 있어요.',
+      description: '나가면 작성 중인 내용이 저장되지 않아요.',
+      confirmText: '계속 작성하기',
+      cancelText: '나가기',
+    });
 
-  const handleBackConfirm = () => {
-    setIsBackModalOpen(false);
-  };
-
-  const handleBackCancel = () => {
-    navigate('/admin/dashboard');
+    if (!confirmed) {
+      navigate('/admin/dashboard');
+    }
   };
 
   return (
@@ -170,18 +172,6 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
           value={notice}
         />
       </ContentContainer>
-
-      {isBackModalOpen && (
-        <Modal
-          variant="confirmation"
-          title="작성 중인 내용이 있어요."
-          description="나가면 작성 중인 내용이 저장되지 않아요."
-          confirmText="계속 작성하기"
-          cancelText="나가기"
-          onConfirm={handleBackConfirm}
-          onCancel={handleBackCancel}
-        />
-      )}
     </EventFormContainer>
   );
 }
