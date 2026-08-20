@@ -126,8 +126,8 @@ export default function BoothDetailContent({
         </InfoList>
         <NoticeCard onClick={handleNoticeClick}>
           <NoticeIcon color={semantic.iconPrimaryNormal} />
-          <NoticeContent announcement={booth.announcement}>
-            {booth.announcement[0] || '등록된 공지가 없습니다.'}
+          <NoticeContent announcement={booth.notice[0]?.title}>
+            {booth.notice[0]?.title || '등록된 공지가 없습니다.'}
           </NoticeContent>
         </NoticeCard>
       </BoothInfo>
