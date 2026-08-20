@@ -33,12 +33,14 @@ export default function TextInputLayout({
 }) {
   return (
     <TextInputContainer>
-      <TextInputHeadLine>
-        <TextInputLabel>
-          {title} {required && <TextInputRequired>*</TextInputRequired>}
-        </TextInputLabel>
-        <TextInputDescription>{description}</TextInputDescription>
-      </TextInputHeadLine>
+      {title && (
+        <TextInputHeadLine>
+          <TextInputLabel>
+            {title} {required && <TextInputRequired>*</TextInputRequired>}
+          </TextInputLabel>
+          <TextInputDescription>{description}</TextInputDescription>
+        </TextInputHeadLine>
+      )}
 
       {children}
 
