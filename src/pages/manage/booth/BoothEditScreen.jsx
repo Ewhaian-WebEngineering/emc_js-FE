@@ -6,6 +6,9 @@ import { CategoryContainer } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DUMMY_BOOTH_DETAIL } from '@/pages/booth/constants/dummyBoothDetail';
 import { MANAGE_ROUTES } from '@/constants/routes';
+import TextField from '@/designsystem/components/textinput/textfield/TextField';
+import CategoryLabel from './components/CategoryLabel';
+import { BOOTH_CATEGORY_OPTIONS } from './constants/CategoryOptions';
 
 export default function BoothEditScreen() {
   const navigate = useNavigate();
@@ -17,6 +20,7 @@ export default function BoothEditScreen() {
     representativeImage: DUMMY_BOOTH_DETAIL.representativeImage,
     boothName: DUMMY_BOOTH_DETAIL.boothName,
     tags: DUMMY_BOOTH_DETAIL.tags,
+    marks: DUMMY_BOOTH_DETAIL.marks,
     operatingTime: DUMMY_BOOTH_DETAIL.operatingTime,
     cash: DUMMY_BOOTH_DETAIL.cash,
     location: DUMMY_BOOTH_DETAIL.location,
@@ -38,10 +42,50 @@ export default function BoothEditScreen() {
       <FillCenterHeader
         onBack={() => setShowBackModal(true)}
         title="부스 수정"
-        right={<TextButton onClick={() => {}}>저장</TextButton>}
+        right={<TextButton onClick={handleSave}>저장</TextButton>}
       />
       <MainImageUploader />
-      <CategoryContainer></CategoryContainer>
+      <CategoryContainer>
+        <TextField
+          title="이름"
+          description="변경 불가"
+          value={boothForm.boothName}
+          disabled
+        />
+        <TextField
+          title="위치"
+          description="변경 불가"
+          value={`${boothForm.location}번 부스`}
+          disabled
+        />
+        <CategoryLabel
+          title="카테고리"
+          multiple
+          options={BOOTH_CATEGORY_OPTIONS.tags}
+          selected={boothForm.tags}
+          onChange={updateField('tags')}
+        />
+        <CategoryLabel
+          title="비건 / 친환경 카테고리"
+          multiple
+          exclusiveValue="none"
+          options={BOOTH_CATEGORY_OPTIONS.marks}
+          selected={boothForm.marks}
+          onChange={updateField('marks')}
+        />
+        <CategoryLabel
+          title="운영 시간"
+          options={BOOTH_CATEGORY_OPTIONS.operatingTime}
+          selected={boothForm.operatingTime}
+          onChange={updateField('operatingTime')}
+        />
+        <CategoryLabel
+          title="현금 사용 여부"
+          options={BOOTH_CATEGORY_OPTIONS.cash}
+          selected={boothForm.cash}
+          onChange={updateField('cash')}
+        />
+      </CategoryContainer>
     </>
   );
 }
