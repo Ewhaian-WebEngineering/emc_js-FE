@@ -16,6 +16,7 @@ import {
   CategoryTitle,
   TagGroup,
 } from './style';
+import { ADMIN_ROUTES } from '@/constants/routes';
 
 const EVENT_TYPES = ['사전', '현장', '사후'];
 const HOST_TYPES = ['EMC 주최', '협찬사 주최'];
@@ -83,7 +84,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
     });
 
     if (!confirmed) {
-      navigate('/admin/dashboard');
+      navigate(ADMIN_ROUTES.DASHBOARD);
     }
   };
 
