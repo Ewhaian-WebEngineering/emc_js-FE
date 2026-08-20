@@ -146,7 +146,7 @@ export const LinkBubbleMenu = styled.div`
   align-items: center;
   gap: 6px;
   padding: 8px;
-  background: ${semantic.fillNormalWhite}; // TODO: 실제 토큰 경로/이름에 맞게 수정
+  background: ${semantic.fillNormalWhite};
   border: 1px solid ${semantic.borderNormalNormal};
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
