@@ -49,16 +49,12 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  const isPeriodInvalid =
-    period.start && period.end && period.start > period.end;
-
   const isUrlInvalid = url.trim() !== '' && !urlRegExp.test(url.trim());
 
   const hasError =
     !title.trim() ||
     !period.start ||
     !period.end ||
-    isPeriodInvalid ||
     !url.trim() ||
     isUrlInvalid;
 
