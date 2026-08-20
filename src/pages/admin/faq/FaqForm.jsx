@@ -6,6 +6,7 @@ import TextField from '../../../designsystem/components/textinput/textfield/Text
 import TextArea from '../../../designsystem/components/textinput/textarea/TextArea';
 import Modal from '../../../designsystem/components/modal/Modal';
 import { FaqFormContainer, ContentContainer } from './style';
+import { ADMIN_ROUTES } from '@/constants/routes';
 
 /**
  * @param {'create' | 'edit'} mode - 등록/수정 모드
@@ -66,7 +67,7 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
   };
 
   const handleBackCancel = () => {
-    navigate('/admin/dashboard');
+    navigate(ADMIN_ROUTES.DASHBOARD);
   };
 
   return (
