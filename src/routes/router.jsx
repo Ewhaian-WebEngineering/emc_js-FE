@@ -7,16 +7,18 @@ import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
+import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
+import AdminDashboardScreen from '../pages/admin/AdminDashboardScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
 import MakersScreen from '../pages/makers/MakersScreen';
-import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
 import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
 import SponsorDetailScreen from '../pages/sponsor/detail/SponsorDetailScreen';
 
 import {
   TAB_ROUTES,
+  EVENT_ROUTES,
   NOTICE_ROUTE,
   SPONSOR_ROUTES,
   MAKERS_ROUTES,
@@ -24,6 +26,8 @@ import {
   MAP_ROUTE,
   EMC_INTRODUCTION_ROUTE,
 } from '../constants/routes';
+import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
+import EventDetailScreen from '@/pages/event/EventDetailScreen';
 import { boothRoutes } from '@/pages/booth/routes';
 import MapScreen from '@/pages/map/MapScreen';
 
@@ -65,6 +69,7 @@ export const router = createBrowserRouter([
       },
 
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
+      { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
 
       {
@@ -72,6 +77,7 @@ export const router = createBrowserRouter([
         element: <SponsorDetailScreen />,
       },
 
+      { path: EVENT_ROUTES.DETAIL(':id'), element: <EventDetailScreen /> },
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
       { path: MAP_ROUTE, element: <MapScreen /> },
 
