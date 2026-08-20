@@ -121,9 +121,20 @@ export default function Editor({ content = '', onChange }) {
     setShowLinkMenu(true);
   };
 
+  const normalizeUrl = (url) => {
+    if (/^https?:\/\//i.test(url)) return url;
+    return `https://${url}`;
+  };
+
   const applyLink = () => {
-    if (!linkUrl.trim()) return;
-    editor.chain().focus().setLink({ href: linkUrl.trim() }).run();
+    const trimmed = linkUrl.trim();
+    if (!trimmed) return;
+
+    editor
+      .chain()
+      .focus()
+      .setLink({ href: normalizeUrl(trimmed) })
+      .run();
     setLinkUrl('');
     setShowLinkMenu(false);
   };
