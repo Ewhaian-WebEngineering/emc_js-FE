@@ -27,23 +27,35 @@ const HOST_TYPES = ['EMC 주최', '협찬사 주최'];
  * @param {function} onSubmit - 등록/수정 완료 시 호출되는 콜백
  */
 
+function createInitialFormData(initialData) {
+  return {
+    imageUrl: initialData?.imageUrl ?? '',
+    title: initialData?.title ?? '',
+    eventType: initialData?.eventType ?? null,
+    host: initialData?.host ?? null,
+    period: initialData?.period ?? { start: null, end: null },
+    content: initialData?.content ?? '',
+    notice: initialData?.notice ?? '',
+  };
+}
+
 export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
   const navigate = useNavigate();
+  const { showModal } = useModal();
+
+  const [formData, setFormData] = useState(() =>
+    createInitialFormData(initialData),
+  );
   const [touched, setTouched] = useState({
     title: false,
   });
-  const { showModal } = useModal();
+  const { imageUrl, title, eventType, host, period, content, notice } =
+    formData;
 
-  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl ?? '');
-  const [title, setTitle] = useState(initialData?.title ?? '');
-  const [eventType, setEventType] = useState(initialData?.eventType ?? null);
-  const [host, setHost] = useState(initialData?.host ?? null);
-  const [period, setPeriod] = useState(
-    initialData?.period ?? { start: null, end: null },
-  );
-  const [content, setContent] = useState(initialData?.content ?? '');
-  const [notice, setNotice] = useState(initialData?.notice ?? '');
+  const updateField = (field) => (value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleBlur = (field) => () => {
     setTouched((prev) => ({ ...prev, [field]: true }));
@@ -51,7 +63,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
 
   const hasError =
     !title.trim() ||
-    eventType.length === 0 ||
+    !eventType ||
     !host ||
     !period.start ||
     !period.end ||
@@ -64,13 +76,8 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
     }
 
     onSubmit?.({
-      imageUrl,
-      title,
-      eventType,
-      host,
-      period,
-      content,
-      notice,
+      ...formData,
+      title: title.trim(),
     });
   };
 
@@ -106,13 +113,13 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
       />
       <MainImageUploader
         imageUrl={imageUrl}
-        onDelete={() => setImageUrl('')}
-        onUpload={(url) => setImageUrl(url)}
+        onDelete={() => updateField('imageUrl')('')}
+        onUpload={updateField('imageUrl')}
       />
       <ContentContainer>
         <TextField
           maxLength={36}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => updateField('title')(e.target.value)}
           onBlur={handleBlur('title')}
           placeholder="이벤트 제목을 작성해주세요."
           required
@@ -136,7 +143,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
                 label={type}
                 variant="button"
                 selected={eventType === type}
-                onClick={() => setEventType(type)}
+                onClick={() => updateField('eventType')(type)}
               />
             ))}
           </TagGroup>
@@ -154,7 +161,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
                 label={h}
                 variant="button"
                 selected={host === h}
-                onClick={() => setHost(h)}
+                onClick={() => updateField('host')(h)}
               />
             ))}
           </TagGroup>
@@ -164,7 +171,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
           label="기간 설정"
           required
           value={period}
-          onChange={setPeriod}
+          onChange={updateField('period')}
         />
 
         <CategoryContainer>
@@ -172,12 +179,12 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
             내용
             <span>*</span>
           </CategoryTitle>
-          <Editor content={content} onChange={setContent} />
+          <Editor content={content} onChange={updateField('content')} />
         </CategoryContainer>
 
         <TextArea
           maxLength={1000}
-          onChange={(e) => setNotice(e.target.value)}
+          onChange={(e) => updateField('notice')(e.target.value)}
           placeholder="이벤트 유의사항을 작성해주세요."
           rows={4}
           title="유의사항"
