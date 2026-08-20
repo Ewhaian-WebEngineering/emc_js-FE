@@ -5,7 +5,7 @@ import MainImageUploader from '@/designsystem/components/fileuploader/MainImageU
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import DatePicker from '@/designsystem/components/datepicker/DatePicker';
-import Modal from '@/designsystem/components/modal/Modal';
+import useModal from '@/hooks/modal/useModal';
 import { BannerFormContainer, ContentContainer } from './style';
 import { ADMIN_ROUTES } from '@/constants/routes';
 
@@ -30,6 +30,7 @@ function createInitialFormData(initialData) {
 export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
   const navigate = useNavigate();
+  const { showModal } = useModal();
 
   const [formData, setFormData] = useState(() =>
     createInitialFormData(initialData),
@@ -38,7 +39,6 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     title: false,
     url: false,
   });
-  const [isBackModalOpen, setIsBackModalOpen] = useState(false);
   const { imageUrl, title, period, url } = formData;
 
   const updateField = (field) => (value) => {
@@ -71,16 +71,18 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     });
   };
 
-  const handleBack = () => {
-    setIsBackModalOpen(true);
-  };
+  const handleBack = async () => {
+    const { confirmed } = await showModal({
+      variant: 'confirmation',
+      title: '작성 중인 내용이 있어요.',
+      description: '나가면 작성 중인 내용이 저장되지 않아요.',
+      confirmText: '계속 작성하기',
+      cancelText: '나가기',
+    });
 
-  const handleBackConfirm = () => {
-    setIsBackModalOpen(false);
-  };
-
-  const handleBackCancel = () => {
-    navigate(ADMIN_ROUTES.DASHBOARD);
+    if (!confirmed) {
+      navigate(ADMIN_ROUTES.DASHBOARD);
+    }
   };
 
   const urlHelperText = touched.url
@@ -145,18 +147,6 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
           helperText={urlHelperText}
         />
       </ContentContainer>
-
-      {isBackModalOpen && (
-        <Modal
-          variant="confirmation"
-          title="작성 중인 내용이 있어요."
-          description="나가면 작성 중인 내용이 저장되지 않아요."
-          confirmText="계속 작성하기"
-          cancelText="나가기"
-          onConfirm={handleBackConfirm}
-          onCancel={handleBackCancel}
-        />
-      )}
     </BannerFormContainer>
   );
 }
