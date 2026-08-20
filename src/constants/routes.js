@@ -25,6 +25,7 @@ export const SEARCH_ROUTES = {
 
 export const ADMIN_ROUTES = {
   CODE: '/admin',
+  DASHBOARD: '/admin/dashboard',
 };
 
 export const NOTICE_ROUTE = '/notice';
@@ -42,3 +43,5 @@ export const MANAGE_ROUTES = {
   BOOTH_PREVIEW: (boothId) => `/booth/${boothId}/preview`,
   BOOTH_EDIT: (boothId) => `/booth/${boothId}/edit`,
 };
+
+export const EMC_INTRODUCTION_ROUTE = '/emc';

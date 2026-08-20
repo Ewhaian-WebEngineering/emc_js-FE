@@ -36,3 +36,36 @@ export const AdminAuthFooter = styled.div`
     width: 100%;
   }
 `;
+
+export const DashboardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: ${measurement.spacing110};
+`;
+
+export const FestivalInfo = styled.div`
+  padding: ${measurement.spacing24} ${measurement.spacing16}
+    ${measurement.spacing64} ${measurement.spacing16};
+`;
+
+export const ManagementCardStats = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  padding: ${measurement.spacing16};
+  gap: ${measurement.spacing16};
+
+  border-radius: ${measurement.borderRadiusLg};
+  background-color: ${semantic.fillNormalStrong};
+`;
+
+export const DashboardTitle = styled.h1`
+  color: ${semantic.textNormalStrong};
+  ${typography.title3Semibold};
+  margin-bottom: ${measurement.spacing36};
+
+  span {
+    color: ${semantic.textPrimaryNormal};
+  }
+`;
