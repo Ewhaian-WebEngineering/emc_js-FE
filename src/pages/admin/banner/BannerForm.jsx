@@ -7,6 +7,7 @@ import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import DatePicker from '@/designsystem/components/datepicker/DatePicker';
 import Modal from '@/designsystem/components/modal/Modal';
 import { BannerFormContainer, ContentContainer } from './style';
+import { ADMIN_ROUTES } from '@/constants/routes';
 
 const urlRegExp =
   /(https?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/;
@@ -83,7 +84,7 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   };
 
   const handleBackCancel = () => {
-    navigate('/admin/dashboard');
+    navigate(ADMIN_ROUTES.DASHBOARD);
   };
 
   const urlHelperText = touched.url
