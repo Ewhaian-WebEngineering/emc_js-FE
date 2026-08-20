@@ -46,9 +46,11 @@ export default function TextInputLayout({
         <TextInputHelperText hasError={hasError}>
           {helperText}
         </TextInputHelperText>
-        <TextInputMaxLength>
-          {value.length}/{maxLength}
-        </TextInputMaxLength>
+        {maxLength && (
+          <TextInputMaxLength>
+            {value.length}/{maxLength}
+          </TextInputMaxLength>
+        )}
       </TextInputBottomLine>
     </TextInputContainer>
   );
