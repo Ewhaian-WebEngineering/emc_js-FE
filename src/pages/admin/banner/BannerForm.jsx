@@ -10,7 +10,21 @@ import { BannerFormContainer, ContentContainer } from './style';
 import { ADMIN_ROUTES } from '@/constants/routes';
 
 const urlRegExp =
-  /(https?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/;
+  /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)$/;
+
+const normalizeUrl = (url) => {
+  const trimmed = url.trim();
+
+  if (trimmed.startsWith('/')) {
+    return trimmed;
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+
+  return `https://${trimmed}`;
+};
 
 /**
  * @param {'create' | 'edit'} mode - 등록/수정 모드
@@ -49,7 +63,10 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  const isUrlInvalid = url.trim() !== '' && !urlRegExp.test(url.trim());
+  const isUrlInvalid =
+    url.trim() !== '' &&
+    !url.trim().startsWith('/') &&
+    !urlRegExp.test(url.trim());
 
   const hasError =
     !title.trim() ||
@@ -67,7 +84,7 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     onSubmit?.({
       ...formData,
       title: title.trim(),
-      url: url.trim(),
+      url: normalizeUrl(url),
     });
   };
 
