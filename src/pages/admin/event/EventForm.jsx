@@ -29,6 +29,9 @@ const HOST_TYPES = ['EMC 주최', '협찬사 주최'];
 export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
   const navigate = useNavigate();
+  const [touched, setTouched] = useState({
+    title: false,
+  });
   const { showModal } = useModal();
 
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl ?? '');
@@ -41,6 +44,10 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const [content, setContent] = useState(initialData?.content ?? '');
   const [notice, setNotice] = useState(initialData?.notice ?? '');
 
+  const handleBlur = (field) => () => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
+
   const hasError =
     !title.trim() ||
     eventType.length === 0 ||
@@ -50,7 +57,10 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
     !content.trim();
 
   const handleSubmit = () => {
-    if (hasError) return;
+    if (hasError) {
+      setTouched({ title: true });
+      return;
+    }
 
     onSubmit?.({
       imageUrl,
@@ -102,10 +112,15 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
         <TextField
           maxLength={36}
           onChange={(e) => setTitle(e.target.value)}
+          onBlur={handleBlur('title')}
           placeholder="이벤트 제목을 작성해주세요."
           required
           title="제목"
           value={title}
+          hasError={touched.title && !title.trim()}
+          helperText={
+            touched.title && !title.trim() ? '내용을 입력해주세요.' : ''
+          }
         />
 
         <CategoryContainer>
