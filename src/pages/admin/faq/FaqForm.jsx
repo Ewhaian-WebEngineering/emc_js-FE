@@ -4,7 +4,7 @@ import FillCenterHeader from '../../../designsystem/components/header/FillCenter
 import TextButton from '../../../designsystem/components/button/textbutton/TextButton';
 import TextField from '../../../designsystem/components/textinput/textfield/TextField';
 import TextArea from '../../../designsystem/components/textinput/textarea/TextArea';
-import Modal from '../../../designsystem/components/modal/Modal';
+import useModal from '@/hooks/modal/useModal';
 import { FaqFormContainer, ContentContainer } from './style';
 import { ADMIN_ROUTES } from '@/constants/routes';
 
@@ -24,6 +24,7 @@ function createInitialFormData(initialData) {
 export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
   const navigate = useNavigate();
+  const { showModal } = useModal();
 
   const [formData, setFormData] = useState(() =>
     createInitialFormData(initialData),
@@ -32,7 +33,6 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
     que: false,
     ans: false,
   });
-  const [isBackModalOpen, setIsBackModalOpen] = useState(false);
   const { que, ans } = formData;
 
   const updateField = (field) => (value) => {
@@ -58,16 +58,18 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
     });
   };
 
-  const handleBack = () => {
-    setIsBackModalOpen(true);
-  };
+  const handleBack = async () => {
+    const { confirmed } = await showModal({
+      variant: 'confirmation',
+      title: '작성 중인 내용이 있어요.',
+      description: '나가면 작성 중인 내용이 저장되지 않아요.',
+      confirmText: '계속 작성하기',
+      cancelText: '나가기',
+    });
 
-  const handleBackConfirm = () => {
-    setIsBackModalOpen(false);
-  };
-
-  const handleBackCancel = () => {
-    navigate(ADMIN_ROUTES.DASHBOARD);
+    if (!confirmed) {
+      navigate(ADMIN_ROUTES.DASHBOARD);
+    }
   };
 
   return (
@@ -112,18 +114,6 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
           helperText={touched.ans && !ans.trim() ? '내용을 입력해주세요.' : ''}
         />
       </ContentContainer>
-
-      {isBackModalOpen && (
-        <Modal
-          variant="confirmation"
-          title="작성 중인 내용이 있어요."
-          description="나가면 작성 중인 내용이 저장되지 않아요."
-          confirmText="계속 작성하기"
-          cancelText="나가기"
-          onConfirm={handleBackConfirm}
-          onCancel={handleBackCancel}
-        />
-      )}
     </FaqFormContainer>
   );
 }
