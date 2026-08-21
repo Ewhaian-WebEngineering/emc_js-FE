@@ -1,7 +1,6 @@
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
-import { useState } from 'react';
 import { CategoryContainer, BoothEditContainer } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DUMMY_BOOTH_DETAIL } from '@/pages/booth/constants/dummyBoothDetail';
@@ -19,11 +18,12 @@ import AdminNoticeCard from '@/designsystem/components/card/admin/AdminNoticeCar
 import { useBoothForm } from './hooks/useBoothForm';
 import { useProductSections } from './hooks/useProductSections';
 import { useToggleMap } from './hooks/useToggleMap';
+import useModal from '@/hooks/modal/useModal';
 
 export default function BoothEditScreen() {
   const navigate = useNavigate();
   const { boothId } = useParams();
-  const [showBackModal, setShowBackModal] = useState(false);
+  const { showModal } = useModal();
 
   const [expanded, toggleExpanded] = useToggleMap([
     'boothIntroduction',
@@ -50,6 +50,19 @@ export default function BoothEditScreen() {
     hasAnyProduct,
   } = useProductSections(DUMMY_BOOTH_DETAIL);
 
+  const handleBack = async () => {
+    await showModal({
+      variant: 'confirmation',
+      title: '작성 중인 내용이 있어요.',
+      description: '나가면 작성 중인 내용이 저장되지 않아요.',
+      confirmText: '계속 작성하기',
+      cancelText: '나가기',
+      onCancel: () => {
+        navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
+      },
+    });
+  };
+
   const handleSave = () => {
     const error = getValidationError();
     if (error) {
@@ -68,7 +81,7 @@ export default function BoothEditScreen() {
   return (
     <BoothEditContainer>
       <FillCenterHeader
-        onBack={() => setShowBackModal(true)}
+        onBack={handleBack}
         title="부스 수정"
         right={<TextButton onClick={handleSave}>저장</TextButton>}
       />
