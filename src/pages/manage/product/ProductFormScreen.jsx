@@ -23,6 +23,8 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     updateField,
     isSubmitting,
     isSubmittable,
+    fieldErrors,
+    visibleErrors,
     handleSubmit,
   } = useProductForm({ product, submitLabel, onSubmit });
 
@@ -49,7 +51,12 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
         onBack={handleBack}
         title="제품"
         right={
-          <TextButton onClick={handleSubmit} disabled={!isSubmittable}>
+          <TextButton
+            onClick={handleSubmit}
+            disabled={
+              isCreateMode ? !isSubmittable || isSubmitting : isSubmitting
+            }
+          >
             {submitLabel === 'create' ? '등록' : '저장'}
           </TextButton>
         }
@@ -63,6 +70,8 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           value={formValues.name}
           onChange={(value) => updateField('name', value)}
           maxLength={10}
+          hasError={!!visibleErrors.name}
+          helperText={visibleErrors.name}
         />
 
         <TextField
@@ -71,6 +80,8 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           placeholder="예) 999,999원"
           value={formValues.price}
           onChange={(value) => updateField('price', value)}
+          hasError={!!visibleErrors.price}
+          helperText={visibleErrors.price}
         />
 
         <ProductFormSection>
@@ -97,17 +108,23 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           value={formValues.description}
           onChange={(value) => updateField('description', value)}
           maxLength={24}
+          hasError={!!visibleErrors.description}
+          helperText={visibleErrors.description}
         />
 
         <ProductImageUploader
           title="제품 이미지"
           isRequired
-          helperText="이미지 1개만 업로드할 수 있습니다. (JPG, JPEG, PNG / 최대 10MB)"
           imageUrl={formValues.thumbnail}
           onUpload={(file) =>
             updateField('thumbnail', URL.createObjectURL(file))
           }
           onDelete={() => updateField('thumbnail', '')}
+          isError={!!visibleErrors.thumbnail}
+          helperText={
+            visibleErrors.thumbnail ??
+            '이미지 1개만 업로드할 수 있습니다. (JPG, JPEG, PNG / 최대 10MB)'
+          }
         />
 
         <ProductFormSection>
