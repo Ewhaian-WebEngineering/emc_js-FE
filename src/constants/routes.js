@@ -42,6 +42,9 @@ export const MAKERS_ROUTES = {
 export const MANAGE_ROUTES = {
   BOOTH_PREVIEW: (boothId) => `/booth/${boothId}/preview`,
   BOOTH_EDIT: (boothId) => `/booth/${boothId}/edit`,
+  PRODUCT_CREATE: (boothId) => `/booth/${boothId}/product`,
+  PRODUCT_EDIT: (boothId, productId) =>
+    `/booth/${boothId}/product/${productId}/edit`,
 };
 
 export const EMC_INTRODUCTION_ROUTE = '/emc';
