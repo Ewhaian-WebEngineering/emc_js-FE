@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductFormScreen from './ProductFormScreen';
-import { mockProduct } from './mock/mockProduct';
+import { mockProduct } from './mocks/mockProduct';
 
 export default function ProductEditScreen() {
   const { productId } = useParams();
