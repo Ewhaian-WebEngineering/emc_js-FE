@@ -36,6 +36,10 @@ export default function BoothNoticeFormScreen({ mode }) {
   };
 
   const handleExit = async () => {
+    if (!isDirty) {
+      handleBack();
+      return;
+    }
     const result = await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요',
