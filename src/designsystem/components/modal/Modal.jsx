@@ -22,6 +22,7 @@ import {
  * @param {string} cancelText - 취소 버튼 텍스트
  * @param {function} [onConfirm] - 확인 버튼 클릭 시 호출되는 함수
  * @param {function} onCancel - 취소 버튼 또는 배경(Scrim) 클릭 시 호출되는 함수
+ * @param {function} [onDismiss] - 배경(Scrim) 클릭 시 호출되는 함수
  */
 export default function Modal({
   variant,
