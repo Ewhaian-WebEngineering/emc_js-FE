@@ -15,6 +15,8 @@ import SponsorScreen from '../pages/sponsor/SponsorScreen';
 import MakersScreen from '../pages/makers/MakersScreen';
 import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
 import SellerCodeScreen from '@/pages/seller/SellerCodeScreen';
+import SponsorDetailScreen from '../pages/sponsor/detail/SponsorDetailScreen';
+
 import {
   TAB_ROUTES,
   EVENT_ROUTES,
@@ -42,9 +44,11 @@ import MapScreen from '@/pages/map/MapScreen';
 export const router = createBrowserRouter([
   {
     element: <RootLayout />,
+
     children: [
       {
         element: <MainLayout />,
+
         children: [
           {
             element: <FooterLayout />,
@@ -58,6 +62,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
+
       {
         element: <FooterLayout />,
         children: [
@@ -65,6 +70,7 @@ export const router = createBrowserRouter([
           ...boothRoutes.withFooter,
         ],
       },
+
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
@@ -74,10 +80,21 @@ export const router = createBrowserRouter([
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
       { path: MAP_ROUTE, element: <MapScreen /> },
       { path: SELLER_ROUTES.CODE, element: <SellerCodeScreen /> },
+
+      {
+        path: SPONSOR_ROUTES.DETAIL(':sponsorId'),
+        element: <SponsorDetailScreen />,
+      },
+
+      { path: EVENT_ROUTES.DETAIL(':id'), element: <EventDetailScreen /> },
+      { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
+      { path: MAP_ROUTE, element: <MapScreen /> },
+
       {
         path: EMC_INTRODUCTION_ROUTE,
         element: <EmcIntroductionScreen />,
       },
+
       ...boothRoutes.withoutFooter,
       ...searchRoutes.full,
     ],
