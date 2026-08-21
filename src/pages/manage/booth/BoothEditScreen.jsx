@@ -195,6 +195,8 @@ export default function BoothEditScreen() {
         <TextField
           title="URL"
           placeholder="공식 SNS 등 외부 채널 링크를 등록해보세요."
+          value={boothForm.url}
+          onChange={updateField('url')}
         />
       </CategoryContainer>
 
