@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useBlocker, useNavigate, useParams } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import useModal from '@/hooks/modal/useModal';
@@ -29,6 +29,14 @@ export default function BoothNoticeFormScreen({ mode }) {
   const hasChanges = title !== initial.title || content !== initial.content;
   const isDirty = isEdit ? hasChanges : isFormFilled;
 
+  const blocker = useBlocker(
+    ({ historyAction }) => isSubmitting && historyAction === 'POP',
+  );
+
+  useEffect(() => {
+    if (blocker.state === 'blocked') blocker.reset();
+  }, [blocker]);
+
   const handleFieldChange = (field, value) => {
     if (field === 'title') setTitle(value);
     else setContent(value);
@@ -36,6 +44,7 @@ export default function BoothNoticeFormScreen({ mode }) {
   };
 
   const handleExit = async () => {
+    if (isSubmitting) return;
     if (!isDirty) {
       handleBack();
       return;
