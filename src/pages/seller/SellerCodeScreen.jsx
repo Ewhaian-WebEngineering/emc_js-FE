@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import TextInput from '@/designsystem/components/textinput/TextInput';
 import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
-import { BOOTH_ROUTES } from '@/constants/routes';
+import { BOOTH_ROUTES, TAB_ROUTES } from '@/constants/routes';
 import { sellerBoothDummy } from './constants/sellerDummy';
 import {
   SellerAuthContainer,
@@ -39,7 +39,10 @@ export default function SellerCodeScreen() {
 
   return (
     <SellerAuthContainer>
-      <FillCenterHeader onBack={() => navigate(-1)} title="셀러 인증" />
+      <FillCenterHeader
+        onBack={() => navigate(TAB_ROUTES.MY)}
+        title="셀러 인증"
+      />
 
       <SellerAuthContent>
         <SellerAuthTitle>
