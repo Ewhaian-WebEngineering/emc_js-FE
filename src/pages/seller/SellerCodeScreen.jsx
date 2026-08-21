@@ -23,6 +23,7 @@ export default function SellerCodeScreen() {
   };
 
   const handleConfirm = () => {
+    // TODO: API 연동 시 POST로 코드만 전송하여 서버에서 매칭 후 부스 정보 응답
     const matchedBooth = sellerBoothDummy.find(
       (booth) => booth.sellercode === code,
     );
