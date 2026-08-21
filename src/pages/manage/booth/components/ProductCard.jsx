@@ -2,8 +2,9 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { SortableProductWrapper } from '../style';
 import AdminProductCard from '@/designsystem/components/card/admin/AdminProductCard';
+import { memo } from 'react';
 
-export default function ProductCard({
+function ProductCard({
   product,
   sectionId,
   selected,
@@ -48,3 +49,5 @@ export default function ProductCard({
     </SortableProductWrapper>
   );
 }
+
+export default memo(ProductCard);

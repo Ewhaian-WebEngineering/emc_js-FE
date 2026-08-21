@@ -14,12 +14,9 @@ import {
   GroupName,
   GroupProductList,
 } from '../style';
+import { memo } from 'react';
 
-export default function ProductGroupSection({
-  section,
-  onEditProduct,
-  onDeleteProduct,
-}) {
+function ProductGroupSection({ section, onEditProduct, onDeleteProduct }) {
   const {
     attributes,
     listeners,
@@ -45,8 +42,8 @@ export default function ProductGroupSection({
       <GroupHeader>
         <GroupHandle {...attributes} {...listeners}>
           <DragHandleIcon />
+          <GroupName>{section.name}</GroupName>
         </GroupHandle>
-        <GroupName>{section.name}</GroupName>
       </GroupHeader>
 
       <SortableContext
@@ -68,3 +65,5 @@ export default function ProductGroupSection({
     </GroupSectionWrapper>
   );
 }
+
+export default memo(ProductGroupSection);

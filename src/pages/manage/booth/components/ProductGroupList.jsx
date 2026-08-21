@@ -3,6 +3,7 @@ import {
   closestCorners,
   DndContext,
   DragOverlay,
+  MeasuringFrequency,
   MeasuringStrategy,
   PointerSensor,
   useSensor,
@@ -27,7 +28,6 @@ export default function ProductGroupList({
   );
 
   const [activeProduct, setActiveProduct] = useState(null);
-  const [activeSection, setActiveSection] = useState(null);
 
   const visibleSections = sections.filter(
     (section) => section.products.length > 0,
@@ -45,10 +45,6 @@ export default function ProductGroupList({
     const { active } = event;
     if (active.data.current?.type === 'product') {
       setActiveProduct(findProduct(active.id));
-    }
-    if (active.data.current?.type === 'section') {
-      const sectionId = active.id.replace('section:', '');
-      setActiveSection(sections.find((s) => String(s.id) === sectionId));
     }
   };
 
@@ -109,7 +105,6 @@ export default function ProductGroupList({
 
   const handleDragEnd = (event) => {
     setActiveProduct(null);
-    setActiveSection(null);
 
     const { active, over } = event;
     if (!over || active.id === over.id) return;
@@ -150,7 +145,12 @@ export default function ProductGroupList({
     <DndContext
       sensors={sensors}
       collisionDetection={closestCorners}
-      measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
+      measuring={{
+        droppable: {
+          strategy: MeasuringStrategy.Always,
+          frequency: MeasuringFrequency.Optimized,
+        },
+      }}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}

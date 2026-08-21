@@ -80,6 +80,16 @@ export const GroupHandle = styled.div`
   align-items: center;
   justify-content: center;
   color: ${semantic.iconNormalNormal};
+
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+
+  &:active {
+    cursor: grabbing;
+  }
 `;
 
 export const GroupName = styled.h3`
