@@ -14,6 +14,8 @@ import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
 import MakersScreen from '../pages/makers/MakersScreen';
 import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
+import SponsorDetailScreen from '../pages/sponsor/detail/SponsorDetailScreen';
+
 import {
   TAB_ROUTES,
   EVENT_ROUTES,
@@ -25,11 +27,11 @@ import {
   MAP_ROUTE,
   EMC_INTRODUCTION_ROUTE,
 } from '../constants/routes';
-import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
 import EventDetailScreen from '@/pages/event/EventDetailScreen';
 import { boothRoutes } from '@/pages/booth/routes';
 import BoothNoticeFormScreen from '@/pages/booth/BoothNoticeFormScreen';
 import MapScreen from '@/pages/map/MapScreen';
+import { manageRoutes } from '@/pages/manage/routes';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -41,9 +43,11 @@ import MapScreen from '@/pages/map/MapScreen';
 export const router = createBrowserRouter([
   {
     element: <RootLayout />,
+
     children: [
       {
         element: <MainLayout />,
+
         children: [
           {
             element: <FooterLayout />,
@@ -57,21 +61,31 @@ export const router = createBrowserRouter([
           },
         ],
       },
+
       {
         element: <FooterLayout />,
         children: [
           { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
           ...boothRoutes.withFooter,
+          ...manageRoutes.withFooter,
         ],
       },
+
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       { path: BOOTH_ROUTES.DETAIL(':boothId'), element: <BoothDetailScreen /> },
+
+      {
+        path: SPONSOR_ROUTES.DETAIL(':sponsorId'),
+        element: <SponsorDetailScreen />,
+      },
+
       { path: EVENT_ROUTES.DETAIL(':id'), element: <EventDetailScreen /> },
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
       { path: MAP_ROUTE, element: <MapScreen /> },
+
       {
         path: BOOTH_ROUTES.REGISTER(':boothId'),
         element: <BoothNoticeFormScreen mode="register" />,
@@ -81,7 +95,9 @@ export const router = createBrowserRouter([
         element: <BoothNoticeFormScreen mode="edit" />,
       },
       { path: EMC_INTRODUCTION_ROUTE, element: <EmcIntroductionScreen /> },
+
       ...boothRoutes.withoutFooter,
+      ...manageRoutes.withoutFooter,
       ...searchRoutes.full,
     ],
   },
