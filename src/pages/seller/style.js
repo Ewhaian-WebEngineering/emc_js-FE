@@ -14,7 +14,6 @@ export const SellerAuthContent = styled.div`
   flex-direction: column;
   padding: ${measurement.spacing16};
   padding-top: ${measurement.spacing128};
-  border-top: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
 `;
 
 export const SellerAuthTitle = styled.h2`

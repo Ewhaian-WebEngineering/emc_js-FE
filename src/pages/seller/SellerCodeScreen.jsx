@@ -42,6 +42,7 @@ export default function SellerCodeScreen() {
       <FillCenterHeader
         onBack={() => navigate(TAB_ROUTES.MY)}
         title="셀러 인증"
+        border
       />
 
       <SellerAuthContent>
