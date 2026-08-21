@@ -26,10 +26,10 @@ import {
   MAP_ROUTE,
   EMC_INTRODUCTION_ROUTE,
 } from '../constants/routes';
-import BoothDetailScreen from '@/pages/booth/BoothDetailScreen';
 import EventDetailScreen from '@/pages/event/EventDetailScreen';
 import { boothRoutes } from '@/pages/booth/routes';
 import MapScreen from '@/pages/map/MapScreen';
+import { manageRoutes } from '@/pages/manage/routes';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -65,6 +65,7 @@ export const router = createBrowserRouter([
         children: [
           { path: SPONSOR_ROUTES.LIST, element: <SponsorScreen /> },
           ...boothRoutes.withFooter,
+          ...manageRoutes.withFooter,
         ],
       },
 
@@ -87,6 +88,7 @@ export const router = createBrowserRouter([
       },
 
       ...boothRoutes.withoutFooter,
+      ...manageRoutes.withoutFooter,
       ...searchRoutes.full,
     ],
   },

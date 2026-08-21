@@ -33,12 +33,14 @@ export default function TextInputLayout({
 }) {
   return (
     <TextInputContainer>
-      <TextInputHeadLine>
-        <TextInputLabel>
-          {title} {required && <TextInputRequired>*</TextInputRequired>}
-        </TextInputLabel>
-        <TextInputDescription>{description}</TextInputDescription>
-      </TextInputHeadLine>
+      {title && (
+        <TextInputHeadLine>
+          <TextInputLabel>
+            {title} {required && <TextInputRequired>*</TextInputRequired>}
+          </TextInputLabel>
+          <TextInputDescription>{description}</TextInputDescription>
+        </TextInputHeadLine>
+      )}
 
       {children}
 
@@ -46,9 +48,11 @@ export default function TextInputLayout({
         <TextInputHelperText hasError={hasError}>
           {helperText}
         </TextInputHelperText>
-        <TextInputMaxLength>
-          {value.length}/{maxLength}
-        </TextInputMaxLength>
+        {maxLength && (
+          <TextInputMaxLength>
+            {value.length}/{maxLength}
+          </TextInputMaxLength>
+        )}
       </TextInputBottomLine>
     </TextInputContainer>
   );
