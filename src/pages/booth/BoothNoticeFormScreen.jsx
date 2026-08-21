@@ -108,6 +108,7 @@ export default function BoothNoticeFormScreen({ mode }) {
       <FillCenterHeader
         onBack={handleExit}
         title="공지사항"
+        border
         right={
           <TextButton
             variant="primary"
