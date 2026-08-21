@@ -14,6 +14,7 @@ import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
 import MakersScreen from '../pages/makers/MakersScreen';
 import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
+import SellerCodeScreen from '@/pages/seller/SellerCodeScreen';
 import SponsorDetailScreen from '../pages/sponsor/detail/SponsorDetailScreen';
 
 import {
@@ -26,6 +27,7 @@ import {
   BOOTH_ROUTES,
   MAP_ROUTE,
   EMC_INTRODUCTION_ROUTE,
+  SELLER_ROUTES,
 } from '../constants/routes';
 import EventDetailScreen from '@/pages/event/EventDetailScreen';
 import { boothRoutes } from '@/pages/booth/routes';
@@ -76,6 +78,10 @@ export const router = createBrowserRouter([
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       { path: BOOTH_ROUTES.DETAIL(':boothId'), element: <BoothDetailScreen /> },
+      { path: EVENT_ROUTES.DETAIL(':id'), element: <EventDetailScreen /> },
+      { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },
+      { path: MAP_ROUTE, element: <MapScreen /> },
+      { path: SELLER_ROUTES.CODE, element: <SellerCodeScreen /> },
 
       {
         path: SPONSOR_ROUTES.DETAIL(':sponsorId'),

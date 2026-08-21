@@ -47,3 +47,7 @@ export const MANAGE_ROUTES = {
 };
 
 export const EMC_INTRODUCTION_ROUTE = '/emc';
+
+export const SELLER_ROUTES = {
+  CODE: '/seller',
+};
