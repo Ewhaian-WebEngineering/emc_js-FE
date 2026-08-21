@@ -69,6 +69,32 @@ export default function BoothEditScreen() {
     });
   };
 
+  const clickDeleteProduct = (productId) => {
+    showModal({
+      variant: 'danger',
+      title: '해당 제품을 삭제하시겠습니까?',
+      description: '삭제하시면 다시 되돌릴 수 없어요.',
+      confirmText: '삭제하기',
+      cancelText: '취소',
+      onConfirm: () => {
+        handleDeleteProduct(productId);
+      },
+    });
+  };
+
+  const clickDeleteNotice = (noticeId) => {
+    showModal({
+      variant: 'danger',
+      title: '공지사항을 삭제하시겠습니까?',
+      description: '삭제하시면 다시 되돌릴 수 없어요.',
+      confirmText: '삭제하기',
+      cancelText: '취소',
+      onConfirm: () => {
+        handleDeleteNotice(noticeId);
+      },
+    });
+  };
+
   const handleSave = () => {
     const fieldErrors = validate();
     const productError = validateProducts();
@@ -192,7 +218,7 @@ export default function BoothEditScreen() {
           sections={productSections}
           onSectionsChange={setProductSections}
           onEditProduct={handleEditProduct}
-          onDeleteProduct={handleDeleteProduct}
+          onDeleteProduct={clickDeleteProduct}
         />
       </AccordionLine>
 
@@ -251,7 +277,7 @@ export default function BoothEditScreen() {
             content={notice.content}
             date={notice.date}
             onEdit={() => handleEditNotice(notice.id)}
-            onDelete={() => handleDeleteNotice(notice.id)}
+            onDelete={() => clickDeleteNotice(notice.id)}
           />
         ))}
       </AccordionLine>
