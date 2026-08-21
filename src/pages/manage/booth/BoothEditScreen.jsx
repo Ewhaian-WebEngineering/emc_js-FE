@@ -16,124 +16,47 @@ import { ActionButtonContent } from './style';
 import ProductGroupList from './components/ProductGroupList';
 import TextInput from '@/designsystem/components/textinput/TextInput';
 import AdminNoticeCard from '@/designsystem/components/card/admin/AdminNoticeCard';
+import { useBoothForm } from './hooks/useBoothForm';
+import { useProductSections } from './hooks/useProductSections';
+import { useToggleMap } from './hooks/useToggleMap';
 
 export default function BoothEditScreen() {
   const navigate = useNavigate();
   const { boothId } = useParams();
   const [showBackModal, setShowBackModal] = useState(false);
 
-  const [expandedSections, setExpandedSections] = useState({
-    boothIntroduction: false,
-    productList: false,
-    customerInquiry: false,
-    allergyInfo: false,
-    notice: false,
-    announcement: false,
-  });
-
-  const toggleSection = (key) => {
-    setExpandedSections((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  // TODO: 실제 API 호출로 부스 상세 정보 조회
-  const [boothForm, setBoothForm] = useState(() => ({
-    representativeImage: DUMMY_BOOTH_DETAIL.representativeImage,
-    boothName: DUMMY_BOOTH_DETAIL.boothName,
-    tags: DUMMY_BOOTH_DETAIL.tags,
-    marks: DUMMY_BOOTH_DETAIL.marks,
-    operatingTime: DUMMY_BOOTH_DETAIL.operatingTime,
-    cash: DUMMY_BOOTH_DETAIL.cash,
-    location: DUMMY_BOOTH_DETAIL.location,
-    url: DUMMY_BOOTH_DETAIL.url,
-    inquiryUrl: DUMMY_BOOTH_DETAIL.inquiryUrl,
-    description: DUMMY_BOOTH_DETAIL.description,
-    allergyInfo: DUMMY_BOOTH_DETAIL.allergyInfo,
-    notice: DUMMY_BOOTH_DETAIL.notice,
-    announcement: DUMMY_BOOTH_DETAIL.announcement,
-  }));
-
-  const [productSections, setProductSections] = useState(() => [
-    ...DUMMY_BOOTH_DETAIL.productGroups.map((group) => ({
-      ...group,
-      isUngrouped: false,
-    })),
-    {
-      id: 'ungrouped',
-      name: '그룹 없음',
-      products: DUMMY_BOOTH_DETAIL.products,
-      isUngrouped: true,
-    },
+  const [expanded, toggleExpanded] = useToggleMap([
+    'boothIntroduction',
+    'productList',
+    'customerInquiry',
+    'allergyInfo',
+    'notice',
+    'announcement',
   ]);
 
-  const handleEditProduct = (productId) => {
-    // TODO: 제품 수정 로직 구현
-    alert(`제품 ${productId} 수정`);
-  };
+  const {
+    boothForm,
+    updateField,
+    handleEditNotice,
+    handleDeleteNotice,
+    getValidationError,
+  } = useBoothForm(DUMMY_BOOTH_DETAIL);
 
-  const handleDeleteProduct = (productId) => {
-    // TODO: 제품 삭제 로직 구현
-    setProductSections((prev) =>
-      prev.map((section) => ({
-        ...section,
-        products: section.products.filter(
-          (product) => product.id !== productId,
-        ),
-      })),
-    );
-  };
-
-  const handleEditNotice = (noticeId) => {
-    // TODO: 공지사항 수정 로직 구현
-    alert(`공지사항 ${noticeId} 수정`);
-  };
-
-  const handleDeleteNotice = (noticeId) => {
-    // TODO: 공지사항 삭제 로직 구현
-    setBoothForm((prev) => ({
-      ...prev,
-      notice: prev.notice.filter((notice) => notice.id !== noticeId),
-    }));
-  };
-
-  const updateField = (field) => (value) => {
-    setBoothForm((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const REQUIRED_FIELDS = [
-    {
-      check: () => boothForm.tags.length > 0,
-      label: '카테고리',
-    },
-    {
-      check: () => boothForm.marks.length > 0,
-      label: '비건 / 친환경 카테고리',
-    },
-    {
-      check: () => boothForm.operatingTime !== null,
-      label: '운영 시간',
-    },
-    {
-      check: () => boothForm.cash !== undefined && boothForm.cash !== null,
-      label: '현금 사용 여부',
-    },
-    {
-      check: () => boothForm.description?.trim(),
-      label: '부스 소개',
-    },
-    {
-      check: () => boothForm.inquiryUrl?.trim(),
-      label: '고객 문의 창구',
-    },
-  ];
+  const {
+    productSections,
+    setProductSections,
+    handleEditProduct,
+    handleDeleteProduct,
+    hasAnyProduct,
+  } = useProductSections(DUMMY_BOOTH_DETAIL);
 
   const handleSave = () => {
-    const missing = REQUIRED_FIELDS.find(({ check }) => !check());
-    if (missing) {
-      alert(`${missing.label}을(를) 입력해주세요.`);
+    const error = getValidationError();
+    if (error) {
+      alert(error);
       return;
     }
 
-    const hasAnyProduct = productSections.some((s) => s.products.length > 0);
     if (!hasAnyProduct) {
       alert('제품을 하나 이상 등록해주세요.');
       return;
@@ -203,8 +126,8 @@ export default function BoothEditScreen() {
       <AccordionLine
         title="부스 소개"
         required={true}
-        expanded={expandedSections.boothIntroduction}
-        onToggle={() => toggleSection('boothIntroduction')}
+        expanded={expanded.boothIntroduction}
+        onToggle={() => toggleExpanded('boothIntroduction')}
       >
         <AccordionLine.ContentGuide description="부스의 특징과 제품을 간단하게 소개해주세요." />
         <TextArea
@@ -218,8 +141,8 @@ export default function BoothEditScreen() {
       <AccordionLine
         title="제품 목록"
         required={true}
-        expanded={expandedSections.productList}
-        onToggle={() => toggleSection('productList')}
+        expanded={expanded.productList}
+        onToggle={() => toggleExpanded('productList')}
       >
         <AccordionLine.ContentGuide
           description={
@@ -249,8 +172,8 @@ export default function BoothEditScreen() {
       <AccordionLine
         title="고객 문의 창구"
         required={true}
-        expanded={expandedSections.customerInquiry}
-        onToggle={() => toggleSection('customerInquiry')}
+        expanded={expanded.customerInquiry}
+        onToggle={() => toggleExpanded('customerInquiry')}
       >
         <AccordionLine.ContentGuide description="고객을 위한 소통 창구 링크를 등록해주세요." />
         <TextInput
@@ -262,8 +185,8 @@ export default function BoothEditScreen() {
 
       <AccordionLine
         title="원재료 / 알레르기 정보"
-        expanded={expandedSections.allergyInfo}
-        onToggle={() => toggleSection('allergyInfo')}
+        expanded={expanded.allergyInfo}
+        onToggle={() => toggleExpanded('allergyInfo')}
       >
         <AccordionLine.ContentGuide description="수제 먹거리 부스라면 관련 내용을 꼭 작성해 주세요." />
         <TextArea
@@ -276,8 +199,8 @@ export default function BoothEditScreen() {
 
       <AccordionLine
         title="공지사항"
-        expanded={expandedSections.notice}
-        onToggle={() => toggleSection('notice')}
+        expanded={expanded.notice}
+        onToggle={() => toggleExpanded('notice')}
       >
         <AccordionLine.ContentGuide description="부스 운영 중 발생하는 공지사항을 등록할 수 있어요." />
         <AccordionLine.ActionButton
@@ -306,8 +229,8 @@ export default function BoothEditScreen() {
 
       <AccordionLine
         title="안내사항"
-        expanded={expandedSections.announcement}
-        onToggle={() => toggleSection('announcement')}
+        expanded={expanded.announcement}
+        onToggle={() => toggleExpanded('announcement')}
       >
         <AccordionLine.ContentGuide description="방문자가 알아야 할 유의사항이나 제한 내용을 작성해주세요." />
         <TextArea
