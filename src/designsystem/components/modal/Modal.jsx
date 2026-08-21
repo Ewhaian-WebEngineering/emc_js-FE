@@ -34,6 +34,7 @@ export default function Modal({
   cancelText,
   onConfirm,
   onCancel,
+  onDismiss,
 }) {
   // 드롭다운
   const [selectedOption, setSelectedOption] = useState(defaultValue || '');
@@ -48,8 +49,13 @@ export default function Modal({
     onCancel();
   };
 
+  const handleDismiss = () => {
+    setSelectedOption('');
+    onDismiss();
+  };
+
   return (
-    <Scrim onClick={handleCancel}>
+    <Scrim onClick={handleDismiss}>
       <ModalContainer>
         <ModalContent>
           <h2>{title}</h2>

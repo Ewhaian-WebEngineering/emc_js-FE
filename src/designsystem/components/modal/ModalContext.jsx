@@ -36,6 +36,12 @@ export function ModalProvider({ children }) {
     setModalState(null);
   }, [modalState]);
 
+  const handleDismiss = useCallback(() => {
+    resolverRef.current?.({ confirmed: false, dismissed: true });
+    resolverRef.current = null;
+    setModalState(null);
+  }, []);
+
   return (
     <ModalContext.Provider value={{ showModal }}>
       {children}
@@ -44,6 +50,7 @@ export function ModalProvider({ children }) {
           {...modalState}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
+          onDismiss={handleDismiss}
         />
       )}
     </ModalContext.Provider>
