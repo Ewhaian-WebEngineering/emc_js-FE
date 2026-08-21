@@ -1,16 +1,35 @@
 import { useState } from 'react';
 
 const REQUIRED_FIELDS = [
-  { check: (form) => form.tags.length > 0, label: '카테고리' },
-  { check: (form) => form.marks.length > 0, label: '비건 / 친환경 카테고리' },
-  { check: (form) => form.operatingTime !== null, label: '운영 시간' },
+  { key: 'tags', check: (form) => form.tags.length > 0, label: '카테고리' },
   {
+    key: 'marks',
+    check: (form) => form.marks.length > 0,
+    label: '비건 / 친환경 카테고리',
+  },
+  {
+    key: 'operatingTime',
+    check: (form) => form.operatingTime !== null,
+    label: '운영 시간',
+  },
+  {
+    key: 'cash',
     check: (form) => form.cash !== undefined && form.cash !== null,
     label: '현금 사용 여부',
   },
-  { check: (form) => form.description?.trim(), label: '부스 소개' },
-  { check: (form) => form.inquiryUrl?.trim(), label: '고객 문의 창구' },
+  {
+    key: 'description',
+    check: (form) => form.description?.trim(),
+    label: '부스 소개',
+  },
+  {
+    key: 'inquiryUrl',
+    check: (form) => form.inquiryUrl?.trim(),
+    label: '고객 문의 창구',
+  },
 ];
+
+const REQUIRED_MESSAGE = '내용을 입력해주세요.';
 
 export function useBoothForm(initialData) {
   const [boothForm, setBoothForm] = useState(() => ({
@@ -29,8 +48,16 @@ export function useBoothForm(initialData) {
     announcement: initialData.announcement,
   }));
 
+  const [errors, setErrors] = useState({});
+
   const updateField = (field) => (value) => {
     setBoothForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
   };
 
   const handleEditNotice = (noticeId) => {
@@ -45,9 +72,15 @@ export function useBoothForm(initialData) {
     }));
   };
 
-  const getValidationError = () => {
-    const missing = REQUIRED_FIELDS.find(({ check }) => !check(boothForm));
-    return missing ? `${missing.label}을(를) 입력해주세요.` : null;
+  const validate = () => {
+    const nextErrors = {};
+    REQUIRED_FIELDS.forEach(({ key, check }) => {
+      if (!check(boothForm)) {
+        nextErrors[key] = REQUIRED_MESSAGE;
+      }
+    });
+    setErrors(nextErrors);
+    return nextErrors;
   };
 
   return {
@@ -55,6 +88,7 @@ export function useBoothForm(initialData) {
     updateField,
     handleEditNotice,
     handleDeleteNotice,
-    getValidationError,
+    errors,
+    validate,
   };
 }

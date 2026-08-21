@@ -6,6 +6,8 @@ export function useProductSections({ productGroups, products }) {
     { id: 'ungrouped', name: '그룹 없음', products, isUngrouped: true },
   ]);
 
+  const [productsError, setProductsError] = useState(null);
+
   const handleEditProduct = useCallback((productId) => {
     // TODO: 제품 수정 로직 구현
     alert(`제품 ${productId} 수정`);
@@ -23,11 +25,18 @@ export function useProductSections({ productGroups, products }) {
 
   const hasAnyProduct = productSections.some((s) => s.products.length > 0);
 
+  const validateProducts = () => {
+    const message = hasAnyProduct ? null : '제품을 등록해주세요.';
+    setProductsError(message);
+    return message;
+  };
+
   return {
     productSections,
     setProductSections,
     handleEditProduct,
     handleDeleteProduct,
-    hasAnyProduct,
+    productsError,
+    validateProducts,
   };
 }

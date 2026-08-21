@@ -53,6 +53,11 @@ export const CategoryLabelOptions = styled.div`
   gap: ${measurement.spacing8};
 `;
 
+export const CategoryLabelHelperText = styled.p`
+  ${typography.caption1Regular};
+  color: ${semantic.statusDanger};
+`;
+
 export const ActionButtonContent = styled.div`
   display: flex;
   align-items: center;

@@ -1,7 +1,11 @@
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
-import { CategoryContainer, BoothEditContainer } from './style';
+import {
+  CategoryContainer,
+  BoothEditContainer,
+  CategoryLabelHelperText,
+} from './style';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DUMMY_BOOTH_DETAIL } from '@/pages/booth/constants/dummyBoothDetail';
 import { MANAGE_ROUTES } from '@/constants/routes';
@@ -39,7 +43,8 @@ export default function BoothEditScreen() {
     updateField,
     handleEditNotice,
     handleDeleteNotice,
-    getValidationError,
+    errors,
+    validate,
   } = useBoothForm(DUMMY_BOOTH_DETAIL);
 
   const {
@@ -47,7 +52,8 @@ export default function BoothEditScreen() {
     setProductSections,
     handleEditProduct,
     handleDeleteProduct,
-    hasAnyProduct,
+    productsError,
+    validateProducts,
   } = useProductSections(DUMMY_BOOTH_DETAIL);
 
   const handleBack = async () => {
@@ -64,16 +70,11 @@ export default function BoothEditScreen() {
   };
 
   const handleSave = () => {
-    const error = getValidationError();
-    if (error) {
-      alert(error);
-      return;
-    }
+    const fieldErrors = validate();
+    const productError = validateProducts();
 
-    if (!hasAnyProduct) {
-      alert('제품을 하나 이상 등록해주세요.');
-      return;
-    }
+    const hasError = Object.keys(fieldErrors).length > 0 || productError;
+    if (hasError) return;
 
     navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
   };
@@ -107,6 +108,8 @@ export default function BoothEditScreen() {
           options={BOOTH_CATEGORY_OPTIONS.tags}
           selected={boothForm.tags}
           onChange={updateField('tags')}
+          hasError={!!errors.tags}
+          helperText={errors.tags}
         />
         <CategoryLabel
           title="비건 / 친환경 카테고리"
@@ -115,18 +118,24 @@ export default function BoothEditScreen() {
           options={BOOTH_CATEGORY_OPTIONS.marks}
           selected={boothForm.marks}
           onChange={updateField('marks')}
+          hasError={!!errors.marks}
+          helperText={errors.marks}
         />
         <CategoryLabel
           title="운영 시간"
           options={BOOTH_CATEGORY_OPTIONS.operatingTime}
           selected={boothForm.operatingTime}
           onChange={updateField('operatingTime')}
+          hasError={!!errors.operatingTime}
+          helperText={errors.operatingTime}
         />
         <CategoryLabel
           title="현금 사용 여부"
           options={BOOTH_CATEGORY_OPTIONS.cash}
           selected={boothForm.cash}
           onChange={updateField('cash')}
+          hasError={!!errors.cash}
+          helperText={errors.cash}
         />
         <TextField
           title="URL"
@@ -148,6 +157,8 @@ export default function BoothEditScreen() {
           value={boothForm.description}
           onChange={updateField('description')}
           maxLength={500}
+          hasError={!!errors.description}
+          helperText={errors.description}
         />
       </AccordionLine>
 
@@ -162,6 +173,9 @@ export default function BoothEditScreen() {
             '제품 정보와 이미지를 등록하고,\n그룹을 설정해 카테고리별로 관리할 수 있습니다.'
           }
         />
+        {productsError && (
+          <CategoryLabelHelperText>{productsError}</CategoryLabelHelperText>
+        )}
         <AccordionLine.ActionButton
           buttonText={
             <ActionButtonContent>
@@ -193,6 +207,8 @@ export default function BoothEditScreen() {
           value={boothForm.inquiryUrl}
           onChange={(e) => updateField('inquiryUrl')(e.target.value)}
           placeholder="예) https://pf.kakao.com/_jwmVd"
+          hasError={!!errors.inquiryUrl}
+          helperText={errors.inquiryUrl}
         />
       </AccordionLine>
 

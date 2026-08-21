@@ -5,6 +5,7 @@ import {
   CategoryLabelMain,
   CategoryLabelMultiple,
   CategoryLabelOptions,
+  CategoryLabelHelperText,
 } from '../style';
 
 export default function CategoryLabel({
@@ -14,6 +15,8 @@ export default function CategoryLabel({
   selected,
   onChange,
   exclusiveValue,
+  hasError,
+  helperText,
 }) {
   const isSelected = (value) =>
     multiple ? selected.includes(value) : selected === value;
@@ -66,6 +69,9 @@ export default function CategoryLabel({
           />
         ))}
       </CategoryLabelOptions>
+      {hasError && helperText && (
+        <CategoryLabelHelperText>{helperText}</CategoryLabelHelperText>
+      )}
     </CategoryLabelContainer>
   );
 }
