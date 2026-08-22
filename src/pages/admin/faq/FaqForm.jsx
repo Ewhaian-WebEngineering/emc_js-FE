@@ -46,11 +46,6 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
   const hasError = !que.trim() || !ans.trim();
 
   const handleSubmit = () => {
-    if (hasError) {
-      setTouched({ que: true, ans: true });
-      return;
-    }
-
     onSubmit?.({
       ...formData,
       que: que.trim(),
