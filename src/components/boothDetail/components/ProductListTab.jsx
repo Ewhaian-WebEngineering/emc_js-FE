@@ -1,16 +1,16 @@
-import { Fragment } from 'react';
 import ProductVerticalCard from '@/designsystem/components/card/product/ProductVerticalCard';
 import {
   ProductList,
   ProductListTabContainer,
   ProductListTabHeader,
+  ProductListTabContent,
 } from './style';
 
 export default function ProductListTab({ productGroups }) {
   return (
     <ProductListTabContainer>
       {productGroups.map((group) => (
-        <Fragment key={group.id}>
+        <ProductListTabContent key={group.id}>
           <ProductListTabHeader>
             <h2>{group.name}</h2>
             <p>{group.description}</p>
@@ -26,7 +26,7 @@ export default function ProductListTab({ productGroups }) {
               />
             ))}
           </ProductList>
-        </Fragment>
+        </ProductListTabContent>
       ))}
     </ProductListTabContainer>
   );

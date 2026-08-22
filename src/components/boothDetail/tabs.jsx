@@ -1,6 +1,6 @@
-import ContactTab from '../components/ContactTab';
-import NoticeTab from '../components/NoticeTab';
-import ProductListTab from '../components/ProductListTab';
+import ContactTab from './components/ContactTab';
+import NoticeTab from './components/NoticeTab';
+import ProductListTab from './components/ProductListTab';
 
 export const BOOTH_DETAIL_TABS = [
   {
@@ -11,7 +11,7 @@ export const BOOTH_DETAIL_TABS = [
   {
     id: 'notice',
     label: '안내사항',
-    render: (booth) => <NoticeTab content={booth.notice} />,
+    render: (booth) => <NoticeTab content={booth.announcement} />,
   },
   {
     id: 'qna',

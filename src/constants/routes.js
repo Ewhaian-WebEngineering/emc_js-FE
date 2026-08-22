@@ -34,11 +34,20 @@ export const NOTICE_ROUTE = '/notice';
 
 export const SPONSOR_ROUTES = {
   LIST: '/sponsor',
-  DETAIL: (id) => `/sponsor/${id}`,
+  DETAIL: (sponsorId) => `/sponsor/${sponsorId}`,
 };
 
 export const MAKERS_ROUTES = {
   LIST: '/makers',
 };
 
+export const MANAGE_ROUTES = {
+  BOOTH_PREVIEW: (boothId) => `/booth/${boothId}/preview`,
+  BOOTH_EDIT: (boothId) => `/booth/${boothId}/edit`,
+};
+
 export const EMC_INTRODUCTION_ROUTE = '/emc';
+
+export const SELLER_ROUTES = {
+  CODE: '/seller',
+};

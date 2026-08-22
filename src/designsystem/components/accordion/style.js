@@ -86,6 +86,7 @@ export const AccordionLineContent = styled.div`
 export const AccordionLineContentGuideText = styled.p`
   ${typography.body2Regular}
   color: ${semantic.textNormalNormal};
+  white-space: pre-line;
 `;
 
 export const AccordionDescriptionWrapper = styled.div`
