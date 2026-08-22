@@ -1,3 +1,4 @@
+import useModal from '@/hooks/modal/useModal';
 import { useState } from 'react';
 
 const getInitialValues = (product) => ({
@@ -18,6 +19,7 @@ const FIELD_ERROR_MESSAGES = {
 
 export function useProductForm({ product, submitLabel, onSubmit }) {
   const isCreateMode = submitLabel === 'create';
+  const { showModal } = useModal();
 
   const [initialValues, setInitialValues] = useState(() =>
     getInitialValues(product),
@@ -45,18 +47,44 @@ export function useProductForm({ product, submitLabel, onSubmit }) {
 
   const isSubmittable = isCreateMode ? isFormValid : isDirty && isFormValid;
 
+  const isButtonDisabled = isCreateMode
+    ? !isFormValid || isSubmitting
+    : !isDirty || isSubmitting;
+
   const handleSubmit = async () => {
     setHasAttemptedSubmit(true);
     if (isSubmitting || !isSubmittable) return;
     setIsSubmitting(true);
 
+    const trimmedValues = {
+      ...formValues,
+      name: formValues.name.trim(),
+      description: formValues.description.trim(),
+      price: Number(String(formValues.price).replace(/[^0-9]/g, '')), // 숫자만 남기고 정수로 변환
+    };
+
     try {
-      await onSubmit(formValues);
-      setInitialValues(formValues);
+      await onSubmit(trimmedValues);
+      setFormValues(trimmedValues);
+      setInitialValues(trimmedValues);
     } catch (error) {
       // TODO: 에러 핸들링
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleUploadError = async (retryUploadFn) => {
+    const { confirmed } = await showModal({
+      variant: 'confirmation',
+      title: '이미지 업로드에 실패했습니다',
+      description: '지원하지 않는 파일 형식이거나,\n용량이 초과되었어요.',
+      cancelText: '닫기',
+      confirmText: '재업로드',
+    });
+
+    if (confirmed && retryUploadFn) {
+      retryUploadFn();
     }
   };
 
@@ -70,13 +98,11 @@ export function useProductForm({ product, submitLabel, onSubmit }) {
     : {};
 
   return {
-    isCreateMode,
     formValues,
     updateField,
-    isSubmitting,
-    isSubmittable,
-    fieldErrors,
     visibleErrors,
+    isButtonDisabled,
     handleSubmit,
+    handleUploadError,
   };
 }

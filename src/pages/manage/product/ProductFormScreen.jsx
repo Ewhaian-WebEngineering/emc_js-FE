@@ -18,14 +18,12 @@ import { useProductGroups } from './hooks/useProductGroups';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const {
-    isCreateMode,
     formValues,
     updateField,
-    isSubmitting,
-    isSubmittable,
-    fieldErrors,
     visibleErrors,
+    isButtonDisabled,
     handleSubmit,
+    handleUploadError,
   } = useProductForm({ product, submitLabel, onSubmit });
 
   const {
@@ -51,12 +49,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
         onBack={handleBack}
         title="제품"
         right={
-          <TextButton
-            onClick={handleSubmit}
-            disabled={
-              isCreateMode ? !isSubmittable || isSubmitting : isSubmitting
-            }
-          >
+          <TextButton onClick={handleSubmit} disabled={isButtonDisabled}>
             {submitLabel === 'create' ? '등록' : '저장'}
           </TextButton>
         }
@@ -125,6 +118,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
             visibleErrors.thumbnail ??
             '이미지 1개만 업로드할 수 있습니다. (JPG, JPEG, PNG / 최대 10MB)'
           }
+          onUploadError={handleUploadError}
         />
 
         <ProductFormSection>
