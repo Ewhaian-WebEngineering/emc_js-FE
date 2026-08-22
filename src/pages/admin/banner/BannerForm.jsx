@@ -97,13 +97,12 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     }
   };
 
-  const urlHelperText = touched.url
-    ? !url.trim()
-      ? '내용을 입력해주세요.'
-      : isUrlInvalid
-        ? '잘못된 URL 형식입니다.'
-        : ''
-    : '';
+  const getUrlHelperText = () => {
+    if (!touched.url) return '';
+    if (!url.trim()) return '내용을 입력해주세요.';
+    if (isUrlInvalid) return '잘못된 URL 형식입니다.';
+    return '';
+  };
 
   return (
     <BannerFormContainer>
@@ -156,7 +155,7 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
           title="URL"
           value={url}
           hasError={touched.url && (!url.trim() || isUrlInvalid)}
-          helperText={urlHelperText}
+          helperText={getUrlHelperText()}
         />
       </ContentContainer>
     </BannerFormContainer>
