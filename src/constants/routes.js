@@ -28,6 +28,10 @@ export const ADMIN_ROUTES = {
   DASHBOARD: '/admin/dashboard',
   FAQ: '/admin/faq',
   FAQEDIT: (faqId) => `/admin/faq/${faqId}/edit`,
+  BANNER: '/admin/banner',
+  BANNEREDIT: (bannerId) => `/admin/banner/${bannerId}/edit`,
+  EVENT: '/admin/event',
+  EVENTEDIT: (eventId) => `/admin/event/${eventId}/edit`,
 };
 
 export const NOTICE_ROUTE = '/notice';
