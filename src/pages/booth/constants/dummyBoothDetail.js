@@ -8,73 +8,101 @@ export const DUMMY_BOOTH_DETAIL = {
   cash: false,
   location: 1,
   url: 'https://www.website.com',
-  announcement: [
-    '[필독] 현장 재고는 조기 소진될 수 있으며, 없으면 안 팝니다잉',
-    '[공지] 굿즈 구매 시 1인당 최대 3개까지 구매 가능합니다.',
-    '[안내] 우천 시 운영 시간이 조정될 수 있습니다.',
+  inquiryUrl: 'https://www.naver.com',
+  notice: [
+    {
+      id: 1,
+      title: '[필독] 재고 소진 안내',
+      content: '현장 재고는 조기 소진될 수 있으며, 없으면 판매하지 않습니다.',
+      date: '2026-08-01T09:00:00.000Z',
+    },
+    {
+      id: 2,
+      title: '[공지] 구매 수량 제한',
+      content: '굿즈 구매 시 1인당 최대 3개까지 구매 가능합니다.',
+      date: '2026-08-02T09:00:00.000Z',
+    },
+    {
+      id: 3,
+      title: '[안내] 우천 시 운영 조정',
+      content: '우천 시 운영 시간이 조정될 수 있습니다.',
+      date: '2026-08-03T09:00:00.000Z',
+    },
   ],
   description:
     '부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다. 부스 상세 설명입니다.',
   allergyInfo: '밀가루, 설탕, 우유, 계란, 견과류',
+  products: [
+    {
+      id: 101,
+      name: '수제 마카롱',
+      description:
+        '바닐라빈을 넣어 향이 진한 수제 마카롱입니다. 하루 30개 한정 생산합니다.',
+      price: 3500,
+      thumbnail: '',
+    },
+    {
+      id: 102,
+      name: '레몬 에이드',
+      description:
+        '제주산 레몬으로 직접 만든 상큼한 에이드입니다. 얼음 추가 무료입니다.',
+      price: 4500,
+      thumbnail: '',
+    },
+  ],
   productGroups: [
     {
       id: 1,
-      name: '제품 그룹 1',
-      description:
-        '제품 그룹 1 설명입니다. 제품 그룹 1 설명입니다. 제품 그룹 1 설명입니다.',
+      name: '쿠키 시리즈',
+      description: '버터와 밀가루를 기반으로 만든 다양한 수제 쿠키입니다.',
       products: [
         {
-          id: 1,
-          name: '제품 1',
-          description:
-            '제품 1 설명입니다. 제품 1 설명입니다. 제품 1 설명입니다.',
-          price: 10000,
+          id: 103,
+          name: '초코칩 쿠키',
+          description: '벨기에산 초콜릿을 듬뿍 넣은 클래식 초코칩 쿠키입니다.',
+          price: 3000,
           thumbnail: '',
         },
         {
-          id: 2,
-          name: '제품 2',
-          description:
-            '제품 2 설명입니다. 제품 2 설명입니다. 제품 2 설명입니다.',
-          price: 20000,
+          id: 104,
+          name: '오트밀 쿠키',
+          description: '건포도와 오트밀로 만들어 담백하고 든든한 쿠키입니다.',
+          price: 3200,
           thumbnail: '',
         },
       ],
     },
     {
       id: 2,
-      name: '제품 그룹 2',
-      description:
-        '제품 그룹 2 설명입니다. 제품 그룹 2 설명입니다. 제품 그룹 2 설명입니다.',
+      name: '음료 시리즈',
+      description: '부스에서 직접 만드는 시즌 음료 모음입니다.',
       products: [
         {
-          id: 3,
-          name: '제품 3',
-          description:
-            '제품 3 설명입니다. 제품 3 설명입니다. 제품 3 설명입니다.',
-          price: 30000,
+          id: 105,
+          name: '아이스 아메리카노',
+          description: '원두를 매장에서 직접 로스팅해 내린 아메리카노입니다.',
+          price: 4000,
           thumbnail: '',
         },
         {
-          id: 4,
-          name: '제품 4',
-          description:
-            '제품 4 설명입니다. 제품 4 설명입니다. 제품 4 설명입니다.',
-          price: 40000,
+          id: 106,
+          name: '자몽 허니 블랙티',
+          description: '자몽청과 홍차를 조합한 새콤달콤한 음료입니다.',
+          price: 5000,
           thumbnail: '',
         },
         {
-          id: 5,
-          name: '제품 5',
-          description:
-            '제품 5 설명입니다. 제품 5 설명입니다. 제품 5 설명입니다.',
-          price: 50000,
+          id: 107,
+          name: '딸기 라떼',
+          description: '제철 딸기로 만든 딸기청을 우유와 섞은 라떼입니다.',
+          price: 5500,
           thumbnail: '',
         },
       ],
     },
   ],
-  notice: '현장 결제 시 카드 결제만 가능하며, 현금은 사용하실 수 없습니다.',
+  announcement:
+    '현장 결제 시 카드 결제만 가능하며, 현금은 사용하실 수 없습니다.',
   contactUrl: 'https://www.naver.com',
   recommendations: [
     {

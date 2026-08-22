@@ -91,6 +91,12 @@ export const ProductListTabContainer = styled.div`
   padding-block: ${measurement.spacing20};
 `;
 
+export const ProductListTabContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing24};
+`;
+
 export const ProductListTabHeader = styled.div`
   display: flex;
   flex-direction: column;

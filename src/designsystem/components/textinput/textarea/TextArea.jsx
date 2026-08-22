@@ -31,6 +31,10 @@ export default function TextArea({
   disabled,
   rows,
 }) {
+  const handleChange = (e) => {
+    onChange(e.target.value);
+  };
+
   return (
     <TextInputLayout
       title={title}
@@ -45,7 +49,7 @@ export default function TextArea({
         <TextAreaInput
           placeholder={placeholder}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           onBlur={onBlur}
           maxLength={maxLength}
           disabled={disabled}

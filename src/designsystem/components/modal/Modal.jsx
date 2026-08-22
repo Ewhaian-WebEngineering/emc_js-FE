@@ -22,6 +22,7 @@ import {
  * @param {string} cancelText - 취소 버튼 텍스트
  * @param {function} [onConfirm] - 확인 버튼 클릭 시 호출되는 함수
  * @param {function} onCancel - 취소 버튼 또는 배경(Scrim) 클릭 시 호출되는 함수
+ * @param {function} [onDismiss] - 배경(Scrim) 클릭 시 호출되는 함수
  */
 export default function Modal({
   variant,
@@ -34,6 +35,7 @@ export default function Modal({
   cancelText,
   onConfirm,
   onCancel,
+  onDismiss,
 }) {
   // 드롭다운
   const [selectedOption, setSelectedOption] = useState(defaultValue || '');
@@ -48,8 +50,13 @@ export default function Modal({
     onCancel();
   };
 
+  const handleDismiss = () => {
+    setSelectedOption('');
+    onDismiss();
+  };
+
   return (
-    <Scrim onClick={handleCancel}>
+    <Scrim onClick={handleDismiss}>
       <ModalContainer>
         <ModalContent>
           <h2>{title}</h2>
