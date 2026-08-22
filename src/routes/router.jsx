@@ -10,6 +10,8 @@ import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
 import AdminDashboardScreen from '../pages/admin/AdminDashboardScreen';
+import FaqCreateScreen from '../pages/admin/faq/FaqCreateScreen';
+import FaqEditScreen from '../pages/admin/faq/FaqEditScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
@@ -80,6 +82,8 @@ export const router = createBrowserRouter([
 
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
+      { path: ADMIN_ROUTES.FAQ, element: <FaqCreateScreen /> },
+      { path: ADMIN_ROUTES.FAQEDIT(':faqId'), element: <FaqEditScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: ADMIN_ROUTES.EVENT, element: <EventCreateScreen /> },
       {
