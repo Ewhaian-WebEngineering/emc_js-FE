@@ -5,6 +5,7 @@ import FooterLayout from '@/layouts/FooterLayout';
 import HomeScreen from '../pages/home/HomeScreen';
 import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
+import BoothDetailScreen from '../pages/booth/BoothDetailScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
@@ -12,6 +13,8 @@ import AdminDashboardScreen from '../pages/admin/AdminDashboardScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
+import EventCreateScreen from '../pages/admin/event/EventCreateScreen';
+import EventEditScreen from '../pages/admin/event/EventEditScreen';
 import MakersScreen from '../pages/makers/MakersScreen';
 import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
 import SellerCodeScreen from '@/pages/seller/SellerCodeScreen';
@@ -75,6 +78,11 @@ export const router = createBrowserRouter([
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
+      { path: ADMIN_ROUTES.EVENT, element: <EventCreateScreen /> },
+      {
+        path: ADMIN_ROUTES.EVENTEDIT(':eventId'),
+        element: <EventEditScreen />,
+      },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       { path: BOOTH_ROUTES.DETAIL(':boothId'), element: <BoothDetailScreen /> },
       { path: EVENT_ROUTES.DETAIL(':id'), element: <EventDetailScreen /> },
