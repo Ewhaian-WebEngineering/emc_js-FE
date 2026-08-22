@@ -12,6 +12,9 @@ import {
   ProductImageUploaderRequired,
 } from './style';
 
+const MAX_SIZE_MB = 10;
+const ACCEPTED_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
+
 /**
  * 제품 이미지를 업로드/삭제하는 컴포넌트입니다.
  *
@@ -22,6 +25,7 @@ import {
  * @param {function} [onDelete] - 이미지 삭제 버튼 클릭 시 호출되는 함수
  * @param {boolean} [isError] - 에러 상태 여부
  * @param {string} [helperText] - 안내 문구, 에러 상태일 때는 에러 문구로 사용
+ * @param {function} [onUploadError] - 업로드 실패 시 호출되는 함수
  * @param {string} [accept='image/*'] - 업로드 가능한 파일 타입
  */
 export default function ProductImageUploader({
@@ -32,6 +36,7 @@ export default function ProductImageUploader({
   imageUrl,
   onUpload,
   onDelete,
+  onUploadError,
   accept = 'image/*',
 }) {
   const inputRef = useRef(null);
@@ -42,9 +47,18 @@ export default function ProductImageUploader({
 
   const handleFileChange = (event) => {
     const file = event.target.files?.[0];
-    if (file) {
-      onUpload?.(file);
+    if (!file) return;
+
+    const isValidType = ACCEPTED_TYPES.includes(file.type);
+    const isValidSize = file.size <= MAX_SIZE_MB * 1024 * 1024;
+
+    if (!isValidType || !isValidSize) {
+      onUploadError?.(handleUploadClick);
+      event.target.value = '';
+      return;
     }
+
+    onUpload?.(file);
     event.target.value = '';
   };
 
