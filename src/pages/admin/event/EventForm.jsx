@@ -70,11 +70,6 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
     !content.trim();
 
   const handleSubmit = () => {
-    if (hasError) {
-      setTouched({ title: true });
-      return;
-    }
-
     onSubmit?.({
       ...formData,
       title: title.trim(),
