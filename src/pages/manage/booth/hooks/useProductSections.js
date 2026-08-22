@@ -1,6 +1,10 @@
+import { MANAGE_ROUTES } from '@/constants/routes';
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function useProductSections({ productGroups, products }) {
+  const navigate = useNavigate();
+
   const [productSections, setProductSections] = useState(() => [
     ...productGroups.map((group) => ({ ...group, isUngrouped: false })),
     { id: 'ungrouped', name: '그룹 없음', products, isUngrouped: true },
@@ -9,8 +13,13 @@ export function useProductSections({ productGroups, products }) {
   const [productsError, setProductsError] = useState(null);
 
   const handleEditProduct = useCallback((productId) => {
-    // TODO: 제품 수정 로직 구현
-    alert(`제품 ${productId} 수정`);
+    navigate(MANAGE_ROUTES.PRODUCT_EDIT(productId), {
+      state: {
+        productData: productSections
+          .flatMap((s) => s.products)
+          .find((p) => p.id === productId),
+      },
+    });
   }, []);
 
   const handleDeleteProduct = useCallback((productId) => {
