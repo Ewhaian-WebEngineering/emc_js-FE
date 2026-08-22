@@ -5,6 +5,7 @@ import FooterLayout from '@/layouts/FooterLayout';
 import HomeScreen from '../pages/home/HomeScreen';
 import EventScreen from '../pages/event/EventScreen';
 import BoothScreen from '../pages/booth/BoothScreen';
+import BoothDetailScreen from '../pages/booth/BoothDetailScreen';
 import ScrapScreen from '../pages/scrap/ScrapScreen';
 import MyScreen from '../pages/my/MyScreen';
 import AdminCodeScreen from '../pages/admin/AdminCodeScreen';
