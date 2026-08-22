@@ -31,6 +31,10 @@ export default function TextField({
   disabled,
   isPassword = false,
 }) {
+  const handleChange = (e) => {
+    onChange(e.target.value);
+  };
+
   return (
     <TextInputLayout
       title={title}
@@ -45,7 +49,7 @@ export default function TextField({
         isPassword={isPassword}
         placeholder={placeholder}
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
         onBlur={onBlur}
         maxLength={maxLength}
         disabled={disabled}
