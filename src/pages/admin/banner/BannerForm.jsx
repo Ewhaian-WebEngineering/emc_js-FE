@@ -76,11 +76,6 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     isUrlInvalid;
 
   const handleSubmit = () => {
-    if (hasError) {
-      setTouched({ title: true, url: true });
-      return;
-    }
-
     onSubmit?.({
       ...formData,
       title: title.trim(),
