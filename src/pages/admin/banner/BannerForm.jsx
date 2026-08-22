@@ -83,18 +83,15 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     });
   };
 
-  const handleBack = async () => {
-    const { confirmed } = await showModal({
+  const handleBack = () => {
+    showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       confirmText: '계속 작성하기',
       cancelText: '나가기',
+      onCancel: () => navigate(ADMIN_ROUTES.DASHBOARD),
     });
-
-    if (!confirmed) {
-      navigate(ADMIN_ROUTES.DASHBOARD);
-    }
   };
 
   const getUrlHelperText = () => {
