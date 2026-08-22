@@ -15,8 +15,13 @@ import ProductImageUploader from '@/designsystem/components/fileuploader/Product
 import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 import Select from '@/designsystem/components/select/Select';
 import { useProductGroups } from './hooks/useProductGroups';
+import useModal from '@/hooks/modal/useModal';
+import { useGoBack } from '@/hooks/useGoBack';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
+  const { showModal } = useModal();
+  const goBack = useGoBack();
+
   const {
     formValues,
     updateField,
@@ -38,9 +43,17 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     onGroupIdChange: (value) => updateField('groupId', value),
   });
 
-  const handleBack = () => {
-    // TODO: 뒤로가기 모달 추가
-    alert('go back');
+  const handleBack = async () => {
+    await showModal({
+      variant: 'confirmation',
+      title: '작성 중인 내용이 있어요.',
+      description: '나가면 작성 중인 내용이 저장되지 않아요.',
+      cancelText: '나가기',
+      confirmText: '계속 작성하기',
+      onCancel: () => {
+        goBack();
+      },
+    });
   };
 
   return (
