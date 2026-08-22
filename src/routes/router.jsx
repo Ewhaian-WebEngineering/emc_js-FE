@@ -18,6 +18,7 @@ import MakersScreen from '../pages/makers/MakersScreen';
 import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
 import SellerCodeScreen from '@/pages/seller/SellerCodeScreen';
 import SponsorDetailScreen from '../pages/sponsor/detail/SponsorDetailScreen';
+import BoothDetailScreen from '../pages/booth/BoothDetailScreen';
 
 import {
   TAB_ROUTES,
