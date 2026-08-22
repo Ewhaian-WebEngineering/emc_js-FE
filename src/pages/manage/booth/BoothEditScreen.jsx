@@ -210,8 +210,7 @@ export default function BoothEditScreen() {
             </ActionButtonContent>
           }
           onClick={() => {
-            // TODO: 제품 등록 페이지 이동
-            alert('제품 등록');
+            navigate(MANAGE_ROUTES.PRODUCT_CREATE(boothId));
           }}
         />
         <ProductGroupList
