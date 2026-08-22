@@ -25,9 +25,11 @@ export const SEARCH_ROUTES = {
 
 export const ADMIN_ROUTES = {
   CODE: '/admin',
+  DASHBOARD: '/admin/dashboard',
   BANNER: '/admin/banner',
   BANNEREDIT: (bannerId) => `/admin/banner/${bannerId}/edit`,
-  DASHBOARD: '/admin/dashboard',
+  EVENT: '/admin/event',
+  EVENTEDIT: (eventId) => `/admin/event/${eventId}/edit`,
 };
 
 export const NOTICE_ROUTE = '/notice';
