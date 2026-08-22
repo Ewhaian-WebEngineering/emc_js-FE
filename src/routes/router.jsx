@@ -13,12 +13,15 @@ import AdminDashboardScreen from '../pages/admin/AdminDashboardScreen';
 import NoticeScreen from '../pages/notice/NoticeScreen';
 import { searchRoutes } from '@/pages/search/routes';
 import SponsorScreen from '../pages/sponsor/SponsorScreen';
+import BannerCreateScreen from '../pages/admin/banner/BannerCreateScreen';
+import BannerEditScreen from '../pages/admin/banner/BannerEditScreen';
 import EventCreateScreen from '../pages/admin/event/EventCreateScreen';
 import EventEditScreen from '../pages/admin/event/EventEditScreen';
 import MakersScreen from '../pages/makers/MakersScreen';
 import EmcIntroductionScreen from '@/pages/emcIntroduction/EmcIntroductionScreen';
 import SellerCodeScreen from '@/pages/seller/SellerCodeScreen';
 import SponsorDetailScreen from '../pages/sponsor/detail/SponsorDetailScreen';
+import BoothDetailScreen from '../pages/booth/BoothDetailScreen';
 
 import {
   TAB_ROUTES,
@@ -82,6 +85,11 @@ export const router = createBrowserRouter([
       {
         path: ADMIN_ROUTES.EVENTEDIT(':eventId'),
         element: <EventEditScreen />,
+      },
+      { path: ADMIN_ROUTES.BANNER, element: <BannerCreateScreen /> },
+      {
+        path: ADMIN_ROUTES.BANNEREDIT(':bannerId'),
+        element: <BannerEditScreen />,
       },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       { path: BOOTH_ROUTES.DETAIL(':boothId'), element: <BoothDetailScreen /> },
