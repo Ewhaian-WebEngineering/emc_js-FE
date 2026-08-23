@@ -39,7 +39,7 @@ export const ProductFormOptions = styled.div`
 export const ProductAddSheetBody = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${measurement.spacing8};
+  gap: ${measurement.spacing32};
   padding: ${measurement.spacing24} ${measurement.spacing16}
     ${measurement.spacing40} ${measurement.spacing16};
 `;
