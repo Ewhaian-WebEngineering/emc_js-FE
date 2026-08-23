@@ -9,10 +9,9 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
 
   const [isGroupSheetOpen, setIsGroupSheetOpen] = useState(false);
   const [newGroup, setNewGroup] = useState(INITIAL_NEW_GROUP);
+  const [groups, setGroups] = useState(GROUP_OPTIONS);
 
-  const selectedGroupOption = GROUP_OPTIONS.find(
-    (option) => option.value === groupId,
-  );
+  const selectedGroupOption = groups.find((option) => option.value === groupId);
 
   const updateNewGroupField = (field, value) => {
     setNewGroup((prev) => ({ ...prev, [field]: value }));
@@ -52,12 +51,31 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
 
   const handleConfirmAddGroup = () => {
     if (!isNewGroupValid) return;
+
+    const newOption = newGroup.name.trim();
+    setGroups((prev) => [...prev, newOption]);
+
     handleCloseGroupSheet();
   };
 
-  const handleDeleteGroup = () => {
-    // TODO: 그룹 삭제 로직 추가
-    alert('그룹 삭제');
+  const handleDeleteGroup = async (option) => {
+    if (option.value === null) return;
+
+    const { confirmed } = await showModal({
+      variant: 'danger',
+      title: '해당 그룹을 삭제하시겠습니까?',
+      description: '삭제하시면 다시 되돌릴 수 없어요.',
+      cancelText: '취소',
+      confirmText: '삭제하기',
+    });
+
+    if (!confirmed) return;
+
+    setGroups((prev) => prev.filter((g) => g.value !== option.value));
+
+    if (option.value === groupId) {
+      onGroupIdChange(null);
+    }
   };
 
   const handleEditGroup = () => {
@@ -66,7 +84,7 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
   };
 
   return {
-    groupOptions: GROUP_OPTIONS,
+    groupOptions: groups,
     selectedGroupOption,
     handleSelectGroup,
     handleAddGroup,

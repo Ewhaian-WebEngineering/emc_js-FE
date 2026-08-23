@@ -47,6 +47,10 @@ export default function Select({
     ? [prefix, selectedValue.label].filter(Boolean).join(' ')
     : placeholder;
 
+  useEffect(() => {
+    setSelectedValue(value);
+  }, [value]);
+
   // 외부 클릭 감지
   useEffect(() => {
     if (!isOpen) return;
@@ -118,7 +122,7 @@ export default function Select({
                 selected={selectedValue?.value === option.value}
                 disabled={option.disabled}
                 onClick={() => handleSelect(option)}
-                showActions={showActions}
+                showActions={showActions && !option.hideActions}
                 onDelete={() => onDelete?.(option)}
                 onEdit={() => onEdit?.(option)}
               />
