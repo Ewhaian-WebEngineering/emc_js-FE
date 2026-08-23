@@ -39,6 +39,7 @@ import {
 } from '../constants/routes';
 import EventDetailScreen from '@/pages/event/EventDetailScreen';
 import { boothRoutes } from '@/pages/booth/routes';
+import BoothNoticeFormScreen from '@/pages/booth/BoothNoticeFormScreen';
 import MapScreen from '@/pages/map/MapScreen';
 import { manageRoutes } from '@/pages/manage/routes';
 
@@ -112,9 +113,14 @@ export const router = createBrowserRouter([
       { path: MAP_ROUTE, element: <MapScreen /> },
 
       {
-        path: EMC_INTRODUCTION_ROUTE,
-        element: <EmcIntroductionScreen />,
+        path: BOOTH_ROUTES.REGISTER(':boothId'),
+        element: <BoothNoticeFormScreen mode="register" />,
       },
+      {
+        path: BOOTH_ROUTES.EDIT(':boothId', ':noticeId'),
+        element: <BoothNoticeFormScreen mode="edit" />,
+      },
+      { path: EMC_INTRODUCTION_ROUTE, element: <EmcIntroductionScreen /> },
 
       ...boothRoutes.withoutFooter,
       ...manageRoutes.withoutFooter,
