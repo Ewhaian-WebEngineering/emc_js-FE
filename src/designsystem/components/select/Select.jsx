@@ -123,8 +123,14 @@ export default function Select({
                 disabled={option.disabled}
                 onClick={() => handleSelect(option)}
                 showActions={showActions && !option.hideActions}
-                onDelete={() => onDelete?.(option)}
-                onEdit={() => onEdit?.(option)}
+                onDelete={() => {
+                  setIsOpen(false);
+                  onDelete?.(option);
+                }}
+                onEdit={() => {
+                  setIsOpen(false);
+                  onEdit?.(option);
+                }}
               />
             ))}
           </SelectScrollArea>

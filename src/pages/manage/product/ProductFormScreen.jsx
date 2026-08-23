@@ -41,12 +41,13 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     handleAddGroup,
     handleDeleteGroup,
     handleEditGroup,
+    isEditMode,
     isGroupSheetOpen,
     handleCloseGroupSheet,
     handleCheckBeforeClose,
     newGroup,
     updateNewGroupField,
-    isNewGroupValid,
+    isSubmitDisabled,
     handleConfirmAddGroup,
   } = useProductGroups({
     groupId: formValues.groupId,
@@ -169,7 +170,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
         isOpen={isGroupSheetOpen}
         onClose={handleCloseGroupSheet}
         onBeforeClose={handleCheckBeforeClose}
-        title="제품 그룹 추가"
+        title={isEditMode ? '제품 그룹 수정' : '제품 그룹 추가'}
       >
         <ProductAddSheetBody>
           <TextField
@@ -195,9 +196,9 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
             variant="primary"
             size="lg"
             onClick={handleConfirmAddGroup}
-            disabled={!isNewGroupValid}
+            disabled={isSubmitDisabled}
           >
-            추가하기
+            {isEditMode ? '수정하기' : '추가하기'}
           </BoxButton>
         </ProductAddSheetBottom>
       </BottomSheet>

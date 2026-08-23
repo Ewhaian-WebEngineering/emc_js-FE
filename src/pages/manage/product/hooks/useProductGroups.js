@@ -8,8 +8,12 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
   const { showModal } = useModal();
 
   const [isGroupSheetOpen, setIsGroupSheetOpen] = useState(false);
+  const [editingGroupId, setEditingGroupId] = useState(null);
   const [newGroup, setNewGroup] = useState(INITIAL_NEW_GROUP);
+  const [originalGroup, setOriginalGroup] = useState(INITIAL_NEW_GROUP);
   const [groups, setGroups] = useState(GROUP_OPTIONS);
+
+  const isEditMode = editingGroupId !== null;
 
   const selectedGroupOption = groups.find((option) => option.value === groupId);
 
@@ -22,13 +26,35 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
   };
 
   const handleAddGroup = () => {
+    setEditingGroupId(null);
+    setNewGroup(INITIAL_NEW_GROUP);
+    setIsGroupSheetOpen(true);
+  };
+
+  const handleEditGroup = (option) => {
+    const target = {
+      name: option.label,
+      description: option.description ?? '',
+    };
+
+    setEditingGroupId(option.value);
+    setNewGroup(target);
+    setOriginalGroup(target);
     setIsGroupSheetOpen(true);
   };
 
   const isNewGroupDirty =
     newGroup.name.trim() !== '' || newGroup.description.trim() !== '';
 
+  const isNewGroupChanged =
+    newGroup.name !== originalGroup.name ||
+    newGroup.description !== originalGroup.description;
+
   const isNewGroupValid = newGroup.name.trim() !== '';
+
+  const isSubmitDisabled = isEditMode
+    ? !isNewGroupValid || !isNewGroupChanged
+    : !isNewGroupValid;
 
   const handleCloseGroupSheet = () => {
     setNewGroup(INITIAL_NEW_GROUP);
@@ -36,7 +62,8 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
   };
 
   const handleCheckBeforeClose = async () => {
-    if (!isNewGroupDirty) return true;
+    const dirty = isEditMode ? isNewGroupChanged : isNewGroupDirty;
+    if (!dirty) return true;
 
     const { confirmed } = await showModal({
       variant: 'confirmation',
@@ -52,8 +79,25 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
   const handleConfirmAddGroup = () => {
     if (!isNewGroupValid) return;
 
-    const newOption = newGroup.name.trim();
-    setGroups((prev) => [...prev, newOption]);
+    if (isEditMode) {
+      setGroups((prev) =>
+        prev.map((group) =>
+          group.value === editingGroupId
+            ? {
+                ...group,
+                label: newGroup.name.trim(),
+                description: newGroup.description.trim(),
+              }
+            : group,
+        ),
+      );
+    } else {
+      const newOption = {
+        label: newGroup.name.trim(),
+        description: newGroup.description.trim(),
+      };
+      setGroups((prev) => [...prev, newOption]);
+    }
 
     handleCloseGroupSheet();
   };
@@ -78,24 +122,20 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
     }
   };
 
-  const handleEditGroup = () => {
-    // TODO: 그룹 수정 로직 추가
-    alert('그룹 수정');
-  };
-
   return {
     groupOptions: groups,
     selectedGroupOption,
     handleSelectGroup,
     handleAddGroup,
     handleDeleteGroup,
+    isEditMode,
     handleEditGroup,
     isGroupSheetOpen,
     handleCloseGroupSheet,
     handleCheckBeforeClose,
     newGroup,
     updateNewGroupField,
-    isNewGroupValid,
+    isSubmitDisabled,
     handleConfirmAddGroup,
   };
 }
