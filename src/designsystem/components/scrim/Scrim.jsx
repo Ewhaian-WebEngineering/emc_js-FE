@@ -15,6 +15,7 @@ export default function Scrim({
   onClick,
   visible = true,
   layer = 'bottomSheetScrim',
+  ...rest
 }) {
   const handleClick = (e) => {
     if (e.target === e.currentTarget) onClick?.();
@@ -25,6 +26,7 @@ export default function Scrim({
       onClick={handleClick}
       visible={visible}
       zIndex={Z_INDEX[layer]}
+      {...rest}
     >
       {children}
     </ScrimContainer>

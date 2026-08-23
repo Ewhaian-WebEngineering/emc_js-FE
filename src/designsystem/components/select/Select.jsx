@@ -56,6 +56,7 @@ export default function Select({
     if (!isOpen) return;
 
     const handleClickOutside = (event) => {
+      if (event.target.closest('[data-modal-root]')) return;
       if (
         containerRef.current &&
         !containerRef.current.contains(event.target)
@@ -123,10 +124,7 @@ export default function Select({
                 disabled={option.disabled}
                 onClick={() => handleSelect(option)}
                 showActions={showActions && !option.hideActions}
-                onDelete={() => {
-                  setIsOpen(false);
-                  onDelete?.(option);
-                }}
+                onDelete={() => onDelete?.(option)}
                 onEdit={() => {
                   setIsOpen(false);
                   onEdit?.(option);

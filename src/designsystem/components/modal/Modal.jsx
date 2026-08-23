@@ -57,7 +57,7 @@ export default function Modal({
   };
 
   return createPortal(
-    <Scrim onClick={handleDismiss} layer="modalScrim">
+    <Scrim onClick={handleDismiss} layer="modalScrim" data-modal-root>
       <ModalContainer>
         <ModalContent>
           <h2>{title}</h2>
