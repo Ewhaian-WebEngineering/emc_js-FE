@@ -8,6 +8,7 @@ import {
   ModalContainer,
   ModalContent,
 } from './style';
+import { createPortal } from 'react-dom';
 
 /**
  * 알림 또는 입력 폼을 보여주는 Modal 컴포넌트입니다.
@@ -55,8 +56,8 @@ export default function Modal({
     onDismiss();
   };
 
-  return (
-    <Scrim onClick={handleDismiss}>
+  return createPortal(
+    <Scrim onClick={handleDismiss} layer="modalScrim">
       <ModalContainer>
         <ModalContent>
           <h2>{title}</h2>
@@ -93,6 +94,7 @@ export default function Modal({
           )}
         </ModalButtonContainer>
       </ModalContainer>
-    </Scrim>
+    </Scrim>,
+    document.body,
   );
 }
