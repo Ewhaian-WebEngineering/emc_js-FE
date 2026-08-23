@@ -3,6 +3,7 @@ import { semantic } from '../../tokens/semantic';
 import { shadow } from '../../tokens/shadow';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
+import { Z_INDEX } from '@/constants/zIndex';
 
 export const BottomSheetDragHandleWrapper = styled.div`
   display: flex;
@@ -65,5 +66,5 @@ export const BottomSheetContainer = styled.div`
     0;
 
   overflow: hidden;
-  z-index: 100;
+  z-index: ${Z_INDEX.bottomSheet};
 `;

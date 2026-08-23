@@ -1,3 +1,4 @@
+import { Z_INDEX } from '@/constants/zIndex';
 import { ScrimContainer } from './style';
 
 /**
@@ -7,14 +8,24 @@ import { ScrimContainer } from './style';
  * @param {React.ReactNode} children - Scrim 위에 표시할 콘텐츠
  * @param {function} [onClick] - 배경 클릭 시 호출되는 함수
  * @param {boolean} [visible=true] - Scrim의 가시성
+ * @param {keyof typeof Z_INDEX} [layer='bottomSheetScrim'] - Scrim이 속한 레이어
  */
-export default function Scrim({ children, onClick, visible = true }) {
+export default function Scrim({
+  children,
+  onClick,
+  visible = true,
+  layer = 'bottomSheetScrim',
+}) {
   const handleClick = (e) => {
     if (e.target === e.currentTarget) onClick?.();
   };
 
   return (
-    <ScrimContainer onClick={handleClick} visible={visible}>
+    <ScrimContainer
+      onClick={handleClick}
+      visible={visible}
+      zIndex={Z_INDEX[layer]}
+    >
       {children}
     </ScrimContainer>
   );

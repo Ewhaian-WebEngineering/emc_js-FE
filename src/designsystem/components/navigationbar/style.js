@@ -3,13 +3,14 @@ import { semantic } from '../../tokens/semantic';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
 import { layout } from '../../tokens/layout';
+import { Z_INDEX } from '@/constants/zIndex';
 
 export const NavigationBarContainer = styled.nav`
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: ${Z_INDEX.navigationBar};
 
   display: flex;
 

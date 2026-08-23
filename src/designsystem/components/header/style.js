@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { semantic } from '../../tokens/semantic';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '@/designsystem/tokens/typography';
+import { Z_INDEX } from '@/constants/zIndex';
 
 export const HeaderContainer = styled.header`
   display: flex;
@@ -21,7 +22,7 @@ export const HeaderContainer = styled.header`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: ${Z_INDEX.header};
 `;
 
 export const HeaderLeft = styled.div`

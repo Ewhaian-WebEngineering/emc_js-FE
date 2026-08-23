@@ -4,6 +4,7 @@ import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
 import { css } from '@emotion/react';
 import { shadow } from '@/designsystem/tokens/shadow';
+import { Z_INDEX } from '@/constants/zIndex';
 
 const BORDER_BY_STATE = {
   default: semantic.borderNormalNormal,
@@ -109,7 +110,7 @@ export const CalendarPopOver = styled.div`
   position: absolute;
   top: calc(100% + ${measurement.spacing8});
   left: 0;
-  z-index: 100;
+  z-index: ${Z_INDEX.datepicker};
   width: 100%;
 `;
 

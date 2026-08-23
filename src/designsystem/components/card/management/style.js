@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { typography } from '@/designsystem/tokens/typography';
+import { Z_INDEX } from '@/constants/zIndex';
 
 export const StatRowContainer = styled.div`
   display: flex;
@@ -26,7 +27,7 @@ export const StatRowTooltipPosition = styled(motion.div)`
   position: absolute;
   top: 100%;
   left: -${measurement.spacing32};
-  z-index: 10;
+  z-index: ${Z_INDEX.card};
   margin-top: ${measurement.spacing4};
 
   width: max-content;

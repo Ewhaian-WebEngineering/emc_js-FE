@@ -3,13 +3,14 @@ import { semantic } from '../../tokens/semantic';
 import { shadow } from '../../tokens/shadow';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
+import { Z_INDEX } from '@/constants/zIndex';
 
 export const ModalContainer = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  z-index: 1001;
+  z-index: ${Z_INDEX.modal};
 
   display: flex;
   flex-direction: column;
