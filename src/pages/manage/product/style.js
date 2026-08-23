@@ -35,3 +35,22 @@ export const ProductFormOptions = styled.div`
   gap: ${measurement.spacing8};
   white-space: nowrap;
 `;
+
+export const ProductAddSheetBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing8};
+  padding: ${measurement.spacing24} ${measurement.spacing16}
+    ${measurement.spacing40} ${measurement.spacing16};
+`;
+
+export const ProductAddSheetBottom = styled.div`
+  display: flex;
+  gap: ${measurement.spacing8};
+  padding: ${measurement.spacing12} ${measurement.spacing16}
+    ${measurement.spacing40} ${measurement.spacing16};
+
+  & > button {
+    flex: 1;
+  }
+`;

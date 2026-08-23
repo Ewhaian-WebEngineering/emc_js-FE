@@ -2,6 +2,8 @@ import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import { useProductForm } from './hooks/useProductForm';
 import {
+  ProductAddSheetBody,
+  ProductAddSheetBottom,
   ProductFormContainer,
   ProductFormOptions,
   ProductFormSection,
@@ -17,6 +19,7 @@ import Select from '@/designsystem/components/select/Select';
 import { useProductGroups } from './hooks/useProductGroups';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
+import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
@@ -38,6 +41,13 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     handleAddGroup,
     handleDeleteGroup,
     handleEditGroup,
+    isGroupSheetOpen,
+    handleCloseGroupSheet,
+    handleCheckBeforeClose,
+    newGroup,
+    updateNewGroupField,
+    isNewGroupValid,
+    handleConfirmAddGroup,
   } = useProductGroups({
     groupId: formValues.groupId,
     onGroupIdChange: (value) => updateField('groupId', value),
@@ -153,6 +163,44 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           </BoxButton>
         </ProductFormSection>
       </ProductFormContainer>
+
+      <BottomSheet
+        variant="header"
+        isOpen={isGroupSheetOpen}
+        onClose={handleCloseGroupSheet}
+        onBeforeClose={handleCheckBeforeClose}
+        title="제품 그룹 추가"
+      >
+        <ProductAddSheetBody>
+          <TextField
+            title="그룹 이름"
+            required
+            placeholder="예) 구움과자류"
+            maxLength={20}
+            value={newGroup.name}
+            onChange={(value) => updateNewGroupField('name', value)}
+          />
+
+          <TextArea
+            title="그룹 설명"
+            placeholder="예) 버터와 밀가루를 기반으로 구워낸 쿠키, 마들렌, 스콘 등 다양한 구움과자를 모아둔 카테고리입니다."
+            maxLength={50}
+            value={newGroup.description}
+            onChange={(value) => updateNewGroupField('description', value)}
+          />
+        </ProductAddSheetBody>
+
+        <ProductAddSheetBottom>
+          <BoxButton
+            variant="primary"
+            size="lg"
+            onClick={handleConfirmAddGroup}
+            disabled={!isNewGroupValid}
+          >
+            추가하기
+          </BoxButton>
+        </ProductAddSheetBottom>
+      </BottomSheet>
     </>
   );
 }
