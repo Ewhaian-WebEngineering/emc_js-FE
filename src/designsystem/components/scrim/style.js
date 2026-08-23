@@ -12,5 +12,5 @@ export const ScrimContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99;
+  z-index: ${({ zIndex }) => zIndex};
 `;

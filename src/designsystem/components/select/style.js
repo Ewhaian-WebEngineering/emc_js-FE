@@ -4,6 +4,7 @@ import { semantic } from '../../tokens/semantic';
 import { shadow } from '../../tokens/shadow';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
+import { Z_INDEX } from '@/constants/zIndex';
 
 export const SelectItemWrapper = styled.li`
   display: flex;
@@ -138,7 +139,7 @@ export const SelectList = styled.ul`
   background-color: ${semantic.fillNormalWhite};
   box-shadow: ${shadow.shadowEmphasize};
 
-  z-index: 9999;
+  z-index: ${Z_INDEX.select};
 `;
 
 export const SelectScrollArea = styled.div`

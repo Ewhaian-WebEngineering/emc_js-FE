@@ -2,6 +2,8 @@ import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import { useProductForm } from './hooks/useProductForm';
 import {
+  ProductAddSheetBody,
+  ProductAddSheetBottom,
   ProductFormContainer,
   ProductFormOptions,
   ProductFormSection,
@@ -17,6 +19,7 @@ import Select from '@/designsystem/components/select/Select';
 import { useProductGroups } from './hooks/useProductGroups';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
+import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
@@ -26,7 +29,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     formValues,
     updateField,
     visibleErrors,
-    isButtonDisabled,
+    isButtonDisabled: isProductButtonDisabled,
     handleSubmit,
     handleUploadError,
   } = useProductForm({ product, submitLabel, onSubmit });
@@ -38,6 +41,15 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     handleAddGroup,
     handleDeleteGroup,
     handleEditGroup,
+    isEditMode,
+    isGroupSheetOpen,
+    handleCloseGroupSheet,
+    handleCheckBeforeClose,
+    newGroup,
+    updateNewGroupField,
+    isButtonDisabled: isGroupButtonDisabled,
+    groupNameError,
+    handleConfirmAddGroup,
   } = useProductGroups({
     groupId: formValues.groupId,
     onGroupIdChange: (value) => updateField('groupId', value),
@@ -62,7 +74,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
         onBack={handleBack}
         title="제품"
         right={
-          <TextButton onClick={handleSubmit} disabled={isButtonDisabled}>
+          <TextButton onClick={handleSubmit} disabled={isProductButtonDisabled}>
             {submitLabel === 'create' ? '등록' : '저장'}
           </TextButton>
         }
@@ -153,6 +165,46 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           </BoxButton>
         </ProductFormSection>
       </ProductFormContainer>
+
+      <BottomSheet
+        variant="header"
+        isOpen={isGroupSheetOpen}
+        onClose={handleCloseGroupSheet}
+        onBeforeClose={handleCheckBeforeClose}
+        title={isEditMode ? '제품 그룹 수정' : '제품 그룹 추가'}
+      >
+        <ProductAddSheetBody>
+          <TextField
+            title="그룹 이름"
+            required
+            placeholder="예) 구움과자류"
+            maxLength={20}
+            value={newGroup.name}
+            onChange={(value) => updateNewGroupField('name', value)}
+            hasError={!!groupNameError}
+            helperText={groupNameError}
+          />
+
+          <TextArea
+            title="그룹 설명"
+            placeholder="예) 버터와 밀가루를 기반으로 구워낸 쿠키, 마들렌, 스콘 등 다양한 구움과자를 모아둔 카테고리입니다."
+            maxLength={50}
+            value={newGroup.description}
+            onChange={(value) => updateNewGroupField('description', value)}
+          />
+        </ProductAddSheetBody>
+
+        <ProductAddSheetBottom>
+          <BoxButton
+            variant="primary"
+            size="lg"
+            onClick={handleConfirmAddGroup}
+            disabled={isGroupButtonDisabled}
+          >
+            {isEditMode ? '수정하기' : '추가하기'}
+          </BoxButton>
+        </ProductAddSheetBottom>
+      </BottomSheet>
     </>
   );
 }

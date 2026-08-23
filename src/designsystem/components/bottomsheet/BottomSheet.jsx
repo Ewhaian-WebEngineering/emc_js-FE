@@ -37,6 +37,7 @@ export default function BottomSheet({
   variant = 'normal',
   isOpen,
   onClose,
+  onBeforeClose,
   onFull,
   showScrim = 'dim',
   title,
@@ -49,10 +50,16 @@ export default function BottomSheet({
   const [internalOpen, setInternalOpen] = useState(isOpen);
 
   useEffect(() => {
-    if (isOpen) setInternalOpen(true);
+    setInternalOpen(isOpen);
   }, [isOpen]);
 
-  const requestClose = () => setInternalOpen(false);
+  const requestClose = async () => {
+    if (onBeforeClose) {
+      const shouldClose = await onBeforeClose();
+      if (shouldClose === false) return;
+    }
+    setInternalOpen(false);
+  };
 
   const allowedSnaps = snapPoints ?? DEFAULT_SNAPS[variant];
   const hasSnapPoints = allowedSnaps.length > 0;

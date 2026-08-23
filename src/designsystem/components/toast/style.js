@@ -3,6 +3,7 @@ import { common } from '../../tokens/colors';
 import { semantic } from '../../tokens/semantic';
 import { measurement } from '../../tokens/measurement';
 import { typography } from '../../tokens/typography';
+import { Z_INDEX } from '@/constants/zIndex';
 
 export const ToastPortal = styled.div`
   position: fixed;
@@ -15,7 +16,7 @@ export const ToastPortal = styled.div`
   align-items: center;
   gap: ${measurement.spacing8};
 
-  z-index: 9999;
+  z-index: ${Z_INDEX.toast};
   pointer-events: none;
 `;
 

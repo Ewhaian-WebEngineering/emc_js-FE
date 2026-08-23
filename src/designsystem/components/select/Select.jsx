@@ -47,11 +47,16 @@ export default function Select({
     ? [prefix, selectedValue.label].filter(Boolean).join(' ')
     : placeholder;
 
+  useEffect(() => {
+    setSelectedValue(value);
+  }, [value]);
+
   // 외부 클릭 감지
   useEffect(() => {
     if (!isOpen) return;
 
     const handleClickOutside = (event) => {
+      if (event.target.closest('[data-modal-root]')) return;
       if (
         containerRef.current &&
         !containerRef.current.contains(event.target)
@@ -118,9 +123,12 @@ export default function Select({
                 selected={selectedValue?.value === option.value}
                 disabled={option.disabled}
                 onClick={() => handleSelect(option)}
-                showActions={showActions}
+                showActions={showActions && !option.hideActions}
                 onDelete={() => onDelete?.(option)}
-                onEdit={() => onEdit?.(option)}
+                onEdit={() => {
+                  setIsOpen(false);
+                  onEdit?.(option);
+                }}
               />
             ))}
           </SelectScrollArea>
