@@ -12,6 +12,7 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
   const [newGroup, setNewGroup] = useState(INITIAL_NEW_GROUP);
   const [originalGroup, setOriginalGroup] = useState(INITIAL_NEW_GROUP);
   const [groups, setGroups] = useState(GROUP_OPTIONS);
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   const isEditMode = editingGroupId !== null;
 
@@ -52,12 +53,21 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
 
   const isNewGroupValid = newGroup.name.trim() !== '';
 
+  const isButtonDisabled = isEditMode ? !isNewGroupChanged : !isNewGroupValid;
+
   const isSubmitDisabled = isEditMode
     ? !isNewGroupValid || !isNewGroupChanged
     : !isNewGroupValid;
 
+  const groupNameError =
+    hasAttemptedSubmit && newGroup.name.trim() === ''
+      ? '내용을 입력해주세요.'
+      : undefined;
+
   const handleCloseGroupSheet = () => {
     setNewGroup(INITIAL_NEW_GROUP);
+    setOriginalGroup(INITIAL_NEW_GROUP);
+    setHasAttemptedSubmit(false);
     setIsGroupSheetOpen(false);
   };
 
@@ -77,7 +87,8 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
   };
 
   const handleConfirmAddGroup = () => {
-    if (!isNewGroupValid) return;
+    setHasAttemptedSubmit(true);
+    if (isSubmitDisabled) return;
 
     if (isEditMode) {
       setGroups((prev) =>
@@ -135,7 +146,8 @@ export function useProductGroups({ groupId, onGroupIdChange }) {
     handleCheckBeforeClose,
     newGroup,
     updateNewGroupField,
-    isSubmitDisabled,
+    isButtonDisabled,
+    groupNameError,
     handleConfirmAddGroup,
   };
 }

@@ -29,7 +29,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     formValues,
     updateField,
     visibleErrors,
-    isButtonDisabled,
+    isButtonDisabled: isProductButtonDisabled,
     handleSubmit,
     handleUploadError,
   } = useProductForm({ product, submitLabel, onSubmit });
@@ -47,7 +47,8 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     handleCheckBeforeClose,
     newGroup,
     updateNewGroupField,
-    isSubmitDisabled,
+    isButtonDisabled: isGroupButtonDisabled,
+    groupNameError,
     handleConfirmAddGroup,
   } = useProductGroups({
     groupId: formValues.groupId,
@@ -73,7 +74,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
         onBack={handleBack}
         title="제품"
         right={
-          <TextButton onClick={handleSubmit} disabled={isButtonDisabled}>
+          <TextButton onClick={handleSubmit} disabled={isProductButtonDisabled}>
             {submitLabel === 'create' ? '등록' : '저장'}
           </TextButton>
         }
@@ -180,6 +181,8 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
             maxLength={20}
             value={newGroup.name}
             onChange={(value) => updateNewGroupField('name', value)}
+            hasError={!!groupNameError}
+            helperText={groupNameError}
           />
 
           <TextArea
@@ -196,7 +199,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
             variant="primary"
             size="lg"
             onClick={handleConfirmAddGroup}
-            disabled={isSubmitDisabled}
+            disabled={isGroupButtonDisabled}
           >
             {isEditMode ? '수정하기' : '추가하기'}
           </BoxButton>
