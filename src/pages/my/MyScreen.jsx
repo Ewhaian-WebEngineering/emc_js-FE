@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 import Header from '../../designsystem/components/header/FillRightHeader';
-import LinkButton from '../../designsystem/components/button/linkbutton/LinkButton';
 import MyUserRow from './components/MyUserRow';
 import MyDefaultContent from './components/MyDefaultContent';
 import MySellerContent from './components/MySellerContent';
 import MyAdminContent from './components/MyAdminContent';
-import { MyContainer, MyContentContainer, MyFooter } from './style.js';
+import {
+  AdminCertificationWrapper,
+  MyContainer,
+  MyContentContainer,
+} from './style.js';
+import AdminCertification from '@/components/footer/AdminCertification';
+import LoginBottomSheet from './components/LoginBottomSheet';
 
 const MOCK_DATA = {
   userName: '김이화',
@@ -27,6 +32,7 @@ export default function MyScreen({
 }) {
   const [isLoggedIn, setIsLoggedIn] = useState(initialIsLoggedIn);
   const [data, setData] = useState(MOCK_DATA);
+  const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
   useEffect(() => {
     // TODO: isLoggedIn, userRole에 따른 유저/부스/행사 정보 조회
@@ -38,7 +44,11 @@ export default function MyScreen({
   };
 
   const handleLoginClick = () => {
-    // TODO: 카카오로그인 바텀시트
+    setIsLoginSheetOpen(true);
+  };
+
+  const handleKakaoLogin = () => {
+    setIsLoginSheetOpen(false);
   };
 
   const ContentComponent = isLoggedIn
@@ -61,13 +71,16 @@ export default function MyScreen({
       </MyContentContainer>
 
       {showFooter && (
-        <MyFooter>
-          <p>부스 또는 EMC 운영진이신가요?</p>
-          <LinkButton href="https://example.com" size="sm" variant="secondary">
-            셀러/관리자 인증
-          </LinkButton>
-        </MyFooter>
+        <AdminCertificationWrapper>
+          <AdminCertification />
+        </AdminCertificationWrapper>
       )}
+
+      <LoginBottomSheet
+        isOpen={isLoginSheetOpen}
+        onClose={() => setIsLoginSheetOpen(false)}
+        onKakaoLogin={handleKakaoLogin}
+      />
     </MyContainer>
   );
 }

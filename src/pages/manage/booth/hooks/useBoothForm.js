@@ -1,4 +1,6 @@
+import { BOOTH_ROUTES } from '@/constants/routes';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const REQUIRED_FIELDS = [
   { key: 'tags', check: (form) => form.tags.length > 0, label: '카테고리' },
@@ -31,7 +33,9 @@ const REQUIRED_FIELDS = [
 
 const REQUIRED_MESSAGE = '내용을 입력해주세요.';
 
-export function useBoothForm(initialData) {
+export function useBoothForm(initialData, boothId) {
+  const navigate = useNavigate();
+
   const [boothForm, setBoothForm] = useState(() => ({
     representativeImage: initialData.representativeImage,
     boothName: initialData.boothName,
@@ -61,8 +65,15 @@ export function useBoothForm(initialData) {
   };
 
   const handleEditNotice = (noticeId) => {
-    // TODO: 공지사항 수정 로직 구현
-    alert(`공지사항 ${noticeId} 수정`);
+    const targetNotice = boothForm.notice.find(
+      (notice) => notice.id === noticeId,
+    );
+
+    if (!targetNotice) return;
+
+    navigate(BOOTH_ROUTES.EDIT(boothId, noticeId), {
+      state: { noticeData: targetNotice },
+    });
   };
 
   const handleDeleteNotice = (noticeId) => {

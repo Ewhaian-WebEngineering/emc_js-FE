@@ -1,3 +1,4 @@
+import { measurement } from '@/designsystem/tokens/measurement';
 import styled from '@emotion/styled';
 
 export const ScrapScreenContainer = styled.div`
@@ -7,14 +8,14 @@ export const ScrapScreenContainer = styled.div`
 `;
 
 export const ScrapContentWrapper = styled.div`
-  flex: 1;
-  min-height: 0;
   display: flex;
   flex-direction: column;
+  padding-top: ${({ boothCount }) =>
+    boothCount === 0 ? measurement.spacing128 : '0'};
 `;
 
 export const EmptyStateButtonTextWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: ${measurement.spacing4};
 `;

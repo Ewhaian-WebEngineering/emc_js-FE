@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import useModal from '@/hooks/modal/useModal';
@@ -11,6 +11,9 @@ import { createBoothNotice, updateBoothNotice } from './mock/notice';
 
 export default function BoothNoticeFormScreen({ mode }) {
   const { boothId, noticeId } = useParams();
+  const location = useLocation();
+  const noticeData = location.state?.noticeData;
+
   const parsedBoothId = boothId ? Number(boothId) : null;
   const parsedNoticeId = noticeId ? Number(noticeId) : null;
   const navigate = useNavigate();
@@ -19,9 +22,16 @@ export default function BoothNoticeFormScreen({ mode }) {
 
   const isEdit = mode === 'edit';
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [initial, setInitial] = useState({ title: '', content: '' });
+  const [title, setTitle] = useState(
+    isEdit && noticeData ? noticeData.title : '',
+  );
+  const [content, setContent] = useState(
+    isEdit && noticeData ? noticeData.content : '',
+  );
+  const [initial, setInitial] = useState({
+    title: isEdit && noticeData ? noticeData.title : '',
+    content: isEdit && noticeData ? noticeData.content : '',
+  });
   const [errors, setErrors] = useState({ title: false, content: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
 

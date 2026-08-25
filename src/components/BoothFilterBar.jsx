@@ -6,17 +6,23 @@ import { CATEGORY_TABS } from '@/constants/categoryTabs';
 
 export default function BoothFilterBar({
   count,
+  categoryValue,
   onCategoryChange,
   sortValue,
   onSortChange,
   filterValue,
   onFilterChange,
 }) {
+  const activeTabIndex = CATEGORY_TABS.findIndex(
+    (tab) => tab.value === categoryValue,
+  );
+
   return (
     <>
       <Tab
         variant="categoryFilter"
         tabs={CATEGORY_TABS}
+        activeTab={activeTabIndex !== -1 ? activeTabIndex : 0}
         onChange={(tab) => onCategoryChange(tab.value)}
       />
       <ToolBar
@@ -46,6 +52,7 @@ function ToolBar({
           options={SORT_OPTIONS}
           value={sortValue}
           onChange={onSortChange}
+          align="right"
         />
         <Select
           size="sm"
@@ -53,6 +60,7 @@ function ToolBar({
           value={filterValue}
           onChange={onFilterChange}
           prefix="운영시간"
+          align="right"
         />
       </ToolBarActions>
     </ToolBarWrapper>

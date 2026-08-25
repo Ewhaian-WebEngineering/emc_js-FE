@@ -5,6 +5,8 @@ import {
   RankingPage,
   RankingScroll,
 } from '../style';
+import { useNavigate } from 'react-router-dom';
+import { BOOTH_ROUTES } from '@/constants/routes';
 
 const BOOTH_PER_PAGE = 5;
 
@@ -26,7 +28,7 @@ export default function PopularBoothRanking({ list }) {
         <RankingPage key={pageIndex}>
           {page.map((booth, boothIndex) => (
             <RankingItem
-              key={boothIndex}
+              key={booth.id}
               rank={pageIndex * BOOTH_PER_PAGE + boothIndex + 1}
               booth={booth}
             />
@@ -38,6 +40,12 @@ export default function PopularBoothRanking({ list }) {
 }
 
 function RankingItem({ rank, booth }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(BOOTH_ROUTES.DETAIL(booth.id));
+  };
+
   return (
     <RankingItemContainer>
       <RankingNumber rank={rank}>{rank}</RankingNumber>
@@ -47,7 +55,7 @@ function RankingItem({ rank, booth }) {
         badges={booth.badges}
         thumbnails={booth.thumbnails}
         marks={booth.marks}
-        onClick={booth.onClick}
+        onClick={handleClick}
       />
     </RankingItemContainer>
   );

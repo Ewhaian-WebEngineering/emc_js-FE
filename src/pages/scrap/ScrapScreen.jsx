@@ -1,3 +1,4 @@
+import EmptyStateIcon from '@/assets/svg/scrap/ic_empty_scrap.svg?react';
 import ArrowRightIcon from '@/assets/svg/16px/ic_arrow_right.svg?react';
 import BoothFilterBar from '@/components/BoothFilterBar';
 import BoothList from '@/components/BoothList';
@@ -28,10 +29,10 @@ export default function ScrapScreen() {
   return (
     <ScrapScreenContainer>
       <FillRightHeader title="스크랩" border />
-      <ScrapContentWrapper>
+      <ScrapContentWrapper boothCount={booths.length}>
         {booths.length === 0 ? (
           <EmptyState
-            // TODO: 아이콘 추가
+            Icon={EmptyStateIcon}
             title="아직 스크랩한 부스가 없어요!"
             description={
               <>

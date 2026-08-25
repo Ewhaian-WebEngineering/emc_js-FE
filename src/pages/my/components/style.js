@@ -56,3 +56,46 @@ export const MyLogout = styled.div`
   align-items: center;
   gap: ${measurement.spacing2};
 `;
+
+export const LoginBottomSheetContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing4};
+  padding: ${measurement.spacing24} ${measurement.spacing16}
+    ${measurement.spacing12} ${measurement.spacing16};
+
+  h2 {
+    ${typography.title3Semibold};
+    color: ${semantic.textNormalStrong};
+  }
+
+  p {
+    ${typography.body1Regular};
+    color: ${semantic.textNormalNormal};
+  }
+`;
+
+export const KakaoLoginButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ${measurement.spacing12} ${measurement.spacing16}
+    ${measurement.spacing96} ${measurement.spacing16};
+`;
+
+export const KakaoLoginButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${measurement.spacing4};
+  padding: ${measurement.spacing14} ${measurement.spacing16};
+
+  width: 100%;
+  background-color: #fee500;
+  border-radius: ${measurement.borderRadiusXl};
+  color: #191919;
+  ${typography.body1Semibold};
+
+  border: none;
+  cursor: pointer;
+`;

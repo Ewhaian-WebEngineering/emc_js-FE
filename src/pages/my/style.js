@@ -32,3 +32,9 @@ export const MyFooter = styled.div`
     ${typography.body2Regular};
   }
 `;
+
+export const AdminCertificationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-bottom: ${measurement.spacing112};
+`;

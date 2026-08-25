@@ -13,20 +13,16 @@ import {
   IntroDescription,
   SponsorList,
 } from './style';
+import { useGoBack } from '@/hooks/useGoBack';
+import { SPONSOR_ROUTES } from '@/constants/routes';
 
 export default function SponsorScreen() {
   const navigate = useNavigate();
 
-  const handleBack = () => {
-    if (window.history.state && window.history.state.idx > 0) {
-      navigate(-1);
-    } else {
-      navigate('/');
-    }
-  };
+  const handleBack = useGoBack();
 
-  const handleSponsorClick = () => {
-    // TODO: 협찬사 상세 페이지 이동 로직 추가
+  const handleSponsorClick = (sponsor) => {
+    navigate(SPONSOR_ROUTES.DETAIL(sponsor.id));
   };
 
   return (
@@ -51,13 +47,13 @@ export default function SponsorScreen() {
         </IntroSection>
 
         <SponsorList>
-          {SPONSORS.map((sponsor, index) => (
+          {SPONSORS.map((sponsor) => (
             <SponsorCard
-              key={index}
+              key={sponsor.id}
               sponsorName={sponsor.sponsorName}
               sponsorDescription={sponsor.sponsorDescription}
               thumbnails={sponsor.thumbnails}
-              onClick={handleSponsorClick}
+              onClick={() => handleSponsorClick(sponsor)}
             />
           ))}
         </SponsorList>

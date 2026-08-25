@@ -19,10 +19,15 @@ import {
 import { useToggleMap } from '@/pages/manage/booth/hooks/useToggleMap';
 import SponsorItemList from './item/components/SponsorItemList';
 import { useSponsorItemSections } from './hooks/useSponsorItemSections';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ADMIN_ROUTES } from '@/constants/routes';
 
 export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
   const { showModal } = useModal();
   const goBack = useGoBack();
+  const navigate = useNavigate();
+
+  const { sponsorId } = useParams();
 
   const [expanded, toggleExpanded] = useToggleMap(['itemList']);
 
@@ -42,7 +47,7 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
     handleDeleteItem,
     itemsError,
     validateItems,
-  } = useSponsorItemSections(sponsor);
+  } = useSponsorItemSections(sponsor, sponsorId);
 
   const handleBack = async () => {
     await showModal({
@@ -175,7 +180,7 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
             </ActionButtonContent>
           }
           onClick={() => {
-            // TODO: 협찬품 등록 페이지 이동
+            navigate(ADMIN_ROUTES.SPONSOR_ITEM_CREATE(sponsorId));
           }}
         />
         <SponsorItemList

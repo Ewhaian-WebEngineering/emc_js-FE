@@ -1,10 +1,10 @@
 import HomeHeader from '@/designsystem/components/header/HomeHeader';
-import Placeholder from '@/assets/img/img_checker.png';
 import ArrowRightIconSmall from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import ArrowRightIcon from '@/assets/svg/24px/ic_arrow_right.svg?react';
+import RepresentativeBannerImg from '@/assets/img/home/img_home_representative_banner.png';
 import KakaoOpenChannelLogo from '@/assets/img/home/img_contact_us.png';
 import {
-  AdminCertificationSection,
+  AdminCertificationWrapper,
   ArrowRightIconButton,
   ContactUsSection,
   HomeIconButtonSection,
@@ -34,9 +34,15 @@ import EventTabs from './components/EventList';
 import { EVENT_LIST } from '@/pages/home/constants/event';
 import { FAQ_LIST } from '@/pages/home/constants/faq';
 import FaqList from './components/FaqList';
-import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { useNavigate } from 'react-router-dom';
+import {
+  EVENT_ROUTES,
+  NOTICE_ROUTE,
+  SEARCH_ROUTES,
+  SPONSOR_ROUTES,
+} from '@/constants/routes';
+import AdminCertification from '@/components/footer/AdminCertification';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
@@ -45,12 +51,11 @@ export default function HomeScreen() {
     <>
       <HomeHeader
         onSearchClick={() => {
-          navigate('/search');
+          navigate(SEARCH_ROUTES.SEARCH);
         }}
       />
 
-      {/* TODO: 종합손물세트 소개 이미지 추가 */}
-      <IntroImage src={Placeholder} alt="종합손물세트 소개" />
+      <IntroImage src={RepresentativeBannerImg} alt="종합손물세트 소개" />
 
       <HomeNoticeContainer>
         <HomeNoticeTitleWrapper>
@@ -61,8 +66,7 @@ export default function HomeScreen() {
         </HomeNoticeTitleWrapper>
         <ArrowRightIconButton
           onClick={() => {
-            // TODO: 안내사항 페이지 이동
-            alert('notice button clicked');
+            navigate(NOTICE_ROUTE);
           }}
         >
           <ArrowRightIcon color={semantic.iconNormalStrong} />
@@ -76,8 +80,7 @@ export default function HomeScreen() {
             label={label}
             icon={icon}
             onClick={() => {
-              // TODO: 페이지 이동 추가
-              alert(`${label} button clicked`);
+              navigate(ICON_LIST.find((item) => item.key === key)?.route);
             }}
           />
         ))}
@@ -100,12 +103,13 @@ export default function HomeScreen() {
         <SectionHeader>
           <SectionTitleWrapper>
             <SectionTitle>협찬사</SectionTitle>
-            <SectionSubTitle>협찬사 관련 멘트 영역입니다.</SectionSubTitle>
+            <SectionSubTitle>
+              제12회 종합손물세트와 함께하는 협찬사가 궁금하다면?
+            </SectionSubTitle>
           </SectionTitleWrapper>
           <ViewAllButton
             onClick={() => {
-              // TODO: 협찬사 전체보기 페이지 이동
-              alert('view all sponsor button clicked');
+              navigate(SPONSOR_ROUTES.LIST);
             }}
           />
         </SectionHeader>
@@ -118,12 +122,13 @@ export default function HomeScreen() {
         <SectionHeader>
           <SectionTitleWrapper>
             <SectionTitle>EVENT</SectionTitle>
-            <SectionSubTitle>이벤트 관련 멘트 영역입니다.</SectionSubTitle>
+            <SectionSubTitle>
+              이벤트 참여하고 제12회 종합손물세트 200% 즐기기
+            </SectionSubTitle>
           </SectionTitleWrapper>
           <ViewAllButton
             onClick={() => {
-              // TODO: 이벤트 전체보기 페이지 이동
-              alert('view all event button clicked');
+              navigate(EVENT_ROUTES.LIST);
             }}
           />
         </SectionHeader>
@@ -142,8 +147,7 @@ export default function HomeScreen() {
       <ContactUsSection>
         <KakaoOpenChannelButton
           onClick={() => {
-            // TODO: 카카오톡 오픈채널 페이지 이동
-            alert('kakao open channel button clicked');
+            window.open('http://pf.kakao.com/_KxjZhX/chat', '_blank');
           }}
         >
           <KakaoOpenChannelContent>
@@ -156,18 +160,11 @@ export default function HomeScreen() {
           </KakaoOpenChannelContent>
           <ArrowRightIconSmall />
         </KakaoOpenChannelButton>
-        <AdminCertificationSection>
-          <p>부스 또는 EMC 운영진이신가요?</p>
-          <LinkButton
-            variant="secondary"
-            size="sm"
-            // TODO: 셀러/관리자 인증 페이지 이동
-            onClick={() => alert('admin certification button clicked')}
-          >
-            셀러/관리자 인증
-          </LinkButton>
-        </AdminCertificationSection>
       </ContactUsSection>
+
+      <AdminCertificationWrapper>
+        <AdminCertification />
+      </AdminCertificationWrapper>
     </>
   );
 }

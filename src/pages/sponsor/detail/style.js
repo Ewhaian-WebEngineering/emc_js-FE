@@ -79,16 +79,28 @@ export const SectionTitle = styled.h2`
 `;
 
 export const IntroductionContent = styled.div`
-  ${typography.caption1Regular};
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 720px;
-  color: ${semantic.textNormalAssistive};
-  background: ${semantic.fillNormalNormal};
-  text-align: center;
-  white-space: pre-line;
+  background-color: ${semantic.fillNormalNormal};
+  padding-block: ${measurement.spacing32};
+  padding-inline: ${measurement.spacing16};
+
+  ${typography.body2Regular}
+  color: ${semantic.textNormalNormal};
+
+  p {
+    margin-bottom: ${measurement.spacing12};
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  b,
+  strong {
+    font-weight: 700;
+  }
 `;
 
 export const ProductSection = styled.section`
@@ -151,4 +163,11 @@ export const EventTitle = styled.h2`
 export const EventButtonContent = styled.div`
   display: flex;
   gap: ${measurement.spacing4};
+`;
+
+export const TabWrapper = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: ${semantic.fillNormalWhite};
 `;

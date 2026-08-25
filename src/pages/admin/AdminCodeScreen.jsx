@@ -9,7 +9,7 @@ import {
   AdminAuthFooter,
 } from './style.js';
 import { useNavigate } from 'react-router-dom';
-import { ADMIN_ROUTES } from '../../constants/routes';
+import { ADMIN_ROUTES, TAB_ROUTES } from '../../constants/routes';
 
 export default function AdminCodeScreen() {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function AdminCodeScreen() {
     <AdminAuthContainer>
       <Header
         onBack={() => {
-          // TODO: 마이페이지로 이동하는 라우트 추가
+          navigate(TAB_ROUTES.MY);
         }}
         title="관리자 인증"
       />

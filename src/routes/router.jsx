@@ -96,7 +96,6 @@ export const router = createBrowserRouter([
         path: ADMIN_ROUTES.BANNER_EDIT(':bannerId'),
         element: <BannerEditScreen />,
       },
-      { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
       { path: BOOTH_ROUTES.DETAIL(':boothId'), element: <BoothDetailScreen /> },
       { path: EVENT_ROUTES.DETAIL(':id'), element: <EventDetailScreen /> },
       { path: MAKERS_ROUTES.LIST, element: <MakersScreen /> },

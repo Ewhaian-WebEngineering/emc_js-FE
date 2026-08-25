@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import Divider from '@/designsystem/components/divider/Divider';
@@ -18,30 +17,25 @@ import {
   getEventById,
 } from './constants/eventDetail';
 import * as S from './style';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { useToast } from '@/hooks/toast/useToast';
+import DOMPurify from 'dompurify';
 
 export default function EventDetailScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
   const handleBack = useGoBack(EVENT_ROUTES.LIST);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]);
+  const { toast } = useToast();
 
   const event = getEventById(id);
 
   const handleSponsorClick = () => {
     if (!event?.sponsor) return;
-    window.scrollTo(0, 0);
     navigate(SPONSOR_ROUTES.DETAIL(event.sponsor.id));
   };
 
   const handleKakaoShare = () => {
     // TODO: 카카오 SDK 연결
-  };
-
-  const handleCopyLink = () => {
-    // TODO: copyToClipboard 추가
   };
 
   if (!event) {
@@ -72,7 +66,13 @@ export default function EventDetailScreen() {
         </S.RowBox>
       </S.EventHero>
 
-      <S.EventContent>{/* TODO: RTE 데이터 가져오기 */}</S.EventContent>
+      {event.description && (
+        <S.EventContent
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(event.description),
+          }}
+        />
+      )}
 
       {hasSponsor && (
         <S.SponsorSection>
@@ -113,12 +113,22 @@ export default function EventDetailScreen() {
               </S.ShareActionLabel>
             </S.ShareAction>
             <S.ShareAction>
-              <S.LinkShareIconCircle
-                aria-label="링크 복사하기"
-                onClick={handleCopyLink}
+              <CopyToClipboard
+                text={window.location.href}
+                onCopy={(text, result) => {
+                  if (result) {
+                    toast({ message: '✅ 링크가 복사되었어요.' });
+                  } else {
+                    toast({
+                      message: '❌ 복사에 실패했어요. 다시 시도해주세요.',
+                    });
+                  }
+                }}
               >
-                <LinkIcon color={semantic.secondaryYellowDefault} />
-              </S.LinkShareIconCircle>
+                <S.LinkShareIconCircle aria-label="링크 복사하기">
+                  <LinkIcon color={semantic.secondaryYellowDefault} />
+                </S.LinkShareIconCircle>
+              </CopyToClipboard>
               <S.ShareActionLabel>
                 링크
                 <br />

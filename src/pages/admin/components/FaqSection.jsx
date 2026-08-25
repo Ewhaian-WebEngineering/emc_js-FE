@@ -5,19 +5,39 @@ import { mockFaqs } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { ButtonContent, CardWrapper } from './style';
+import useModal from '@/hooks/modal/useModal';
+import { useNavigate } from 'react-router-dom';
+import { ADMIN_ROUTES } from '@/constants/routes';
 
 // TODO: mockFaqs 대신 실제 API 데이터로 교체
 export default function FaqSection() {
-  const [expanded, setExpanded] = useState(false);
-  const faqs = mockFaqs;
+  const navigate = useNavigate();
+  const { showModal } = useModal();
 
-  // TODO: 등록 화면 이동 로직 연결
-  const handleAdd = () => {};
-  // TODO: id로 수정 화면 라우팅
-  const handleEdit = (id) => {};
-  // TODO: DELETE 요청 시 모달 노출
-  const handleDelete = (id) => {};
-  const handleClick = (id) => {};
+  const [expanded, setExpanded] = useState(false);
+  const [faqs, setFaqs] = useState(mockFaqs);
+
+  const handleAdd = () => {
+    navigate(ADMIN_ROUTES.FAQ);
+  };
+
+  const handleEdit = (id) => {
+    navigate(ADMIN_ROUTES.FAQ_EDIT(id));
+  };
+
+  const handleDelete = async (id) => {
+    const result = await showModal({
+      variant: 'danger',
+      title: 'FAQ를 삭제하시겠습니까?',
+      description: '삭제하시면 다시 되돌릴 수 없어요.',
+      cancelText: '취소',
+      confirmText: '삭제',
+    });
+
+    if (!result.confirmed) return;
+
+    setFaqs((prev) => prev.filter((faq) => faq.id !== id));
+  };
 
   return (
     <Accordion
@@ -42,7 +62,6 @@ export default function FaqSection() {
             key={faq.id}
             content={faq.content}
             title={faq.title}
-            onClick={() => handleClick(faq.id)}
             onDelete={() => handleDelete(faq.id)}
             onEdit={() => handleEdit(faq.id)}
           />

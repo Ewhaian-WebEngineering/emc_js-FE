@@ -7,7 +7,6 @@ import { typography } from '@/designsystem/tokens/typography';
 export const IntroImage = styled.img`
   display: block;
   width: 100%;
-  height: 500px;
   object-fit: cover;
 `;
 
@@ -48,28 +47,35 @@ export const ArrowRightIconButton = styled.button`
   justify-content: center;
   border: none;
   background-color: transparent;
+  cursor: pointer;
 `;
 
 export const HomeIconButtonWrapper = styled.button`
   display: flex;
+  flex: 1;
+  min-width: 0;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: none;
   background-color: transparent;
   gap: ${measurement.spacing8};
+  cursor: pointer;
 
   p {
     ${typography.caption1Medium}
     color: ${semantic.textNormalNormal}
+    white-space: nowrap;
   }
 `;
 
 export const HomeIconButtonSection = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
   padding: ${measurement.spacing16};
   gap: ${measurement.spacing16};
 `;
@@ -79,6 +85,9 @@ export const RankingScroll = styled.div`
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  padding-inline: ${measurement.spacing16};
+  margin-inline: -${measurement.spacing16};
+  scroll-padding-inline: ${measurement.spacing16};
 `;
 
 export const RankingPage = styled.div`
@@ -142,6 +151,7 @@ export const ViewAllButtonWrapper = styled.button`
   padding: ${measurement.spacing4};
   border: none;
   background-color: transparent;
+  cursor: pointer;
 
   p {
     ${typography.body2Semibold}
@@ -154,6 +164,7 @@ export const SponsorItemContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${measurement.spacing8};
+  cursor: pointer;
 `;
 
 export const SponsorItemThumbnail = styled.div`
@@ -209,6 +220,7 @@ export const SponsorDescriptionButton = styled.button`
   border: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
   border-radius: ${measurement.borderRadiusXl};
   background-color: ${semantic.fillNormalWhite};
+  cursor: pointer;
 
   p {
     ${typography.caption2Regular}
@@ -236,6 +248,7 @@ export const EventTabsContainer = styled.div`
 export const EventListItem = styled.div`
   flex-shrink: 0;
   width: 90%;
+  cursor: pointer;
 `;
 
 export const FaqListWrapper = styled.div`
@@ -267,6 +280,7 @@ export const KakaoOpenChannelButton = styled.button`
   border: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
   border-radius: ${measurement.borderRadiusXl};
   background-color: ${semantic.fillNormalWhite};
+  cursor: pointer;
 `;
 
 export const KakaoOpenChannelContent = styled.div`
@@ -288,14 +302,9 @@ export const KakaoOpenChannelContent = styled.div`
   }
 `;
 
-export const AdminCertificationSection = styled.div`
+export const AdminCertificationWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: ${measurement.spacing4};
-
-  p {
-    ${typography.body2Regular}
-    color: ${semantic.textNormalNormal};
-  }
+  padding-top: ${measurement.spacing96};
+  padding-bottom: ${measurement.spacing112};
 `;

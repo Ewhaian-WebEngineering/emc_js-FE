@@ -10,8 +10,11 @@ import {
 import { useState } from 'react';
 import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
+import { SPONSOR_ROUTES } from '@/constants/routes';
+import { useNavigate } from 'react-router-dom';
 
 export default function SponsorList({ list }) {
+  const navigate = useNavigate();
   const [selectedSponsor, setSelectedSponsor] = useState(list[0]?.sponsorName);
   const selected = list.find((s) => s.sponsorName === selectedSponsor);
 
@@ -31,8 +34,7 @@ export default function SponsorList({ list }) {
       {selected && (
         <SponsorDescriptionButton
           onClick={() => {
-            // TODO: 스폰서 상세 페이지 이동
-            alert(`Sponsor ${selected.sponsorName} clicked`);
+            navigate(SPONSOR_ROUTES.DETAIL(selected.id));
           }}
         >
           <p>{selected.description}</p>
