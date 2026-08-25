@@ -17,7 +17,7 @@ import {
   CategoryLabelHelperText,
 } from '@/pages/manage/booth/style';
 import { useToggleMap } from '@/pages/manage/booth/hooks/useToggleMap';
-import SponsorItemList from './item/SponsorItemList';
+import SponsorItemList from './item/components/SponsorItemList';
 import { useSponsorItemSections } from './hooks/useSponsorItemSections';
 
 export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
