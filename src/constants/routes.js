@@ -29,11 +29,13 @@ export const ADMIN_ROUTES = {
   CODE: '/admin',
   DASHBOARD: '/admin/dashboard',
   FAQ: '/admin/faq',
-  FAQEDIT: (faqId) => `/admin/faq/${faqId}/edit`,
+  FAQ_EDIT: (faqId) => `/admin/faq/${faqId}/edit`,
   BANNER: '/admin/banner',
-  BANNEREDIT: (bannerId) => `/admin/banner/${bannerId}/edit`,
+  BANNER_EDIT: (bannerId) => `/admin/banner/${bannerId}/edit`,
   EVENT: '/admin/event',
-  EVENTEDIT: (eventId) => `/admin/event/${eventId}/edit`,
+  EVENT_EDIT: (eventId) => `/admin/event/${eventId}/edit`,
+  SPONSOR_CREATE: '/admin/sponsor/register',
+  SPONSOR_EDIT: (sponsorId) => `/admin/sponsor/${sponsorId}/edit`,
 };
 
 export const NOTICE_ROUTE = '/notice';
