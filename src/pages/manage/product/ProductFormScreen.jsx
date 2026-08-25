@@ -16,10 +16,11 @@ import TextArea from '@/designsystem/components/textinput/textarea/TextArea';
 import ProductImageUploader from '@/designsystem/components/fileuploader/ProductImageUploader';
 import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 import Select from '@/designsystem/components/select/Select';
-import { useProductGroups } from './hooks/useProductGroups';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
+import { useEntityGroups } from '@/hooks/useEntityGroups';
+import { GROUP_OPTIONS } from './constants/groupOptions';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
@@ -50,7 +51,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     isButtonDisabled: isGroupButtonDisabled,
     groupNameError,
     handleConfirmAddGroup,
-  } = useProductGroups({
+  } = useEntityGroups(GROUP_OPTIONS, {
     groupId: formValues.groupId,
     onGroupIdChange: (value) => updateField('groupId', value),
   });
