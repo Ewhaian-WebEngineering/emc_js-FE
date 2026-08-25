@@ -1,0 +1,97 @@
+import axios from 'axios';
+import {
+  getAccessToken,
+  getRefreshToken,
+  setTokens,
+  clearTokens,
+} from './tokenStorage';
+import { ApiError } from './errors';
+import { modalStore } from './store/modalStore';
+
+// 요청 인터셉터: 토큰 주입
+export function attachRequestInterceptor(instance) {
+  instance.interceptors.request.use((config) => {
+    const token = getAccessToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
+}
+
+// 재발급 중복 호출 방지
+let isRefreshing = false;
+let pendingQueue = [];
+
+function resolveQueue(newToken) {
+  pendingQueue.forEach((resolve) => resolve(newToken));
+  pendingQueue = [];
+}
+
+// 응답 인터셉터: unwrap + 에러 공통 처리 + 401 재발급
+export function attachResponseInterceptor(instance) {
+  instance.interceptors.response.use(
+    (response) => response.data.data,
+    async (error) => {
+      const { config, response } = error;
+
+      if (response?.status === 401 && !config._retry) {
+        config._retry = true;
+
+        if (isRefreshing) {
+          return new Promise((resolve) => {
+            pendingQueue.push((newToken) => {
+              config.headers.Authorization = `Bearer ${newToken}`;
+              resolve(instance(config));
+            });
+          });
+        }
+
+        isRefreshing = true;
+        try {
+          const newToken = await reissueAccessToken();
+          resolveQueue(newToken);
+          config.headers.Authorization = `Bearer ${newToken}`;
+          return instance(config);
+        } catch (reissueError) {
+          clearTokens();
+          return Promise.reject(reissueError);
+        } finally {
+          isRefreshing = false;
+        }
+      }
+
+      const apiError = ApiError.from(error);
+
+      // POST(등록/생성) 요청 실패했을 때만 공통 모달 노출.
+      const shouldShowModal =
+        config?.showErrorModal ??
+        (config?.method?.toLowerCase() === 'post' && !config?.skipErrorModal);
+
+      if (shouldShowModal) {
+        modalStore.show({
+          variant: 'alert',
+          title: '등록에 실패했습니다.',
+          description: '잠시 후 다시 시도해주세요.',
+          cancelText: '확인',
+        });
+      }
+      return Promise.reject(apiError);
+    },
+  );
+}
+
+// 재귀 호출 방지
+async function reissueAccessToken() {
+  const refreshToken = getRefreshToken();
+
+  const { data } = await axios.post(
+    `${import.meta.env.VITE_API_BASE_URL}/auth/reissue`,
+    { refreshToken },
+  );
+
+  const { accessToken, refreshToken: newRefreshToken } = data.data;
+  setTokens({ accessToken, refreshToken: newRefreshToken });
+
+  return accessToken;
+}
