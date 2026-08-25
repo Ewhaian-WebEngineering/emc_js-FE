@@ -11,6 +11,11 @@ import {
 } from './style.js';
 import AdminCertification from '@/components/footer/AdminCertification';
 import LoginBottomSheet from './components/LoginBottomSheet';
+import {
+  clearTokens,
+  getAccessToken,
+  getUserRole,
+} from '@/api/core/tokenStorage';
 
 const MOCK_DATA = {
   userName: '김이화',
@@ -26,11 +31,9 @@ const CONTENT_BY_ROLE = {
   admin: MyAdminContent,
 };
 
-export default function MyScreen({
-  isLoggedIn: initialIsLoggedIn = true,
-  userRole = 'user',
-}) {
-  const [isLoggedIn, setIsLoggedIn] = useState(initialIsLoggedIn);
+export default function MyScreen() {
+  const [isLoggedIn, setIsLoggedIn] = useState(!!getAccessToken());
+  const [userRole, setUserRole] = useState(getUserRole() ?? 'user');
   const [data, setData] = useState(MOCK_DATA);
   const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
@@ -40,6 +43,7 @@ export default function MyScreen({
 
   const handleLogout = () => {
     // TODO: 로그아웃 API 호출
+    clearTokens();
     setIsLoggedIn(false);
   };
 
