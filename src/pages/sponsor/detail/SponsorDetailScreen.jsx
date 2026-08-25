@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGoBack } from '@/hooks/useGoBack';
 
@@ -17,62 +17,39 @@ import { SPONSOR_DETAIL_MOCK } from './constants/sponsorDetail';
 
 import * as S from './style';
 import { SPONSOR_TABS } from './constants/sponsorTabs';
+import DOMPurify from 'dompurify';
+import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
 
 export default function SponsorDetailScreen() {
   const { sponsorId } = useParams();
   const sponsorDetail = SPONSOR_DETAIL_MOCK[sponsorId];
 
   const navigate = useNavigate();
-
-  const introductionRef = useRef(null);
-  const productRef = useRef(null);
-
-  const [activeTab, setActiveTab] = useState(0);
-
   const handleBack = useGoBack();
 
-  const handleTabChange = (selectedTab) => {
-    const selectedIndex = SPONSOR_TABS.findIndex(
-      (tab) => tab.label === selectedTab.label,
-    );
+  const tabBarRef = useRef(null);
+  const [tabBarHeight, setTabBarHeight] = useState(0);
 
-    setActiveTab(selectedIndex);
+  useEffect(() => {
+    if (!tabBarRef.current) return;
+    const update = () => setTabBarHeight(tabBarRef.current.offsetHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(tabBarRef.current);
+    return () => ro.disconnect();
+  }, []);
 
-    if (selectedTab.label === '소개') {
-      introductionRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-
-      return;
-    }
-
-    if (selectedTab.label === '제품 목록') {
-      productRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
-  };
+  const { activeTab, scrollToTab, registerSection } = useScrollSpyTabs(
+    SPONSOR_TABS,
+    tabBarHeight,
+  );
 
   const getSnsUrl = (sns) => {
     if (!sns) return '';
-
-    if (sns.startsWith('http://') || sns.startsWith('https://')) {
-      return sns;
-    }
-
-    if (sns.startsWith('@')) {
-      return `https://www.instagram.com/${sns.slice(1)}`;
-    }
-
+    if (sns.startsWith('http://') || sns.startsWith('https://')) return sns;
+    if (sns.startsWith('@')) return `https://www.instagram.com/${sns.slice(1)}`;
     return `https://www.instagram.com/${sns}`;
   };
-
-  //TODO: html 태그 받아 표시
-  const introductionContent =
-    sponsorDetail.introductionContent ||
-    '협찬사 설명영역\n(Text Editor로 작성)';
 
   return (
     <S.SponsorDetailContainer>
@@ -138,24 +115,37 @@ export default function SponsorDetailScreen() {
 
       <Divider size="lg" />
 
-      {/*TODO: Tab이 섹션 이동 후에도 상단에 노출되도록 Wrapper 적용*/}
-      <Tab
-        tabs={SPONSOR_TABS}
-        activeTab={activeTab}
-        onChange={handleTabChange}
-      />
+      <S.TabWrapper ref={tabBarRef}>
+        <Tab
+          tabs={SPONSOR_TABS}
+          activeTab={SPONSOR_TABS.findIndex((tab) => tab.id === activeTab)}
+          onChange={(tab) => scrollToTab(tab.id)}
+        />
+      </S.TabWrapper>
 
-      <S.IntroductionSection ref={introductionRef}>
+      <S.IntroductionSection
+        ref={registerSection('introduction')}
+        style={{ scrollMarginTop: tabBarHeight }}
+      >
         <S.SectionTitle>
           {sponsorDetail.sponsorName}을 소개합니다.
         </S.SectionTitle>
 
-        <S.IntroductionContent>{introductionContent}</S.IntroductionContent>
+        {sponsorDetail.description && (
+          <S.IntroductionContent
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(sponsorDetail.description),
+            }}
+          />
+        )}
       </S.IntroductionSection>
 
       <Divider size="lg" />
 
-      <S.ProductSection ref={productRef}>
+      <S.ProductSection
+        ref={registerSection('product')}
+        style={{ scrollMarginTop: tabBarHeight }}
+      >
         <S.SectionTitle>협찬품을 소개합니다</S.SectionTitle>
 
         <S.ProductGroups>

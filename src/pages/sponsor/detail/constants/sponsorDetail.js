@@ -11,6 +11,9 @@ export const SPONSOR_DETAIL_MOCK = {
       url: 'https://www.website.com',
     },
 
+    description:
+      '<p>협찬사 소개글 영역입니다. <b>브랜드 스토리</b>와 참여 이벤트 안내를 담고 있습니다.</p><p>많은 관심과 방문 부탁드립니다.</p>',
+
     productGroups: [
       {
         groupName: '제품 그룹',
@@ -73,6 +76,9 @@ export const SPONSOR_DETAIL_MOCK = {
       sns: '@brandinsta2',
       url: 'https://www.website2.com',
     },
+
+    description:
+      '<p>두 번째 협찬사 소개글입니다. <b>다양한 라인업</b>을 만나보세요.</p>',
 
     productGroups: [
       {
