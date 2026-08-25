@@ -18,11 +18,14 @@ import {
   getEventById,
 } from './constants/eventDetail';
 import * as S from './style';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { useToast } from '@/hooks/toast/useToast';
 
 export default function EventDetailScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
   const handleBack = useGoBack(EVENT_ROUTES.LIST);
+  const { toast } = useToast();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,10 +41,6 @@ export default function EventDetailScreen() {
 
   const handleKakaoShare = () => {
     // TODO: 카카오 SDK 연결
-  };
-
-  const handleCopyLink = () => {
-    // TODO: copyToClipboard 추가
   };
 
   if (!event) {
@@ -113,12 +112,22 @@ export default function EventDetailScreen() {
               </S.ShareActionLabel>
             </S.ShareAction>
             <S.ShareAction>
-              <S.LinkShareIconCircle
-                aria-label="링크 복사하기"
-                onClick={handleCopyLink}
+              <CopyToClipboard
+                text={window.location.href}
+                onCopy={(text, result) => {
+                  if (result) {
+                    toast({ message: '✅ 링크가 복사되었어요.' });
+                  } else {
+                    toast({
+                      message: '❌ 복사에 실패했어요. 다시 시도해주세요.',
+                    });
+                  }
+                }}
               >
-                <LinkIcon color={semantic.secondaryYellowDefault} />
-              </S.LinkShareIconCircle>
+                <S.LinkShareIconCircle aria-label="링크 복사하기">
+                  <LinkIcon color={semantic.secondaryYellowDefault} />
+                </S.LinkShareIconCircle>
+              </CopyToClipboard>
               <S.ShareActionLabel>
                 링크
                 <br />
