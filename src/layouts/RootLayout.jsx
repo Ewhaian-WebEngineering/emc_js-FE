@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { PageContainer } from './style';
 import { QueryBoundary } from '@/components/common/QueryBoundary';
+import ScrollToTop from '@/components/common/ScrollToTop';
 
 /**
  * 모든 화면에 공통으로 적용되는 최상위 레이아웃입니다.
@@ -10,6 +11,7 @@ import { QueryBoundary } from '@/components/common/QueryBoundary';
 export default function RootLayout() {
   return (
     <PageContainer>
+      <ScrollToTop />
       <QueryBoundary>
         <Outlet />
       </QueryBoundary>
