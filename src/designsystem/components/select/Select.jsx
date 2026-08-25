@@ -38,6 +38,7 @@ export default function Select({
   showActions,
   onDelete,
   onEdit,
+  align,
 }) {
   // 상태 관리
   const [selectedValue, setSelectedValue] = useState(value || defaultValue);
@@ -88,6 +89,7 @@ export default function Select({
         isOpen={isOpen}
         disabled={disabled}
         hasValue={!!selectedValue}
+        align={align}
       >
         <span>{triggerLabel}</span>
         <button onClick={() => setIsOpen(!isOpen)}>

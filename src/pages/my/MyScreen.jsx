@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import Header from '../../designsystem/components/header/FillRightHeader';
-import LinkButton from '../../designsystem/components/button/linkbutton/LinkButton';
 import MyUserRow from './components/MyUserRow';
 import MyDefaultContent from './components/MyDefaultContent';
 import MySellerContent from './components/MySellerContent';
 import MyAdminContent from './components/MyAdminContent';
-import { MyContainer, MyContentContainer, MyFooter } from './style.js';
+import {
+  AdminCertificationWrapper,
+  MyContainer,
+  MyContentContainer,
+} from './style.js';
+import AdminCertification from '@/components/footer/AdminCertification';
 
 const MOCK_DATA = {
   userName: '김이화',
@@ -61,12 +65,9 @@ export default function MyScreen({
       </MyContentContainer>
 
       {showFooter && (
-        <MyFooter>
-          <p>부스 또는 EMC 운영진이신가요?</p>
-          <LinkButton href="https://example.com" size="sm" variant="secondary">
-            셀러/관리자 인증
-          </LinkButton>
-        </MyFooter>
+        <AdminCertificationWrapper>
+          <AdminCertification />
+        </AdminCertificationWrapper>
       )}
     </MyContainer>
   );

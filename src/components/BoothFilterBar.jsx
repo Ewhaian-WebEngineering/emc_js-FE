@@ -52,6 +52,7 @@ function ToolBar({
           options={SORT_OPTIONS}
           value={sortValue}
           onChange={onSortChange}
+          align="right"
         />
         <Select
           size="sm"
@@ -59,6 +60,7 @@ function ToolBar({
           value={filterValue}
           onChange={onFilterChange}
           prefix="운영시간"
+          align="right"
         />
       </ToolBarActions>
     </ToolBarWrapper>
