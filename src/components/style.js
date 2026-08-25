@@ -152,3 +152,16 @@ export const RecommendBoothList = styled.div`
   padding-inline: ${measurement.spacing16};
   overflow-x: auto;
 `;
+
+export const AdminCertificationSection = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: ${measurement.spacing4};
+
+  p {
+    ${typography.body2Regular}
+    color: ${semantic.textNormalNormal};
+  }
+`;

@@ -4,7 +4,7 @@ import ArrowRightIcon from '@/assets/svg/24px/ic_arrow_right.svg?react';
 import RepresentativeBannerImg from '@/assets/img/home/img_home_representative_banner.png';
 import KakaoOpenChannelLogo from '@/assets/img/home/img_contact_us.png';
 import {
-  AdminCertificationSection,
+  AdminCertificationWrapper,
   ArrowRightIconButton,
   ContactUsSection,
   HomeIconButtonSection,
@@ -34,7 +34,6 @@ import EventTabs from './components/EventList';
 import { EVENT_LIST } from '@/pages/home/constants/event';
 import { FAQ_LIST } from '@/pages/home/constants/faq';
 import FaqList from './components/FaqList';
-import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -43,6 +42,7 @@ import {
   SEARCH_ROUTES,
   SPONSOR_ROUTES,
 } from '@/constants/routes';
+import AdminCertification from '@/components/footer/AdminCertification';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
@@ -147,7 +147,7 @@ export default function HomeScreen() {
       <ContactUsSection>
         <KakaoOpenChannelButton
           onClick={() => {
-            window.open('http://pf.kakao.com/_KxjZhX', '_blank');
+            window.open('http://pf.kakao.com/_KxjZhX/chat', '_blank');
           }}
         >
           <KakaoOpenChannelContent>
@@ -160,18 +160,11 @@ export default function HomeScreen() {
           </KakaoOpenChannelContent>
           <ArrowRightIconSmall />
         </KakaoOpenChannelButton>
-        <AdminCertificationSection>
-          <p>부스 또는 EMC 운영진이신가요?</p>
-          <LinkButton
-            variant="secondary"
-            size="sm"
-            // TODO: 셀러/관리자 인증 페이지 이동
-            onClick={() => alert('admin certification button clicked')}
-          >
-            셀러/관리자 인증
-          </LinkButton>
-        </AdminCertificationSection>
       </ContactUsSection>
+
+      <AdminCertificationWrapper>
+        <AdminCertification />
+      </AdminCertificationWrapper>
     </>
   );
 }

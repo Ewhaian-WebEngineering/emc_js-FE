@@ -302,14 +302,9 @@ export const KakaoOpenChannelContent = styled.div`
   }
 `;
 
-export const AdminCertificationSection = styled.div`
+export const AdminCertificationWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: ${measurement.spacing4};
-
-  p {
-    ${typography.body2Regular}
-    color: ${semantic.textNormalNormal};
-  }
+  padding-top: ${measurement.spacing96};
+  padding-bottom: ${measurement.spacing112};
 `;
