@@ -9,7 +9,7 @@ export default function NoticeForm({ title, content, errors, onChange }) {
         title="공지 제목"
         required
         value={title}
-        onChange={(e) => onChange('title', e.target.value)}
+        onChange={(value) => onChange('title', value)}
         placeholder={noticeForm.titlePlaceholder}
         maxLength={noticeForm.titleMaxLength}
         hasError={errors.title}
@@ -19,7 +19,7 @@ export default function NoticeForm({ title, content, errors, onChange }) {
         title="공지 내용"
         required
         value={content}
-        onChange={(e) => onChange('content', e.target.value)}
+        onChange={(value) => onChange('content', value)}
         placeholder={noticeForm.contentPlaceholder}
         maxLength={noticeForm.contentMaxLength}
         hasError={errors.content}
