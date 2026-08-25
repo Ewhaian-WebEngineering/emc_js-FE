@@ -7,7 +7,6 @@ import { useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { memo } from 'react';
 import DragHandleIcon from '@/assets/svg/20px/ic_drag_handle.svg?react';
-import SponsorItemCard from './SponsorItemCard';
 import {
   GroupHandle,
   GroupHeader,
@@ -15,6 +14,7 @@ import {
   GroupProductList,
   GroupSectionWrapper,
 } from '@/pages/manage/booth/style';
+import SponsorItemCard from './SponsorItemCard';
 
 function SponsorItemGroupSection({ section, onEditItem, onDeleteItem }) {
   const {
