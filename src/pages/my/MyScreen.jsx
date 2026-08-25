@@ -10,6 +10,7 @@ import {
   MyContentContainer,
 } from './style.js';
 import AdminCertification from '@/components/footer/AdminCertification';
+import LoginBottomSheet from './components/LoginBottomSheet';
 
 const MOCK_DATA = {
   userName: '김이화',
@@ -31,6 +32,7 @@ export default function MyScreen({
 }) {
   const [isLoggedIn, setIsLoggedIn] = useState(initialIsLoggedIn);
   const [data, setData] = useState(MOCK_DATA);
+  const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
   useEffect(() => {
     // TODO: isLoggedIn, userRole에 따른 유저/부스/행사 정보 조회
@@ -42,7 +44,11 @@ export default function MyScreen({
   };
 
   const handleLoginClick = () => {
-    // TODO: 카카오로그인 바텀시트
+    setIsLoginSheetOpen(true);
+  };
+
+  const handleKakaoLogin = () => {
+    setIsLoginSheetOpen(false);
   };
 
   const ContentComponent = isLoggedIn
@@ -69,6 +75,12 @@ export default function MyScreen({
           <AdminCertification />
         </AdminCertificationWrapper>
       )}
+
+      <LoginBottomSheet
+        isOpen={isLoginSheetOpen}
+        onClose={() => setIsLoginSheetOpen(false)}
+        onKakaoLogin={handleKakaoLogin}
+      />
     </MyContainer>
   );
 }
