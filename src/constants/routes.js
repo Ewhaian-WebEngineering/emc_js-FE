@@ -36,6 +36,10 @@ export const ADMIN_ROUTES = {
   EVENT_EDIT: (eventId) => `/admin/event/${eventId}/edit`,
   SPONSOR_CREATE: '/admin/sponsor/register',
   SPONSOR_EDIT: (sponsorId) => `/admin/sponsor/${sponsorId}/edit`,
+  SPONSOR_ITEM_CREATE: (sponsorId) =>
+    `/admin/sponsor/${sponsorId}/item/register`,
+  SPONSOR_ITEM_EDIT: (sponsorId, itemId) =>
+    `/admin/sponsor/${sponsorId}/item/${itemId}/edit`,
 };
 
 export const NOTICE_ROUTE = '/notice';
