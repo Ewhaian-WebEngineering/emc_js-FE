@@ -3,17 +3,23 @@ import Accordion from '../../../designsystem/components/accordion/AccordionLine'
 import BoothCard from '../../../designsystem/components/card/admin/AdminBoothCard';
 import { mockBooths } from '../constants/dashboardDummy';
 import { CardWrapper } from './style';
+import { MANAGE_ROUTES } from '@/constants/routes';
+import { useNavigate } from 'react-router-dom';
 
 // TODO: mockBooths 대신 실제 API 데이터로 교체
 export default function BoothSection() {
+  const navigate = useNavigate();
+
   const [expanded, setExpanded] = useState(false);
   const booths = mockBooths;
 
-  // TODO: id로 수정 화면 라우팅
-  const handleEdit = (id) => {};
-  // TODO: id로 부스 상세 화면 라우팅
-  const handlePreview = (id) => {};
-  const handleClick = (id) => {};
+  const handleEdit = (id) => {
+    navigate(MANAGE_ROUTES.BOOTH_EDIT(id));
+  };
+
+  const handlePreview = (id) => {
+    navigate(MANAGE_ROUTES.BOOTH_PREVIEW(id));
+  };
 
   return (
     <Accordion
@@ -31,7 +37,6 @@ export default function BoothSection() {
             cardNumber={booth.cardNumber}
             content={booth.content}
             title={booth.title}
-            onClick={() => handleClick(booth.id)}
             onEdit={() => handleEdit(booth.id)}
             onPreview={() => handlePreview(booth.id)}
           />

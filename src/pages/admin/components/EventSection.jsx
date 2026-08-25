@@ -5,13 +5,19 @@ import { mockEvents, EVENT_PHASE_LABEL } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { ButtonContent, SectionTitle, CardWrapper } from './style';
+import useModal from '@/hooks/modal/useModal';
+import { useNavigate } from 'react-router-dom';
+import { ADMIN_ROUTES } from '@/constants/routes';
 
 const PHASE_ORDER = ['pre', 'onsite', 'post'];
 
 // TODO: mockEvents 대신 실제 API 데이터로 교체
 export default function EventSection() {
+  const navigate = useNavigate();
+  const { showModal } = useModal();
+
   const [expanded, setExpanded] = useState(false);
-  const events = mockEvents;
+  const [events, setEvents] = useState(mockEvents);
 
   const groupedEvents = PHASE_ORDER.map((phase) => ({
     phase,
@@ -19,13 +25,27 @@ export default function EventSection() {
     items: events.filter((event) => event.phase === phase),
   }));
 
-  // TODO: 등록 화면 이동 로직 연결
-  const handleAdd = () => {};
-  // TODO: id로 수정 화면 라우팅
-  const handleEdit = (id) => {};
-  // TODO: DELETE 요청 시 모달 노출
-  const handleDelete = (id) => {};
-  const handleClick = (id) => {};
+  const handleAdd = () => {
+    navigate(ADMIN_ROUTES.EVENT);
+  };
+
+  const handleEdit = (id) => {
+    navigate(ADMIN_ROUTES.EVENT_EDIT(id));
+  };
+
+  const handleDelete = async (id) => {
+    const result = await showModal({
+      variant: 'danger',
+      title: '이벤트를 삭제하시겠습니까?',
+      description: '삭제하시면 다시 되돌릴 수 없어요.',
+      cancelText: '취소',
+      confirmText: '삭제',
+    });
+
+    if (!result.confirmed) return;
+
+    setEvents((prev) => prev.filter((event) => event.id !== id));
+  };
 
   return (
     <Accordion
@@ -56,7 +76,6 @@ export default function EventSection() {
                   endDate={event.endDate}
                   startDate={event.startDate}
                   title={event.title}
-                  onClick={() => handleClick(event.id)}
                   onDelete={() => handleDelete(event.id)}
                   onEdit={() => handleEdit(event.id)}
                 />

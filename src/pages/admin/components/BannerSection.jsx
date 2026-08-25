@@ -5,19 +5,39 @@ import { mockBanners } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { ButtonContent, CardWrapper } from './style';
+import useModal from '@/hooks/modal/useModal';
+import { useNavigate } from 'react-router-dom';
+import { ADMIN_ROUTES } from '@/constants/routes';
 
 // TODO: mockBanners 대신 실제 API 데이터로 교체
 export default function BannerSection() {
-  const [expanded, setExpanded] = useState(false);
-  const banners = mockBanners;
+  const navigate = useNavigate();
+  const { showModal } = useModal();
 
-  // TODO: 등록 화면 이동 로직 연결
-  const handleAdd = () => {};
-  // TODO: id로 수정 화면 라우팅
-  const handleEdit = (id) => {};
-  // TODO: DELETE 요청 시 모달 노출
-  const handleDelete = (id) => {};
-  const handleClick = (id) => {};
+  const [expanded, setExpanded] = useState(false);
+  const [banners, setBanners] = useState(mockBanners);
+
+  const handleAdd = () => {
+    navigate(ADMIN_ROUTES.BANNER);
+  };
+
+  const handleEdit = (id) => {
+    navigate(ADMIN_ROUTES.BANNER_EDIT(id));
+  };
+
+  const handleDelete = async (id) => {
+    const result = await showModal({
+      variant: 'danger',
+      title: '배너를 삭제하시겠습니까?',
+      description: '삭제하시면 다시 되돌릴 수 없어요.',
+      cancelText: '취소',
+      confirmText: '삭제',
+    });
+
+    if (!result.confirmed) return;
+
+    setBanners((prev) => prev.filter((banner) => banner.id !== id));
+  };
 
   return (
     <Accordion
@@ -43,7 +63,6 @@ export default function BannerSection() {
             endDate={banner.endDate}
             startDate={banner.startDate}
             title={banner.title}
-            onClick={() => handleClick(banner.id)}
             onDelete={() => handleDelete(banner.id)}
             onEdit={() => handleEdit(banner.id)}
           />
