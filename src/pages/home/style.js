@@ -7,7 +7,6 @@ import { typography } from '@/designsystem/tokens/typography';
 export const IntroImage = styled.img`
   display: block;
   width: 100%;
-  height: 500px;
   object-fit: cover;
 `;
 
@@ -48,6 +47,7 @@ export const ArrowRightIconButton = styled.button`
   justify-content: center;
   border: none;
   background-color: transparent;
+  cursor: pointer;
 `;
 
 export const HomeIconButtonWrapper = styled.button`

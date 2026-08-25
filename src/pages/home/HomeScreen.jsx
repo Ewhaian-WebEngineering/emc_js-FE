@@ -2,6 +2,7 @@ import HomeHeader from '@/designsystem/components/header/HomeHeader';
 import Placeholder from '@/assets/img/img_checker.png';
 import ArrowRightIconSmall from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import ArrowRightIcon from '@/assets/svg/24px/ic_arrow_right.svg?react';
+import RepresentativeBannerImg from '@/assets/img/home/img_home_representative_banner.png';
 import KakaoOpenChannelLogo from '@/assets/img/home/img_contact_us.png';
 import {
   AdminCertificationSection,
@@ -49,8 +50,7 @@ export default function HomeScreen() {
         }}
       />
 
-      {/* TODO: 종합손물세트 소개 이미지 추가 */}
-      <IntroImage src={Placeholder} alt="종합손물세트 소개" />
+      <IntroImage src={RepresentativeBannerImg} alt="종합손물세트 소개" />
 
       <HomeNoticeContainer>
         <HomeNoticeTitleWrapper>
