@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import Divider from '@/designsystem/components/divider/Divider';
@@ -20,6 +19,7 @@ import {
 import * as S from './style';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useToast } from '@/hooks/toast/useToast';
+import DOMPurify from 'dompurify';
 
 export default function EventDetailScreen() {
   const { id } = useParams();
@@ -27,15 +27,10 @@ export default function EventDetailScreen() {
   const handleBack = useGoBack(EVENT_ROUTES.LIST);
   const { toast } = useToast();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]);
-
   const event = getEventById(id);
 
   const handleSponsorClick = () => {
     if (!event?.sponsor) return;
-    window.scrollTo(0, 0);
     navigate(SPONSOR_ROUTES.DETAIL(event.sponsor.id));
   };
 
@@ -71,7 +66,13 @@ export default function EventDetailScreen() {
         </S.RowBox>
       </S.EventHero>
 
-      <S.EventContent>{/* TODO: RTE 데이터 가져오기 */}</S.EventContent>
+      {event.description && (
+        <S.EventContent
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(event.description),
+          }}
+        />
+      )}
 
       {hasSponsor && (
         <S.SponsorSection>

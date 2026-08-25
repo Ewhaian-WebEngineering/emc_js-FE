@@ -183,6 +183,24 @@ export const EventTypeBadge = styled.span`
 export const EventContent = styled.section`
   ${sectionColumn};
   background-color: ${semantic.fillNormalNormal};
+  padding-block: ${measurement.spacing32};
+  padding-inline: ${measurement.spacing16};
+
+  ${typography.body2Regular}
+  color: ${semantic.textNormalNormal};
+
+  p {
+    margin-bottom: ${measurement.spacing12};
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  b,
+  strong {
+    font-weight: 700;
+  }
 `;
 
 export const SponsorSection = styled.section`
