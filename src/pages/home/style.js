@@ -52,24 +52,30 @@ export const ArrowRightIconButton = styled.button`
 
 export const HomeIconButtonWrapper = styled.button`
   display: flex;
+  flex: 1;
+  min-width: 0;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: none;
   background-color: transparent;
   gap: ${measurement.spacing8};
+  cursor: pointer;
 
   p {
     ${typography.caption1Medium}
     color: ${semantic.textNormalNormal}
+    white-space: nowrap;
   }
 `;
 
 export const HomeIconButtonSection = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
   padding: ${measurement.spacing16};
   gap: ${measurement.spacing16};
 `;

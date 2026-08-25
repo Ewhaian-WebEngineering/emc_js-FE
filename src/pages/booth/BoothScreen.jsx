@@ -3,7 +3,7 @@ import SearchIcon from '@/assets/svg/28px/ic_search.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { SearchButton } from './style';
 import { SEARCH_ROUTES } from '@/constants/routes';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { DUMMY_BOOTHS } from '../../constants/dummyBooths';
 import BoothList from '@/components/BoothList';
 import { useBoothFilter } from '@/hooks/useBoothFilter';
@@ -11,14 +11,19 @@ import BoothFilterBar from '@/components/BoothFilterBar';
 
 export default function BoothScreen() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const initialCategory = searchParams.get('category') || 'all';
+
   const {
+    category,
     setCategory,
     sortOption,
     setSortOption,
     filterOption,
     setFilterOption,
     booths,
-  } = useBoothFilter(DUMMY_BOOTHS);
+  } = useBoothFilter(DUMMY_BOOTHS, initialCategory);
 
   return (
     <>
@@ -37,6 +42,7 @@ export default function BoothScreen() {
       />
       <BoothFilterBar
         count={booths.length}
+        categoryValue={category}
         sortValue={sortOption}
         onSortChange={setSortOption}
         filterValue={filterOption}

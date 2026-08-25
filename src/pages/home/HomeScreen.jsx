@@ -1,5 +1,4 @@
 import HomeHeader from '@/designsystem/components/header/HomeHeader';
-import Placeholder from '@/assets/img/img_checker.png';
 import ArrowRightIconSmall from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import ArrowRightIcon from '@/assets/svg/24px/ic_arrow_right.svg?react';
 import RepresentativeBannerImg from '@/assets/img/home/img_home_representative_banner.png';
@@ -38,6 +37,7 @@ import FaqList from './components/FaqList';
 import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { useNavigate } from 'react-router-dom';
+import { NOTICE_ROUTE, SEARCH_ROUTES } from '@/constants/routes';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ export default function HomeScreen() {
     <>
       <HomeHeader
         onSearchClick={() => {
-          navigate('/search');
+          navigate(SEARCH_ROUTES.SEARCH);
         }}
       />
 
@@ -61,8 +61,7 @@ export default function HomeScreen() {
         </HomeNoticeTitleWrapper>
         <ArrowRightIconButton
           onClick={() => {
-            // TODO: 안내사항 페이지 이동
-            alert('notice button clicked');
+            navigate(NOTICE_ROUTE);
           }}
         >
           <ArrowRightIcon color={semantic.iconNormalStrong} />
@@ -76,8 +75,7 @@ export default function HomeScreen() {
             label={label}
             icon={icon}
             onClick={() => {
-              // TODO: 페이지 이동 추가
-              alert(`${label} button clicked`);
+              navigate(ICON_LIST.find((item) => item.key === key)?.route);
             }}
           />
         ))}

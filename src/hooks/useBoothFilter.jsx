@@ -1,8 +1,8 @@
 import { OPERATING_TIME_OPTIONS, SORT_OPTIONS } from '@/constants/filter';
 import { useMemo, useState } from 'react';
 
-export function useBoothFilter(source) {
-  const [category, setCategory] = useState('all');
+export function useBoothFilter(source, initialCategory = 'all') {
+  const [category, setCategory] = useState(initialCategory);
   const [sortOption, setSortOption] = useState(SORT_OPTIONS[0]);
   const [filterOption, setFilterOption] = useState(OPERATING_TIME_OPTIONS[0]);
 
