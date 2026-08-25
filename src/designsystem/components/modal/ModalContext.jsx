@@ -1,5 +1,6 @@
-import { createContext, useCallback, useRef, useState } from 'react';
+import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import Modal from './Modal';
+import { modalStore } from '@/api/core/store/modalStore';
 
 const ModalContext = createContext(null);
 
@@ -18,6 +19,10 @@ export function ModalProvider({ children }) {
       setModalState(options);
     });
   }, []);
+
+  useEffect(() => {
+    modalStore.register(showModal);
+  }, [showModal]);
 
   const handleConfirm = useCallback(
     (value) => {
