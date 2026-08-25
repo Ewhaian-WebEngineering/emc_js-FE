@@ -85,6 +85,9 @@ export const RankingScroll = styled.div`
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  padding-inline: ${measurement.spacing16};
+  margin-inline: -${measurement.spacing16};
+  scroll-padding-inline: ${measurement.spacing16};
 `;
 
 export const RankingPage = styled.div`
