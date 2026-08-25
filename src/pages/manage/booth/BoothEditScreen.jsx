@@ -8,7 +8,7 @@ import {
 } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DUMMY_BOOTH_DETAIL } from '@/pages/booth/constants/dummyBoothDetail';
-import { MANAGE_ROUTES } from '@/constants/routes';
+import { BOOTH_ROUTES, MANAGE_ROUTES } from '@/constants/routes';
 import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import CategoryLabel from './components/CategoryLabel';
 import { BOOTH_CATEGORY_OPTIONS } from './constants/CategoryOptions';
@@ -265,8 +265,7 @@ export default function BoothEditScreen() {
             </ActionButtonContent>
           }
           onClick={() => {
-            // TODO: 공지사항 등록 페이지 이동
-            alert('공지사항 등록');
+            navigate(BOOTH_ROUTES.REGISTER(boothId));
           }}
         />
         {boothForm.notice.map((notice) => (
