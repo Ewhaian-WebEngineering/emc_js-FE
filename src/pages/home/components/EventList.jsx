@@ -7,6 +7,8 @@ import {
   ListScroll,
 } from '../style';
 import EventCard from '@/designsystem/components/card/event/EventCard';
+import { EVENT_ROUTES } from '@/constants/routes';
+import { useNavigate } from 'react-router-dom';
 
 const EVENT_TABS = [
   { key: 'pre', label: '사전' },
@@ -15,6 +17,7 @@ const EVENT_TABS = [
 ];
 
 export default function EventList({ list }) {
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState(EVENT_TABS[0].key);
   const filteredList = list.filter((event) => event.category === selectedTab);
 
@@ -34,7 +37,7 @@ export default function EventList({ list }) {
               startDate={event.startDate}
               endDate={event.endDate}
               status={event.status}
-              onClick={event.onClick}
+              onClick={() => navigate(EVENT_ROUTES.DETAIL(event.id))}
             />
           </EventListItem>
         ))}

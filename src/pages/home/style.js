@@ -151,6 +151,7 @@ export const ViewAllButtonWrapper = styled.button`
   padding: ${measurement.spacing4};
   border: none;
   background-color: transparent;
+  cursor: pointer;
 
   p {
     ${typography.body2Semibold}
@@ -163,6 +164,7 @@ export const SponsorItemContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${measurement.spacing8};
+  cursor: pointer;
 `;
 
 export const SponsorItemThumbnail = styled.div`
@@ -218,6 +220,7 @@ export const SponsorDescriptionButton = styled.button`
   border: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
   border-radius: ${measurement.borderRadiusXl};
   background-color: ${semantic.fillNormalWhite};
+  cursor: pointer;
 
   p {
     ${typography.caption2Regular}
@@ -245,6 +248,7 @@ export const EventTabsContainer = styled.div`
 export const EventListItem = styled.div`
   flex-shrink: 0;
   width: 90%;
+  cursor: pointer;
 `;
 
 export const FaqListWrapper = styled.div`
@@ -276,6 +280,7 @@ export const KakaoOpenChannelButton = styled.button`
   border: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
   border-radius: ${measurement.borderRadiusXl};
   background-color: ${semantic.fillNormalWhite};
+  cursor: pointer;
 `;
 
 export const KakaoOpenChannelContent = styled.div`
