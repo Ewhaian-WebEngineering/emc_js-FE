@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { PageContainer } from './style';
+import { QueryBoundary } from '@/components/common/QueryBoundary';
 
 /**
  * 모든 화면에 공통으로 적용되는 최상위 레이아웃입니다.
@@ -9,7 +10,9 @@ import { PageContainer } from './style';
 export default function RootLayout() {
   return (
     <PageContainer>
-      <Outlet />
+      <QueryBoundary>
+        <Outlet />
+      </QueryBoundary>
     </PageContainer>
   );
 }
