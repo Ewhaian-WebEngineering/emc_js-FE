@@ -64,7 +64,8 @@ export const SelectWrapper = styled.div`
 export const SelectTrigger = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  min-width: 64px;
 
   padding: ${({ size }) =>
     size === 'md'
