@@ -17,6 +17,7 @@ import { SectionTitle } from '../home/style';
 import TrendingBoothList from './components/TrendingBoothList';
 import { TRENDING_BOOTHS } from './constants/trendingBooths';
 import { useGoBack } from '@/hooks/useGoBack';
+import { SEARCH_ROUTES } from '@/constants/routes';
 
 export default function SearchScreen() {
   const navigate = useNavigate();
@@ -38,9 +39,12 @@ export default function SearchScreen() {
         onSearch={() => {
           const trimmed = searchValue.trim();
           if (!trimmed) return;
-          navigate(`/search/result?query=${encodeURIComponent(trimmed)}`, {
-            replace: true,
-          });
+          navigate(
+            `${SEARCH_ROUTES.SEARCH_RESULT}?query=${encodeURIComponent(trimmed)}`,
+            {
+              replace: true,
+            },
+          );
         }}
         border
       />
@@ -77,7 +81,7 @@ export default function SearchScreen() {
                   }}
                   onClick={() => {
                     navigate(
-                      `/search/result?query=${encodeURIComponent(search)}`,
+                      `${SEARCH_ROUTES.SEARCH_RESULT}?query=${encodeURIComponent(search)}`,
                     );
                   }}
                 />
