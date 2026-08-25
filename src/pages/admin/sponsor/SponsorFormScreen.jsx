@@ -12,7 +12,10 @@ import { BOOTH_CATEGORY_OPTIONS } from '@/pages/manage/booth/constants/CategoryO
 import Editor from '../components/Editor';
 import ProductImageUploader from '@/designsystem/components/fileuploader/ProductImageUploader';
 import AccordionLine from '@/designsystem/components/accordion/AccordionLine';
-import { ActionButtonContent } from '@/pages/manage/booth/style';
+import {
+  ActionButtonContent,
+  CategoryLabelHelperText,
+} from '@/pages/manage/booth/style';
 import { useToggleMap } from '@/pages/manage/booth/hooks/useToggleMap';
 import SponsorItemList from './item/SponsorItemList';
 import { useSponsorItemSections } from './hooks/useSponsorItemSections';
@@ -38,6 +41,7 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
     handleEditItem,
     handleDeleteItem,
     itemsError,
+    validateItems,
   } = useSponsorItemSections(sponsor);
 
   const handleBack = async () => {
@@ -51,13 +55,20 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
     });
   };
 
+  const handleSave = () => {
+    const itemError = validateItems();
+    if (itemError) return;
+
+    handleSubmit();
+  };
+
   return (
     <>
       <FillCenterHeader
         onBack={handleBack}
         title="협찬사"
         right={
-          <TextButton onClick={handleSubmit} disabled={isButtonDisabled}>
+          <TextButton onClick={handleSave} disabled={isButtonDisabled}>
             {submitLabel === 'create' ? '등록' : '저장'}
           </TextButton>
         }
@@ -153,6 +164,9 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
         onToggle={() => toggleExpanded('itemList')}
       >
         <AccordionLine.ContentGuide description="협찬품 정보와 이미지를 등록하고, 협찬품 소개글을 작성할 수 있습니다." />
+        {itemsError && (
+          <CategoryLabelHelperText>{itemsError}</CategoryLabelHelperText>
+        )}
         <AccordionLine.ActionButton
           buttonText={
             <ActionButtonContent>

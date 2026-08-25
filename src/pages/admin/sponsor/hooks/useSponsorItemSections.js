@@ -21,7 +21,7 @@ export function useSponsorItemSections(sponsor) {
 
   const validateItems = () => {
     const isEmpty = itemSections.every((section) => section.items.length === 0);
-    const error = isEmpty ? '협찬품을 1개 이상 등록해주세요.' : undefined;
+    const error = isEmpty ? '내용을 입력해주세요.' : undefined;
     setItemsError(error);
     return error;
   };
