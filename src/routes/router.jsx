@@ -41,6 +41,7 @@ import { boothRoutes } from '@/pages/booth/routes';
 import BoothNoticeFormScreen from '@/pages/booth/BoothNoticeFormScreen';
 import MapScreen from '@/pages/map/MapScreen';
 import { manageRoutes } from '@/pages/manage/routes';
+import { adminRoutes } from '@/pages/admin/sponsor/routes';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -83,16 +84,16 @@ export const router = createBrowserRouter([
       { path: ADMIN_ROUTES.CODE, element: <AdminCodeScreen /> },
       { path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardScreen /> },
       { path: ADMIN_ROUTES.FAQ, element: <FaqCreateScreen /> },
-      { path: ADMIN_ROUTES.FAQEDIT(':faqId'), element: <FaqEditScreen /> },
+      { path: ADMIN_ROUTES.FAQ_EDIT(':faqId'), element: <FaqEditScreen /> },
       { path: NOTICE_ROUTE, element: <NoticeScreen /> },
       { path: ADMIN_ROUTES.EVENT, element: <EventCreateScreen /> },
       {
-        path: ADMIN_ROUTES.EVENTEDIT(':eventId'),
+        path: ADMIN_ROUTES.EVENT_EDIT(':eventId'),
         element: <EventEditScreen />,
       },
       { path: ADMIN_ROUTES.BANNER, element: <BannerCreateScreen /> },
       {
-        path: ADMIN_ROUTES.BANNEREDIT(':bannerId'),
+        path: ADMIN_ROUTES.BANNER_EDIT(':bannerId'),
         element: <BannerEditScreen />,
       },
       { path: SPONSOR_ROUTES.DETAIL(':id'), element: <SponsorScreen /> },
@@ -121,6 +122,7 @@ export const router = createBrowserRouter([
       },
       { path: EMC_INTRODUCTION_ROUTE, element: <EmcIntroductionScreen /> },
 
+      ...adminRoutes.withoutFooter,
       ...boothRoutes.withoutFooter,
       ...manageRoutes.withoutFooter,
       ...searchRoutes.full,
