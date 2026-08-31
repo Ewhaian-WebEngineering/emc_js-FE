@@ -1,5 +1,5 @@
 import Tag from '@/designsystem/components/tag/Tag';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   EventListItem,
   EventSection,
@@ -20,6 +20,11 @@ export default function EventList({ list }) {
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState(EVENT_TABS[0].key);
   const filteredList = list?.[selectedTab] ?? [];
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
+  }, [selectedTab]);
 
   return (
     <EventSection>
@@ -28,7 +33,7 @@ export default function EventList({ list }) {
         selectedTab={selectedTab}
         onSelect={setSelectedTab}
       />
-      <ListScroll>
+      <ListScroll ref={scrollRef}>
         {filteredList.map((event) => (
           <EventListItem key={event.id}>
             <EventCard
