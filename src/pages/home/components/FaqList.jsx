@@ -7,17 +7,17 @@ export default function FaqList({ list }) {
 
   return (
     <FaqListWrapper>
-      {list.map(({ question, answer }, index) => (
+      {list.map((faq) => (
         <AccordionLine
           size="md"
-          key={index}
-          title={`Q. ${question}`}
-          expanded={openIndex === index}
+          key={faq.id}
+          title={`Q. ${faq.question}`}
+          expanded={openIndex === faq.id}
           onToggle={() =>
-            setOpenIndex((prev) => (prev === index ? null : index))
+            setOpenIndex((prev) => (prev === faq.id ? null : faq.id))
           }
         >
-          <FaqAnswer>{answer}</FaqAnswer>
+          <FaqAnswer>{faq.answer}</FaqAnswer>
         </AccordionLine>
       ))}
     </FaqListWrapper>

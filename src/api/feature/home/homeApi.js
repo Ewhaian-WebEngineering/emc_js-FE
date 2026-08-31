@@ -11,3 +11,7 @@ export const getHomeSponsors = async () => {
 export const getHomeEvents = async () => {
   return instance.get('/api/events/home');
 };
+
+export const getHomeFaqs = async () => {
+  return instance.get('/api/faqs');
+};

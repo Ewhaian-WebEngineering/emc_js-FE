@@ -29,7 +29,6 @@ import PopularBoothRanking from './components/PopularBoothRanking';
 import ViewAllButton from './components/ViewAllButton';
 import SponsorList from './components/SponsorList';
 import EventTabs from './components/EventList';
-import { FAQ_LIST } from '@/pages/home/constants/faq';
 import FaqList from './components/FaqList';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { useNavigate } from 'react-router-dom';
@@ -45,7 +44,7 @@ import { useHomeData } from '@/api/feature/home/useHomeData';
 export default function HomeScreen() {
   const navigate = useNavigate();
 
-  const { popularBoothData, sponsorData, eventData } = useHomeData();
+  const { popularBoothData, sponsorData, eventData, faqData } = useHomeData();
 
   return (
     <>
@@ -142,7 +141,7 @@ export default function HomeScreen() {
         <SectionHeader>
           <SectionTitle>자주 묻는 질문 FAQ</SectionTitle>
         </SectionHeader>
-        <FaqList list={FAQ_LIST} />
+        <FaqList list={faqData || []} />
       </SectionContainer>
 
       <ContactUsSection>
