@@ -28,7 +28,6 @@ import Divider from '@/designsystem/components/divider/Divider';
 import PopularBoothRanking from './components/PopularBoothRanking';
 import ViewAllButton from './components/ViewAllButton';
 import SponsorList from './components/SponsorList';
-import { SPONSOR_LIST } from '@/pages/home/constants/sponsor';
 import EventTabs from './components/EventList';
 import { EVENT_LIST } from '@/pages/home/constants/event';
 import { FAQ_LIST } from '@/pages/home/constants/faq';
@@ -42,12 +41,16 @@ import {
   SPONSOR_ROUTES,
 } from '@/constants/routes';
 import AdminCertification from '@/components/footer/AdminCertification';
-import { usePopularBooths } from '@/api/feature/home/useHomeData';
+import {
+  useHomeSponsors,
+  usePopularBooths,
+} from '@/api/feature/home/useHomeData';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
 
   const { data: popularBoothData } = usePopularBooths();
+  const { data: sponsorData } = useHomeSponsors();
 
   return (
     <>
@@ -116,7 +119,7 @@ export default function HomeScreen() {
             }}
           />
         </SectionHeader>
-        <SponsorList list={SPONSOR_LIST} />
+        <SponsorList list={sponsorData || []} />
       </SectionContainer>
 
       <Divider size="lg" />
