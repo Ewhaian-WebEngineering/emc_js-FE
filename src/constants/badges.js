@@ -24,7 +24,7 @@ const BADGE_MAP = {
     color: purple[400],
     backgroundColor: purple[50],
   },
-  fashionBeauty: {
+  fashion_beauty: {
     label: '패션/뷰티',
     color: pink[300],
     backgroundColor: pink[50],

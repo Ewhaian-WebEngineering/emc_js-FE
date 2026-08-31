@@ -1,5 +1,4 @@
 import { formatDate } from '@/utils/formatDate';
-import { STATUS_LABEL } from '@/constants/eventStatus';
 import CardPlaceholder from '../../Placeholder';
 import {
   EventCardContainer,
@@ -47,9 +46,7 @@ export default function EventCard({
             {endDate && ` - ${formatDate(endDate)}`}
           </EventCardDate>
         </EventCardInfoWrapper>
-        <EventCardStatus status={status}>
-          {STATUS_LABEL[status]}
-        </EventCardStatus>
+        <EventCardStatus status={status}>{status}</EventCardStatus>
       </EventCardContent>
     </EventCardContainer>
   );

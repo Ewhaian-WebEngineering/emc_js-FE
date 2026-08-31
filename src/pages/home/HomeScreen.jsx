@@ -25,14 +25,10 @@ import {
 import HomeIconButton from './components/HomeIconButton';
 import { ICON_LIST } from '@/pages/home/constants/icon';
 import Divider from '@/designsystem/components/divider/Divider';
-import { POPULAR_BOOTH_LIST } from '@/pages/home/constants/popularBooth';
 import PopularBoothRanking from './components/PopularBoothRanking';
 import ViewAllButton from './components/ViewAllButton';
 import SponsorList from './components/SponsorList';
-import { SPONSOR_LIST } from '@/pages/home/constants/sponsor';
 import EventTabs from './components/EventList';
-import { EVENT_LIST } from '@/pages/home/constants/event';
-import { FAQ_LIST } from '@/pages/home/constants/faq';
 import FaqList from './components/FaqList';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { useNavigate } from 'react-router-dom';
@@ -43,9 +39,12 @@ import {
   SPONSOR_ROUTES,
 } from '@/constants/routes';
 import AdminCertification from '@/components/footer/AdminCertification';
+import { useHomeData } from '@/api/feature/home/useHomeData';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
+
+  const { popularBoothData, sponsorData, eventData, faqData } = useHomeData();
 
   return (
     <>
@@ -91,10 +90,11 @@ export default function HomeScreen() {
       <SectionContainer>
         <SectionHeader>
           <SectionTitle>실시간 인기 부스 TOP 10</SectionTitle>
-          {/* TODO: 업데이트 시간 추가 */}
-          <PopularBoothUpdateTime>오늘 HH:MM 기준</PopularBoothUpdateTime>
+          <PopularBoothUpdateTime>
+            오늘 {popularBoothData?.updatedAt || '00:00'} 기준
+          </PopularBoothUpdateTime>
         </SectionHeader>
-        <PopularBoothRanking list={POPULAR_BOOTH_LIST} />
+        <PopularBoothRanking list={popularBoothData?.booths || []} />
       </SectionContainer>
 
       <Divider size="lg" />
@@ -113,7 +113,7 @@ export default function HomeScreen() {
             }}
           />
         </SectionHeader>
-        <SponsorList list={SPONSOR_LIST} />
+        <SponsorList list={sponsorData || []} />
       </SectionContainer>
 
       <Divider size="lg" />
@@ -132,7 +132,7 @@ export default function HomeScreen() {
             }}
           />
         </SectionHeader>
-        <EventTabs list={EVENT_LIST} />
+        <EventTabs list={eventData || []} />
       </SectionContainer>
 
       <Divider size="lg" />
@@ -141,7 +141,7 @@ export default function HomeScreen() {
         <SectionHeader>
           <SectionTitle>자주 묻는 질문 FAQ</SectionTitle>
         </SectionHeader>
-        <FaqList list={FAQ_LIST} />
+        <FaqList list={faqData || []} />
       </SectionContainer>
 
       <ContactUsSection>

@@ -15,19 +15,19 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SponsorList({ list }) {
   const navigate = useNavigate();
-  const [selectedSponsor, setSelectedSponsor] = useState(list[0]?.sponsorName);
-  const selected = list.find((s) => s.sponsorName === selectedSponsor);
+  const [selectedSponsor, setSelectedSponsor] = useState(list[0]?.name);
+  const selected = list.find((s) => s.name === selectedSponsor);
 
   return (
     <SponsorListSection>
       <ListScroll>
         {list.map((sponsor) => (
           <SponsorItem
-            key={sponsor.sponsorName}
-            sponsorName={sponsor.sponsorName}
-            thumbnail={sponsor.thumbnail}
-            isSelected={selectedSponsor === sponsor.sponsorName}
-            onClick={() => setSelectedSponsor(sponsor.sponsorName)}
+            key={sponsor.id}
+            name={sponsor.name}
+            imageUrl={sponsor.imageUrl}
+            isSelected={selectedSponsor === sponsor.name}
+            onClick={() => setSelectedSponsor(sponsor.name)}
           />
         ))}
       </ListScroll>
@@ -45,17 +45,17 @@ export default function SponsorList({ list }) {
   );
 }
 
-function SponsorItem({ sponsorName, thumbnail, isSelected, onClick }) {
+function SponsorItem({ name, imageUrl, isSelected, onClick }) {
   return (
     <SponsorItemContainer onClick={onClick}>
       <SponsorItemThumbnail isSelected={isSelected}>
-        {thumbnail ? (
-          <img src={thumbnail} alt={sponsorName} />
+        {imageUrl ? (
+          <img src={imageUrl} alt={name} />
         ) : (
           <Placeholder width={70} height={70} />
         )}
       </SponsorItemThumbnail>
-      <SponsorName isSelected={isSelected}>{sponsorName}</SponsorName>
+      <SponsorName isSelected={isSelected}>{name}</SponsorName>
     </SponsorItemContainer>
   );
 }

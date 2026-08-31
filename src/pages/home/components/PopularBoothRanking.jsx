@@ -28,7 +28,7 @@ export default function PopularBoothRanking({ list }) {
         <RankingPage key={pageIndex}>
           {page.map((booth, boothIndex) => (
             <RankingItem
-              key={booth.id}
+              key={booth.boothId}
               rank={pageIndex * BOOTH_PER_PAGE + boothIndex + 1}
               booth={booth}
             />
@@ -43,7 +43,7 @@ function RankingItem({ rank, booth }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(BOOTH_ROUTES.DETAIL(booth.id));
+    navigate(BOOTH_ROUTES.DETAIL(booth.boothId));
   };
 
   return (
@@ -51,10 +51,11 @@ function RankingItem({ rank, booth }) {
       <RankingNumber rank={rank}>{rank}</RankingNumber>
       <BoothHomeCard
         boothNumber={booth.boothNumber}
-        boothName={booth.boothName}
-        badges={booth.badges}
-        thumbnails={booth.thumbnails}
-        marks={booth.marks}
+        boothName={booth.name}
+        categories={booth.categories}
+        thumbnailUrl={booth.thumbnailUrl}
+        isVegan={booth.isVegan}
+        isEco={booth.isEco}
         onClick={handleClick}
       />
     </RankingItemContainer>

@@ -50,5 +50,5 @@ export const EventCardDate = styled.p`
 export const EventCardStatus = styled.span`
   ${typography.body2Medium};
   color: ${({ status }) =>
-    status === 'ongoing' ? semantic.statusInfo : semantic.textNormalNormal};
+    status === '진행중' ? semantic.statusInfo : semantic.textNormalNormal};
 `;
