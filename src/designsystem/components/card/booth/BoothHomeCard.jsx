@@ -20,7 +20,7 @@ import {
  *
  * @param {string|number} boothNumber - 부스 번호
  * @param {string} boothName - 부스 이름
- * @param {Array<string>} [badges=[]] - 표시할 배지 타입 목록
+ * @param {Array<string>} [categories=[]] - 표시할 카테고리 목록
  * @param {string} [thumbnail] - 부스 썸네일 이미지 URL, 없으면 placeholder 표시
  * @param {Array<string>} [marks=[]] - 썸네일 위에 표시할 mark 아이콘 종류 목록
  * @param {function} [onClick] - 카드 클릭 시 호출되는 함수
@@ -28,16 +28,19 @@ import {
 export default function BoothHomeCard({
   boothNumber,
   boothName,
-  badges = [],
-  thumbnail,
-  marks = [],
+  categories = [],
+  thumbnailUrl,
+  isVegan = false,
+  isEco = false,
   onClick,
 }) {
+  const marks = [isEco && 'eco', isVegan && 'vegan'].filter(Boolean);
+
   return (
     <BoothHomeCardContainer onClick={onClick}>
       <BoothCardThumbnailSm>
-        {thumbnail ? (
-          <img src={thumbnail} alt={boothName} />
+        {thumbnailUrl ? (
+          <img src={thumbnailUrl} alt={boothName} />
         ) : (
           <CardPlaceholder />
         )}
@@ -54,11 +57,11 @@ export default function BoothHomeCard({
           <BoothCardName>{boothName}</BoothCardName>
         </BoothCardTextWrapper>
         <BoothCardBadges>
-          {badges.slice(0, 2).map((badge) => (
-            <Badge key={badge} size="sm" variant={badge} />
+          {categories.slice(0, 2).map((category) => (
+            <Badge key={category} size="sm" variant={category} />
           ))}
-          {badges.length > 2 && (
-            <BoothCardMore>+{badges.length - 2}</BoothCardMore>
+          {categories.length > 2 && (
+            <BoothCardMore>+{categories.length - 2}</BoothCardMore>
           )}
         </BoothCardBadges>
       </BoothCardContent>
