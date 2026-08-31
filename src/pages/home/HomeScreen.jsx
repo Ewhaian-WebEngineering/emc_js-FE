@@ -40,18 +40,12 @@ import {
   SPONSOR_ROUTES,
 } from '@/constants/routes';
 import AdminCertification from '@/components/footer/AdminCertification';
-import {
-  useHomeEvents,
-  useHomeSponsors,
-  usePopularBooths,
-} from '@/api/feature/home/useHomeData';
+import { useHomeData } from '@/api/feature/home/useHomeData';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
 
-  const { data: popularBoothData } = usePopularBooths();
-  const { data: sponsorData } = useHomeSponsors();
-  const { data: eventData } = useHomeEvents();
+  const { popularBoothData, sponsorData, eventData } = useHomeData();
 
   return (
     <>

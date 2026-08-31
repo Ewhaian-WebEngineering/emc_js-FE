@@ -1,23 +1,18 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQueries } from '@tanstack/react-query';
 import { getHomeEvents, getHomeSponsors, getPopularBooths } from './homeApi';
 
-export const usePopularBooths = () => {
-  return useSuspenseQuery({
-    queryKey: ['popular-booths'],
-    queryFn: getPopularBooths,
+export const useHomeData = () => {
+  const [boothsResult, sponsorsResult, eventsResult] = useSuspenseQueries({
+    queries: [
+      { queryKey: ['popular-booths'], queryFn: getPopularBooths },
+      { queryKey: ['home-sponsors'], queryFn: getHomeSponsors },
+      { queryKey: ['home-events'], queryFn: getHomeEvents },
+    ],
   });
-};
 
-export const useHomeSponsors = () => {
-  return useSuspenseQuery({
-    queryKey: ['home-sponsors'],
-    queryFn: getHomeSponsors,
-  });
-};
-
-export const useHomeEvents = () => {
-  return useSuspenseQuery({
-    queryKey: ['home-events'],
-    queryFn: getHomeEvents,
-  });
+  return {
+    popularBoothData: boothsResult.data,
+    sponsorData: sponsorsResult.data,
+    eventData: eventsResult.data,
+  };
 };
