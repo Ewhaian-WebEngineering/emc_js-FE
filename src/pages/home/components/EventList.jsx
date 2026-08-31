@@ -12,14 +12,14 @@ import { useNavigate } from 'react-router-dom';
 
 const EVENT_TABS = [
   { key: 'pre', label: '사전' },
-  { key: 'onsite', label: '현장' },
+  { key: 'live', label: '현장' },
   { key: 'post', label: '사후' },
 ];
 
 export default function EventList({ list }) {
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState(EVENT_TABS[0].key);
-  const filteredList = list.filter((event) => event.category === selectedTab);
+  const filteredList = list?.[selectedTab] ?? [];
 
   return (
     <EventSection>
@@ -32,7 +32,7 @@ export default function EventList({ list }) {
         {filteredList.map((event) => (
           <EventListItem key={event.id}>
             <EventCard
-              thumbnail={event.thumbnail}
+              thumbnail={event.imageUrl}
               eventTitle={event.title}
               startDate={event.startDate}
               endDate={event.endDate}

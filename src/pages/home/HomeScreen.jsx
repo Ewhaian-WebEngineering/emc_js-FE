@@ -29,7 +29,6 @@ import PopularBoothRanking from './components/PopularBoothRanking';
 import ViewAllButton from './components/ViewAllButton';
 import SponsorList from './components/SponsorList';
 import EventTabs from './components/EventList';
-import { EVENT_LIST } from '@/pages/home/constants/event';
 import { FAQ_LIST } from '@/pages/home/constants/faq';
 import FaqList from './components/FaqList';
 import { semantic } from '@/designsystem/tokens/semantic';
@@ -42,6 +41,7 @@ import {
 } from '@/constants/routes';
 import AdminCertification from '@/components/footer/AdminCertification';
 import {
+  useHomeEvents,
   useHomeSponsors,
   usePopularBooths,
 } from '@/api/feature/home/useHomeData';
@@ -51,6 +51,7 @@ export default function HomeScreen() {
 
   const { data: popularBoothData } = usePopularBooths();
   const { data: sponsorData } = useHomeSponsors();
+  const { data: eventData } = useHomeEvents();
 
   return (
     <>
@@ -138,7 +139,7 @@ export default function HomeScreen() {
             }}
           />
         </SectionHeader>
-        <EventTabs list={EVENT_LIST} />
+        <EventTabs list={eventData || []} />
       </SectionContainer>
 
       <Divider size="lg" />

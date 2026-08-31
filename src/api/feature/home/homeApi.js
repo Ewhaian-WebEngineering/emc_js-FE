@@ -7,3 +7,7 @@ export const getPopularBooths = async () => {
 export const getHomeSponsors = async () => {
   return instance.get('/api/sponsors/home');
 };
+
+export const getHomeEvents = async () => {
+  return instance.get('/api/events/home');
+};

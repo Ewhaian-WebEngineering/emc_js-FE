@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { getHomeSponsors, getPopularBooths } from './homeApi';
+import { getHomeEvents, getHomeSponsors, getPopularBooths } from './homeApi';
 
 export const usePopularBooths = () => {
   return useSuspenseQuery({
@@ -12,5 +12,12 @@ export const useHomeSponsors = () => {
   return useSuspenseQuery({
     queryKey: ['home-sponsors'],
     queryFn: getHomeSponsors,
+  });
+};
+
+export const useHomeEvents = () => {
+  return useSuspenseQuery({
+    queryKey: ['home-events'],
+    queryFn: getHomeEvents,
   });
 };
