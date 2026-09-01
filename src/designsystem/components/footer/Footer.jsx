@@ -1,6 +1,7 @@
 import EwhaianSymbol from '@/assets/svg/symbol/ic_ewhaian_symbol.svg?react';
 import TextSymbol from '@/assets/svg/symbol/ic_ewhaian_symbol_text.svg?react';
 import { Fragment } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   MainFooter,
   Symbol,
@@ -17,6 +18,7 @@ import {
   TermDivider,
   Terms,
 } from './style';
+import { MAKERS_ROUTES } from '@/constants/routes';
 
 export default function Footer() {
   return (
@@ -39,14 +41,27 @@ export default function Footer() {
         </DonationInfoContainer>
 
         <LinksContainer>
-          {links.map((link, index) => (
-            <Fragment key={link.name}>
-              <Link href={link.href} target="_blank" rel="noopener noreferrer">
-                {link.name}
-              </Link>
-              {index < links.length - 1 && <LinkDivider />}
-            </Fragment>
-          ))}
+          {links.map((link, index) => {
+            const isInternal = link.href === MAKERS_ROUTES.LIST;
+            return (
+              <Fragment key={link.name}>
+                {isInternal ? (
+                  <Link as={RouterLink} to={link.href}>
+                    {link.name}
+                  </Link>
+                ) : (
+                  <Link
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.name}
+                  </Link>
+                )}
+                {index < links.length - 1 && <LinkDivider />}
+              </Fragment>
+            );
+          })}
         </LinksContainer>
 
         <TermsContainer>
@@ -83,6 +98,10 @@ const links = [
   {
     name: '고객센터',
     href: 'http://pf.kakao.com/_QCjvn/chat',
+  },
+  {
+    name: '만든이들',
+    href: MAKERS_ROUTES.LIST,
   },
 ];
 
