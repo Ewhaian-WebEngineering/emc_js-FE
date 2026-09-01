@@ -27,8 +27,8 @@ const THUMBNAIL_SLOT_COUNT = 4;
  * @param {string|number} boothNumber - 부스 번호
  * @param {string} boothName - 부스 이름
  * @param {string} boothDescription - 부스 설명
- * @param {Array<string>} [badges=[]] - 표시할 배지 타입 목록
- * @param {Array<string>} [thumbnails=[]] - 부스 썸네일 이미지 URL 목록, 비어있으면 각 자리에 placeholder 표시
+ * @param {Array<string>} [categories=[]] - 표시할 배지 타입 목록
+ * @param {Array<string>} [productImages=[]] - 부스 제품 이미지 URL 목록, 비어있으면 각 자리에 placeholder 표시
  * @param {Array<string>} [marks=[]] - 첫 번째 썸네일 위에 표시할 mark 아이콘 종류 목록
  * @param {boolean} [isBookmarked=false] - 북마크 여부
  * @param {function} [onClick] - 카드 클릭 시 호출되는 함수
@@ -38,17 +38,19 @@ export default function BoothListCard({
   boothNumber,
   boothName,
   boothDescription,
-  badges = [],
-  thumbnails = [],
-  marks = [],
+  categories = [],
+  productImages = [],
+  isVegan = false,
+  isEco = false,
   isBookmarked = false,
   onClick,
   onBookmarkClick,
 }) {
   const displayThumbnails = Array.from(
     { length: THUMBNAIL_SLOT_COUNT },
-    (_, index) => thumbnails[index] ?? null,
+    (_, index) => productImages[index] ?? null,
   );
+  const marks = [isEco && 'eco', isVegan && 'vegan'].filter(Boolean);
   const formattedBoothNumber = String(boothNumber).padStart(2, '0');
 
   return (
@@ -89,13 +91,15 @@ export default function BoothListCard({
               {isBookmarked ? <BookmarkFillIcon /> : <BookmarkStrokeIcon />}
             </BoothListCardBookmarkIcon>
           </BoothListCardInfoWrapper>
-          <BoothListCardDescription>
-            {boothDescription}
-          </BoothListCardDescription>
+          {boothDescription && (
+            <BoothListCardDescription>
+              {boothDescription}
+            </BoothListCardDescription>
+          )}
         </BoothCardTextWrapper>
         <BoothCardBadges>
-          {badges.map((badge) => (
-            <Badge key={badge} size="sm" variant={badge} />
+          {categories.map((category) => (
+            <Badge key={category} size="sm" variant={category} />
           ))}
         </BoothCardBadges>
       </BoothCardContent>

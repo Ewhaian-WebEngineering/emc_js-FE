@@ -79,3 +79,10 @@ export const TrendingBoothGrid = styled.div`
   column-gap: ${measurement.spacing24};
   row-gap: ${measurement.spacing8};
 `;
+
+export const InfiniteScrollLoader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: ${measurement.spacing16} 0;
+`;

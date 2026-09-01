@@ -3,9 +3,6 @@ import { SpinnerCircle } from './style';
 
 /**
  * 로딩 상태를 나타내는 원형 스피너입니다.
- *
- * @param {'sm'|'md'|'lg'} [size='md'] - 스피너 크기
- * @param {string} [color] - 회전하는 부분의 색상. 기본값은 primary 색상
  */
 export default function Spinner() {
   return (
