@@ -5,7 +5,7 @@ export const useSearchBooths = ({ q, category, sort, time }) => {
   return useInfiniteQuery({
     queryKey: ['booth-search', q, category, sort, time],
     queryFn: ({ pageParam }) =>
-      searchBooths({ q, category, sort, time, cursor: pageParam, limit: 5 }),
+      searchBooths({ q, category, sort, time, cursor: pageParam, limit: 10 }),
     initialPageParam: undefined,
     getNextPageParam: (lastPage) =>
       lastPage.hasMore ? lastPage.nextCursor : undefined,
