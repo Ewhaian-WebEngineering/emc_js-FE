@@ -12,3 +12,7 @@ export const searchBooths = ({
     params: { q, category, sort, time, cursor, limit },
   });
 };
+
+export const searchPopularBooths = async () => {
+  return instance.get('/api/search/popular');
+};

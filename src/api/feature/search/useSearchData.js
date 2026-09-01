@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { searchBooths } from './searchApi';
+import { useInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { searchBooths, searchPopularBooths } from './searchApi';
 
 export const useSearchBooths = ({ q, category, sort, time }) => {
   return useInfiniteQuery({
@@ -11,4 +11,15 @@ export const useSearchBooths = ({ q, category, sort, time }) => {
       lastPage.hasMore ? lastPage.nextCursor : undefined,
     enabled: !!q,
   });
+};
+
+export const useSearchData = () => {
+  const popularBoothsQuery = useSuspenseQuery({
+    queryKey: ['popular-booth-search'],
+    queryFn: searchPopularBooths,
+  });
+
+  return {
+    popularBooths: popularBoothsQuery.data,
+  };
 };
