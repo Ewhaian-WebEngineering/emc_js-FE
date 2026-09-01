@@ -43,6 +43,11 @@ function ToolBar({
   filterValue,
   onFilterChange,
 }) {
+  const selectedSort = SORT_OPTIONS.find((opt) => opt.value === sortValue);
+  const selectedFilter = OPERATING_TIME_OPTIONS.find(
+    (opt) => opt.value === filterValue,
+  );
+
   return (
     <ToolBarWrapper>
       <BoothCount>총 {count}개의 부스</BoothCount>
@@ -50,15 +55,15 @@ function ToolBar({
         <Select
           size="sm"
           options={SORT_OPTIONS}
-          value={sortValue}
-          onChange={onSortChange}
+          value={selectedSort}
+          onChange={(option) => onSortChange(option.value)}
           align="right"
         />
         <Select
           size="sm"
           options={OPERATING_TIME_OPTIONS}
-          value={filterValue}
-          onChange={onFilterChange}
+          value={selectedFilter}
+          onChange={(option) => onFilterChange(option.value)}
           prefix="운영시간"
           align="right"
         />

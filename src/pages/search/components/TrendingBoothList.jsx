@@ -11,11 +11,11 @@ export default function TrendingBoothList({ trendingBooths }) {
 
   return (
     <TrendingBoothGrid>
-      {trendingBooths.slice(0, 10).map((booth, index) => (
+      {trendingBooths.slice(0, 10).map((booth) => (
         <TrendingBooth
-          key={booth.boothId}
-          ranking={index + 1}
-          boothName={booth.boothName}
+          key={booth.id}
+          ranking={booth.rank}
+          boothName={booth.name}
           onClick={() => navigate(`/booth/${booth.boothId}`)}
         />
       ))}

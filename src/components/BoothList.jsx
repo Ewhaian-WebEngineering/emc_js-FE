@@ -15,12 +15,13 @@ export default function BoothList({ booths }) {
           <BoothListCardWrapper>
             <BoothListCard
               boothNumber={booth.boothNumber}
-              boothName={booth.boothName}
-              boothDescription={booth.boothDescription}
-              badges={booth.badges}
-              thumbnails={booth.thumbnails}
-              marks={booth.marks}
-              isBookmarked={booth.isBookmarked}
+              boothName={booth.name}
+              boothDescription={booth.description}
+              categories={booth.categories}
+              productImages={booth.productImages}
+              isVegan={booth.isVegan}
+              isEco={booth.isEco}
+              isBookmarked={booth.isScrapped}
               onClick={() => {
                 navigate(BOOTH_ROUTES.DETAIL(booth.id));
               }}

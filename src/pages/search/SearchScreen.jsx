@@ -15,9 +15,9 @@ import {
 } from './style';
 import { SectionTitle } from '../home/style';
 import TrendingBoothList from './components/TrendingBoothList';
-import { TRENDING_BOOTHS } from './constants/trendingBooths';
 import { useGoBack } from '@/hooks/useGoBack';
 import { SEARCH_ROUTES } from '@/constants/routes';
+import { useSearchData } from '@/api/feature/search/useSearchData';
 
 export default function SearchScreen() {
   const navigate = useNavigate();
@@ -28,6 +28,8 @@ export default function SearchScreen() {
     '최근검색어2',
     '최근검색어3',
   ]);
+
+  const { popularBooths } = useSearchData();
 
   return (
     <>
@@ -94,18 +96,17 @@ export default function SearchScreen() {
           <SearchSectionHeader>
             <SectionTitle>실시간 인기 부스</SectionTitle>
             <UpdateTimeStamp>
-              {/* TODO: 실시간 업데이트 시간 표시 */}
-              오늘 HH:MM 기준
+              오늘 {popularBooths.updatedAt} 기준
             </UpdateTimeStamp>
           </SearchSectionHeader>
-          {TRENDING_BOOTHS.length === 0 ? (
+          {popularBooths.booths.length === 0 ? (
             <EmptyState
               variant="sm"
               description="인기 부스를 집계 중이에요. 잠시 후 다시 확인해주세요."
               height={132}
             />
           ) : (
-            <TrendingBoothList trendingBooths={TRENDING_BOOTHS} />
+            <TrendingBoothList trendingBooths={popularBooths.booths} />
           )}
         </TrendingBoothSection>
       </SearchContent>

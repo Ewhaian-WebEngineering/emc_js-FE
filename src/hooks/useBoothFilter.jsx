@@ -1,25 +1,36 @@
-import { OPERATING_TIME_OPTIONS, SORT_OPTIONS } from '@/constants/filter';
-import { useMemo, useState } from 'react';
+import { useSearchBooths } from '@/api/feature/search/useSearchData';
+import { useState } from 'react';
 
-export function useBoothFilter(source, initialCategory = 'all') {
+export function useBoothFilter(q, initialCategory = 'all') {
   const [category, setCategory] = useState(initialCategory);
-  const [sortOption, setSortOption] = useState(SORT_OPTIONS[0]);
-  const [filterOption, setFilterOption] = useState(OPERATING_TIME_OPTIONS[0]);
+  const [sort, setSort] = useState('number');
+  const [time, setTime] = useState('all');
 
-  const booths = useMemo(() => {
-    if (category === 'all') return source;
-    return source.filter((booth) => booth.badges.includes(category));
-  }, [source, category]);
+  const {
+    data,
+    error,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useSearchBooths({ q, category, sort, time });
 
-  // TODO: sortOption과 filterOption에 따른 booths 필터링 로직 추가
+  const booths = data?.pages.flatMap((page) => page.booths) ?? [];
+  const totalCount = data?.pages[0]?.totalCount ?? 0;
 
   return {
     category,
     setCategory,
-    sortOption,
-    setSortOption,
-    filterOption,
-    setFilterOption,
+    sort,
+    setSort,
+    time,
+    setTime,
     booths,
+    totalCount,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    error,
+    isError,
   };
 }
