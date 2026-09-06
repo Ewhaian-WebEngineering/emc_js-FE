@@ -84,8 +84,7 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
       <ContentContainer>
         <TextField
           maxLength={25}
-          onChange={(e) => updateField('que')(e.target.value)}
-          onBlur={handleBlur('que')}
+          onChange={(value) => updateField('que')(value)}
           placeholder="예) 종합손물세트가 무엇인가요?"
           required
           title="질문 내용"
@@ -96,7 +95,7 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
 
         <TextArea
           maxLength={1000}
-          onChange={(e) => updateField('ans')(e.target.value)}
+          onChange={(value) => updateField('ans')(value)}
           onBlur={handleBlur('ans')}
           placeholder="답변 내용을 입력해주세요. (최대 1000자)"
           required
