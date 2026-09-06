@@ -10,7 +10,7 @@ import {
 } from './style.js';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES, TAB_ROUTES } from '../../constants/routes';
-import { useAdminVerify } from '../../api/feature/admin/useAdminVerify';
+import { useAdminVerify } from '../../api/feature/admin/useAdminData';
 
 export default function AdminCodeScreen() {
   const navigate = useNavigate();
