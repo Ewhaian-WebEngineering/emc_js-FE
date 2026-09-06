@@ -4,10 +4,13 @@ import { semantic } from '@/designsystem/tokens/semantic';
 import { SearchButton } from './style';
 import { SEARCH_ROUTES } from '@/constants/routes';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { DUMMY_BOOTHS } from '../../constants/dummyBooths';
 import BoothList from '@/components/BoothList';
 import { useBoothFilter } from '@/hooks/useBoothFilter';
 import BoothFilterBar from '@/components/BoothFilterBar';
+import { useBoothData } from '@/api/feature/booth/useBoothData';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import Spinner from '@/designsystem/components/spinner/Spinner';
+import { InfiniteScrollLoader } from '@/components/common/style';
 
 export default function BoothScreen() {
   const navigate = useNavigate();
@@ -15,15 +18,22 @@ export default function BoothScreen() {
 
   const initialCategory = searchParams.get('category') || 'all';
 
+  const { category, setCategory, sort, setSort, time, setTime } =
+    useBoothFilter(initialCategory);
+
   const {
-    category,
-    setCategory,
-    sortOption,
-    setSortOption,
-    filterOption,
-    setFilterOption,
-    booths,
-  } = useBoothFilter(DUMMY_BOOTHS, initialCategory);
+    boothListData,
+    totalCount,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useBoothData({ category, sort, time, limit: 20 });
+
+  const observerRef = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
 
   return (
     <>
@@ -41,15 +51,21 @@ export default function BoothScreen() {
         border
       />
       <BoothFilterBar
-        count={booths.length}
+        count={totalCount}
         categoryValue={category}
-        sortValue={sortOption}
-        onSortChange={setSortOption}
-        filterValue={filterOption}
-        onFilterChange={setFilterOption}
+        sortValue={sort}
+        onSortChange={setSort}
+        filterValue={time}
+        onFilterChange={setTime}
         onCategoryChange={setCategory}
       />
-      <BoothList booths={booths} />
+      <BoothList booths={boothListData} />
+      <div ref={observerRef} style={{ height: 1 }} />
+      {isFetchingNextPage && (
+        <InfiniteScrollLoader>
+          <Spinner />
+        </InfiniteScrollLoader>
+      )}
     </>
   );
 }
