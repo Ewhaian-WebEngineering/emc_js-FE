@@ -62,6 +62,7 @@ export default function AdminCodeScreen() {
           helperText={
             hasError ? '코드가 일치하지 않습니다. 다시 확인해 주세요.' : ''
           }
+          disabled={isPending}
         />
       </AdminAuthContent>
 
@@ -72,7 +73,7 @@ export default function AdminCodeScreen() {
           disabled={!code}
           onClick={handleConfirm}
         >
-          확인
+          {isPending ? '확인 중...' : '확인'}
         </BoxButton>
       </AdminAuthFooter>
     </AdminAuthContainer>
