@@ -19,6 +19,7 @@ import CardPlaceholder from '../../Placeholder';
 import { MARK_ICON } from '@/constants/marks';
 
 const THUMBNAIL_SLOT_COUNT = 4;
+const PRODUCT_IMAGE_SLOT_COUNT = THUMBNAIL_SLOT_COUNT - 1;
 
 /**
  * 부스 목록 카드 컴포넌트입니다.
@@ -39,6 +40,7 @@ export default function BoothListCard({
   boothName,
   boothDescription,
   categories = [],
+  thumbnailUrl,
   productImages = [],
   isVegan = false,
   isEco = false,
@@ -46,10 +48,13 @@ export default function BoothListCard({
   onClick,
   onBookmarkClick,
 }) {
-  const displayThumbnails = Array.from(
-    { length: THUMBNAIL_SLOT_COUNT },
-    (_, index) => productImages[index] ?? null,
-  );
+  const displayThumbnails = [
+    thumbnailUrl ?? null,
+    ...Array.from(
+      { length: PRODUCT_IMAGE_SLOT_COUNT },
+      (_, index) => productImages[index] ?? null,
+    ),
+  ];
   const marks = [isEco && 'eco', isVegan && 'vegan'].filter(Boolean);
   const formattedBoothNumber = String(boothNumber).padStart(2, '0');
 

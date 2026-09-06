@@ -9,7 +9,7 @@ import {
   InquiryIconWrapper,
 } from './style';
 
-export default function ContactTab({ contactUrl }) {
+export default function ContactTab({ inquiryUrl }) {
   return (
     <ContactTabContainer>
       <ContactTabTextWrapper>
@@ -21,13 +21,13 @@ export default function ContactTab({ contactUrl }) {
       </ContactTabTextWrapper>
       <ContactButton
         onClick={() => {
-          if (contactUrl) window.open(contactUrl, '_self');
+          if (inquiryUrl) window.open(inquiryUrl, '_blank');
         }}
       >
         <InquiryIconWrapper>
           <InquiryIcon color={semantic.secondaryYellowDefault} />
         </InquiryIconWrapper>
-        <ContactUrl>{contactUrl || '등록된 문의 창구가 없습니다.'}</ContactUrl>
+        <ContactUrl>{inquiryUrl || '등록된 문의 창구가 없습니다.'}</ContactUrl>
         <ShareIcon color={semantic.iconNormalNormal} />
       </ContactButton>
     </ContactTabContainer>

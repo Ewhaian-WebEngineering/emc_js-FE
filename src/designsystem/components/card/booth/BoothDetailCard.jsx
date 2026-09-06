@@ -27,11 +27,14 @@ import {
 export default function BoothDetailCard({
   boothNumber,
   boothName,
-  badges = [],
+  isEco = false,
+  isVegan = false,
+  categories = [],
   thumbnail,
-  marks = [],
   onClick,
 }) {
+  const marks = [isEco && 'eco', isVegan && 'vegan'].filter(Boolean);
+
   return (
     <BoothDetailCardContainer onClick={onClick}>
       <BoothCardThumbnailMd>
@@ -53,11 +56,11 @@ export default function BoothDetailCard({
           <BoothCardName>{boothName}</BoothCardName>
         </BoothCardTextWrapper>
         <BoothCardBadges>
-          {badges.slice(0, 1).map((badge) => (
-            <Badge key={badge} size="sm" variant={badge} />
+          {categories.slice(0, 1).map((category) => (
+            <Badge key={category} size="sm" variant={category} />
           ))}
-          {badges.length > 1 && (
-            <BoothCardMore>+{badges.length - 1}</BoothCardMore>
+          {categories.length > 1 && (
+            <BoothCardMore>+{categories.length - 1}</BoothCardMore>
           )}
         </BoothCardBadges>
       </BoothCardContent>

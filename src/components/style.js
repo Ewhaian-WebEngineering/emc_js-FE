@@ -151,6 +151,7 @@ export const RecommendBoothList = styled.div`
   margin-inline: -${measurement.spacing16};
   padding-inline: ${measurement.spacing16};
   overflow-x: auto;
+  flex-shrink: 0;
 `;
 
 export const AdminCertificationSection = styled.div`

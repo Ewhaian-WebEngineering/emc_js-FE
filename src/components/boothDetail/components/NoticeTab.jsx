@@ -3,6 +3,8 @@ import { semantic } from '@/designsystem/tokens/semantic';
 import { NoticeContent, NoticeTabContainer, NoticeTabHeader } from './style';
 
 export default function NoticeTab({ content }) {
+  if (!content) return null;
+
   return (
     <NoticeTabContainer>
       <NoticeTabHeader>
