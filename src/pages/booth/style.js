@@ -3,6 +3,12 @@ import { semantic } from '@/designsystem/tokens/semantic';
 import { typography } from '@/designsystem/tokens/typography';
 import styled from '@emotion/styled';
 
+export const ScreenWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
 export const SearchButton = styled.button`
   display: flex;
   align-items: center;

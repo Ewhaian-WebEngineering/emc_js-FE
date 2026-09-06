@@ -1,7 +1,7 @@
 import FillRightHeader from '@/designsystem/components/header/FillRightHeader';
 import SearchIcon from '@/assets/svg/28px/ic_search.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { SearchButton } from './style';
+import { ScreenWrapper, SearchButton } from './style';
 import { SEARCH_ROUTES } from '@/constants/routes';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import BoothList from '@/components/BoothList';
@@ -27,6 +27,7 @@ export default function BoothScreen() {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isLoading,
   } = useBoothData({ category, sort, time, limit: 20 });
 
   const observerRef = useInfiniteScroll({
@@ -36,7 +37,7 @@ export default function BoothScreen() {
   });
 
   return (
-    <>
+    <ScreenWrapper>
       <FillRightHeader
         title="부스"
         right={
@@ -59,13 +60,21 @@ export default function BoothScreen() {
         onFilterChange={setTime}
         onCategoryChange={setCategory}
       />
-      <BoothList booths={boothListData} />
-      <div ref={observerRef} style={{ height: 1 }} />
-      {isFetchingNextPage && (
+      {isLoading ? (
         <InfiniteScrollLoader>
           <Spinner />
         </InfiniteScrollLoader>
+      ) : (
+        <>
+          <BoothList booths={boothListData} />
+          <div ref={observerRef} style={{ height: 1 }} />
+          {isFetchingNextPage && (
+            <InfiniteScrollLoader>
+              <Spinner />
+            </InfiniteScrollLoader>
+          )}
+        </>
       )}
-    </>
+    </ScreenWrapper>
   );
 }

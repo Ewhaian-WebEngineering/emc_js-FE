@@ -50,6 +50,7 @@ export const ErrorButtonWrapper = styled.div`
 
 export const InfiniteScrollLoader = styled.div`
   display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
   padding: ${measurement.spacing16} 0;
