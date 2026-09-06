@@ -9,7 +9,8 @@ import { useBoothFilter } from '@/hooks/useBoothFilter';
 import BoothFilterBar from '../../components/BoothFilterBar';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import Spinner from '@/designsystem/components/spinner/Spinner';
-import { InfiniteScrollLoader } from './style';
+import { useSearchBooths } from '@/api/feature/search/useSearchData';
+import { InfiniteScrollLoader } from '@/components/common/style';
 
 export default function SearchResultScreen() {
   const navigate = useNavigate();
@@ -18,21 +19,20 @@ export default function SearchResultScreen() {
   const query = searchParams.get('query') || '';
   const [searchValue, setSearchValue] = useState(query);
 
+  const { category, setCategory, sort, setSort, time, setTime } =
+    useBoothFilter('all');
+
   const {
-    category,
-    setCategory,
-    sort,
-    setSort,
-    time,
-    setTime,
-    booths,
-    totalCount,
+    data,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     error,
     isError,
-  } = useBoothFilter(query);
+  } = useSearchBooths({ q: query, category, sort, time });
+
+  const booths = data?.pages.flatMap((page) => page.booths) ?? [];
+  const totalCount = data?.pages[0]?.totalCount ?? 0;
 
   const observerRef = useInfiniteScroll({
     hasNextPage,
