@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import { admincodeApi } from './admincodeApi';
+import { adminCodeApi } from './adminCodeApi';
 
 export function useAdminVerify() {
   return useMutation({
-    mutationFn: admincodeApi.adminVerify,
+    mutationFn: adminCodeApi.adminVerify,
   });
 }
