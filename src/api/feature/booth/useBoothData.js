@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { getBoothList } from './boothApi';
+import { useInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { getBoothDetail, getBoothList } from './boothApi';
 
 export const useBoothData = ({ category, sort, time, limit = 20 }) => {
   const {
@@ -31,5 +31,16 @@ export const useBoothData = ({ category, sort, time, limit = 20 }) => {
     isLoading,
     error,
     isError,
+  };
+};
+
+export const useBoothDetailData = (boothId) => {
+  const boothDetailQuery = useSuspenseQuery({
+    queryKey: ['booth-detail', boothId],
+    queryFn: () => getBoothDetail(boothId),
+  });
+
+  return {
+    booth: boothDetailQuery.data,
   };
 };

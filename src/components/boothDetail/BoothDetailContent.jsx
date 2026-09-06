@@ -69,16 +69,20 @@ export default function BoothDetailContent({
     navigate(BOOTH_ROUTES.NOTICE(boothId));
   };
 
+  const marks = [booth.isEco && 'eco', booth.isVegan && 'vegan'].filter(
+    Boolean,
+  );
+
   return (
     <>
       <RepresentativeImageWrapper>
-        {booth.representativeImage ? (
-          <img src={booth.representativeImage} alt="대표 이미지" />
+        {booth.thumbnailUrl ? (
+          <img src={booth.thumbnailUrl} alt="대표 이미지" />
         ) : (
           <Placeholder logoSize="30%" />
         )}
         <BoothMarks key={boothId}>
-          {booth.marks?.map((mark) => {
+          {marks.map((mark) => {
             const MarkIcon = MARK_ICON_LG[mark];
             return <MarkIcon key={mark} />;
           })}
@@ -87,29 +91,31 @@ export default function BoothDetailContent({
 
       <BoothInfo>
         <BoothInfoHeader>
-          <BoothName>{booth.boothName}</BoothName>
+          <BoothName>{booth.name}</BoothName>
           {interactive &&
-            (booth.isBookmarked ? (
+            (booth.isScrapped ? (
               <BookMarkFill color={semantic.iconPrimaryNormal} />
             ) : (
               <BookMarkStroke color={semantic.iconNormalAssistive} />
             ))}
         </BoothInfoHeader>
         <Badges>
-          {booth.tags?.map((tag) => (
-            <Badge key={tag} size="sm" variant={tag} />
+          {booth.categories?.map((category) => (
+            <Badge key={category} size="sm" variant={category} />
           ))}
         </Badges>
         <InfoList>
           <InfoRow>
             <InfoLabel>운영 시간</InfoLabel>
             <InfoValue>
-              {OPERATING_TIME_LABEL[booth.operatingTime] || booth.operatingTime}
+              {OPERATING_TIME_LABEL[booth.operationTime] || booth.operationTime}
             </InfoValue>
           </InfoRow>
           <InfoRow>
             <InfoLabel>현금 사용</InfoLabel>
-            <InfoValue>{CASH_USAGE_LABEL[booth.cash] || booth.cash}</InfoValue>
+            <InfoValue>
+              {CASH_USAGE_LABEL[booth.isCash] || booth.isCash}
+            </InfoValue>
           </InfoRow>
           <InfoRow>
             <InfoLabel>위치</InfoLabel>
@@ -119,38 +125,49 @@ export default function BoothDetailContent({
           </InfoRow>
           <InfoRow>
             <InfoLabel>URL</InfoLabel>
-            <LinkButton size="sm" variant="secondary" href={booth.url}>
-              {booth.url}
+            <LinkButton
+              size="sm"
+              variant="secondary"
+              href={booth.externalUrl}
+              target="_blank"
+            >
+              {booth.externalUrl}
             </LinkButton>
           </InfoRow>
         </InfoList>
         <NoticeCard onClick={handleNoticeClick}>
           <NoticeIcon color={semantic.iconPrimaryNormal} />
-          <NoticeContent announcement={booth.notice[0]?.title}>
-            {booth.notice[0]?.title || '등록된 공지가 없습니다.'}
+          <NoticeContent announcement={booth.latestNotice?.title}>
+            {booth.latestNotice?.content || '등록된 공지가 없습니다.'}
           </NoticeContent>
         </NoticeCard>
       </BoothInfo>
 
-      <Divider size="lg" />
+      {booth.description && (
+        <>
+          <Divider size="lg" />
+          <AccordionDescription
+            description={booth.description}
+            expanded={boothDescriptionExpanded}
+            onToggle={() =>
+              setBoothDescriptionExpanded(!boothDescriptionExpanded)
+            }
+          />
+        </>
+      )}
 
-      <AccordionDescription
-        description={booth.description}
-        expanded={boothDescriptionExpanded}
-        onToggle={() => setBoothDescriptionExpanded(!boothDescriptionExpanded)}
-      />
-
-      <Divider size="lg" />
-
-      {booth.tags.includes('food') && booth.allergyInfo && (
-        <AccordionDescription
-          title="원재료 / 알레르기 정보"
-          description={booth.allergyInfo}
-          expanded={allergyDescriptionExpanded}
-          onToggle={() =>
-            setAllergyDescriptionExpanded(!allergyDescriptionExpanded)
-          }
-        />
+      {booth.categories?.includes('food') && booth.allergenInfo && (
+        <>
+          <Divider size="lg" />
+          <AccordionDescription
+            title="원재료 / 알레르기 정보"
+            description={booth.allergenInfo}
+            expanded={allergyDescriptionExpanded}
+            onToggle={() =>
+              setAllergyDescriptionExpanded(!allergyDescriptionExpanded)
+            }
+          />
+        </>
       )}
 
       <Divider size="lg" />
@@ -178,14 +195,15 @@ export default function BoothDetailContent({
       <RecommendBooths>
         <RecommendBoothTitle>이 부스는 어때요?</RecommendBoothTitle>
         <RecommendBoothList>
-          {booth.recommendations?.map((recommendation) => (
+          {booth.recommendedBooths?.map((recommendation) => (
             <BoothDetailCard
               key={recommendation.id}
               boothNumber={recommendation.boothNumber}
-              boothName={recommendation.boothName}
-              thumbnail={recommendation.thumbnail}
-              marks={recommendation.marks}
-              badges={recommendation.tags}
+              boothName={recommendation.name}
+              thumbnail={recommendation.thumbnailUrl}
+              isVegan={recommendation.isVegan}
+              isEco={recommendation.isEco}
+              categories={recommendation.categories}
               onClick={interactive ? () => {} : undefined}
             />
           ))}

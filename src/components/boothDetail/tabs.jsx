@@ -11,11 +11,11 @@ export const BOOTH_DETAIL_TABS = [
   {
     id: 'notice',
     label: '안내사항',
-    render: (booth) => <NoticeTab content={booth.announcement} />,
+    render: (booth) => <NoticeTab content={booth.guides} />,
   },
   {
     id: 'qna',
     label: '고객문의',
-    render: (booth) => <ContactTab contactUrl={booth.contactUrl} />,
+    render: (booth) => <ContactTab inquiryUrl={booth.inquiryUrl} />,
   },
 ];

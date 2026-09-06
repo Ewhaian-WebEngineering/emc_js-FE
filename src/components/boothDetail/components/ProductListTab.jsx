@@ -11,15 +11,17 @@ export default function ProductListTab({ productGroups }) {
     <ProductListTabContainer>
       {productGroups.map((group) => (
         <ProductListTabContent key={group.id}>
-          <ProductListTabHeader>
-            <h2>{group.name}</h2>
-            <p>{group.description}</p>
-          </ProductListTabHeader>
+          {(group.name || group.description) && (
+            <ProductListTabHeader>
+              {group.name && <h2>{group.name}</h2>}
+              {group.description && <p>{group.description}</p>}
+            </ProductListTabHeader>
+          )}
           <ProductList>
             {group.products.map((product) => (
               <ProductVerticalCard
                 key={product.id}
-                thumbnail={product.thumbnail}
+                thumbnail={product.imageUrl}
                 productName={product.name}
                 productDescription={product.description}
                 productPrice={product.price}

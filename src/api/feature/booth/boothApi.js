@@ -5,3 +5,7 @@ export const getBoothList = ({ category, sort, time, cursor, limit = 20 }) => {
     params: { category, sort, time, cursor, limit },
   });
 };
+
+export const getBoothDetail = (boothId) => {
+  return instance.get(`/api/booths/${boothId}`);
+};
