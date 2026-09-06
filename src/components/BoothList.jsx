@@ -18,6 +18,7 @@ export default function BoothList({ booths }) {
               boothName={booth.name}
               boothDescription={booth.description}
               categories={booth.categories}
+              thumbnailUrl={booth.thumbnailUrl}
               productImages={booth.productImages}
               isVegan={booth.isVegan}
               isEco={booth.isEco}
