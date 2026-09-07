@@ -12,10 +12,11 @@ import {
 import AdminCertification from '@/components/footer/AdminCertification';
 import LoginBottomSheet from './components/LoginBottomSheet';
 import {
-  clearTokens,
   getAccessToken,
+  getUserNickname,
   getUserRole,
 } from '@/api/core/tokenStorage';
+import { getKakaoAuthorizeUrl, useLogout } from '@/api/feature/auth/useAuth';
 
 const MOCK_DATA = {
   userName: '김이화',
@@ -34,17 +35,22 @@ const CONTENT_BY_ROLE = {
 export default function MyScreen() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!getAccessToken());
   const [userRole, setUserRole] = useState(getUserRole() ?? 'user');
+  const [userName, setUserName] = useState(getUserNickname() ?? '');
   const [data, setData] = useState(MOCK_DATA);
   const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
+
+  const { mutate: logout } = useLogout();
 
   useEffect(() => {
     // TODO: isLoggedIn, userRole에 따른 유저/부스/행사 정보 조회
   }, [isLoggedIn, userRole]);
 
   const handleLogout = () => {
-    // TODO: 로그아웃 API 호출
-    clearTokens();
+    logout();
+
     setIsLoggedIn(false);
+    setUserRole('user');
+    setUserName('');
   };
 
   const handleLoginClick = () => {
@@ -52,6 +58,7 @@ export default function MyScreen() {
   };
 
   const handleKakaoLogin = () => {
+    window.location.href = getKakaoAuthorizeUrl();
     setIsLoginSheetOpen(false);
   };
 
@@ -67,7 +74,7 @@ export default function MyScreen() {
       <MyContentContainer>
         <MyUserRow
           isLoggedIn={isLoggedIn}
-          userName={data.userName}
+          userName={userName}
           onLogout={handleLogout}
           onLoginClick={handleLoginClick}
         />

@@ -35,6 +35,7 @@ import {
   MAP_ROUTE,
   EMC_INTRODUCTION_ROUTE,
   SELLER_ROUTES,
+  LOGIN_ROUTE,
 } from '../constants/routes';
 import EventDetailScreen from '@/pages/event/EventDetailScreen';
 import { boothRoutes } from '@/pages/booth/routes';
@@ -42,6 +43,7 @@ import BoothNoticeFormScreen from '@/pages/booth/BoothNoticeFormScreen';
 import MapScreen from '@/pages/map/MapScreen';
 import { manageRoutes } from '@/pages/manage/routes';
 import { adminRoutes } from '@/pages/admin/sponsor/routes';
+import KakaoCallBackScreen from '@/pages/auth/KakaoCallBackScreen';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -120,6 +122,10 @@ export const router = createBrowserRouter([
         element: <BoothNoticeFormScreen mode="edit" />,
       },
       { path: EMC_INTRODUCTION_ROUTE, element: <EmcIntroductionScreen /> },
+      {
+        path: LOGIN_ROUTE,
+        element: <KakaoCallBackScreen />,
+      },
 
       ...adminRoutes.withoutFooter,
       ...boothRoutes.withoutFooter,

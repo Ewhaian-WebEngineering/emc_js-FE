@@ -1,3 +1,5 @@
+export const LOGIN_ROUTE = '/login/load';
+
 export const TAB_ROUTES = {
   HOME: '/',
   EVENT: '/event',
