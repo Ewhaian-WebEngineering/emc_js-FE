@@ -4,7 +4,8 @@ import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader'
 import TextInput from '@/designsystem/components/textinput/TextInput';
 import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 import { BOOTH_ROUTES, TAB_ROUTES } from '@/constants/routes';
-import { sellerBoothDummy } from './constants/sellerDummy';
+import { useSellerVerify } from '@/api/feature/seller/useSellerData';
+import { setTokens } from '@/api/core/tokenStorage';
 import {
   SellerAuthContainer,
   SellerAuthContent,
@@ -15,26 +16,36 @@ import {
 export default function SellerCodeScreen() {
   const navigate = useNavigate();
   const [code, setCode] = useState('');
-  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const { mutate: verifySellerCode, isPending } = useSellerVerify();
 
   const handleChange = (e) => {
     setCode(e.target.value);
-    if (hasError) setHasError(false);
+    if (errorMessage) setErrorMessage('');
   };
 
   const handleConfirm = () => {
-    // TODO: API 연동 시 POST로 코드만 전송하여 서버에서 매칭 후 부스 정보 응답
-    const matchedBooth = sellerBoothDummy.find(
-      (booth) => booth.sellerCode === code.trim(),
-    );
-
-    if (matchedBooth) {
-      setHasError(false);
-      const boothId = matchedBooth.id;
-      navigate(BOOTH_ROUTES.DETAIL(boothId));
-    } else {
-      setHasError(true);
-    }
+    verifySellerCode(code.trim(), {
+      onSuccess: (data) => {
+        setTokens({
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          userRole: 'seller',
+        });
+        setErrorMessage('');
+        navigate(BOOTH_ROUTES.DETAIL(data.boothId));
+      },
+      onError: (error) => {
+        if (error?.status === 401) {
+          setErrorMessage('코드가 일치하지 않습니다. 다시 확인해 주세요.');
+        } else {
+          setErrorMessage(
+            '인증 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          );
+        }
+      },
+    });
   };
 
   return (
@@ -58,10 +69,9 @@ export default function SellerCodeScreen() {
           onChange={handleChange}
           placeholder="셀러 코드를 입력해주세요. 예) CODE"
           maxLength={20}
-          hasError={hasError}
-          helperText={
-            hasError ? '코드가 일치하지 않습니다. 다시 확인해 주세요.' : ''
-          }
+          hasError={!!errorMessage}
+          helperText={errorMessage}
+          disabled={isPending}
         />
       </SellerAuthContent>
 
@@ -69,10 +79,10 @@ export default function SellerCodeScreen() {
         <BoxButton
           size="md"
           type="primary"
-          disabled={!code}
+          disabled={!code.trim() || isPending}
           onClick={handleConfirm}
         >
-          확인
+          {isPending ? '확인 중...' : '확인'}
         </BoxButton>
       </SellerAuthFooter>
     </SellerAuthContainer>
