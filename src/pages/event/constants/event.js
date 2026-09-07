@@ -1,9 +1,9 @@
 export const defaultEventTab = 'pre';
 
 export const eventTabs = [
-  { id: 'pre', label: '사전 이벤트' },
-  { id: 'onsite', label: '현장 이벤트' },
-  { id: 'post', label: '사후 이벤트' },
+  { id: 'pre', apiKey: 'pre', label: '사전 이벤트' },
+  { id: 'onsite', apiKey: 'live', label: '현장 이벤트' },
+  { id: 'post', apiKey: 'post', label: '사후 이벤트' },
 ];
 
 export const eventTabDescriptions = {

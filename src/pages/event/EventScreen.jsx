@@ -60,8 +60,6 @@ export default function EventScreen() {
 
   const activeTabIndex = eventTabs.findIndex((tab) => tab.id === activeTab);
 
-  const apiTabKey = { pre: 'pre', onsite: 'live', post: 'post' };
-
   return (
     <S.ScreenContainer>
       <S.StickyHeader ref={stickyHeaderRef} isHeaderVisible={isHeaderVisible}>
@@ -87,7 +85,7 @@ export default function EventScreen() {
                 </S.SectionDescription>
               </S.SectionHeader>
               <S.CardList>
-                {(data?.[apiTabKey[tab.id]] ?? []).map((event) => (
+                {data[tab.apiKey].map((event) => (
                   <EventCard
                     key={event.id}
                     eventTitle={event.title}
