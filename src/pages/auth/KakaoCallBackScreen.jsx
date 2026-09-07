@@ -14,7 +14,7 @@ export default function KakaoCallBackScreen() {
     const code = searchParams.get('code');
 
     if (!code) {
-      navigate('/', { replace: true });
+      navigate('/my', { replace: true });
       return;
     }
 

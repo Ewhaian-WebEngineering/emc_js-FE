@@ -7,3 +7,7 @@ export const kakaoLogin = (code) => {
 export const refreshAccessToken = (refreshToken) => {
   return instance.post('/api/auth/refresh', { refreshToken });
 };
+
+export const logout = (refreshToken) => {
+  return instance.post('/api/auth/logout', { refreshToken });
+};

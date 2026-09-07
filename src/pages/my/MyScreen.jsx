@@ -12,12 +12,11 @@ import {
 import AdminCertification from '@/components/footer/AdminCertification';
 import LoginBottomSheet from './components/LoginBottomSheet';
 import {
-  clearTokens,
   getAccessToken,
   getUserNickname,
   getUserRole,
 } from '@/api/core/tokenStorage';
-import { getKakaoAuthoizeUrl } from '@/api/feature/auth/useAuth';
+import { getKakaoAuthorizeUrl, useLogout } from '@/api/feature/auth/useAuth';
 
 const MOCK_DATA = {
   userName: '김이화',
@@ -40,13 +39,15 @@ export default function MyScreen() {
   const [data, setData] = useState(MOCK_DATA);
   const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
+  const { mutate: logout } = useLogout();
+
   useEffect(() => {
     // TODO: isLoggedIn, userRole에 따른 유저/부스/행사 정보 조회
   }, [isLoggedIn, userRole]);
 
   const handleLogout = () => {
-    // TODO: 로그아웃 API 호출
-    clearTokens();
+    logout();
+
     setIsLoggedIn(false);
     setUserRole('user');
     setUserName('');
@@ -57,7 +58,7 @@ export default function MyScreen() {
   };
 
   const handleKakaoLogin = () => {
-    window.location.href = getKakaoAuthoizeUrl();
+    window.location.href = getKakaoAuthorizeUrl();
     setIsLoginSheetOpen(false);
   };
 

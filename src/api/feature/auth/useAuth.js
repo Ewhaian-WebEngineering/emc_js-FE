@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { kakaoLogin } from './authApi';
+import { kakaoLogin, logout } from './authApi';
 import { useMutation } from '@tanstack/react-query';
 import {
+  clearTokens,
   getAccessToken,
+  getRefreshToken,
   getUserNickname,
   setTokens,
 } from '@/api/core/tokenStorage';
@@ -20,12 +22,12 @@ export const useKakaoLogin = () => {
         userId: user.id,
         nickname: user.nickname,
       });
-      navigate('/');
+      navigate('/my');
     },
   });
 };
 
-export function getKakaoAuthoizeUrl() {
+export function getKakaoAuthorizeUrl() {
   const param = new URLSearchParams({
     client_id: import.meta.env.VITE_KAKAO_REST_API_KEY,
     redirect_uri: import.meta.env.VITE_KAKAO_REDIRECT_URI,
@@ -43,4 +45,13 @@ export const useAuth = () => {
     isLoggedIn: !!accessToken,
     nickname,
   };
+};
+
+export const useLogout = () => {
+  return useMutation({
+    mutationFn: () => logout(getRefreshToken()),
+    onSettled: () => {
+      clearTokens();
+    },
+  });
 };
