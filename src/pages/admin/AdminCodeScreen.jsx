@@ -10,6 +10,7 @@ import {
 } from './style.js';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES, TAB_ROUTES } from '../../constants/routes';
+import { useAdminVerify } from '../../api/feature/admin/useAdminData';
 
 export default function AdminCodeScreen() {
   const navigate = useNavigate();
@@ -21,15 +22,18 @@ export default function AdminCodeScreen() {
     if (hasError) setHasError(false);
   };
 
-  const handleConfirm = async () => {
-    try {
-      // TODO: 관리자 코드 인증 API 호출
+  const { mutate: verifyAdminCode, isPending } = useAdminVerify();
 
-      setHasError(false);
-      navigate(ADMIN_ROUTES.DASHBOARD);
-    } catch (err) {
-      setHasError(true);
-    }
+  const handleConfirm = () => {
+    verifyAdminCode(code, {
+      onSuccess: () => {
+        setHasError(false);
+        navigate(ADMIN_ROUTES.DASHBOARD);
+      },
+      onError: () => {
+        setHasError(true);
+      },
+    });
   };
 
   return (
@@ -58,6 +62,7 @@ export default function AdminCodeScreen() {
           helperText={
             hasError ? '코드가 일치하지 않습니다. 다시 확인해 주세요.' : ''
           }
+          disabled={isPending || isPending}
         />
       </AdminAuthContent>
 
@@ -68,7 +73,7 @@ export default function AdminCodeScreen() {
           disabled={!code}
           onClick={handleConfirm}
         >
-          확인
+          {isPending ? '확인 중...' : '확인'}
         </BoxButton>
       </AdminAuthFooter>
     </AdminAuthContainer>
