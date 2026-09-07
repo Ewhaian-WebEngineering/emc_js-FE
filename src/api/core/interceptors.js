@@ -35,7 +35,11 @@ export function attachResponseInterceptor(instance) {
     async (error) => {
       const { config, response } = error;
 
-      if (response?.status === 401 && !config._retry) {
+      const isTokenUnauthorized =
+        response?.status === 401 &&
+        response?.data?.error?.code === 'UNAUTHORIZED';
+
+      if (isTokenUnauthorized && !config._retry) {
         config._retry = true;
 
         if (isRefreshing) {

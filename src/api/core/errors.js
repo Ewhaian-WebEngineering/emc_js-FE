@@ -17,7 +17,6 @@ export class ApiError extends Error {
       });
     }
 
-    // TODO: 실제 에러 응답 형태 확인
     const { code, message } = response.data?.error ?? response.data ?? {};
     return new ApiError({
       code: code ?? 'UNKNOWN_ERROR',
