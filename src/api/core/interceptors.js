@@ -86,7 +86,7 @@ async function reissueAccessToken() {
   const refreshToken = getRefreshToken();
 
   const { data } = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/auth/reissue`,
+    `${import.meta.env.VITE_API_BASE_URL}/api/auth/refresh`,
     { refreshToken },
   );
 

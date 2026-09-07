@@ -14,8 +14,10 @@ import LoginBottomSheet from './components/LoginBottomSheet';
 import {
   clearTokens,
   getAccessToken,
+  getUserNickname,
   getUserRole,
 } from '@/api/core/tokenStorage';
+import { getKakaoAuthoizeUrl } from '@/api/feature/auth/useAuth';
 
 const MOCK_DATA = {
   userName: '김이화',
@@ -34,6 +36,7 @@ const CONTENT_BY_ROLE = {
 export default function MyScreen() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!getAccessToken());
   const [userRole, setUserRole] = useState(getUserRole() ?? 'user');
+  const [userName, setUserName] = useState(getUserNickname() ?? '');
   const [data, setData] = useState(MOCK_DATA);
   const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
@@ -45,6 +48,8 @@ export default function MyScreen() {
     // TODO: 로그아웃 API 호출
     clearTokens();
     setIsLoggedIn(false);
+    setUserRole('user');
+    setUserName('');
   };
 
   const handleLoginClick = () => {
@@ -52,6 +57,7 @@ export default function MyScreen() {
   };
 
   const handleKakaoLogin = () => {
+    window.location.href = getKakaoAuthoizeUrl();
     setIsLoginSheetOpen(false);
   };
 
@@ -67,7 +73,7 @@ export default function MyScreen() {
       <MyContentContainer>
         <MyUserRow
           isLoggedIn={isLoggedIn}
-          userName={data.userName}
+          userName={userName}
           onLogout={handleLogout}
           onLoginClick={handleLoginClick}
         />
