@@ -7,16 +7,14 @@ import EventCard from '@/designsystem/components/card/event/EventCard';
 import Divider from '@/designsystem/components/divider/Divider';
 import { EVENT_ROUTES } from '@/constants/routes';
 import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
-import {
-  eventData,
-  eventTabDescriptions,
-  eventTabs,
-} from '@/pages/event/constants/event';
+import { eventTabDescriptions, eventTabs } from '@/pages/event/constants/event';
+import { useEvents } from '@/api/feature/event/useEvents';
 
 const headerHideScrollThreshold = 50;
 
 export default function EventScreen() {
   const navigate = useNavigate();
+  const { data } = useEvents();
 
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const lastScrollYRef = useRef(0);
@@ -87,14 +85,14 @@ export default function EventScreen() {
                 </S.SectionDescription>
               </S.SectionHeader>
               <S.CardList>
-                {(eventData[tab.id] ?? []).map((event) => (
+                {data[tab.apiKey].map((event) => (
                   <EventCard
                     key={event.id}
-                    eventTitle={event.eventTitle}
+                    eventTitle={event.title}
                     startDate={event.startDate}
                     endDate={event.endDate}
                     status={event.status}
-                    thumbnail={event.thumbnail}
+                    thumbnail={event.imageUrl}
                     onClick={() => handleCardClick(event.id)}
                   />
                 ))}
