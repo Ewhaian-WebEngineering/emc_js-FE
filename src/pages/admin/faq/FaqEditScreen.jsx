@@ -23,7 +23,7 @@ export default function FaqEditScreen() {
   return (
     <FaqForm
       mode="edit"
-      initialData={faq ? { que: faq.question, ans: faq.answer } : undefined}
+      initialData={{ que: faq.question, ans: faq.answer }}
       onSubmit={handleSubmit}
     />
   );
