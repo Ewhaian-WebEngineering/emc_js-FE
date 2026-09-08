@@ -22,6 +22,7 @@ export const useFaq = (fid) => {
   return useSuspenseQuery({
     queryKey: FAQ_QUERY_KEY,
     queryFn: getFaqsApi,
+    //TODO: 개별 조회 API 사용
     select: (faqs) => faqs.find((faq) => faq.id === fid),
   });
 };
