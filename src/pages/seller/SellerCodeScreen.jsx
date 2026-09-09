@@ -39,10 +39,6 @@ export default function SellerCodeScreen() {
       onError: (error) => {
         if (error?.status === 401) {
           setErrorMessage('코드가 일치하지 않습니다. 다시 확인해 주세요.');
-        } else {
-          setErrorMessage(
-            '인증 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
-          );
         }
       },
     });
