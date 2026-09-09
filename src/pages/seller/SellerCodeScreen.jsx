@@ -36,10 +36,8 @@ export default function SellerCodeScreen() {
         setErrorMessage('');
         navigate(BOOTH_ROUTES.DETAIL(data.boothId));
       },
-      onError: (error) => {
-        if (error?.status === 401) {
-          setErrorMessage('코드가 일치하지 않습니다. 다시 확인해 주세요.');
-        }
+      onError: () => {
+        setErrorMessage('코드가 일치하지 않습니다. 다시 확인해 주세요.');
       },
     });
   };
