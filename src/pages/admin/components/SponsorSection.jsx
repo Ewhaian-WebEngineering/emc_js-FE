@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
-import { mockSponsors } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { ButtonContent, CardWrapper } from './style';
@@ -9,14 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import useModal from '@/hooks/modal/useModal';
 
-//TODO: mockSponsors 대신 실제 API 데이터로 교체
-
-export default function SponsorSection() {
+export default function SponsorSection({ sponsors: initialSponsors = [] }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
 
   const [expanded, setExpanded] = useState(false);
-  const [sponsors, setSponsors] = useState(mockSponsors);
+  const [sponsors, setSponsors] = useState(initialSponsors);
 
   const handleAdd = () => {
     navigate(ADMIN_ROUTES.SPONSOR_CREATE);
@@ -61,8 +58,8 @@ export default function SponsorSection() {
         {sponsors.map((sponsor) => (
           <SpCard
             key={sponsor.id}
-            content={sponsor.content}
-            title={sponsor.title}
+            content={sponsor.introShort}
+            title={sponsor.name}
             onDelete={() => handleDelete(sponsor.id)}
             onEdit={() => handleEdit(sponsor.id)}
           />

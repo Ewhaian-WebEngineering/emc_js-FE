@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
-import { mockFaqs } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { ButtonContent, CardWrapper } from './style';
@@ -9,13 +8,12 @@ import useModal from '@/hooks/modal/useModal';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 
-// TODO: mockFaqs 대신 실제 API 데이터로 교체
-export default function FaqSection() {
+export default function FaqSection({ faqs: initialFaqs = [] }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
 
   const [expanded, setExpanded] = useState(false);
-  const [faqs, setFaqs] = useState(mockFaqs);
+  const [faqs, setFaqs] = useState(initialFaqs);
 
   const handleAdd = () => {
     navigate(ADMIN_ROUTES.FAQ);
@@ -60,8 +58,8 @@ export default function FaqSection() {
         {faqs.map((faq) => (
           <SpCard
             key={faq.id}
-            content={faq.content}
-            title={faq.title}
+            content={faq.answer}
+            title={faq.question}
             onDelete={() => handleDelete(faq.id)}
             onEdit={() => handleEdit(faq.id)}
           />
