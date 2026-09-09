@@ -11,3 +11,7 @@ export const refreshAccessToken = (refreshToken) => {
 export const logout = (refreshToken) => {
   return instance.post('/api/auth/logout', { refreshToken });
 };
+
+export const deleteAccount = () => {
+  return instance.delete('/api/auth/me');
+};

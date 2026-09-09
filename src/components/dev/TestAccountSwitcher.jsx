@@ -1,15 +1,29 @@
 import { DEV_TEST_ACCOUNTS } from '@/api/core/devAccounts';
 import { clearTokens } from '@/api/core/tokenStorage';
+import { deleteAccount } from '@/api/feature/auth/authApi';
 
 const LOGOUT_VALUE = 'logout';
+const DELETE_VALUE = 'delete';
 
 export function TestAccountSwitcher() {
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const value = e.target.value;
 
     if (value === LOGOUT_VALUE) {
       clearTokens();
       window.location.reload();
+      return;
+    }
+
+    if (value === DELETE_VALUE) {
+      try {
+        await deleteAccount();
+      } catch (err) {
+        console.error(err);
+      } finally {
+        clearTokens();
+        window.location.reload();
+      }
       return;
     }
 
@@ -28,6 +42,7 @@ export function TestAccountSwitcher() {
     >
       <option value="">테스트 계정 선택</option>
       <option value={LOGOUT_VALUE}>🚪 로그아웃 상태</option>
+      <option value={DELETE_VALUE}>🗑️ 현재 계정 탈퇴</option>
       {DEV_TEST_ACCOUNTS.map((a) => (
         <option key={a.userId} value={a.userId}>
           {a.label}

@@ -125,14 +125,18 @@ export default function BoothDetailContent({
           </InfoRow>
           <InfoRow>
             <InfoLabel>URL</InfoLabel>
-            <LinkButton
-              size="sm"
-              variant="secondary"
-              href={booth.externalUrl}
-              target="_blank"
-            >
-              {booth.externalUrl}
-            </LinkButton>
+            {booth.externalUrl ? (
+              <LinkButton
+                size="sm"
+                variant="secondary"
+                href={booth.externalUrl}
+                target="_blank"
+              >
+                {booth.externalUrl}
+              </LinkButton>
+            ) : (
+              <InfoValue>-</InfoValue>
+            )}
           </InfoRow>
         </InfoList>
         <NoticeCard onClick={handleNoticeClick}>
