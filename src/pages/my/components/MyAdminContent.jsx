@@ -4,7 +4,7 @@ import Divider from '../../../designsystem/components/divider/Divider';
 import ManagementBoothCard from '../../../designsystem/components/card/management/ManagementBoothCard';
 import ManagementFairCard from '../../../designsystem/components/card/management/ManagementFairCard';
 import CongestionBottomSheet from '../../admin/components/CongestionBottomSheet.jsx';
-import { ADMIN_ROUTES } from '../../../constants/routes';
+import { ADMIN_ROUTES, MANAGE_ROUTES } from '../../../constants/routes';
 
 const CONGESTION_API_TO_LEVEL = {
   green: 'relaxed',
@@ -24,6 +24,10 @@ export default function MyAdminContent({ data }) {
     if (value) setCongestionLevel(value);
   };
 
+  const handleBoothLinkClick = (id) => {
+    navigate(MANAGE_ROUTES.BOOTH_PREVIEW(id));
+  };
+
   return (
     <>
       <ManagementFairCard
@@ -38,7 +42,7 @@ export default function MyAdminContent({ data }) {
         <ManagementBoothCard
           key={booth.id}
           boothName={booth.name}
-          onLinkClick={() => {}}
+          onLinkClick={() => handleBoothLinkClick(booth.id)}
           scrapCount={booth.scrapCount}
           visitorCount={booth.totalUv}
         />
