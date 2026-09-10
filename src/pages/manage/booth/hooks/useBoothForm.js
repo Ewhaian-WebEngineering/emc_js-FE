@@ -1,6 +1,4 @@
-import { BOOTH_ROUTES } from '@/constants/routes';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const REQUIRED_FIELDS = [
   { key: 'tags', check: (form) => form.tags.length > 0, label: '카테고리' },
@@ -33,9 +31,7 @@ const REQUIRED_FIELDS = [
 
 const REQUIRED_MESSAGE = '내용을 입력해주세요.';
 
-export function useBoothForm(initialData, boothId) {
-  const navigate = useNavigate();
-
+export function useBoothForm(initialData) {
   const [boothForm, setBoothForm] = useState(() => ({
     representativeImage: initialData.representativeImage,
     boothName: initialData.boothName,
@@ -48,7 +44,6 @@ export function useBoothForm(initialData, boothId) {
     inquiryUrl: initialData.inquiryUrl,
     description: initialData.description,
     allergyInfo: initialData.allergyInfo,
-    notice: initialData.notice,
     announcement: initialData.announcement,
   }));
 
@@ -62,25 +57,6 @@ export function useBoothForm(initialData, boothId) {
       delete next[field];
       return next;
     });
-  };
-
-  const handleEditNotice = (noticeId) => {
-    const targetNotice = boothForm.notice.find(
-      (notice) => notice.id === noticeId,
-    );
-
-    if (!targetNotice) return;
-
-    navigate(BOOTH_ROUTES.EDIT(boothId, noticeId), {
-      state: { noticeData: targetNotice },
-    });
-  };
-
-  const handleDeleteNotice = (noticeId) => {
-    setBoothForm((prev) => ({
-      ...prev,
-      notice: prev.notice.filter((notice) => notice.id !== noticeId),
-    }));
   };
 
   const validate = () => {
@@ -97,8 +73,6 @@ export function useBoothForm(initialData, boothId) {
   return {
     boothForm,
     updateField,
-    handleEditNotice,
-    handleDeleteNotice,
     errors,
     validate,
   };

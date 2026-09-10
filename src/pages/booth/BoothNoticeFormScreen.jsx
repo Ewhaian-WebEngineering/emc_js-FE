@@ -4,21 +4,28 @@ import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader'
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
-import { BOOTH_ROUTES } from '@/constants/routes';
+import { MANAGE_ROUTES } from '@/constants/routes';
 import NoticeForm from './components/NoticeForm';
 import { NoticeFormContainer, NoticeFormContent } from './style';
-import { createBoothNotice, updateBoothNotice } from './mock/notice';
+import {
+  useCreateNotice,
+  useNoticeList,
+  useUpdateNotice,
+} from '@/api/feature/booth/useBoothData';
 
 export default function BoothNoticeFormScreen({ mode }) {
   const { boothId, noticeId } = useParams();
   const location = useLocation();
-  const noticeData = location.state?.noticeData;
+  const { data: noticeList } = useNoticeList(boothId);
+  const noticeData =
+    location.state?.noticeData ??
+    noticeList?.find((notice) => notice.id === noticeId);
 
-  const parsedBoothId = boothId ? Number(boothId) : null;
-  const parsedNoticeId = noticeId ? Number(noticeId) : null;
   const navigate = useNavigate();
   const handleBack = useGoBack();
   const { showModal } = useModal();
+  const createNoticeMutation = useCreateNotice();
+  const updateNoticeMutation = useUpdateNotice();
 
   const isEdit = mode === 'edit';
 
@@ -28,7 +35,7 @@ export default function BoothNoticeFormScreen({ mode }) {
   const [content, setContent] = useState(
     isEdit && noticeData ? noticeData.content : '',
   );
-  const [initial, setInitial] = useState({
+  const [initial] = useState({
     title: isEdit && noticeData ? noticeData.title : '',
     content: isEdit && noticeData ? noticeData.content : '',
   });
@@ -76,20 +83,18 @@ export default function BoothNoticeFormScreen({ mode }) {
       const trimmedTitle = title.trim();
       const trimmedContent = content.trim();
       if (isEdit) {
-        await updateBoothNotice({
-          boothId,
-          noticeId,
+        await updateNoticeMutation.mutateAsync({
+          nid: noticeId,
           title: trimmedTitle,
           content: trimmedContent,
         });
-        navigate(BOOTH_ROUTES.DETAIL(boothId));
+        navigate(MANAGE_ROUTES.BOOTH_EDIT(boothId));
       } else {
-        const res = await createBoothNotice({
-          boothId,
+        await createNoticeMutation.mutateAsync({
           title: trimmedTitle,
           content: trimmedContent,
         });
-        navigate(BOOTH_ROUTES.EDIT(boothId, res.id));
+        navigate(MANAGE_ROUTES.BOOTH_EDIT(boothId));
       }
     } catch {
       await showModal({

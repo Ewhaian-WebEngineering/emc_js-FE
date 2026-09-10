@@ -23,11 +23,17 @@ import { useBoothForm } from './hooks/useBoothForm';
 import { useProductSections } from './hooks/useProductSections';
 import { useToggleMap } from './hooks/useToggleMap';
 import useModal from '@/hooks/modal/useModal';
+import {
+  useDeleteNotice,
+  useNoticeList,
+} from '@/api/feature/booth/useBoothData';
 
 export default function BoothEditScreen() {
   const navigate = useNavigate();
   const { boothId } = useParams();
   const { showModal } = useModal();
+  const deleteNoticeMutation = useDeleteNotice();
+  const { data: noticeList } = useNoticeList(boothId);
 
   const [expanded, toggleExpanded] = useToggleMap([
     'boothIntroduction',
@@ -38,14 +44,8 @@ export default function BoothEditScreen() {
     'announcement',
   ]);
 
-  const {
-    boothForm,
-    updateField,
-    handleEditNotice,
-    handleDeleteNotice,
-    errors,
-    validate,
-  } = useBoothForm(DUMMY_BOOTH_DETAIL);
+  const { boothForm, updateField, errors, validate } =
+    useBoothForm(DUMMY_BOOTH_DETAIL);
 
   const {
     productSections,
@@ -82,6 +82,15 @@ export default function BoothEditScreen() {
     });
   };
 
+  const handleEditNotice = (noticeId) => {
+    const targetNotice = noticeList?.find((notice) => notice.id === noticeId);
+    if (!targetNotice) return;
+
+    navigate(BOOTH_ROUTES.EDIT(boothId, noticeId), {
+      state: { noticeData: targetNotice },
+    });
+  };
+
   const clickDeleteNotice = (noticeId) => {
     showModal({
       variant: 'danger',
@@ -90,7 +99,7 @@ export default function BoothEditScreen() {
       confirmText: '삭제하기',
       cancelText: '취소',
       onConfirm: () => {
-        handleDeleteNotice(noticeId);
+        deleteNoticeMutation.mutate(noticeId);
       },
     });
   };
@@ -268,12 +277,12 @@ export default function BoothEditScreen() {
             navigate(BOOTH_ROUTES.REGISTER(boothId));
           }}
         />
-        {boothForm.notice.map((notice) => (
+        {noticeList?.map((notice) => (
           <AdminNoticeCard
             key={notice.id}
             title={notice.title}
             content={notice.content}
-            date={notice.date}
+            date={notice.createdAt}
             onEdit={() => handleEditNotice(notice.id)}
             onDelete={() => clickDeleteNotice(notice.id)}
           />
