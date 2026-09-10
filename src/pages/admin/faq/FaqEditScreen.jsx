@@ -1,15 +1,30 @@
 import FaqForm from './FaqForm';
-import { useNavigate } from 'react-router-dom';
-import { mockFaq } from '../constants/mockFaq';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useFaq, useUpdateFaq } from '@/api/feature/admin/useFaqData';
 
 export default function FaqEditScreen() {
   const navigate = useNavigate();
-  const handleSubmit = (payload) => {
-    // TODO: api로 교체
-    console.log('edit payload', payload);
-    navigate(ADMIN_ROUTES.DASHBOARD);
+  const { faqId } = useParams();
+  const { data: faq } = useFaq(faqId);
+  const { mutate: updateFaq } = useUpdateFaq();
+
+  const handleSubmit = ({ que, ans }) => {
+    updateFaq(
+      { fid: faqId, question: que, answer: ans },
+      {
+        onSuccess: () => {
+          navigate(ADMIN_ROUTES.DASHBOARD);
+        },
+      },
+    );
   };
 
-  return <FaqForm mode="edit" initialData={mockFaq} onSubmit={handleSubmit} />;
+  return (
+    <FaqForm
+      mode="edit"
+      initialData={{ que: faq.question, ans: faq.answer }}
+      onSubmit={handleSubmit}
+    />
+  );
 }
