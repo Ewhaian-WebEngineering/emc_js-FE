@@ -24,6 +24,8 @@ import {
   ManagementCardStats,
   DashboardTitle,
 } from './style.js';
+import { useNavigate } from 'react-router-dom';
+import { TAB_ROUTES } from '../../constants/routes';
 
 const CONGESTION_API_TO_LEVEL = {
   green: 'relaxed',
@@ -37,6 +39,7 @@ const CONGESTION_LEVEL_TO_API = {
 };
 
 export default function AdminDashboardScreen() {
+  const navigate = useNavigate();
   const { data } = useAdminDashboard();
   const { mutate: updateCongestion } = useUpdateCongestion();
   const { congestion: streamCongestionRaw } = useStreamCongestion();
@@ -55,7 +58,7 @@ export default function AdminDashboardScreen() {
 
   return (
     <DashboardContainer>
-      <Header onBack={() => {}} title="대시보드" border />
+      <Header onBack={() => navigate(TAB_ROUTES.MY)} title="대시보드" border />
 
       <FestivalInfo>
         <DashboardTitle>
