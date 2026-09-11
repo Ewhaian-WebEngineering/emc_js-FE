@@ -2,11 +2,9 @@ import EmptyStateIcon from '@/assets/svg/scrap/ic_empty_scrap.svg?react';
 import ArrowRightIcon from '@/assets/svg/16px/ic_arrow_right.svg?react';
 import BoothFilterBar from '@/components/BoothFilterBar';
 import BoothList from '@/components/BoothList';
-import { DUMMY_BOOTHS } from '@/constants/dummyBooths';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 import FillRightHeader from '@/designsystem/components/header/FillRightHeader';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { useBoothFilter } from '@/hooks/useBoothFilter';
 import {
   EmptyStateButtonTextWrapper,
   ScrapContentWrapper,
@@ -14,23 +12,46 @@ import {
 } from './style';
 import { useNavigate } from 'react-router-dom';
 import { TAB_ROUTES } from '@/constants/routes';
+import { useState } from 'react';
+import { useScrapList } from '@/api/feature/scrap/useScrap';
+import { InfiniteScrollLoader } from '@/components/common/style';
+import Spinner from '@/designsystem/components/spinner/Spinner';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
 export default function ScrapScreen() {
   const navigate = useNavigate();
+  const [category, setCategory] = useState('all');
+  const [sortOption, setSortOption] = useState('number');
+  // TODO: 운영시간 필터 추가
+
   const {
-    setCategory,
-    sortOption,
-    setSortOption,
-    filterOption,
-    setFilterOption,
-    booths,
-  } = useBoothFilter(DUMMY_BOOTHS);
+    scrapListData,
+    totalCount,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useScrapList({ category, sort: sortOption });
+
+  const observerRef = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
+
+  if (isLoading) {
+    return (
+      <InfiniteScrollLoader>
+        <Spinner />
+      </InfiniteScrollLoader>
+    );
+  }
 
   return (
     <ScrapScreenContainer>
       <FillRightHeader title="스크랩" border />
-      <ScrapContentWrapper boothCount={booths.length}>
-        {booths.length === 0 ? (
+      <ScrapContentWrapper boothCount={totalCount}>
+        {totalCount === 0 ? (
           <EmptyState
             Icon={EmptyStateIcon}
             title="아직 스크랩한 부스가 없어요!"
@@ -54,14 +75,18 @@ export default function ScrapScreen() {
         ) : (
           <>
             <BoothFilterBar
-              count={booths.length}
+              count={totalCount}
               sortValue={sortOption}
               onSortChange={setSortOption}
-              filterValue={filterOption}
-              onFilterChange={setFilterOption}
               onCategoryChange={setCategory}
             />
-            <BoothList booths={booths} />
+            <BoothList booths={scrapListData} />
+            <div ref={observerRef} style={{ height: 1 }} />
+            {isFetchingNextPage && (
+              <InfiniteScrollLoader>
+                <Spinner />
+              </InfiniteScrollLoader>
+            )}
           </>
         )}
       </ScrapContentWrapper>

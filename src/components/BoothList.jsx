@@ -4,7 +4,7 @@ import Divider from '@/designsystem/components/divider/Divider';
 import { BoothListCardWrapper, BoothListWrapper } from './style';
 import { useNavigate } from 'react-router-dom';
 import { BOOTH_ROUTES } from '@/constants/routes';
-import { useBoothScrap } from '@/api/feature/booth/useBoothData';
+import { useBoothScrap } from '@/api/feature/scrap/useScrap';
 
 export default function BoothList({ booths }) {
   const navigate = useNavigate();
