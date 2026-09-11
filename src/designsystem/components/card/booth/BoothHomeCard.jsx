@@ -13,6 +13,7 @@ import {
   BoothCardThumbnailSm,
   BoothHomeCardContainer,
 } from './style';
+import Image from '../../Image';
 
 /**
  * 홈화면 부스 카드 컴포넌트입니다.
@@ -40,7 +41,7 @@ export default function BoothHomeCard({
     <BoothHomeCardContainer onClick={onClick}>
       <BoothCardThumbnailSm>
         {thumbnailUrl ? (
-          <img src={thumbnailUrl} alt={boothName} />
+          <Image src={thumbnailUrl} alt={boothName} />
         ) : (
           <CardPlaceholder />
         )}

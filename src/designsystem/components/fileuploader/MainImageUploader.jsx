@@ -7,6 +7,7 @@ import {
   MainImageUploaderWrapper,
 } from './style';
 import Placeholder from '../Placeholder';
+import Image from '../Image';
 
 /**
  * 대표 이미지를 업로드/삭제하는 컴포넌트입니다.
@@ -40,7 +41,7 @@ export default function MainImageUploader({
     <MainImageUploaderWrapper>
       <MainImageUploaderPreview>
         {imageUrl ? (
-          <img src={imageUrl} alt="대표 이미지" />
+          <Image src={imageUrl} alt="대표 이미지" />
         ) : (
           <Placeholder logoSize="35%" />
         )}

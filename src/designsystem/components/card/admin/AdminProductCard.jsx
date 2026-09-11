@@ -9,6 +9,7 @@ import {
   AdminCardBottomContainer,
   AdminProductCardInfo,
 } from './style';
+import Image from '../../Image';
 
 /**
  * 제품 관리용 카드 컴포넌트입니다.
@@ -34,7 +35,11 @@ export default function AdminProductCard({
   return (
     <AdminCardRowContainer onClick={onClick} selected={selected}>
       <AdminProductCardThumbnail>
-        {thumbnail ? <img src={thumbnail} alt={title} /> : <CardPlaceholder />}
+        {thumbnail ? (
+          <Image src={thumbnail} alt={title} />
+        ) : (
+          <CardPlaceholder />
+        )}
       </AdminProductCardThumbnail>
       <AdminProductCardInfo>
         <AdminCardTitle>{title}</AdminCardTitle>

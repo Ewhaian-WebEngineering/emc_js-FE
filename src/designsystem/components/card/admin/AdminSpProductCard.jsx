@@ -1,3 +1,4 @@
+import Image from '../../Image';
 import CardPlaceholder from '../../Placeholder';
 import AdminCardActions from './AdminCardActions';
 import {
@@ -33,7 +34,11 @@ export default function AdminSpProductCard({
   return (
     <AdminCardRowContainer onClick={onClick} selected={selected}>
       <AdminSpProductCardThumbnail>
-        {thumbnail ? <img src={thumbnail} alt={title} /> : <CardPlaceholder />}
+        {thumbnail ? (
+          <Image src={thumbnail} alt={title} />
+        ) : (
+          <CardPlaceholder />
+        )}
       </AdminSpProductCardThumbnail>
       <AdminSpProductCardInfo>
         <AdminCardTitle>{title}</AdminCardTitle>
