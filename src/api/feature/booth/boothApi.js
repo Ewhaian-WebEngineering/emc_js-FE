@@ -9,7 +9,3 @@ export const getBoothList = ({ category, sort, time, cursor, limit = 20 }) => {
 export const getBoothDetail = (boothId) => {
   return instance.get(`/api/booths/${boothId}`);
 };
-
-export const toggleBoothScrap = (boothId) => {
-  return instance.post(`/api/booths/${boothId}/scrap`);
-};
