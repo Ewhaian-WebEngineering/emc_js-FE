@@ -35,6 +35,7 @@ import {
   RecommendBoothList,
 } from '../style';
 import BoothDetailCard from '@/designsystem/components/card/booth/BoothDetailCard';
+import Image from '@/designsystem/components/Image';
 
 export default function BoothDetailContent({
   booth,
@@ -77,7 +78,7 @@ export default function BoothDetailContent({
     <>
       <RepresentativeImageWrapper>
         {booth.thumbnailUrl ? (
-          <img src={booth.thumbnailUrl} alt="대표 이미지" />
+          <Image src={booth.thumbnailUrl} alt="대표 이미지" />
         ) : (
           <Placeholder logoSize="30%" />
         )}

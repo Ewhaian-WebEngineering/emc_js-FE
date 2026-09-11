@@ -12,6 +12,7 @@ import {
   BoothCardThumbnailMd,
   BoothDetailCardContainer,
 } from './style';
+import Image from '../../Image';
 
 /**
  * 부스 상세 카드 컴포넌트입니다.
@@ -39,7 +40,7 @@ export default function BoothDetailCard({
     <BoothDetailCardContainer onClick={onClick}>
       <BoothCardThumbnailMd>
         {thumbnail ? (
-          <img src={thumbnail} alt={boothName} />
+          <Image src={thumbnail} alt={boothName} />
         ) : (
           <CardPlaceholder />
         )}

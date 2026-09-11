@@ -1,3 +1,4 @@
+import Image from '../../Image';
 import CardPlaceholder from '../../Placeholder';
 import {
   ProductHorizontalCardContainer,
@@ -24,7 +25,7 @@ export default function ProductHorizontalCard({
     <ProductHorizontalCardContainer>
       <ProductHorizontalCardThumbnail>
         {thumbnail ? (
-          <img src={thumbnail} alt={productName} />
+          <Image src={thumbnail} alt={productName} />
         ) : (
           <CardPlaceholder />
         )}

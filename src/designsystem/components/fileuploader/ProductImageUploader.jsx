@@ -11,6 +11,7 @@ import {
   ProductImageUploaderLabel,
   ProductImageUploaderRequired,
 } from './style';
+import Image from '../Image';
 
 const MAX_SIZE_MB = 10;
 const ACCEPTED_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
@@ -74,7 +75,7 @@ export default function ProductImageUploader({
       <ProductImageUploaderBox hasError={isError}>
         {imageUrl ? (
           <>
-            <img src={imageUrl} alt={title} />
+            <Image src={imageUrl} alt={title} />
             <ProductImageUploaderDeleteButton onClick={onDelete}>
               <CircleCloseIcon color={semantic.iconNormalAssistive} />
             </ProductImageUploaderDeleteButton>
