@@ -12,7 +12,6 @@ import {
 } from './style';
 import { useNavigate } from 'react-router-dom';
 import { TAB_ROUTES } from '@/constants/routes';
-import { useState } from 'react';
 import { useScrapList } from '@/api/feature/scrap/useScrap';
 import { InfiniteScrollLoader } from '@/components/common/style';
 import Spinner from '@/designsystem/components/spinner/Spinner';
@@ -39,6 +38,9 @@ export default function ScrapScreen() {
     fetchNextPage,
   });
 
+  const isFiltering = category !== 'all' || time !== 'all';
+  const showEmptyState = totalCount === 0 && !isFiltering;
+
   if (isLoading) {
     return (
       <InfiniteScrollLoader>
@@ -50,8 +52,8 @@ export default function ScrapScreen() {
   return (
     <ScrapScreenContainer>
       <FillRightHeader title="스크랩" border />
-      <ScrapContentWrapper boothCount={totalCount}>
-        {totalCount === 0 ? (
+      <ScrapContentWrapper isEmptyState={showEmptyState}>
+        {showEmptyState ? (
           <EmptyState
             Icon={EmptyStateIcon}
             title="아직 스크랩한 부스가 없어요!"

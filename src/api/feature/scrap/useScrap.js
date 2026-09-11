@@ -25,6 +25,22 @@ export const useBoothScrap = (bid) => {
         })),
       };
     });
+
+    if (isScrapped) {
+      queryClient.invalidateQueries({ queryKey: ['scrap-list'] });
+    } else {
+      queryClient.setQueriesData({ queryKey: ['scrap-list'] }, (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page) => ({
+            ...page,
+            totalCount: page.totalCount - 1,
+            booths: page.booths.filter((b) => b.boothId !== bid),
+          })),
+        };
+      });
+    }
   };
 
   return useMutation({
@@ -51,7 +67,10 @@ export const useScrapList = ({ category, sort, time, limit = 20 }) => {
       lastPage.hasMore ? lastPage.nextCursor : undefined,
   });
 
-  const scrapListData = data?.pages.flatMap((page) => page.booths) ?? [];
+  const scrapListData =
+    data?.pages.flatMap((page) =>
+      page.booths.map((b) => ({ ...b, id: b.boothId })),
+    ) ?? [];
   const totalCount = data?.pages[0]?.totalCount ?? 0;
   const categoryCounts = data?.pages[0]?.categoryCounts ?? {};
 
