@@ -33,7 +33,7 @@ export const useBoothScrap = (bid) => {
   });
 };
 
-export const useScrapList = ({ category, sort, limit = 20 }) => {
+export const useScrapList = ({ category, sort, time, limit = 20 }) => {
   const {
     data,
     fetchNextPage,
@@ -43,9 +43,9 @@ export const useScrapList = ({ category, sort, limit = 20 }) => {
     error,
     isError,
   } = useInfiniteQuery({
-    queryKey: ['scrap-list', category, sort],
+    queryKey: ['scrap-list', category, sort, time],
     queryFn: ({ pageParam }) =>
-      getScrapList({ category, sort, cursor: pageParam, limit }),
+      getScrapList({ category, sort, time, cursor: pageParam, limit }),
     initialPageParam: undefined,
     getNextPageParam: (lastPage) =>
       lastPage.hasMore ? lastPage.nextCursor : undefined,

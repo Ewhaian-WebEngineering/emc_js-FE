@@ -4,8 +4,8 @@ export const toggleBoothScrap = (boothId) => {
   return instance.post(`/api/booths/${boothId}/scrap`);
 };
 
-export const getScrapList = ({ category, sort, cursor, limit = 20 }) => {
+export const getScrapList = ({ category, sort, time, cursor, limit = 20 }) => {
   return instance.get('/api/scraps', {
-    params: { category, sort, cursor, limit },
+    params: { category, sort, time, cursor, limit },
   });
 };

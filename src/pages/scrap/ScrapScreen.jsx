@@ -17,12 +17,12 @@ import { useScrapList } from '@/api/feature/scrap/useScrap';
 import { InfiniteScrollLoader } from '@/components/common/style';
 import Spinner from '@/designsystem/components/spinner/Spinner';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useBoothFilter } from '@/hooks/useBoothFilter';
 
 export default function ScrapScreen() {
   const navigate = useNavigate();
-  const [category, setCategory] = useState('all');
-  const [sortOption, setSortOption] = useState('number');
-  // TODO: 운영시간 필터 추가
+  const { category, setCategory, sort, setSort, time, setTime } =
+    useBoothFilter('all');
 
   const {
     scrapListData,
@@ -31,7 +31,7 @@ export default function ScrapScreen() {
     fetchNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useScrapList({ category, sort: sortOption });
+  } = useScrapList({ category, sort, time });
 
   const observerRef = useInfiniteScroll({
     hasNextPage,
@@ -76,8 +76,11 @@ export default function ScrapScreen() {
           <>
             <BoothFilterBar
               count={totalCount}
-              sortValue={sortOption}
-              onSortChange={setSortOption}
+              categoryValue={category}
+              sortValue={sort}
+              onSortChange={setSort}
+              filterValue={time}
+              onFilterChange={setTime}
               onCategoryChange={setCategory}
             />
             <BoothList booths={scrapListData} />
