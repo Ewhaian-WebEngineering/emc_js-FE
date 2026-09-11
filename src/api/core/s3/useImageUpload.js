@@ -7,13 +7,13 @@ export const useImageUpload = (options = {}) => {
 
   return useMutation({
     mutationFn: async ({ file, imageType, ownerId }) => {
-      const { uploadUrl, cdnUrl } = await getPresignedUrl({
+      const { uploadUrl, cdnUrl, fileKey } = await getPresignedUrl({
         imageType,
         ownerId,
         contentType: file.type,
       });
       await uploadToS3(uploadUrl, file);
-      return cdnUrl;
+      return { fileKey, cdnUrl };
     },
     onError: (error) => {
       let message = '이미지 업로드에 실패했어요';

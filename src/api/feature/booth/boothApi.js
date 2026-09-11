@@ -19,3 +19,7 @@ export const getMyBoothData = async () => {
 
   return { ...booth, latestNotice };
 };
+
+export const updateMyBoothData = (payload) => {
+  return instance.patch('/api/seller/booth', payload);
+};

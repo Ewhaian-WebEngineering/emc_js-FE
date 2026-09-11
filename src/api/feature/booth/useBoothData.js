@@ -1,9 +1,16 @@
 import {
   useInfiniteQuery,
+  useMutation,
   useQuery,
+  useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-import { getBoothDetail, getBoothList, getMyBoothData } from './boothApi';
+import {
+  getBoothDetail,
+  getBoothList,
+  getMyBoothData,
+  updateMyBoothData,
+} from './boothApi';
 
 export const useBoothData = ({ category, sort, time, limit = 20 }) => {
   const {
@@ -53,5 +60,16 @@ export const useMyBoothData = () => {
   return useQuery({
     queryKey: ['my-booth'],
     queryFn: () => getMyBoothData(),
+  });
+};
+
+export const useUpdateMyBoothData = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateMyBoothData,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-booth'] });
+    },
   });
 };
