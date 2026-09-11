@@ -1,9 +1,11 @@
+import { useMyBoothData } from '@/api/feature/booth/useBoothData';
 import BoothDetailContent from '@/components/boothDetail/BoothDetailContent';
+import { InfiniteScrollLoader } from '@/components/common/style';
 import { MANAGE_ROUTES } from '@/constants/routes';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import TransparentHeader from '@/designsystem/components/header/TransparentHeader';
+import Spinner from '@/designsystem/components/spinner/Spinner';
 import { useGoBack } from '@/hooks/useGoBack';
-import { DUMMY_BOOTH_DETAIL } from '@/pages/booth/constants/dummyBoothDetail';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export default function BoothPreviewScreen() {
@@ -11,8 +13,18 @@ export default function BoothPreviewScreen() {
   const handleBack = useGoBack();
   const navigate = useNavigate();
 
-  // TODO: 실제 데이터로 교체
-  const booth = DUMMY_BOOTH_DETAIL;
+  const { data: booth, isPending } = useMyBoothData();
+
+  if (isPending) {
+    return (
+      <>
+        <TransparentHeader onBack={handleBack} />
+        <InfiniteScrollLoader>
+          <Spinner />
+        </InfiniteScrollLoader>
+      </>
+    );
+  }
 
   return (
     <>

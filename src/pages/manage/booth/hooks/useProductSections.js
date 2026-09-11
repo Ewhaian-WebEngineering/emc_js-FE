@@ -2,12 +2,12 @@ import { MANAGE_ROUTES } from '@/constants/routes';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export function useProductSections({ productGroups, products }) {
+export function useProductSections({ productGroups }) {
   const navigate = useNavigate();
 
   const [productSections, setProductSections] = useState(() => [
     ...productGroups.map((group) => ({ ...group, isUngrouped: false })),
-    { id: 'ungrouped', name: '그룹 없음', products, isUngrouped: true },
+    { id: 'ungrouped', name: '그룹 없음', products: [], isUngrouped: true },
   ]);
 
   const [productsError, setProductsError] = useState(null);
