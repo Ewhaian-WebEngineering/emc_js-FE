@@ -7,6 +7,7 @@ import { ButtonContent, SectionTitle, CardWrapper } from './style';
 import useModal from '@/hooks/modal/useModal';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useDeleteEvent } from '@/api/feature/admin/useAdminData';
 
 const PHASE_ORDER = ['pre', 'live', 'post'];
 
@@ -21,6 +22,7 @@ export default function EventSection({
 }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
+  const { mutateAsync: deleteEvent } = useDeleteEvent();
 
   const [expanded, setExpanded] = useState(false);
   const [events, setEvents] = useState(initialEvents);
@@ -54,6 +56,8 @@ export default function EventSection({
     });
 
     if (!result.confirmed) return;
+
+    await deleteEvent({ eid: id });
 
     setEvents((prev) => {
       const next = { ...prev };

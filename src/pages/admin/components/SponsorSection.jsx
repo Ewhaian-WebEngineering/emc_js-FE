@@ -7,10 +7,12 @@ import { ButtonContent, CardWrapper } from './style';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import useModal from '@/hooks/modal/useModal';
+import { useDeleteSponsor } from '@/api/feature/admin/useAdminData';
 
 export default function SponsorSection({ sponsors: initialSponsors = [] }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
+  const { mutateAsync: deleteSponsor } = useDeleteSponsor();
 
   const [expanded, setExpanded] = useState(false);
   const [sponsors, setSponsors] = useState(initialSponsors);
@@ -33,6 +35,8 @@ export default function SponsorSection({ sponsors: initialSponsors = [] }) {
     });
 
     if (!result.confirmed) return;
+
+    await deleteSponsor({ sid: id });
 
     setSponsors((prev) => prev.filter((sponsor) => sponsor.id !== id));
   };

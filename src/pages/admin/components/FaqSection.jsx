@@ -7,10 +7,12 @@ import { ButtonContent, CardWrapper } from './style';
 import useModal from '@/hooks/modal/useModal';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useDeleteFaq } from '@/api/feature/admin/useAdminData';
 
 export default function FaqSection({ faqs: initialFaqs = [] }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
+  const { mutateAsync: deleteFaq } = useDeleteFaq();
 
   const [expanded, setExpanded] = useState(false);
   const [faqs, setFaqs] = useState(initialFaqs);
@@ -33,6 +35,8 @@ export default function FaqSection({ faqs: initialFaqs = [] }) {
     });
 
     if (!result.confirmed) return;
+
+    await deleteFaq({ fid: id });
 
     setFaqs((prev) => prev.filter((faq) => faq.id !== id));
   };

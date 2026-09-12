@@ -5,7 +5,14 @@ import {
   useSuspenseQuery,
 } from '@tanstack/react-query';
 import { adminCodeApi } from './adminCodeApi';
-import { getAdminDashboardApi, updateCongestionApi } from './adminDashboardApi';
+import {
+  getAdminDashboardApi,
+  updateCongestionApi,
+  deleteEventApi,
+  deleteSponsorApi,
+  deleteBannerApi,
+  deleteFaqApi,
+} from './adminDashboardApi';
 
 const STREAM_URL = `${import.meta.env.VITE_API_BASE_URL}/api/stream/congestion`;
 
@@ -27,6 +34,50 @@ export function useUpdateCongestion() {
 
   return useMutation({
     mutationFn: updateCongestionApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
+    },
+  });
+}
+
+export function useDeleteEvent() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteEventApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
+    },
+  });
+}
+
+export function useDeleteSponsor() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteSponsorApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
+    },
+  });
+}
+
+export function useDeleteBanner() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteBannerApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
+    },
+  });
+}
+
+export function useDeleteFaq() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteFaqApi,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
     },
