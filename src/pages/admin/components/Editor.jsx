@@ -7,6 +7,7 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import { useToastContext } from '@/designsystem/components/toast/ToastContext';
+import { useImageUpload } from '@/api/core/s3/useImageUpload';
 import {
   EditorWrapper,
   Toolbar,
@@ -30,14 +31,14 @@ import {
 
 const preventMouseDown = (e) => e.preventDefault();
 
-export default function Editor({ content = '', onChange }) {
+export default function Editor({ content = '', onChange, ownerId, imageType }) {
   const fileInputRef = useRef(null);
   const linkMenuRef = useRef(null);
   const savedSelectionRef = useRef(null);
   const [linkUrl, setLinkUrl] = useState('');
   const [showLinkMenu, setShowLinkMenu] = useState(false);
   const { toast } = useToastContext();
-
+  const { mutateAsync: uploadImage } = useImageUpload();
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -147,31 +148,14 @@ export default function Editor({ content = '', onChange }) {
     fileInputRef.current?.click();
   };
 
-  // TODO : S3 이미지 업로드로 변경
-  const uploadImage = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-
-      reader.onerror = reject;
-
-      reader.readAsDataURL(file);
-    });
-  };
-
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
     try {
-      const imageUrl = await uploadImage(file);
-      editor.chain().focus().setImage({ src: imageUrl }).run();
-    } catch {
-      toast({ message: '이미지를 불러오지 못했어요.' });
+      const { cdnUrl } = await uploadImage({ file, imageType, ownerId });
+      editor.chain().focus().setImage({ src: cdnUrl }).run();
     } finally {
       e.target.value = '';
     }
