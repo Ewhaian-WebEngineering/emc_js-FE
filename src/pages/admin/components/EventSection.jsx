@@ -18,14 +18,13 @@ const PHASE_LABEL = {
 };
 
 export default function EventSection({
-  events: initialEvents = { pre: [], live: [], post: [] },
+  events = { pre: [], live: [], post: [] },
 }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
   const { mutateAsync: deleteEvent } = useDeleteEvent();
 
   const [expanded, setExpanded] = useState(false);
-  const [events, setEvents] = useState(initialEvents);
 
   const groupedEvents = PHASE_ORDER.map((phase) => ({
     phase,
@@ -58,14 +57,6 @@ export default function EventSection({
     if (!result.confirmed) return;
 
     await deleteEvent({ eid: id });
-
-    setEvents((prev) => {
-      const next = { ...prev };
-      for (const phase of PHASE_ORDER) {
-        next[phase] = (next[phase] ?? []).filter((event) => event.id !== id);
-      }
-      return next;
-    });
   };
 
   return (

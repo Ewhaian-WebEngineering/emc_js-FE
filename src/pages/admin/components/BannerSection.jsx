@@ -9,13 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import { useDeleteBanner } from '@/api/feature/admin/useAdminData';
 
-export default function BannerSection({ banners: initialBanners = [] }) {
+export default function BannerSection({ banners = [] }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
   const { mutateAsync: deleteBanner } = useDeleteBanner();
 
   const [expanded, setExpanded] = useState(false);
-  const [banners, setBanners] = useState(initialBanners);
 
   const handleAdd = () => {
     navigate(ADMIN_ROUTES.BANNER);
@@ -37,8 +36,6 @@ export default function BannerSection({ banners: initialBanners = [] }) {
     if (!result.confirmed) return;
 
     await deleteBanner({ bid: id });
-
-    setBanners((prev) => prev.filter((banner) => banner.id !== id));
   };
 
   return (

@@ -9,13 +9,12 @@ import { ADMIN_ROUTES } from '@/constants/routes';
 import useModal from '@/hooks/modal/useModal';
 import { useDeleteSponsor } from '@/api/feature/admin/useAdminData';
 
-export default function SponsorSection({ sponsors: initialSponsors = [] }) {
+export default function SponsorSection({ sponsors = [] }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
   const { mutateAsync: deleteSponsor } = useDeleteSponsor();
 
   const [expanded, setExpanded] = useState(false);
-  const [sponsors, setSponsors] = useState(initialSponsors);
 
   const handleAdd = () => {
     navigate(ADMIN_ROUTES.SPONSOR_CREATE);
@@ -37,8 +36,6 @@ export default function SponsorSection({ sponsors: initialSponsors = [] }) {
     if (!result.confirmed) return;
 
     await deleteSponsor({ sid: id });
-
-    setSponsors((prev) => prev.filter((sponsor) => sponsor.id !== id));
   };
 
   return (

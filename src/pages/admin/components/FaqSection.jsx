@@ -9,13 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import { useDeleteFaq } from '@/api/feature/admin/useAdminData';
 
-export default function FaqSection({ faqs: initialFaqs = [] }) {
+export default function FaqSection({ faqs = [] }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
   const { mutateAsync: deleteFaq } = useDeleteFaq();
 
   const [expanded, setExpanded] = useState(false);
-  const [faqs, setFaqs] = useState(initialFaqs);
 
   const handleAdd = () => {
     navigate(ADMIN_ROUTES.FAQ);
@@ -37,8 +36,6 @@ export default function FaqSection({ faqs: initialFaqs = [] }) {
     if (!result.confirmed) return;
 
     await deleteFaq({ fid: id });
-
-    setFaqs((prev) => prev.filter((faq) => faq.id !== id));
   };
 
   return (
