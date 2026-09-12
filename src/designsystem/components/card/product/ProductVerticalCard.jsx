@@ -8,6 +8,7 @@ import {
   ProductVerticalCardPrice,
   ProductVerticalCardThumbnail,
 } from './style';
+import Image from '../../Image';
 
 /**
  * 세로형 제품 카드 컴포넌트입니다.
@@ -29,7 +30,7 @@ export default function ProductVerticalCard({
     <ProductVerticalCardContainer>
       <ProductVerticalCardThumbnail>
         {thumbnail ? (
-          <img src={thumbnail} alt={productName} />
+          <Image src={thumbnail} alt={productName} />
         ) : (
           <CardPlaceholder />
         )}

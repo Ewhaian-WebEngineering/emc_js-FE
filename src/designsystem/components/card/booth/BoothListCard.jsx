@@ -17,6 +17,7 @@ import {
 } from './style';
 import CardPlaceholder from '../../Placeholder';
 import { MARK_ICON } from '@/constants/marks';
+import Image from '../../Image';
 
 const THUMBNAIL_SLOT_COUNT = 4;
 const PRODUCT_IMAGE_SLOT_COUNT = THUMBNAIL_SLOT_COUNT - 1;
@@ -64,7 +65,7 @@ export default function BoothListCard({
         {displayThumbnails.map((thumbnail, index) => (
           <BoothListCardThumbnail key={index}>
             {thumbnail ? (
-              <img src={thumbnail} alt={boothName} />
+              <Image src={thumbnail} alt={boothName} />
             ) : (
               <CardPlaceholder />
             )}

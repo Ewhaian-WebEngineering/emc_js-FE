@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
+import { useSponsorList } from '@/api/feature/sponsor/useSponsorList';
 import GiftIcon from '@/assets/svg/event/ic_gift.svg?react';
+import { SPONSOR_ROUTES } from '@/constants/routes';
 import SponsorCard from '@/designsystem/components/card/sponsor/SponsorCard';
-import { SPONSORS } from './constants/sponsor';
+import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
+import { useGoBack } from '@/hooks/useGoBack';
 
 import {
   SponsorContainer,
@@ -13,16 +15,15 @@ import {
   IntroDescription,
   SponsorList,
 } from './style';
-import { useGoBack } from '@/hooks/useGoBack';
-import { SPONSOR_ROUTES } from '@/constants/routes';
 
 export default function SponsorScreen() {
   const navigate = useNavigate();
-
   const handleBack = useGoBack();
 
-  const handleSponsorClick = (sponsor) => {
-    navigate(SPONSOR_ROUTES.DETAIL(sponsor.id));
+  const { data: sponsors } = useSponsorList();
+
+  const handleSponsorClick = (sponsorId) => {
+    navigate(SPONSOR_ROUTES.DETAIL(sponsorId));
   };
 
   return (
@@ -47,15 +48,22 @@ export default function SponsorScreen() {
         </IntroSection>
 
         <SponsorList>
-          {SPONSORS.map((sponsor) => (
-            <SponsorCard
-              key={sponsor.id}
-              sponsorName={sponsor.sponsorName}
-              sponsorDescription={sponsor.sponsorDescription}
-              thumbnails={sponsor.thumbnails}
-              onClick={() => handleSponsorClick(sponsor)}
-            />
-          ))}
+          {sponsors.map((sponsor) => {
+            const thumbnails = [
+              sponsor.imageUrl,
+              ...(sponsor.products?.map((product) => product.imageUrl) ?? []),
+            ];
+
+            return (
+              <SponsorCard
+                key={sponsor.id}
+                sponsorName={sponsor.name}
+                sponsorDescription={sponsor.description}
+                thumbnails={thumbnails}
+                onClick={() => handleSponsorClick(sponsor.id)}
+              />
+            );
+          })}
         </SponsorList>
       </ContentWrapper>
     </SponsorContainer>

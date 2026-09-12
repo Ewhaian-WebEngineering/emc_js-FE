@@ -40,6 +40,7 @@ import {
 } from '@/constants/routes';
 import AdminCertification from '@/components/footer/AdminCertification';
 import { useHomeData } from '@/api/feature/home/useHomeData';
+import Image from '@/designsystem/components/Image';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
@@ -151,7 +152,7 @@ export default function HomeScreen() {
           }}
         >
           <KakaoOpenChannelContent>
-            <img src={KakaoOpenChannelLogo} alt="카카오톡 오픈채널" />
+            <Image src={KakaoOpenChannelLogo} alt="카카오톡 오픈채널" />
             <p>
               원하는 답변이 없다면?
               <br />

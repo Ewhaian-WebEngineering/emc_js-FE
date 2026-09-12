@@ -1,3 +1,4 @@
+import Image from '../../Image';
 import CardPlaceholder from '../../Placeholder';
 import {
   SponsorCardContainer,
@@ -37,7 +38,7 @@ export default function SponsorCard({
       <SponsorCardThumbnailWrapper>
         <SponsorCardMainImage>
           {mainImage ? (
-            <img src={mainImage} alt={`${sponsorName} main thumbnail`} />
+            <Image src={mainImage} alt={`${sponsorName} main thumbnail`} />
           ) : (
             <CardPlaceholder />
           )}
@@ -49,7 +50,7 @@ export default function SponsorCard({
             return (
               <Wrapper key={index}>
                 {thumbnail ? (
-                  <img src={thumbnail} alt={sponsorName} />
+                  <Image src={thumbnail} alt={sponsorName} />
                 ) : (
                   <CardPlaceholder size="40%" />
                 )}

@@ -9,6 +9,7 @@ import {
   EventCardTitle,
   EventCardStatus,
 } from './style';
+import Image from '../../Image';
 
 /**
  * 이벤트 정보를 표시하는 카드 컴포넌트입니다.
@@ -33,7 +34,7 @@ export default function EventCard({
     <EventCardContainer status={status} onClick={onClick}>
       <EventCardThumbnail>
         {thumbnail ? (
-          <img src={thumbnail} alt={eventTitle} />
+          <Image src={thumbnail} alt={eventTitle} />
         ) : (
           <CardPlaceholder />
         )}
