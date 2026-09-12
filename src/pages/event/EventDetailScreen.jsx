@@ -9,7 +9,7 @@ import { formatEventPeriod } from '@/utils/formatDate';
 import InfoIcon from '@/assets/svg/16px/ic_information.svg?react';
 import KakaoIcon from '@/assets/svg/20px/ic_kakao.svg?react';
 import LinkIcon from '@/assets/svg/28px/ic_link.svg?react';
-import { useEventDetail } from '@/api/feature/event/useEventDetail';
+import { useEventDetail } from '@/api/feature/event/useEvents';
 import { eventDetailMessages, eventTypeLabel } from './constants/eventDetail';
 import * as S from './style';
 import CopyToClipboard from 'react-copy-to-clipboard';
