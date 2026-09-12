@@ -53,12 +53,7 @@ function MyScreenLoggedOut({ onLoginClick }) {
   return (
     <>
       <MyContentContainer>
-        <MyUserRow
-          isLoggedIn={false}
-          userName=""
-          onLogout={() => {}}
-          onLoginClick={onLoginClick}
-        />
+        <MyUserRow isLoggedIn={false} onLoginClick={onLoginClick} />
         <MyDefaultContent data={{ banners }} />
       </MyContentContainer>
 
