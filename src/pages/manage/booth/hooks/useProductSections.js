@@ -24,11 +24,17 @@ export function useProductSections({ productGroups }) {
 
   const handleEditProduct = useCallback(
     (productId) => {
+      const section = productSections.find((s) =>
+        s.products.some((p) => p.id === productId),
+      );
+      const target = section?.products.find((p) => p.id === productId);
+
       navigate(MANAGE_ROUTES.PRODUCT_EDIT(boothId, productId), {
         state: {
-          productData: productSections
-            .flatMap((s) => s.products)
-            .find((p) => p.id === productId),
+          productData: target && {
+            ...target,
+            groupId: section.isUngrouped ? null : section.id,
+          },
         },
       });
     },

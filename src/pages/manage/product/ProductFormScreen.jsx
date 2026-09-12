@@ -70,6 +70,9 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     [booth?.productGroups],
   );
 
+  console.log('product.groupId:', product?.groupId);
+  console.log('boothGroupOptions:', boothGroupOptions);
+
   const {
     groupOptions,
     selectedGroupOption,
