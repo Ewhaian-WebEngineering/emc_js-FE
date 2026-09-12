@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import { useProductForm } from './hooks/useProductForm';
@@ -19,12 +20,31 @@ import Select from '@/designsystem/components/select/Select';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
+import { useMyBoothData } from '@/api/feature/booth/useBoothData';
+import { useBoothDraftStore } from '../store/useBoothDraftStore';
+import { buildGroupOptions } from '../utils/buildGroupOptions';
 import { useEntityGroups } from '@/hooks/useEntityGroups';
-import { GROUP_OPTIONS } from './constants/groupOptions';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
   const goBack = useGoBack();
+
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState(
+    product?.imageUrl ?? '',
+  );
+
+  const handleThumbnailUpload = (file) => {
+    setThumbnailFile(file);
+    setThumbnailPreview(URL.createObjectURL(file));
+  };
+
+  const handleThumbnailDelete = () => {
+    setThumbnailFile(null);
+    setThumbnailPreview('');
+  };
+
+  const handleFormSubmit = (values) => onSubmit(values, thumbnailFile);
 
   const {
     formValues,
@@ -33,7 +53,20 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     isButtonDisabled: isProductButtonDisabled,
     handleSubmit,
     handleUploadError,
-  } = useProductForm({ product, submitLabel, onSubmit });
+  } = useProductForm({
+    product,
+    submitLabel,
+    onSubmit: handleFormSubmit,
+    hasThumbnail: !!thumbnailPreview,
+  });
+
+  const { data: booth } = useMyBoothData();
+  const draft = useBoothDraftStore();
+
+  const boothGroupOptions = useMemo(
+    () => buildGroupOptions(booth?.productGroups ?? [], draft.groups),
+    [booth?.productGroups, draft.groups],
+  );
 
   const {
     groupOptions,
@@ -51,7 +84,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     isButtonDisabled: isGroupButtonDisabled,
     groupNameError,
     handleConfirmAddGroup,
-  } = useEntityGroups(GROUP_OPTIONS, {
+  } = useEntityGroups(boothGroupOptions, {
     groupId: formValues.groupId,
     onGroupIdChange: (value) => updateField('groupId', value),
   });
@@ -63,9 +96,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       cancelText: '나가기',
       confirmText: '계속 작성하기',
-      onCancel: () => {
-        goBack();
-      },
+      onCancel: () => goBack(),
     });
   };
 
@@ -111,10 +142,10 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           <ProductFormOptions>
             {STATUS_OPTIONS.map((option) => (
               <Tag
-                key={option.value}
+                key={String(option.value)}
                 label={option.label}
-                selected={formValues.status === option.value}
-                onClick={() => updateField('status', option.value)}
+                selected={formValues.isOnSale === option.value}
+                onClick={() => updateField('isOnSale', option.value)}
               />
             ))}
           </ProductFormOptions>
@@ -134,11 +165,9 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
         <ProductImageUploader
           title="제품 이미지"
           isRequired
-          imageUrl={formValues.thumbnail}
-          onUpload={(file) =>
-            updateField('thumbnail', URL.createObjectURL(file))
-          }
-          onDelete={() => updateField('thumbnail', '')}
+          imageUrl={thumbnailPreview}
+          onUpload={handleThumbnailUpload}
+          onDelete={handleThumbnailDelete}
           isError={!!visibleErrors.thumbnail}
           helperText={
             visibleErrors.thumbnail ??

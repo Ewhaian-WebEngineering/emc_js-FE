@@ -37,6 +37,7 @@ import {
 import BoothDetailCard from '@/designsystem/components/card/booth/BoothDetailCard';
 import Image from '@/designsystem/components/Image';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
+import { getBoothMarks } from '@/utils/formatBooth';
 
 export default function BoothDetailContent({
   booth,
@@ -54,7 +55,10 @@ export default function BoothDetailContent({
 
   useEffect(() => {
     if (!tabBarRef.current) return;
-    const update = () => setTabBarHeight(tabBarRef.current.offsetHeight);
+    const update = () => {
+      if (!tabBarRef.current) return;
+      setTabBarHeight(tabBarRef.current.offsetHeight);
+    };
     update();
     const ro = new ResizeObserver(update);
     ro.observe(tabBarRef.current);
@@ -71,9 +75,7 @@ export default function BoothDetailContent({
     navigate(BOOTH_ROUTES.NOTICE(boothId));
   };
 
-  const marks = [booth.isEco && 'eco', booth.isVegan && 'vegan'].filter(
-    Boolean,
-  );
+  const marks = getBoothMarks(booth);
 
   return (
     <>

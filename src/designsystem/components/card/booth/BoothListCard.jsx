@@ -18,6 +18,7 @@ import {
 import CardPlaceholder from '../../Placeholder';
 import { MARK_ICON } from '@/constants/marks';
 import Image from '../../Image';
+import { getBoothMarks } from '@/utils/formatBooth';
 
 const THUMBNAIL_SLOT_COUNT = 4;
 const PRODUCT_IMAGE_SLOT_COUNT = THUMBNAIL_SLOT_COUNT - 1;
@@ -56,7 +57,7 @@ export default function BoothListCard({
       (_, index) => productImages[index] ?? null,
     ),
   ];
-  const marks = [isEco && 'eco', isVegan && 'vegan'].filter(Boolean);
+  const marks = getBoothMarks({ isEco, isVegan, categories });
   const formattedBoothNumber = String(boothNumber).padStart(2, '0');
 
   return (

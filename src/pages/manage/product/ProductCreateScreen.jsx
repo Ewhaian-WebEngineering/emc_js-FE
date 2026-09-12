@@ -1,17 +1,32 @@
-import { MANAGE_ROUTES } from '@/constants/routes';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useGoBack } from '@/hooks/useGoBack';
+import { upsertProductDraft } from '../store/boothDraftStore';
 import ProductFormScreen from './ProductFormScreen';
 
-export default function ProductCreateScreen() {
-  const navigate = useNavigate();
-  const { boothId } = useParams();
+function createTempProductId() {
+  return `temp-product-${crypto.randomUUID()}`;
+}
 
-  const handleSubmit = async (values) => {
-    // TODO: API 연동 시 productId 받아오기
-    const productId = 'temp-id';
-    navigate(MANAGE_ROUTES.PRODUCT_EDIT(boothId, productId), {
-      state: { productData: values },
+export default function ProductCreateScreen() {
+  const goBack = useGoBack();
+
+  const handleSubmit = async (values, thumbnailFile) => {
+    const { name, price, isOnSale, description, groupId } = values;
+    const tempId = createTempProductId();
+
+    upsertProductDraft(tempId, {
+      status: 'created',
+      data: {
+        name,
+        price,
+        isOnSale,
+        description,
+        groupId,
+        imageUrl: thumbnailFile ? URL.createObjectURL(thumbnailFile) : '',
+      },
+      file: thumbnailFile,
     });
+
+    goBack();
   };
 
   return <ProductFormScreen onSubmit={handleSubmit} submitLabel="create" />;

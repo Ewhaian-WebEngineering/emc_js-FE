@@ -1,7 +1,15 @@
 import { useState } from 'react';
-import useModal from '@/hooks/modal/useModal';
+import useModal from './modal/useModal';
+import {
+  markGroupDeleted,
+  upsertGroupDraft,
+} from '@/pages/manage/store/boothDraftStore';
 
 const INITIAL_NEW_GROUP = { name: '', description: '' };
+
+function createTempGroupId() {
+  return `temp-group-${crypto.randomUUID()}`;
+}
 
 export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
   const { showModal } = useModal();
@@ -10,11 +18,10 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
   const [editingGroupId, setEditingGroupId] = useState(null);
   const [newGroup, setNewGroup] = useState(INITIAL_NEW_GROUP);
   const [originalGroup, setOriginalGroup] = useState(INITIAL_NEW_GROUP);
-  const [groups, setGroups] = useState(initialGroups);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
+  const groups = initialGroups;
   const isEditMode = editingGroupId !== null;
-
   const selectedGroupOption = groups.find((option) => option.value === groupId);
 
   const updateNewGroupField = (field, value) => {
@@ -36,7 +43,6 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
       name: option.label,
       description: option.description ?? '',
     };
-
     setEditingGroupId(option.value);
     setNewGroup(target);
     setOriginalGroup(target);
@@ -45,15 +51,10 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
 
   const isNewGroupDirty =
     newGroup.name.trim() !== '' || newGroup.description.trim() !== '';
-
   const isNewGroupChanged =
     newGroup.name !== originalGroup.name ||
     newGroup.description !== originalGroup.description;
-
   const isNewGroupValid = newGroup.name.trim() !== '';
-
-  const isButtonDisabled = isEditMode ? !isNewGroupChanged : !isNewGroupValid;
-
   const isSubmitDisabled = isEditMode
     ? !isNewGroupValid || !isNewGroupChanged
     : !isNewGroupValid;
@@ -89,24 +90,21 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
     setHasAttemptedSubmit(true);
     if (isSubmitDisabled) return;
 
+    const payload = {
+      name: newGroup.name.trim(),
+      description: newGroup.description.trim() || null,
+    };
+
     if (isEditMode) {
-      setGroups((prev) =>
-        prev.map((group) =>
-          group.value === editingGroupId
-            ? {
-                ...group,
-                label: newGroup.name.trim(),
-                description: newGroup.description.trim(),
-              }
-            : group,
-        ),
-      );
+      const isTemp = editingGroupId.startsWith('temp-group-');
+      upsertGroupDraft(editingGroupId, {
+        status: isTemp ? 'created' : 'updated',
+        data: payload,
+      });
     } else {
-      const newOption = {
-        label: newGroup.name.trim(),
-        description: newGroup.description.trim(),
-      };
-      setGroups((prev) => [...prev, newOption]);
+      const tempId = createTempGroupId();
+      upsertGroupDraft(tempId, { status: 'created', data: payload });
+      onGroupIdChange(tempId);
     }
 
     handleCloseGroupSheet();
@@ -125,8 +123,7 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
 
     if (!confirmed) return;
 
-    setGroups((prev) => prev.filter((g) => g.value !== option.value));
-
+    markGroupDeleted(option.value);
     if (option.value === groupId) {
       onGroupIdChange(null);
     }
@@ -145,7 +142,7 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
     handleCheckBeforeClose,
     newGroup,
     updateNewGroupField,
-    isButtonDisabled,
+    isButtonDisabled: isSubmitDisabled,
     groupNameError,
     handleConfirmAddGroup,
   };
