@@ -27,7 +27,8 @@ export default function EventDetailScreen() {
     // TODO: 카카오 SDK 연결
   };
 
-  const hasCaution = Boolean(event.caution?.trim());
+  const trimmedCaution = event.caution?.trim();
+  const hasCaution = Boolean(trimmedCaution);
 
   return (
     <>
@@ -105,7 +106,7 @@ export default function EventDetailScreen() {
             <S.NoticeTitle>이벤트 유의사항</S.NoticeTitle>
           </S.RowBox>
           <S.NoticeText>
-            {hasCaution ? event.caution.trim() : eventDetailMessages.noNotice}
+            {hasCaution ? trimmedCaution : eventDetailMessages.noNotice}
           </S.NoticeText>
         </S.ColumnBox>
       </S.NoticeBox>
