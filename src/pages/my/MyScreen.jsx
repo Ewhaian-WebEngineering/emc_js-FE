@@ -11,8 +11,11 @@ import {
 } from './style.js';
 import AdminCertification from '@/components/footer/AdminCertification';
 import LoginBottomSheet from './components/LoginBottomSheet';
-import { getAccessToken } from '@/api/core/tokenStorage';
-import { getKakaoAuthorizeUrl, useLogout } from '@/api/feature/auth/useAuth';
+import {
+  getKakaoAuthorizeUrl,
+  useLogout,
+  useAuth,
+} from '@/api/feature/auth/useAuth';
 import { useGetMyInfo, useGetBanners } from '@/api/feature/my/useMyData';
 
 const CONTENT_BY_ROLE = {
@@ -65,18 +68,16 @@ function MyScreenLoggedOut({ onLoginClick }) {
 }
 
 export default function MyScreen() {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!getAccessToken());
+  const [, forceUpdate] = useState(0);
   const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
+  const { isLoggedIn } = useAuth();
   const { mutate: logout } = useLogout();
 
   const handleLogout = () => {
-    logout();
-    setIsLoggedIn(false);
-  };
-
-  const handleLoginClick = () => {
-    setIsLoginSheetOpen(true);
+    logout(undefined, {
+      onSuccess: () => forceUpdate((n) => n + 1),
+    });
   };
 
   const handleKakaoLogin = () => {
@@ -91,10 +92,10 @@ export default function MyScreen() {
       {isLoggedIn ? (
         <MyScreenLoggedIn
           onLogout={handleLogout}
-          onLoginClick={handleLoginClick}
+          onLoginClick={() => setIsLoginSheetOpen(true)}
         />
       ) : (
-        <MyScreenLoggedOut onLoginClick={handleLoginClick} />
+        <MyScreenLoggedOut onLoginClick={() => setIsLoginSheetOpen(true)} />
       )}
 
       <LoginBottomSheet
