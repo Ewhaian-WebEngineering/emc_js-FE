@@ -27,17 +27,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { TAB_ROUTES } from '../../constants/routes';
 
-const CONGESTION_API_TO_LEVEL = {
-  green: 'relaxed',
-  yellow: 'normal',
-  red: 'crowded',
-};
-const CONGESTION_LEVEL_TO_API = {
-  relaxed: 'green',
-  normal: 'yellow',
-  crowded: 'red',
-};
-
 export default function AdminDashboardScreen() {
   const navigate = useNavigate();
   const { data } = useAdminDashboard();
@@ -45,15 +34,14 @@ export default function AdminDashboardScreen() {
   useCongestionStream();
   const [isCongestionSheetOpen, setIsCongestionSheetOpen] = useState(false);
 
-  const congestionRaw = data.congestion;
-  const congestionLevel = CONGESTION_API_TO_LEVEL[congestionRaw] ?? 'crowded';
-  const congestion = CONGESTION_LEVEL[congestionLevel];
+  const congestionLevel = data.congestion;
+  const congestion = CONGESTION_LEVEL[congestionLevel] ?? CONGESTION_LEVEL.red;
 
   const handleCongestionClick = () => setIsCongestionSheetOpen(true);
   const handleCongestionSheetClose = () => setIsCongestionSheetOpen(false);
   const handleCongestionSave = (value) => {
     if (!value) return;
-    updateCongestion({ level: CONGESTION_LEVEL_TO_API[value] ?? value });
+    updateCongestion({ level: value });
   };
 
   return (
