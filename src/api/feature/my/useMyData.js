@@ -28,7 +28,7 @@ export function useUpdateCongestion() {
   return useMutation({
     mutationFn: updateCongestionApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['myInfo'] });
     },
   });
 }
@@ -42,7 +42,7 @@ export function useCongestionStream() {
     eventSource.onmessage = (event) => {
       try {
         const { level } = JSON.parse(event.data);
-        queryClient.setQueryData(['adminDashboard'], (old) =>
+        queryClient.setQueryData(['myInfo'], (old) =>
           old ? { ...old, congestion: level } : old,
         );
       } catch (err) {
