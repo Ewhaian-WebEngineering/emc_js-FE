@@ -5,8 +5,13 @@ import {
   ProductListTabHeader,
   ProductListTabContent,
 } from './style';
+import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 
 export default function ProductListTab({ productGroups }) {
+  if (!productGroups?.length) {
+    return <EmptyState height={600} description="등록된 상품이 없습니다." />;
+  }
+
   return (
     <ProductListTabContainer>
       {productGroups.map((group) => (

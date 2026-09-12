@@ -2,11 +2,9 @@ import EmptyStateIcon from '@/assets/svg/scrap/ic_empty_scrap.svg?react';
 import ArrowRightIcon from '@/assets/svg/16px/ic_arrow_right.svg?react';
 import BoothFilterBar from '@/components/BoothFilterBar';
 import BoothList from '@/components/BoothList';
-import { DUMMY_BOOTHS } from '@/constants/dummyBooths';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 import FillRightHeader from '@/designsystem/components/header/FillRightHeader';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { useBoothFilter } from '@/hooks/useBoothFilter';
 import {
   EmptyStateButtonTextWrapper,
   ScrapContentWrapper,
@@ -14,23 +12,48 @@ import {
 } from './style';
 import { useNavigate } from 'react-router-dom';
 import { TAB_ROUTES } from '@/constants/routes';
+import { useScrapList } from '@/api/feature/scrap/useScrap';
+import { InfiniteScrollLoader } from '@/components/common/style';
+import Spinner from '@/designsystem/components/spinner/Spinner';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useBoothFilter } from '@/hooks/useBoothFilter';
 
 export default function ScrapScreen() {
   const navigate = useNavigate();
+  const { category, setCategory, sort, setSort, time, setTime } =
+    useBoothFilter('all');
+
   const {
-    setCategory,
-    sortOption,
-    setSortOption,
-    filterOption,
-    setFilterOption,
-    booths,
-  } = useBoothFilter(DUMMY_BOOTHS);
+    scrapListData,
+    totalCount,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useScrapList({ category, sort, time });
+
+  const observerRef = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
+
+  const isFiltering = category !== 'all' || time !== 'all';
+  const showEmptyState = totalCount === 0 && !isFiltering;
+
+  if (isLoading) {
+    return (
+      <InfiniteScrollLoader>
+        <Spinner />
+      </InfiniteScrollLoader>
+    );
+  }
 
   return (
     <ScrapScreenContainer>
       <FillRightHeader title="스크랩" border />
-      <ScrapContentWrapper boothCount={booths.length}>
-        {booths.length === 0 ? (
+      <ScrapContentWrapper isEmptyState={showEmptyState}>
+        {showEmptyState ? (
           <EmptyState
             Icon={EmptyStateIcon}
             title="아직 스크랩한 부스가 없어요!"
@@ -54,14 +77,21 @@ export default function ScrapScreen() {
         ) : (
           <>
             <BoothFilterBar
-              count={booths.length}
-              sortValue={sortOption}
-              onSortChange={setSortOption}
-              filterValue={filterOption}
-              onFilterChange={setFilterOption}
+              count={totalCount}
+              categoryValue={category}
+              sortValue={sort}
+              onSortChange={setSort}
+              filterValue={time}
+              onFilterChange={setTime}
               onCategoryChange={setCategory}
             />
-            <BoothList booths={booths} />
+            <BoothList booths={scrapListData} />
+            <div ref={observerRef} style={{ height: 1 }} />
+            {isFetchingNextPage && (
+              <InfiniteScrollLoader>
+                <Spinner />
+              </InfiniteScrollLoader>
+            )}
           </>
         )}
       </ScrapContentWrapper>

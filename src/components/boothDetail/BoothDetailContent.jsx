@@ -35,6 +35,8 @@ import {
   RecommendBoothList,
 } from '../style';
 import BoothDetailCard from '@/designsystem/components/card/booth/BoothDetailCard';
+import Image from '@/designsystem/components/Image';
+import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 
 export default function BoothDetailContent({
   booth,
@@ -77,7 +79,7 @@ export default function BoothDetailContent({
     <>
       <RepresentativeImageWrapper>
         {booth.thumbnailUrl ? (
-          <img src={booth.thumbnailUrl} alt="대표 이미지" />
+          <Image src={booth.thumbnailUrl} alt="대표 이미지" />
         ) : (
           <Placeholder logoSize="30%" />
         )}
@@ -91,7 +93,7 @@ export default function BoothDetailContent({
 
       <BoothInfo>
         <BoothInfoHeader>
-          <BoothName>{booth.name}</BoothName>
+          <BoothName>{booth.name || '-'}</BoothName>
           {interactive &&
             (booth.isScrapped ? (
               <BookMarkFill color={semantic.iconPrimaryNormal} />
@@ -108,20 +110,20 @@ export default function BoothDetailContent({
           <InfoRow>
             <InfoLabel>운영 시간</InfoLabel>
             <InfoValue>
-              {OPERATING_TIME_LABEL[booth.operationTime] || booth.operationTime}
+              {OPERATING_TIME_LABEL[booth.operationTime] || '-'}
             </InfoValue>
           </InfoRow>
           <InfoRow>
             <InfoLabel>현금 사용</InfoLabel>
-            <InfoValue>
-              {CASH_USAGE_LABEL[booth.isCash] || booth.isCash}
-            </InfoValue>
+            <InfoValue>{CASH_USAGE_LABEL[booth.isCash] || '-'}</InfoValue>
           </InfoRow>
           <InfoRow>
             <InfoLabel>위치</InfoLabel>
-            <LinkButton size="sm" variant="secondary">
-              {booth.location}번 부스
-            </LinkButton>
+            {booth.location ? (
+              <InfoValue>{booth.location}번 부스</InfoValue>
+            ) : (
+              <InfoValue>-</InfoValue>
+            )}
           </InfoRow>
           <InfoRow>
             <InfoLabel>URL</InfoLabel>
@@ -147,25 +149,19 @@ export default function BoothDetailContent({
         </NoticeCard>
       </BoothInfo>
 
-      {booth.description && (
-        <>
-          <Divider size="lg" />
-          <AccordionDescription
-            description={booth.description}
-            expanded={boothDescriptionExpanded}
-            onToggle={() =>
-              setBoothDescriptionExpanded(!boothDescriptionExpanded)
-            }
-          />
-        </>
-      )}
+      <Divider size="lg" />
+      <AccordionDescription
+        description={booth.description || '등록된 소개글이 없습니다.'}
+        expanded={boothDescriptionExpanded}
+        onToggle={() => setBoothDescriptionExpanded(!boothDescriptionExpanded)}
+      />
 
       {booth.categories?.includes('food') && booth.allergenInfo && (
         <>
           <Divider size="lg" />
           <AccordionDescription
             title="원재료 / 알레르기 정보"
-            description={booth.allergenInfo}
+            description={booth.allergenInfo || '등록된 정보가 없습니다.'}
             expanded={allergyDescriptionExpanded}
             onToggle={() =>
               setAllergyDescriptionExpanded(!allergyDescriptionExpanded)
@@ -198,20 +194,24 @@ export default function BoothDetailContent({
 
       <RecommendBooths>
         <RecommendBoothTitle>이 부스는 어때요?</RecommendBoothTitle>
-        <RecommendBoothList>
-          {booth.recommendedBooths?.map((recommendation) => (
-            <BoothDetailCard
-              key={recommendation.id}
-              boothNumber={recommendation.boothNumber}
-              boothName={recommendation.name}
-              thumbnail={recommendation.thumbnailUrl}
-              isVegan={recommendation.isVegan}
-              isEco={recommendation.isEco}
-              categories={recommendation.categories}
-              onClick={interactive ? () => {} : undefined}
-            />
-          ))}
-        </RecommendBoothList>
+        {booth.recommendedBooths?.length === 0 ? (
+          <EmptyState height={150} description="추천 부스가 없습니다." />
+        ) : (
+          <RecommendBoothList>
+            {booth.recommendedBooths?.map((recommendation) => (
+              <BoothDetailCard
+                key={recommendation.id}
+                boothNumber={recommendation.boothNumber}
+                boothName={recommendation.name}
+                thumbnail={recommendation.thumbnailUrl}
+                isVegan={recommendation.isVegan}
+                isEco={recommendation.isEco}
+                categories={recommendation.categories}
+                onClick={interactive ? () => {} : undefined}
+              />
+            ))}
+          </RecommendBoothList>
+        )}
       </RecommendBooths>
     </>
   );

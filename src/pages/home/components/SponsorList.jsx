@@ -12,6 +12,7 @@ import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { SPONSOR_ROUTES } from '@/constants/routes';
 import { useNavigate } from 'react-router-dom';
+import Image from '@/designsystem/components/Image';
 
 export default function SponsorList({ list }) {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ function SponsorItem({ name, imageUrl, isSelected, onClick }) {
     <SponsorItemContainer onClick={onClick}>
       <SponsorItemThumbnail isSelected={isSelected}>
         {imageUrl ? (
-          <img src={imageUrl} alt={name} />
+          <Image src={imageUrl} alt={name} />
         ) : (
           <Placeholder width={70} height={70} />
         )}

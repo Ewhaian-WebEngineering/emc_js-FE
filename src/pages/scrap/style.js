@@ -10,8 +10,8 @@ export const ScrapScreenContainer = styled.div`
 export const ScrapContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: ${({ boothCount }) =>
-    boothCount === 0 ? measurement.spacing128 : '0'};
+  padding-top: ${({ isEmptyState }) =>
+    isEmptyState ? measurement.spacing128 : '0'};
 `;
 
 export const EmptyStateButtonTextWrapper = styled.div`

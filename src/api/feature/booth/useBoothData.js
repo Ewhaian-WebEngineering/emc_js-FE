@@ -1,6 +1,7 @@
 import {
   useInfiniteQuery,
   useMutation,
+  useQuery,
   useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query';
@@ -9,8 +10,9 @@ import {
   deleteNotice,
   getBoothDetail,
   getBoothList,
+  getMyBoothData,
   getNotices,
-  toggleBoothScrap,
+  updateMyBoothData,
   updateNotice,
 } from './boothApi';
 
@@ -58,31 +60,21 @@ export const useBoothDetailData = (boothId) => {
   };
 };
 
-export const useBoothScrap = (bid) => {
+export const useMyBoothData = () => {
+  return useQuery({
+    queryKey: ['my-booth'],
+    queryFn: () => getMyBoothData(),
+  });
+};
+
+export const useUpdateMyBoothData = () => {
   const queryClient = useQueryClient();
 
-  const patchBoothCache = (isScrapped) => {
-    queryClient.setQueryData(['booth-detail', bid], (old) =>
-      old ? { ...old, isScrapped } : old,
-    );
-
-    queryClient.setQueriesData({ queryKey: ['booth-list'] }, (old) => {
-      if (!old) return old;
-      return {
-        ...old,
-        pages: old.pages.map((page) => ({
-          ...page,
-          booths: page.booths.map((b) =>
-            b.id === bid ? { ...b, isScrapped } : b,
-          ),
-        })),
-      };
-    });
-  };
-
   return useMutation({
-    mutationFn: () => toggleBoothScrap(bid),
-    onSuccess: (data) => patchBoothCache(data.isScrapped),
+    mutationFn: updateMyBoothData,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-booth'] });
+    },
   });
 };
 

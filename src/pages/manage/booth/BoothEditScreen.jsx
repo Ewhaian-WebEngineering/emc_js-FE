@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
@@ -7,7 +8,6 @@ import {
   CategoryLabelHelperText,
 } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DUMMY_BOOTH_DETAIL } from '@/pages/booth/constants/dummyBoothDetail';
 import { BOOTH_ROUTES, MANAGE_ROUTES } from '@/constants/routes';
 import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import CategoryLabel from './components/CategoryLabel';
@@ -23,15 +23,65 @@ import { useBoothForm } from './hooks/useBoothForm';
 import { useProductSections } from './hooks/useProductSections';
 import { useToggleMap } from './hooks/useToggleMap';
 import useModal from '@/hooks/modal/useModal';
+import { InfiniteScrollLoader } from '@/components/common/style';
+import Spinner from '@/designsystem/components/spinner/Spinner';
 import {
   useDeleteNotice,
+  useMyBoothData,
   useNoticeList,
+  useUpdateMyBoothData,
 } from '@/api/feature/booth/useBoothData';
+import { useImageUpload } from '@/api/core/s3/useImageUpload';
+
+function mapBoothToFormInitial(booth) {
+  return {
+    ...booth,
+    boothName: booth.name,
+    tags: booth.categories,
+    marks: [booth.isVegan && 'vegan', booth.isEco && 'eco'].filter(Boolean),
+    operatingTime: booth.operationTime,
+    cash: booth.isCash,
+    url: booth.externalUrl,
+    allergyInfo: booth.allergenInfo,
+    announcement: booth.guides,
+  };
+}
+
+function buildUpdatePayload(boothForm) {
+  return {
+    categories: boothForm.tags,
+    isVegan: boothForm.marks.includes('vegan'),
+    isEco: boothForm.marks.includes('eco'),
+    operationTime: boothForm.operatingTime,
+    isCash: boothForm.cash,
+    externalUrl: boothForm.url || null,
+    inquiryUrl: boothForm.inquiryUrl,
+    description: boothForm.description,
+    allergenInfo: boothForm.allergyInfo || null,
+    guides: boothForm.announcement || null,
+  };
+}
 
 export default function BoothEditScreen() {
-  const navigate = useNavigate();
   const { boothId } = useParams();
+  const { data: booth, isPending } = useMyBoothData();
+
+  if (isPending) {
+    return (
+      <InfiniteScrollLoader>
+        <Spinner />
+      </InfiniteScrollLoader>
+    );
+  }
+
+  return <BoothEditForm booth={booth} boothId={boothId} />;
+}
+
+function BoothEditForm({ booth, boothId }) {
+  const navigate = useNavigate();
   const { showModal } = useModal();
+  const { mutate: updateBooth, isPending: isSaving } = useUpdateMyBoothData();
+  const { mutateAsync: uploadImage } = useImageUpload();
   const deleteNoticeMutation = useDeleteNotice();
   const { data: noticeList } = useNoticeList(boothId);
 
@@ -44,8 +94,26 @@ export default function BoothEditScreen() {
     'announcement',
   ]);
 
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState(booth.thumbnailUrl);
+  const [thumbnailRemoved, setThumbnailRemoved] = useState(false);
+
+  const handleThumbnailUpload = (file) => {
+    setThumbnailFile(file);
+    setThumbnailPreview(URL.createObjectURL(file));
+    setThumbnailRemoved(false);
+  };
+
+  const handleThumbnailDelete = () => {
+    setThumbnailFile(null);
+    setThumbnailPreview(null);
+    setThumbnailRemoved(true);
+  };
+
+  const initialForm = mapBoothToFormInitial(booth);
+
   const { boothForm, updateField, errors, validate } =
-    useBoothForm(DUMMY_BOOTH_DETAIL);
+    useBoothForm(initialForm);
 
   const {
     productSections,
@@ -54,7 +122,7 @@ export default function BoothEditScreen() {
     handleDeleteProduct,
     productsError,
     validateProducts,
-  } = useProductSections(DUMMY_BOOTH_DETAIL);
+  } = useProductSections(booth);
 
   const handleBack = async () => {
     await showModal({
@@ -104,14 +172,43 @@ export default function BoothEditScreen() {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const fieldErrors = validate();
     const productError = validateProducts();
 
     const hasError = Object.keys(fieldErrors).length > 0 || productError;
     if (hasError) return;
 
-    navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
+    let thumbnailKey = booth.thumbnailKey;
+
+    if (thumbnailFile) {
+      const { fileKey } = await uploadImage({
+        file: thumbnailFile,
+        imageType: 'booth_thumbnail',
+        ownerId: boothId,
+      });
+      thumbnailKey = fileKey;
+    } else if (thumbnailRemoved) {
+      thumbnailKey = null;
+    }
+
+    updateBooth(
+      { ...buildUpdatePayload(boothForm), thumbnailKey },
+      {
+        onSuccess: () => {
+          navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
+        },
+        onError: (error) => {
+          showModal({
+            variant: 'danger',
+            title: '저장에 실패했어요.',
+            description:
+              error.response?.data?.message || '잠시 후 다시 시도해주세요.',
+            confirmText: '확인',
+          });
+        },
+      },
+    );
   };
 
   return (
@@ -119,10 +216,18 @@ export default function BoothEditScreen() {
       <FillCenterHeader
         onBack={handleBack}
         title="부스 수정"
-        right={<TextButton onClick={handleSave}>저장</TextButton>}
+        right={
+          <TextButton onClick={handleSave} disabled={isSaving}>
+            저장
+          </TextButton>
+        }
       />
 
-      <MainImageUploader />
+      <MainImageUploader
+        imageUrl={thumbnailPreview}
+        onUpload={handleThumbnailUpload}
+        onDelete={handleThumbnailDelete}
+      />
 
       <CategoryContainer>
         <TextField
@@ -282,7 +387,7 @@ export default function BoothEditScreen() {
             key={notice.id}
             title={notice.title}
             content={notice.content}
-            date={notice.createdAt}
+            date={notice.date ?? notice.createdAt}
             onEdit={() => handleEditNotice(notice.id)}
             onDelete={() => clickDeleteNotice(notice.id)}
           />
