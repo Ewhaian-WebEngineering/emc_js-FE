@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   useMutation,
   useQueryClient,
@@ -33,25 +33,31 @@ export function useUpdateCongestion() {
   });
 }
 
-export function useStreamCongestion() {
-  const [congestion, setCongestion] = useState(null);
+export function useCongestionStream() {
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    const eventSource = new EventSource(STREAM_URL, { withCredentials: true });
+    const eventSource = new EventSource(STREAM_URL);
 
     eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      setCongestion(data.congestion);
+      try {
+        const { level } = JSON.parse(event.data);
+        queryClient.setQueryData(['adminDashboard'], (old) =>
+          old ? { ...old, congestion: level } : old,
+        );
+      } catch (err) {
+        console.error('Failed to parse SSE message:', err, event.data);
+      }
     };
 
-    eventSource.onerror = (error) => {
-      console.error('SSE connection error:', error);
+    eventSource.onerror = () => {
+      if (eventSource.readyState === EventSource.CLOSED) {
+        console.error('SSE connection permanently closed');
+      }
     };
 
     return () => {
       eventSource.close();
     };
-  }, []);
-
-  return { congestion };
+  }, [queryClient]);
 }
