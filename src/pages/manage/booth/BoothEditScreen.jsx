@@ -171,8 +171,7 @@ function BoothEditForm({ booth, boothId }) {
           showModal({
             variant: 'danger',
             title: '저장에 실패했어요.',
-            description:
-              error.response?.data?.message || '잠시 후 다시 시도해주세요.',
+            description: error.message || '잠시 후 다시 시도해주세요.',
             confirmText: '확인',
           });
         },

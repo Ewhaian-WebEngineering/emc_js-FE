@@ -4,9 +4,8 @@ import { useState } from 'react';
 const getInitialValues = (product) => ({
   name: product?.name ?? '',
   price: product?.price ?? '',
-  status: product?.status ?? 'ON_SALE',
+  isOnSale: product?.isOnSale ?? true,
   description: product?.description ?? '',
-  thumbnail: product?.thumbnail ?? '',
   groupId: product?.groupId ?? null,
 });
 
@@ -17,7 +16,12 @@ const FIELD_ERROR_MESSAGES = {
   thumbnail: '이미지를 업로드 해주세요.',
 };
 
-export function useProductForm({ product, submitLabel, onSubmit }) {
+export function useProductForm({
+  product,
+  submitLabel,
+  onSubmit,
+  hasThumbnail,
+}) {
   const isCreateMode = submitLabel === 'create';
   const { showModal } = useModal();
 
@@ -36,7 +40,7 @@ export function useProductForm({ product, submitLabel, onSubmit }) {
     name: formValues.name.trim() === '',
     price: formValues.price === '',
     description: formValues.description.trim() === '',
-    thumbnail: formValues.thumbnail === '',
+    thumbnail: !hasThumbnail,
   };
 
   const isFormValid = !Object.values(fieldErrors).some(Boolean);
@@ -60,7 +64,7 @@ export function useProductForm({ product, submitLabel, onSubmit }) {
       ...formValues,
       name: formValues.name.trim(),
       description: formValues.description.trim(),
-      price: Number(String(formValues.price).replace(/[^0-9]/g, '')), // 숫자만 남기고 정수로 변환
+      price: Number(String(formValues.price).replace(/[^0-9]/g, '')),
     };
 
     try {
@@ -68,7 +72,15 @@ export function useProductForm({ product, submitLabel, onSubmit }) {
       setFormValues(trimmedValues);
       setInitialValues(trimmedValues);
     } catch (error) {
-      // TODO: 에러 핸들링
+      await showModal({
+        variant: 'confirmation',
+        title:
+          submitLabel === 'create'
+            ? '등록에 실패했어요.'
+            : '저장에 실패했어요.',
+        description: error.message || '잠시 후 다시 시도해주세요.',
+        confirmText: '확인',
+      });
     } finally {
       setIsSubmitting(false);
     }

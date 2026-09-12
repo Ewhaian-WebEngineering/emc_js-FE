@@ -1,29 +1,42 @@
 import { MANAGE_ROUTES } from '@/constants/routes';
-import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDeleteProduct } from '@/api/feature/product/useProductData';
 
 export function useProductSections({ productGroups }) {
   const navigate = useNavigate();
+  const { boothId } = useParams();
+  const { mutateAsync: deleteProduct } = useDeleteProduct();
 
   const [productSections, setProductSections] = useState(() => [
     ...productGroups.map((group) => ({ ...group, isUngrouped: false })),
     { id: 'ungrouped', name: '그룹 없음', products: [], isUngrouped: true },
   ]);
 
+  useEffect(() => {
+    setProductSections([
+      ...productGroups.map((group) => ({ ...group, isUngrouped: false })),
+      { id: 'ungrouped', name: '그룹 없음', products: [], isUngrouped: true },
+    ]);
+  }, [productGroups]);
+
   const [productsError, setProductsError] = useState(null);
 
-  const handleEditProduct = useCallback((productId) => {
-    navigate(MANAGE_ROUTES.PRODUCT_EDIT(productId), {
-      state: {
-        productData: productSections
-          .flatMap((s) => s.products)
-          .find((p) => p.id === productId),
-      },
-    });
-  }, []);
+  const handleEditProduct = useCallback(
+    (productId) => {
+      navigate(MANAGE_ROUTES.PRODUCT_EDIT(boothId, productId), {
+        state: {
+          productData: productSections
+            .flatMap((s) => s.products)
+            .find((p) => p.id === productId),
+        },
+      });
+    },
+    [productSections, boothId],
+  );
 
-  const handleDeleteProduct = useCallback((productId) => {
-    // TODO: 제품 삭제 로직 구현
+  const handleDeleteProduct = useCallback(async (productId) => {
+    await deleteProduct(productId);
     setProductSections((prev) =>
       prev.map((section) => ({
         ...section,

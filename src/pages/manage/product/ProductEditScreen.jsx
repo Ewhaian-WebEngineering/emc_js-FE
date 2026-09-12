@@ -1,37 +1,57 @@
-import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import ProductFormScreen from './ProductFormScreen';
-import { mockProduct } from './mocks/mockProduct';
+import { useGoBack } from '@/hooks/useGoBack';
+import {
+  useProductDetail,
+  useUpdateProduct,
+} from '@/api/feature/product/useProductData';
+import { useImageUpload } from '@/api/core/s3/useImageUpload';
+import { InfiniteScrollLoader } from '@/components/common/style';
+import Spinner from '@/designsystem/components/spinner/Spinner';
 
 export default function ProductEditScreen() {
-  const { productId } = useParams();
+  const { boothId, productId } = useParams();
   const location = useLocation();
+  const goBack = useGoBack();
   const stateProduct = location.state?.productData;
 
-  const [product, setProduct] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: fetchedProduct, isPending } = useProductDetail(productId, {
+    enabled: !stateProduct,
+  });
 
-  useEffect(() => {
-    if (stateProduct) {
-      setProduct(stateProduct);
-      setIsLoading(false);
-      return;
+  const product = stateProduct ?? fetchedProduct;
+
+  const { mutateAsync: updateProduct } = useUpdateProduct();
+  const { mutateAsync: uploadImage } = useImageUpload();
+
+  if (!stateProduct && isPending) {
+    <>
+      <InfiniteScrollLoader>
+        <Spinner />
+      </InfiniteScrollLoader>
+    </>;
+  }
+
+  const handleSubmit = async (values, thumbnailFile) => {
+    let imageKey = product.imageKey;
+
+    if (thumbnailFile) {
+      const { fileKey } = await uploadImage({
+        file: thumbnailFile,
+        imageType: 'booth_product',
+        ownerId: boothId,
+      });
+      imageKey = fileKey;
     }
 
-    // TODO: API 연동 시 productId로 상품 정보 가져오기
-    setProduct(mockProduct);
-    setIsLoading(false);
-  }, [productId, stateProduct]);
+    const { name, price, isOnSale, description, groupId } = values;
+    await updateProduct({
+      productId,
+      payload: { name, price, isOnSale, description, groupId, imageKey },
+    });
 
-  const handleSubmit = async (values) => {
-    // TODO: API 연동 시 상품 정보 업데이트
-    setProduct(values);
+    goBack();
   };
-
-  if (isLoading) {
-    // TODO: 로딩 화면 교체
-    return <div>Loading...</div>;
-  }
 
   return (
     <ProductFormScreen
