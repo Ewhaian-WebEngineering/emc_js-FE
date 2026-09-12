@@ -10,7 +10,7 @@ import { CONGESTION_LEVEL } from '@/constants/congestionLevel';
 import {
   useAdminDashboard,
   useUpdateCongestion,
-  useStreamCongestion,
+  useCongestionStream,
 } from '@/api/feature/admin/useAdminData';
 import CongestionBottomSheet from './components/CongestionBottomSheet';
 import SponsorSection from './components/SponsorSection';
@@ -42,7 +42,7 @@ export default function AdminDashboardScreen() {
   const navigate = useNavigate();
   const { data } = useAdminDashboard();
   const { mutate: updateCongestion } = useUpdateCongestion();
-  const { congestion: streamCongestionRaw } = useStreamCongestion();
+  const { congestion: streamCongestionRaw } = useCongestionStream();
   const [isCongestionSheetOpen, setIsCongestionSheetOpen] = useState(false);
 
   const congestionRaw = streamCongestionRaw ?? data.congestion;
