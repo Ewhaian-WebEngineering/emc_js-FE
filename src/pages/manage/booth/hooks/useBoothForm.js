@@ -3,20 +3,24 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const REQUIRED_FIELDS = [
-  { key: 'tags', check: (form) => form.tags.length > 0, label: '카테고리' },
+  {
+    key: 'categories',
+    check: (form) => form.categories.length > 0,
+    label: '카테고리',
+  },
   {
     key: 'marks',
     check: (form) => form.marks.length > 0,
     label: '비건 / 친환경 카테고리',
   },
   {
-    key: 'operatingTime',
-    check: (form) => form.operatingTime !== null,
+    key: 'operationTime',
+    check: (form) => form.operationTime !== null,
     label: '운영 시간',
   },
   {
-    key: 'cash',
-    check: (form) => form.cash !== undefined && form.cash !== null,
+    key: 'isCash',
+    check: (form) => form.isCash !== undefined && form.isCash !== null,
     label: '현금 사용 여부',
   },
   {
@@ -38,18 +42,18 @@ export function useBoothForm(initialData, boothId) {
 
   const [boothForm, setBoothForm] = useState(() => ({
     representativeImage: initialData.representativeImage,
-    boothName: initialData.boothName,
-    tags: initialData.tags,
+    name: initialData.name,
+    categories: initialData.categories,
     marks: initialData.marks,
-    operatingTime: initialData.operatingTime,
-    cash: initialData.cash,
+    operationTime: initialData.operationTime,
+    isCash: initialData.isCash,
     location: initialData.location,
-    url: initialData.url,
+    externalUrl: initialData.externalUrl,
     inquiryUrl: initialData.inquiryUrl,
     description: initialData.description,
-    allergyInfo: initialData.allergyInfo,
-    notice: initialData.notice,
-    announcement: initialData.announcement,
+    allergenInfo: initialData.allergenInfo,
+    notices: initialData.notices,
+    guides: initialData.guides,
   }));
 
   const [errors, setErrors] = useState({});
@@ -65,7 +69,7 @@ export function useBoothForm(initialData, boothId) {
   };
 
   const handleEditNotice = (noticeId) => {
-    const targetNotice = boothForm.notice.find(
+    const targetNotice = boothForm.notices.find(
       (notice) => notice.id === noticeId,
     );
 
@@ -79,7 +83,7 @@ export function useBoothForm(initialData, boothId) {
   const handleDeleteNotice = (noticeId) => {
     setBoothForm((prev) => ({
       ...prev,
-      notice: prev.notice.filter((notice) => notice.id !== noticeId),
+      notices: prev.notices.filter((notice) => notice.id !== noticeId),
     }));
   };
 

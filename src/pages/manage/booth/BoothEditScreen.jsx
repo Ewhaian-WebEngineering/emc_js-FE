@@ -30,36 +30,8 @@ import {
   useUpdateMyBoothData,
 } from '@/api/feature/booth/useBoothData';
 import { useImageUpload } from '@/api/core/s3/useImageUpload';
-
-function mapBoothToFormInitial(booth) {
-  return {
-    ...booth,
-    boothName: booth.name,
-    tags: booth.categories,
-    marks: [booth.isVegan && 'vegan', booth.isEco && 'eco'].filter(Boolean),
-    operatingTime: booth.operationTime,
-    cash: booth.isCash,
-    url: booth.externalUrl,
-    allergyInfo: booth.allergenInfo,
-    announcement: booth.guides,
-    notice: booth.notices,
-  };
-}
-
-function buildUpdatePayload(boothForm) {
-  return {
-    categories: boothForm.tags,
-    isVegan: boothForm.marks.includes('vegan'),
-    isEco: boothForm.marks.includes('eco'),
-    operationTime: boothForm.operatingTime,
-    isCash: boothForm.cash,
-    externalUrl: boothForm.url || null,
-    inquiryUrl: boothForm.inquiryUrl,
-    description: boothForm.description,
-    allergenInfo: boothForm.allergyInfo || null,
-    guides: boothForm.announcement || null,
-  };
-}
+import { getBoothMarks, marksToFlags } from '@/utils/formatBooth';
+import { queryClient } from '@/api/core/query/queryClient';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -107,8 +79,6 @@ function BoothEditForm({ booth, boothId }) {
     setThumbnailRemoved(true);
   };
 
-  const initialForm = mapBoothToFormInitial(booth);
-
   const {
     boothForm,
     updateField,
@@ -116,7 +86,7 @@ function BoothEditForm({ booth, boothId }) {
     handleDeleteNotice,
     errors,
     validate,
-  } = useBoothForm(initialForm);
+  } = useBoothForm({ ...booth, marks: getBoothMarks(booth) });
 
   const {
     productSections,
@@ -134,9 +104,7 @@ function BoothEditForm({ booth, boothId }) {
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       confirmText: '계속 작성하기',
       cancelText: '나가기',
-      onCancel: () => {
-        navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
-      },
+      onCancel: () => navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId)),
     });
   };
 
@@ -147,9 +115,7 @@ function BoothEditForm({ booth, boothId }) {
       description: '삭제하시면 다시 되돌릴 수 없어요.',
       confirmText: '삭제하기',
       cancelText: '취소',
-      onConfirm: () => {
-        handleDeleteProduct(productId);
-      },
+      onConfirm: () => handleDeleteProduct(productId),
     });
   };
 
@@ -160,21 +126,16 @@ function BoothEditForm({ booth, boothId }) {
       description: '삭제하시면 다시 되돌릴 수 없어요.',
       confirmText: '삭제하기',
       cancelText: '취소',
-      onConfirm: () => {
-        handleDeleteNotice(noticeId);
-      },
+      onConfirm: () => handleDeleteNotice(noticeId),
     });
   };
 
   const handleSave = async () => {
     const fieldErrors = validate();
     const productError = validateProducts();
-
-    const hasError = Object.keys(fieldErrors).length > 0 || productError;
-    if (hasError) return;
+    if (Object.keys(fieldErrors).length > 0 || productError) return;
 
     let thumbnailKey = booth.thumbnailKey;
-
     if (thumbnailFile) {
       const { fileKey } = await uploadImage({
         file: thumbnailFile,
@@ -187,9 +148,23 @@ function BoothEditForm({ booth, boothId }) {
     }
 
     updateBooth(
-      { ...buildUpdatePayload(boothForm), thumbnailKey },
+      {
+        categories: boothForm.categories,
+        ...marksToFlags(boothForm.marks),
+        operationTime: boothForm.operationTime,
+        isCash: boothForm.isCash,
+        externalUrl: boothForm.externalUrl || null,
+        inquiryUrl: boothForm.inquiryUrl,
+        description: boothForm.description,
+        allergenInfo: boothForm.allergenInfo || null,
+        guides: boothForm.guides || null,
+        thumbnailKey,
+      },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ['booth-detail', boothId],
+          });
           navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
         },
         onError: (error) => {
@@ -227,7 +202,7 @@ function BoothEditForm({ booth, boothId }) {
         <TextField
           title="이름"
           description="변경 불가"
-          value={boothForm.boothName}
+          value={boothForm.name}
           disabled
         />
         <TextField
@@ -240,10 +215,10 @@ function BoothEditForm({ booth, boothId }) {
           title="카테고리"
           multiple
           options={BOOTH_CATEGORY_OPTIONS.tags}
-          selected={boothForm.tags}
-          onChange={updateField('tags')}
-          hasError={!!errors.tags}
-          helperText={errors.tags}
+          selected={boothForm.categories}
+          onChange={updateField('categories')}
+          hasError={!!errors.categories}
+          helperText={errors.categories}
         />
         <CategoryLabel
           title="비건 / 친환경 카테고리"
@@ -258,30 +233,30 @@ function BoothEditForm({ booth, boothId }) {
         <CategoryLabel
           title="운영 시간"
           options={BOOTH_CATEGORY_OPTIONS.operatingTime}
-          selected={boothForm.operatingTime}
-          onChange={updateField('operatingTime')}
-          hasError={!!errors.operatingTime}
-          helperText={errors.operatingTime}
+          selected={boothForm.operationTime}
+          onChange={updateField('operationTime')}
+          hasError={!!errors.operationTime}
+          helperText={errors.operationTime}
         />
         <CategoryLabel
           title="현금 사용 여부"
           options={BOOTH_CATEGORY_OPTIONS.cash}
-          selected={boothForm.cash}
-          onChange={updateField('cash')}
-          hasError={!!errors.cash}
-          helperText={errors.cash}
+          selected={boothForm.isCash}
+          onChange={updateField('isCash')}
+          hasError={!!errors.isCash}
+          helperText={errors.isCash}
         />
         <TextField
           title="URL"
           placeholder="공식 SNS 등 외부 채널 링크를 등록해보세요."
-          value={boothForm.url}
-          onChange={updateField('url')}
+          value={boothForm.externalUrl}
+          onChange={updateField('externalUrl')}
         />
       </CategoryContainer>
 
       <AccordionLine
         title="부스 소개"
-        required={true}
+        required
         expanded={expanded.boothIntroduction}
         onToggle={() => toggleExpanded('boothIntroduction')}
       >
@@ -298,7 +273,7 @@ function BoothEditForm({ booth, boothId }) {
 
       <AccordionLine
         title="제품 목록"
-        required={true}
+        required
         expanded={expanded.productList}
         onToggle={() => toggleExpanded('productList')}
       >
@@ -317,9 +292,7 @@ function BoothEditForm({ booth, boothId }) {
               <AddIcon />
             </ActionButtonContent>
           }
-          onClick={() => {
-            navigate(MANAGE_ROUTES.PRODUCT_CREATE(boothId));
-          }}
+          onClick={() => navigate(MANAGE_ROUTES.PRODUCT_CREATE(boothId))}
         />
         <ProductGroupList
           sections={productSections}
@@ -331,7 +304,7 @@ function BoothEditForm({ booth, boothId }) {
 
       <AccordionLine
         title="고객 문의 창구"
-        required={true}
+        required
         expanded={expanded.customerInquiry}
         onToggle={() => toggleExpanded('customerInquiry')}
       >
@@ -353,8 +326,8 @@ function BoothEditForm({ booth, boothId }) {
         <AccordionLine.ContentGuide description="수제 먹거리 부스라면 관련 내용을 꼭 작성해 주세요." />
         <TextArea
           placeholder="예) 밀, 우유, 계란, 초콜릿(대두 포함)"
-          value={boothForm.allergyInfo}
-          onChange={updateField('allergyInfo')}
+          value={boothForm.allergenInfo}
+          onChange={updateField('allergenInfo')}
           maxLength={1000}
         />
       </AccordionLine>
@@ -372,11 +345,9 @@ function BoothEditForm({ booth, boothId }) {
               <AddIcon />
             </ActionButtonContent>
           }
-          onClick={() => {
-            navigate(BOOTH_ROUTES.REGISTER(boothId));
-          }}
+          onClick={() => navigate(BOOTH_ROUTES.REGISTER(boothId))}
         />
-        {boothForm.notice.map((notice) => (
+        {boothForm.notices.map((notice) => (
           <AdminNoticeCard
             key={notice.id}
             title={notice.title}
@@ -396,8 +367,8 @@ function BoothEditForm({ booth, boothId }) {
         <AccordionLine.ContentGuide description="방문자가 알아야 할 유의사항이나 제한 내용을 작성해주세요." />
         <TextArea
           placeholder="예) 현장 결제 시 제품 1과 제품 2는 인당 구매 제한이 있습니다."
-          value={boothForm.announcement}
-          onChange={updateField('announcement')}
+          value={boothForm.guides}
+          onChange={updateField('guides')}
           maxLength={1000}
         />
       </AccordionLine>
