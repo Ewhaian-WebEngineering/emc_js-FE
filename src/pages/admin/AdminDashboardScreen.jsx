@@ -42,10 +42,10 @@ export default function AdminDashboardScreen() {
   const navigate = useNavigate();
   const { data } = useAdminDashboard();
   const { mutate: updateCongestion } = useUpdateCongestion();
-  const { congestion: streamCongestionRaw } = useCongestionStream();
+  useCongestionStream();
   const [isCongestionSheetOpen, setIsCongestionSheetOpen] = useState(false);
 
-  const congestionRaw = streamCongestionRaw ?? data.congestion;
+  const congestionRaw = data.congestion;
   const congestionLevel = CONGESTION_API_TO_LEVEL[congestionRaw] ?? 'crowded';
   const congestion = CONGESTION_LEVEL[congestionLevel];
 
