@@ -6,17 +6,9 @@ import ManagementFairCard from '../../../designsystem/components/card/management
 import CongestionBottomSheet from '../../admin/components/CongestionBottomSheet.jsx';
 import { ADMIN_ROUTES, MANAGE_ROUTES } from '../../../constants/routes';
 
-const CONGESTION_API_TO_LEVEL = {
-  green: 'relaxed',
-  yellow: 'normal',
-  red: 'crowded',
-};
-
 export default function MyAdminContent({ data }) {
   const navigate = useNavigate();
-  const [congestionLevel, setCongestionLevel] = useState(
-    CONGESTION_API_TO_LEVEL[data.congestion] ?? data.congestion,
-  );
+  const [congestionLevel, setCongestionLevel] = useState(data.congestion);
   const [isCongestionSheetOpen, setIsCongestionSheetOpen] = useState(false);
   const handleCongestionClick = () => setIsCongestionSheetOpen(true);
   const handleCongestionSheetClose = () => setIsCongestionSheetOpen(false);
