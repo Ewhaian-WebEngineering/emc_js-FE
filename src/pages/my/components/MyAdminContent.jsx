@@ -5,15 +5,25 @@ import ManagementBoothCard from '../../../designsystem/components/card/managemen
 import ManagementFairCard from '../../../designsystem/components/card/management/ManagementFairCard';
 import CongestionBottomSheet from '../../admin/components/CongestionBottomSheet.jsx';
 import { ADMIN_ROUTES, MANAGE_ROUTES } from '../../../constants/routes';
+import {
+  useUpdateCongestion,
+  useCongestionStream,
+} from '@/api/feature/my/useMyData';
 
 export default function MyAdminContent({ data }) {
   const navigate = useNavigate();
-  const [congestionLevel, setCongestionLevel] = useState(data.congestion);
+  const { mutate: updateCongestion } = useUpdateCongestion();
+  useCongestionStream();
+
   const [isCongestionSheetOpen, setIsCongestionSheetOpen] = useState(false);
+
+  const congestionLevel = data.congestion;
+
   const handleCongestionClick = () => setIsCongestionSheetOpen(true);
   const handleCongestionSheetClose = () => setIsCongestionSheetOpen(false);
   const handleCongestionSave = (value) => {
-    if (value) setCongestionLevel(value);
+    if (!value) return;
+    updateCongestion({ level: value });
   };
 
   const handleBoothLinkClick = (id) => {
