@@ -1,9 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createProduct,
+  createProductGroup,
   deleteProduct,
+  deleteProductGroup,
   getProduct,
   updateProduct,
+  updateProductGroup,
 } from './productApi';
 
 export const useProductDetail = (productId, { enabled = true } = {}) => {
@@ -41,6 +44,36 @@ export const useDeleteProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-booth'] });
+    },
+  });
+};
+
+export const useCreateProductGroup = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createProductGroup,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-booth'] });
+    },
+  });
+};
+
+export const useUpdateProductGroup = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ groupId, payload }) => updateProductGroup(groupId, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-booth'] });
+    },
+  });
+};
+
+export const useDeleteProductGroup = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteProductGroup,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
     },

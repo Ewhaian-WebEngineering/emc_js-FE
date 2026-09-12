@@ -17,3 +17,21 @@ export const updateProduct = (productId, payload) => {
 export const deleteProduct = (productId) => {
   return instance.delete(`/api/seller/products/${productId}`);
 };
+
+export const getProductGroup = (groupId) => {
+  return instance.get(`/api/seller/product-groups/${groupId}`);
+};
+
+export const createProductGroup = (payload) => {
+  return instance.post('/api/seller/product-groups', payload, {
+    skipErrorModal: true,
+  });
+};
+
+export const updateProductGroup = (groupId, payload) => {
+  return instance.patch(`/api/seller/product-groups/${groupId}`, payload);
+};
+
+export const deleteProductGroup = (groupId) => {
+  return instance.delete(`/api/seller/product-groups/${groupId}`);
+};

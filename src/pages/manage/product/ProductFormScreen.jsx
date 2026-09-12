@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import { useProductForm } from './hooks/useProductForm';
@@ -11,6 +11,7 @@ import {
   ProductFormTitle,
 } from './style';
 import TextField from '@/designsystem/components/textinput/textfield/TextField';
+import { STATUS_OPTIONS } from './constants/status';
 import Tag from '@/designsystem/components/tag/Tag';
 import TextArea from '@/designsystem/components/textinput/textarea/TextArea';
 import ProductImageUploader from '@/designsystem/components/fileuploader/ProductImageUploader';
@@ -20,8 +21,7 @@ import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
 import { useEntityGroups } from '@/hooks/useEntityGroups';
-import { GROUP_OPTIONS } from './constants/groupOptions';
-import { STATUS_OPTIONS } from './constants/status';
+import { useMyBoothData } from '@/api/feature/booth/useBoothData';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
@@ -58,6 +58,18 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     hasThumbnail: !!thumbnailPreview,
   });
 
+  const { data: booth } = useMyBoothData();
+
+  const boothGroupOptions = useMemo(
+    () =>
+      (booth?.productGroups ?? []).map((group) => ({
+        value: group.id,
+        label: group.name,
+        description: group.description,
+      })),
+    [booth?.productGroups],
+  );
+
   const {
     groupOptions,
     selectedGroupOption,
@@ -72,9 +84,10 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     newGroup,
     updateNewGroupField,
     isButtonDisabled: isGroupButtonDisabled,
+    isLoadingGroup,
     groupNameError,
     handleConfirmAddGroup,
-  } = useEntityGroups(GROUP_OPTIONS, {
+  } = useEntityGroups(boothGroupOptions, {
     groupId: formValues.groupId,
     onGroupIdChange: (value) => updateField('groupId', value),
   });
@@ -179,6 +192,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
             showActions
             onDelete={handleDeleteGroup}
             onEdit={handleEditGroup}
+            disabled={isLoadingGroup}
           />
           <BoxButton variant="secondary" size="sm" onClick={handleAddGroup}>
             그룹 추가하기
