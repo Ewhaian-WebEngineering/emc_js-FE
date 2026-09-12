@@ -1,17 +1,26 @@
 import BannerForm from './BannerForm';
-import { useNavigate } from 'react-router-dom';
-import { mockBanner } from '../constants/mockBanner';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useBanner, useUpdateBanner } from '@/api/feature/admin/useBannerData';
 
 export default function BannerEditScreen() {
   const navigate = useNavigate();
+  const { bannerId } = useParams();
+  const { data: banner } = useBanner(bannerId);
+  const { mutate: updateBanner } = useUpdateBanner();
+
   const handleSubmit = (payload) => {
-    // TODO: api로 교체
-    console.log('edit payload', payload);
-    navigate(ADMIN_ROUTES.DASHBOARD);
+    updateBanner(
+      { bid: bannerId, ...payload },
+      {
+        onSuccess: () => {
+          navigate(ADMIN_ROUTES.DASHBOARD);
+        },
+      },
+    );
   };
 
   return (
-    <BannerForm mode="edit" initialData={mockBanner} onSubmit={handleSubmit} />
+    <BannerForm mode="edit" initialData={banner} onSubmit={handleSubmit} />
   );
 }
