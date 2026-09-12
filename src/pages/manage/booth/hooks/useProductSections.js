@@ -1,24 +1,25 @@
-import { MANAGE_ROUTES } from '@/constants/routes';
-import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDeleteProduct } from '@/api/feature/product/useProductData';
+import { useBoothDraftStore } from '../../store/useBoothDraftStore';
+import { useCallback, useEffect, useState } from 'react';
+import { buildSections } from '../../utils/buildSections';
+import { MANAGE_ROUTES } from '@/constants/routes';
+import {
+  markProductDeleted,
+  upsertProductDraft,
+} from '../../store/boothDraftStore';
 
 export function useProductSections({ productGroups }) {
   const navigate = useNavigate();
   const { boothId } = useParams();
-  const { mutateAsync: deleteProduct } = useDeleteProduct();
+  const draft = useBoothDraftStore();
 
-  const [productSections, setProductSections] = useState(() => [
-    ...productGroups.map((group) => ({ ...group, isUngrouped: false })),
-    { id: 'ungrouped', name: '그룹 없음', products: [], isUngrouped: true },
-  ]);
+  const [productSections, setProductSections] = useState(() =>
+    buildSections(productGroups, draft),
+  );
 
   useEffect(() => {
-    setProductSections([
-      ...productGroups.map((group) => ({ ...group, isUngrouped: false })),
-      { id: 'ungrouped', name: '그룹 없음', products: [], isUngrouped: true },
-    ]);
-  }, [productGroups]);
+    setProductSections(buildSections(productGroups, draft));
+  }, [productGroups, draft.groups, draft.products]);
 
   const [productsError, setProductsError] = useState(null);
 
@@ -41,15 +42,26 @@ export function useProductSections({ productGroups }) {
     [productSections, boothId],
   );
 
-  const handleDeleteProduct = useCallback(async (productId) => {
-    await deleteProduct(productId);
-    setProductSections((prev) =>
-      prev.map((section) => ({
-        ...section,
-        products: section.products.filter((p) => p.id !== productId),
-      })),
-    );
+  const handleDeleteProduct = useCallback((productId) => {
+    markProductDeleted(productId);
   }, []);
+
+  const handleReorderProducts = useCallback(
+    (updatedProducts) => {
+      updatedProducts.forEach((product) => {
+        const { id, ...data } = product;
+        const isTemp = String(id).startsWith('temp-product-');
+        const existingEntry = draft.products[id];
+
+        upsertProductDraft(id, {
+          status: isTemp ? 'created' : 'updated',
+          data,
+          file: existingEntry?.file ?? null,
+        });
+      });
+    },
+    [draft.products],
+  );
 
   const hasAnyProduct = productSections.some((s) => s.products.length > 0);
 
@@ -64,6 +76,7 @@ export function useProductSections({ productGroups }) {
     setProductSections,
     handleEditProduct,
     handleDeleteProduct,
+    handleReorderProducts,
     productsError,
     validateProducts,
   };

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
@@ -25,13 +24,15 @@ import { useToggleMap } from './hooks/useToggleMap';
 import useModal from '@/hooks/modal/useModal';
 import { InfiniteScrollLoader } from '@/components/common/style';
 import Spinner from '@/designsystem/components/spinner/Spinner';
+import { useMyBoothData } from '@/api/feature/booth/useBoothData';
+import { useBoothDraftStore } from '../store/useBoothDraftStore';
+import { useSaveBoothDraft } from './hooks/useSaveBoothDraft';
 import {
-  useMyBoothData,
-  useUpdateMyBoothData,
-} from '@/api/feature/booth/useBoothData';
-import { useImageUpload } from '@/api/core/s3/useImageUpload';
-import { getBoothMarks, marksToFlags } from '@/utils/formatBooth';
-import { queryClient } from '@/api/core/query/queryClient';
+  isDraftDirty,
+  removeThumbnail,
+  resetDraft,
+  setThumbnail,
+} from '../store/boothDraftStore';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -51,8 +52,8 @@ export default function BoothEditScreen() {
 function BoothEditForm({ booth, boothId }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
-  const { mutate: updateBooth, isPending: isSaving } = useUpdateMyBoothData();
-  const { mutateAsync: uploadImage } = useImageUpload();
+  const draft = useBoothDraftStore();
+  const { save, isSaving } = useSaveBoothDraft(booth, boothId);
 
   const [expanded, toggleExpanded] = useToggleMap([
     'boothIntroduction',
@@ -63,22 +64,6 @@ function BoothEditForm({ booth, boothId }) {
     'announcement',
   ]);
 
-  const [thumbnailFile, setThumbnailFile] = useState(null);
-  const [thumbnailPreview, setThumbnailPreview] = useState(booth.thumbnailUrl);
-  const [thumbnailRemoved, setThumbnailRemoved] = useState(false);
-
-  const handleThumbnailUpload = (file) => {
-    setThumbnailFile(file);
-    setThumbnailPreview(URL.createObjectURL(file));
-    setThumbnailRemoved(false);
-  };
-
-  const handleThumbnailDelete = () => {
-    setThumbnailFile(null);
-    setThumbnailPreview(null);
-    setThumbnailRemoved(true);
-  };
-
   const {
     boothForm,
     updateField,
@@ -86,25 +71,34 @@ function BoothEditForm({ booth, boothId }) {
     handleDeleteNotice,
     errors,
     validate,
-  } = useBoothForm({ ...booth, marks: getBoothMarks(booth) });
+  } = useBoothForm(booth, boothId);
 
   const {
     productSections,
     setProductSections,
     handleEditProduct,
     handleDeleteProduct,
+    handleReorderProducts,
     productsError,
     validateProducts,
   } = useProductSections(booth);
 
   const handleBack = async () => {
+    if (!isDraftDirty()) {
+      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
+      return;
+    }
+
     await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       confirmText: '계속 작성하기',
       cancelText: '나가기',
-      onCancel: () => navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId)),
+      onCancel: () => {
+        resetDraft();
+        navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
+      },
     });
   };
 
@@ -135,48 +129,16 @@ function BoothEditForm({ booth, boothId }) {
     const productError = validateProducts();
     if (Object.keys(fieldErrors).length > 0 || productError) return;
 
-    let thumbnailKey = booth.thumbnailKey;
-    if (thumbnailFile) {
-      const { fileKey } = await uploadImage({
-        file: thumbnailFile,
-        imageType: 'booth_thumbnail',
-        ownerId: boothId,
+    try {
+      await save(boothForm, draft);
+    } catch (error) {
+      showModal({
+        variant: 'danger',
+        title: '저장에 실패했어요.',
+        description: error.message || '잠시 후 다시 시도해주세요.',
+        confirmText: '확인',
       });
-      thumbnailKey = fileKey;
-    } else if (thumbnailRemoved) {
-      thumbnailKey = null;
     }
-
-    updateBooth(
-      {
-        categories: boothForm.categories,
-        ...marksToFlags(boothForm.marks),
-        operationTime: boothForm.operationTime,
-        isCash: boothForm.isCash,
-        externalUrl: boothForm.externalUrl || null,
-        inquiryUrl: boothForm.inquiryUrl,
-        description: boothForm.description,
-        allergenInfo: boothForm.allergenInfo || null,
-        guides: boothForm.guides || null,
-        thumbnailKey,
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: ['booth-detail', boothId],
-          });
-          navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
-        },
-        onError: (error) => {
-          showModal({
-            variant: 'danger',
-            title: '저장에 실패했어요.',
-            description: error.message || '잠시 후 다시 시도해주세요.',
-            confirmText: '확인',
-          });
-        },
-      },
-    );
   };
 
   return (
@@ -192,9 +154,9 @@ function BoothEditForm({ booth, boothId }) {
       />
 
       <MainImageUploader
-        imageUrl={thumbnailPreview}
-        onUpload={handleThumbnailUpload}
-        onDelete={handleThumbnailDelete}
+        imageUrl={draft.thumbnail.preview}
+        onUpload={(file) => setThumbnail(file, URL.createObjectURL(file))}
+        onDelete={() => removeThumbnail()}
       />
 
       <CategoryContainer>
@@ -298,6 +260,7 @@ function BoothEditForm({ booth, boothId }) {
           onSectionsChange={setProductSections}
           onEditProduct={handleEditProduct}
           onDeleteProduct={clickDeleteProduct}
+          onReorderProducts={handleReorderProducts}
         />
       </AccordionLine>
 
@@ -352,7 +315,7 @@ function BoothEditForm({ booth, boothId }) {
             title={notice.title}
             content={notice.content}
             date={notice.date ?? notice.createdAt}
-            onEdit={() => handleEditNotice(notice.id)}
+            onEdit={() => handleEditNotice(notice.id, navigate)}
             onDelete={() => clickDeleteNotice(notice.id)}
           />
         ))}

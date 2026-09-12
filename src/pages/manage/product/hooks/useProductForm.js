@@ -74,10 +74,7 @@ export function useProductForm({
     } catch (error) {
       await showModal({
         variant: 'confirmation',
-        title:
-          submitLabel === 'create'
-            ? '등록에 실패했어요.'
-            : '저장에 실패했어요.',
+        title: isCreateMode ? '등록에 실패했어요.' : '저장에 실패했어요.',
         description: error.message || '잠시 후 다시 시도해주세요.',
         confirmText: '확인',
       });

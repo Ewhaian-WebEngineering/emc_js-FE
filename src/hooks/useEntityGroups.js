@@ -1,36 +1,27 @@
-import { useEffect, useState } from 'react';
-import useModal from '@/hooks/modal/useModal';
+import { useState } from 'react';
+import useModal from './modal/useModal';
 import {
-  useCreateProductGroup,
-  useDeleteProductGroup,
-  useUpdateProductGroup,
-} from '@/api/feature/product/useProductData';
-import { getProductGroup } from '@/api/feature/product/productApi';
+  markGroupDeleted,
+  upsertGroupDraft,
+} from '@/pages/manage/store/boothDraftStore';
 
 const INITIAL_NEW_GROUP = { name: '', description: '' };
 
+function createTempGroupId() {
+  return `temp-group-${crypto.randomUUID()}`;
+}
+
 export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
   const { showModal } = useModal();
-
-  const { mutateAsync: createGroup } = useCreateProductGroup();
-  const { mutateAsync: updateGroup } = useUpdateProductGroup();
-  const { mutateAsync: deleteGroupApi } = useDeleteProductGroup();
 
   const [isGroupSheetOpen, setIsGroupSheetOpen] = useState(false);
   const [editingGroupId, setEditingGroupId] = useState(null);
   const [newGroup, setNewGroup] = useState(INITIAL_NEW_GROUP);
   const [originalGroup, setOriginalGroup] = useState(INITIAL_NEW_GROUP);
-  const [groups, setGroups] = useState(initialGroups);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoadingGroup, setIsLoadingGroup] = useState(false);
 
-  useEffect(() => {
-    setGroups(initialGroups);
-  }, [initialGroups]);
-
+  const groups = initialGroups;
   const isEditMode = editingGroupId !== null;
-
   const selectedGroupOption = groups.find((option) => option.value === groupId);
 
   const updateNewGroupField = (field, value) => {
@@ -47,47 +38,26 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
     setIsGroupSheetOpen(true);
   };
 
-  const handleEditGroup = async (option) => {
-    if (isLoadingGroup) return;
-    setIsLoadingGroup(true);
-
-    try {
-      const group = await getProductGroup(option.value);
-      const target = {
-        name: group.name,
-        description: group.description ?? '',
-      };
-
-      setEditingGroupId(group.id);
-      setNewGroup(target);
-      setOriginalGroup(target);
-      setIsGroupSheetOpen(true);
-    } catch (error) {
-      await showModal({
-        variant: 'danger',
-        title: '그룹 정보를 불러오지 못했어요.',
-        description: error.message || '잠시 후 다시 시도해주세요.',
-        confirmText: '확인',
-      });
-    } finally {
-      setIsLoadingGroup(false);
-    }
+  const handleEditGroup = (option) => {
+    const target = {
+      name: option.label,
+      description: option.description ?? '',
+    };
+    setEditingGroupId(option.value);
+    setNewGroup(target);
+    setOriginalGroup(target);
+    setIsGroupSheetOpen(true);
   };
 
   const isNewGroupDirty =
     newGroup.name.trim() !== '' || newGroup.description.trim() !== '';
-
   const isNewGroupChanged =
     newGroup.name !== originalGroup.name ||
     newGroup.description !== originalGroup.description;
-
   const isNewGroupValid = newGroup.name.trim() !== '';
-
   const isSubmitDisabled = isEditMode
     ? !isNewGroupValid || !isNewGroupChanged
     : !isNewGroupValid;
-
-  const isButtonDisabled = isSubmitDisabled || isSubmitting;
 
   const groupNameError =
     hasAttemptedSubmit && newGroup.name.trim() === ''
@@ -116,41 +86,28 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
     return !confirmed;
   };
 
-  const handleConfirmAddGroup = async () => {
+  const handleConfirmAddGroup = () => {
     setHasAttemptedSubmit(true);
-    if (isSubmitDisabled || isSubmitting) return;
-    setIsSubmitting(true);
+    if (isSubmitDisabled) return;
 
-    try {
-      if (isEditMode) {
-        await updateGroup({
-          groupId: editingGroupId,
-          payload: {
-            name: newGroup.name.trim(),
-            description: newGroup.description.trim() || null,
-          },
-        });
-      } else {
-        const created = await createGroup({
-          name: newGroup.name.trim(),
-          description: newGroup.description.trim() || null,
-        });
-        onGroupIdChange(created.id);
-      }
+    const payload = {
+      name: newGroup.name.trim(),
+      description: newGroup.description.trim() || null,
+    };
 
-      handleCloseGroupSheet();
-    } catch (error) {
-      await showModal({
-        variant: 'danger',
-        title: isEditMode
-          ? '그룹 수정에 실패했어요.'
-          : '그룹 등록에 실패했어요.',
-        description: error.message || '잠시 후 다시 시도해주세요.',
-        confirmText: '확인',
+    if (isEditMode) {
+      const isTemp = editingGroupId.startsWith('temp-group-');
+      upsertGroupDraft(editingGroupId, {
+        status: isTemp ? 'created' : 'updated',
+        data: payload,
       });
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      const tempId = createTempGroupId();
+      upsertGroupDraft(tempId, { status: 'created', data: payload });
+      onGroupIdChange(tempId);
     }
+
+    handleCloseGroupSheet();
   };
 
   const handleDeleteGroup = async (option) => {
@@ -166,18 +123,9 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
 
     if (!confirmed) return;
 
-    try {
-      await deleteGroupApi(option.value);
-      if (option.value === groupId) {
-        onGroupIdChange(null);
-      }
-    } catch (error) {
-      await showModal({
-        variant: 'danger',
-        title: '그룹 삭제에 실패했어요.',
-        description: error.message || '잠시 후 다시 시도해주세요.',
-        confirmText: '확인',
-      });
+    markGroupDeleted(option.value);
+    if (option.value === groupId) {
+      onGroupIdChange(null);
     }
   };
 
@@ -194,8 +142,7 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
     handleCheckBeforeClose,
     newGroup,
     updateNewGroupField,
-    isButtonDisabled,
-    isLoadingGroup,
+    isButtonDisabled: isSubmitDisabled,
     groupNameError,
     handleConfirmAddGroup,
   };

@@ -20,8 +20,10 @@ import Select from '@/designsystem/components/select/Select';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
-import { useEntityGroups } from '@/hooks/useEntityGroups';
 import { useMyBoothData } from '@/api/feature/booth/useBoothData';
+import { useBoothDraftStore } from '../store/useBoothDraftStore';
+import { buildGroupOptions } from '../utils/buildGroupOptions';
+import { useEntityGroups } from '@/hooks/useEntityGroups';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
@@ -59,15 +61,11 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   });
 
   const { data: booth } = useMyBoothData();
+  const draft = useBoothDraftStore();
 
   const boothGroupOptions = useMemo(
-    () =>
-      (booth?.productGroups ?? []).map((group) => ({
-        value: group.id,
-        label: group.name,
-        description: group.description,
-      })),
-    [booth?.productGroups],
+    () => buildGroupOptions(booth?.productGroups ?? [], draft.groups),
+    [booth?.productGroups, draft.groups],
   );
 
   const {
@@ -84,7 +82,6 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     newGroup,
     updateNewGroupField,
     isButtonDisabled: isGroupButtonDisabled,
-    isLoadingGroup,
     groupNameError,
     handleConfirmAddGroup,
   } = useEntityGroups(boothGroupOptions, {
@@ -192,7 +189,6 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
             showActions
             onDelete={handleDeleteGroup}
             onEdit={handleEditGroup}
-            disabled={isLoadingGroup}
           />
           <BoxButton variant="secondary" size="sm" onClick={handleAddGroup}>
             그룹 추가하기
