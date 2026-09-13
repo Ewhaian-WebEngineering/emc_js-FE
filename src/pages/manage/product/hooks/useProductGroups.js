@@ -1,17 +1,16 @@
 import { useState } from 'react';
-import { GROUP_OPTIONS } from '../constants/groupOptions';
 import useModal from '@/hooks/modal/useModal';
 
 const INITIAL_NEW_GROUP = { name: '', description: '' };
 
-export function useProductGroups({ groupId, onGroupIdChange }) {
+export function useProductGroups(initialGroups, { groupId, onGroupIdChange }) {
   const { showModal } = useModal();
 
   const [isGroupSheetOpen, setIsGroupSheetOpen] = useState(false);
   const [editingGroupId, setEditingGroupId] = useState(null);
   const [newGroup, setNewGroup] = useState(INITIAL_NEW_GROUP);
   const [originalGroup, setOriginalGroup] = useState(INITIAL_NEW_GROUP);
-  const [groups, setGroups] = useState(GROUP_OPTIONS);
+  const [groups, setGroups] = useState(initialGroups);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   const isEditMode = editingGroupId !== null;

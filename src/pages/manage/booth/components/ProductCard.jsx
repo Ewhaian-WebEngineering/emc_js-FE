@@ -38,7 +38,7 @@ function ProductCard({
       {...listeners}
     >
       <AdminProductCard
-        thumbnail={product.thumbnail}
+        thumbnail={product.imageUrl}
         title={product.name}
         price={product.price}
         selected={selected}

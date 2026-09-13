@@ -1,56 +1,47 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useBoothDraftStore } from '../../store/useBoothDraftStore';
+import { initDraft, updateBoothField } from '../../store/boothDraftStore';
+import { getBoothMarks, marksToFlags } from '@/utils/formatBooth';
 
 const REQUIRED_FIELDS = [
-  { key: 'tags', check: (form) => form.tags.length > 0, label: '카테고리' },
+  { key: 'categories', check: (form) => form.categories.length > 0 },
+  { key: 'marks', check: (form) => form.marks.length > 0 },
+  { key: 'operationTime', check: (form) => form.operationTime !== null },
   {
-    key: 'marks',
-    check: (form) => form.marks.length > 0,
-    label: '비건 / 친환경 카테고리',
+    key: 'isCash',
+    check: (form) => form.isCash !== undefined && form.isCash !== null,
   },
-  {
-    key: 'operatingTime',
-    check: (form) => form.operatingTime !== null,
-    label: '운영 시간',
-  },
-  {
-    key: 'cash',
-    check: (form) => form.cash !== undefined && form.cash !== null,
-    label: '현금 사용 여부',
-  },
-  {
-    key: 'description',
-    check: (form) => form.description?.trim(),
-    label: '부스 소개',
-  },
-  {
-    key: 'inquiryUrl',
-    check: (form) => form.inquiryUrl?.trim(),
-    label: '고객 문의 창구',
-  },
+  { key: 'description', check: (form) => form.description?.trim() },
+  { key: 'inquiryUrl', check: (form) => form.inquiryUrl?.trim() },
 ];
 
 const REQUIRED_MESSAGE = '내용을 입력해주세요.';
 
-export function useBoothForm(initialData) {
-  const [boothForm, setBoothForm] = useState(() => ({
-    representativeImage: initialData.representativeImage,
-    boothName: initialData.boothName,
-    tags: initialData.tags,
-    marks: initialData.marks,
-    operatingTime: initialData.operatingTime,
-    cash: initialData.cash,
-    location: initialData.location,
-    url: initialData.url,
-    inquiryUrl: initialData.inquiryUrl,
-    description: initialData.description,
-    allergyInfo: initialData.allergyInfo,
-    announcement: initialData.announcement,
-  }));
+export function useBoothForm(booth, boothId) {
+  const draft = useBoothDraftStore();
+
+  useEffect(() => {
+    initDraft(boothId, booth);
+  }, [boothId]);
 
   const [errors, setErrors] = useState({});
 
+  const fields = draft.boothFields ?? booth;
+  const boothForm = {
+    ...fields,
+    marks: getBoothMarks(fields),
+    name: booth.name,
+    location: booth.location,
+  };
+
   const updateField = (field) => (value) => {
-    setBoothForm((prev) => ({ ...prev, [field]: value }));
+    if (field === 'marks') {
+      const { isVegan, isEco } = marksToFlags(value);
+      updateBoothField('isVegan', isVegan);
+      updateBoothField('isEco', isEco);
+    } else {
+      updateBoothField(field, value);
+    }
     setErrors((prev) => {
       if (!prev[field]) return prev;
       const next = { ...prev };
@@ -62,9 +53,7 @@ export function useBoothForm(initialData) {
   const validate = () => {
     const nextErrors = {};
     REQUIRED_FIELDS.forEach(({ key, check }) => {
-      if (!check(boothForm)) {
-        nextErrors[key] = REQUIRED_MESSAGE;
-      }
+      if (!check(boothForm)) nextErrors[key] = REQUIRED_MESSAGE;
     });
     setErrors(nextErrors);
     return nextErrors;
