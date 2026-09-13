@@ -1,14 +1,15 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import Divider from '@/designsystem/components/divider/Divider';
 import { useGoBack } from '@/hooks/useGoBack';
-import { EVENT_ROUTES } from '@/constants/routes';
+import { EVENT_ROUTES, SPONSOR_ROUTES } from '@/constants/routes';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { formatEventPeriod } from '@/utils/formatDate';
 import InfoIcon from '@/assets/svg/16px/ic_information.svg?react';
 import KakaoIcon from '@/assets/svg/20px/ic_kakao.svg?react';
 import LinkIcon from '@/assets/svg/28px/ic_link.svg?react';
+import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import { useEventDetail } from '@/api/feature/event/useEvents';
 import { eventDetailMessages, eventTypeLabel } from './constants/eventDetail';
 import * as S from './style';
@@ -23,12 +24,19 @@ export default function EventDetailScreen() {
 
   const { data: event } = useEventDetail(id);
 
+  const navigate = useNavigate();
+  const handleSponsorClick = () => {
+    if (!event.sponsor) return;
+    navigate(SPONSOR_ROUTES.DETAIL(event.sponsor.id));
+  };
+
   const handleKakaoShare = () => {
     // TODO: 카카오 SDK 연결
   };
 
   const trimmedCaution = event.caution?.trim();
   const hasCaution = Boolean(trimmedCaution);
+  const hasSponsor = Boolean(event.sponsor?.name);
 
   return (
     <>
@@ -51,6 +59,25 @@ export default function EventDetailScreen() {
             __html: DOMPurify.sanitize(event.description),
           }}
         />
+      )}
+
+      {hasSponsor && (
+        <S.SponsorSection>
+          <S.SponsorContent>
+            <S.SponsorTitle>
+              {event.sponsor.name}에 대해
+              <br />더 궁금하다면?
+            </S.SponsorTitle>
+            <S.SponsorButton
+              variant="primary"
+              size="md"
+              onClick={handleSponsorClick}
+            >
+              협찬사 바로가기
+              <ArrowRightIcon />
+            </S.SponsorButton>
+          </S.SponsorContent>
+        </S.SponsorSection>
       )}
 
       <Divider size="lg" />
