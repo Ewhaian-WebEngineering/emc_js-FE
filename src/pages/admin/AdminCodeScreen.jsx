@@ -11,6 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES, TAB_ROUTES } from '../../constants/routes';
 import { useAdminVerify } from '../../api/feature/admin/useAdminData';
+import { setTokens } from '@/api/core/tokenStorage';
 
 export default function AdminCodeScreen() {
   const navigate = useNavigate();
@@ -26,7 +27,12 @@ export default function AdminCodeScreen() {
 
   const handleConfirm = () => {
     verifyAdminCode(code, {
-      onSuccess: () => {
+      onSuccess: ({ accessToken, refreshToken }) => {
+        setTokens({
+          accessToken,
+          refreshToken,
+          userRole: 'admin',
+        });
         setHasError(false);
         navigate(ADMIN_ROUTES.DASHBOARD);
       },
