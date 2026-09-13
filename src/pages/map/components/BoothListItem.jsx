@@ -1,10 +1,15 @@
+import { forwardRef } from 'react';
 import { BoothListItemWrapper, BoothNumber, BoothName } from '../style';
 
-export default function BoothListItem({ boothNumber, boothName, onClick }) {
-  return (
-    <BoothListItemWrapper onClick={onClick}>
+const BoothListItem = forwardRef(
+  ({ boothNumber, boothName, onClick, focused }, ref) => (
+    <BoothListItemWrapper ref={ref} onClick={onClick}>
       <BoothNumber>{boothNumber.toString().padStart(2, '0')}</BoothNumber>
-      <BoothName>{boothName}</BoothName>
+      <BoothName data-focused={focused}>{boothName}</BoothName>
     </BoothListItemWrapper>
-  );
-}
+  ),
+);
+
+BoothListItem.displayName = 'BoothListItem';
+
+export default BoothListItem;

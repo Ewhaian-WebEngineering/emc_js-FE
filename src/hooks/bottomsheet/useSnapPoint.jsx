@@ -1,5 +1,5 @@
 import { getSnapByVelocity, snapToPx } from '../../constants/bottomSheet';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 /**
  * 바텀시트의 snap point(높이 단계)를 관리하는 훅입니다.
@@ -19,6 +19,7 @@ import { useCallback, useState } from 'react';
 export const useSnapPoint = ({
   allowedSnaps,
   defaultSnap,
+  snap,
   onClose,
   onFull,
 }) => {
@@ -29,6 +30,11 @@ export const useSnapPoint = ({
     setCurrentSnap(snap);
     setHeightPx(snapToPx(snap));
   }, []);
+
+  useEffect(() => {
+    if (snap === undefined || snap === null) return;
+    moveTo(snap);
+  }, [snap, moveTo]);
 
   const onDrag = useCallback((newHeightPx) => {
     setHeightPx(newHeightPx);

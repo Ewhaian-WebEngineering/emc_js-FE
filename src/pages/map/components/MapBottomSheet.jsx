@@ -3,20 +3,53 @@ import {
   BoothListContainer,
   InstructionsContainer,
   InstructionsText,
+  TabRow,
 } from '../style';
-import { BOOTH_LIST } from '../constants/boothList';
 import BoothListItem from './BoothListItem';
 import useModal from '@/hooks/modal/useModal';
 import { useNavigate } from 'react-router-dom';
 import { BOOTH_ROUTES } from '@/constants/routes';
+import { useEffect, useRef, useState } from 'react';
+import Tag from '@/designsystem/components/tag/Tag';
+import { useMapData } from '@/api/feature/map/useMapData';
 
-export default function MapBottomSheet() {
+export default function MapBottomSheet({ isExpanded, selectedBooth }) {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('general');
+  const itemRefs = useRef({});
 
-  const booths = BOOTH_LIST.map((booth) => ({
-    number: booth.number,
+  const { generalBooths: generalData, sponsorBooths: sponsorData } =
+    useMapData();
+
+  const generalBooths = generalData.map((booth) => ({
+    id: booth.id,
+    number: booth.boothNumber,
     name: booth.name,
   }));
+
+  const sponsorBooths = sponsorData.map((booth) => ({
+    id: booth.id,
+    number: booth.boothNumber ?? null, // TODO: 서버 필드 추가 시 null 처리 제거
+    name: booth.name,
+  }));
+
+  const focusedBoothNumber = selectedBooth?.number ?? null;
+
+  const filteredBooths =
+    activeTab === 'general' ? generalBooths : sponsorBooths;
+
+  useEffect(() => {
+    if (!selectedBooth) return;
+    setActiveTab(selectedBooth.type);
+  }, [selectedBooth]);
+
+  useEffect(() => {
+    if (!selectedBooth) return;
+    itemRefs.current[selectedBooth.number]?.scrollIntoView({
+      block: 'nearest',
+      behavior: 'smooth',
+    });
+  }, [selectedBooth, activeTab]);
 
   const { showModal } = useModal();
   const handleBoothClick = async (boothId) => {
@@ -38,6 +71,7 @@ export default function MapBottomSheet() {
       variant="handle"
       isOpen={true}
       defaultSnap="min"
+      snap={isExpanded ? 'half' : 'min'}
       showScrim="none"
       dismissible={false}
       style={{ zIndex: 10 }}
@@ -49,14 +83,36 @@ export default function MapBottomSheet() {
           해당 부스 상세페이지로 이동합니다.
         </InstructionsText>
       </InstructionsContainer>
+      <TabRow>
+        <Tag
+          label="일반 부스"
+          variant="button"
+          selected={activeTab === 'general'}
+          onClick={() => setActiveTab('general')}
+        />
+        <Tag
+          label="협찬사 부스"
+          variant="button"
+          selected={activeTab === 'sponsor'}
+          onClick={() => setActiveTab('sponsor')}
+        />
+      </TabRow>
       <BoothListContainer>
-        {booths.map((booth) => (
+        {filteredBooths.map((booth) => (
           <BoothListItem
-            key={booth.number}
+            key={booth.id}
+            ref={
+              booth.number !== null
+                ? (el) => (itemRefs.current[booth.number] = el)
+                : undefined
+            }
             boothNumber={booth.number}
             boothName={booth.name}
+            focused={booth.number === focusedBoothNumber}
+            disabled={booth.number === null}
             onClick={() => {
-              handleBoothClick(booth.number);
+              if (booth.number === null) return;
+              handleBoothClick(booth.id);
             }}
           />
         ))}
