@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useSponsorList } from '@/api/feature/sponsor/useSponsorList';
+import { useSponsorList } from '@/api/feature/sponsor/useSponsor';
 import GiftIcon from '@/assets/svg/event/ic_gift.svg?react';
 import { SPONSOR_ROUTES } from '@/constants/routes';
 import SponsorCard from '@/designsystem/components/card/sponsor/SponsorCard';

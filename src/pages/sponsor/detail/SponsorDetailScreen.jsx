@@ -13,7 +13,8 @@ import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import DefaultRepresentativeImage from '@/assets/img/img_rectangle_lg.png';
 
 import { TAB_ROUTES } from '@/constants/routes';
-import { SPONSOR_DETAIL_MOCK } from './constants/sponsorDetail';
+import { useSponsorDetail } from '@/api/feature/sponsor/useSponsor';
+import { OPERATING_TIME_OPTIONS } from '@/constants/filter';
 
 import * as S from './style';
 import { SPONSOR_TABS } from './constants/sponsorTabs';
@@ -22,7 +23,7 @@ import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
 
 export default function SponsorDetailScreen() {
   const { sponsorId } = useParams();
-  const sponsorDetail = SPONSOR_DETAIL_MOCK[sponsorId];
+  const { data: sponsorDetail } = useSponsorDetail(sponsorId);
 
   const navigate = useNavigate();
   const handleBack = useGoBack();
@@ -56,17 +57,20 @@ export default function SponsorDetailScreen() {
       <TransparentHeader onBack={handleBack} />
 
       <S.RepresentativeImage
-        src={sponsorDetail.representativeImage || DefaultRepresentativeImage}
-        alt={`${sponsorDetail.sponsorName} 대표 이미지`}
+        src={sponsorDetail.imageUrl || DefaultRepresentativeImage}
+        alt={`${sponsorDetail.name} 대표 이미지`}
       />
 
       <S.SponsorInfoSection>
-        <S.SponsorName>{sponsorDetail.sponsorName}</S.SponsorName>
+        <S.SponsorName>{sponsorDetail.name}</S.SponsorName>
 
         <S.InfoList>
           <S.InfoRow>
             <S.InfoLabel>운영 시간</S.InfoLabel>
-            <S.InfoValue>{sponsorDetail.info.type}</S.InfoValue>
+            <S.InfoValue>
+              {OPERATING_TIME_LABEL[sponsorDetail.operationTime] ||
+                sponsorDetail.operationTime}
+            </S.InfoValue>
           </S.InfoRow>
 
           <S.InfoRow>
@@ -78,7 +82,7 @@ export default function SponsorDetailScreen() {
                 href="#"
                 onClick={(event) => event.preventDefault()}
               >
-                {sponsorDetail.info.location}
+                {sponsorDetail.location}
               </LinkButton>
             </S.InfoValue>
           </S.InfoRow>
@@ -89,26 +93,30 @@ export default function SponsorDetailScreen() {
               <LinkButton
                 variant="secondary"
                 size="sm"
-                href={getSnsUrl(sponsorDetail.info.sns)}
+                href={getSnsUrl(sponsorDetail.snsUrl)}
                 target="_blank"
               >
-                {sponsorDetail.info.sns}
+                {sponsorDetail.snsUrl}
               </LinkButton>
             </S.InfoValue>
           </S.InfoRow>
 
           <S.InfoRow>
             <S.InfoLabel>URL</S.InfoLabel>
-            <S.InfoValue>
-              <LinkButton
-                variant="secondary"
-                size="sm"
-                href={sponsorDetail.info.url}
-                target="_blank"
-              >
-                {sponsorDetail.info.url}
-              </LinkButton>
-            </S.InfoValue>
+            {sponsorDetail.externalUrl ? (
+              <S.InfoValue>
+                <LinkButton
+                  variant="secondary"
+                  size="sm"
+                  href={sponsorDetail.externalUrl}
+                  target="_blank"
+                >
+                  {sponsorDetail.externalUrl}
+                </LinkButton>
+              </S.InfoValue>
+            ) : (
+              <S.InfoValue>-</S.InfoValue>
+            )}
           </S.InfoRow>
         </S.InfoList>
       </S.SponsorInfoSection>
@@ -127,9 +135,7 @@ export default function SponsorDetailScreen() {
         ref={registerSection('introduction')}
         style={{ scrollMarginTop: tabBarHeight }}
       >
-        <S.SectionTitle>
-          {sponsorDetail.sponsorName}을 소개합니다.
-        </S.SectionTitle>
+        <S.SectionTitle>{sponsorDetail.name}을 소개합니다.</S.SectionTitle>
 
         {sponsorDetail.description && (
           <S.IntroductionContent
@@ -149,23 +155,23 @@ export default function SponsorDetailScreen() {
         <S.SectionTitle>협찬품을 소개합니다</S.SectionTitle>
 
         <S.ProductGroups>
-          {sponsorDetail.productGroups.map((group, groupIndex) => (
-            <S.ProductGroup key={`${group.groupName}-${groupIndex}`}>
+          {sponsorDetail.productGroups.map((group) => (
+            <S.ProductGroup key={group.id}>
               <S.ProductGroupHeader>
-                <S.ProductGroupName>{group.groupName}</S.ProductGroupName>
+                <S.ProductGroupName>{group.name}</S.ProductGroupName>
 
                 <S.ProductGroupDescription>
-                  {group.groupDescription}
+                  {group.description}
                 </S.ProductGroupDescription>
               </S.ProductGroupHeader>
 
               <S.ProductList>
-                {group.products.map((product, productIndex) => (
+                {group.products.map((product) => (
                   <ProductHorizontalCard
-                    key={`${product.productName}-${productIndex}`}
-                    thumbnail={product.thumbnail}
-                    productName={product.productName}
-                    productDescription={product.productDescription}
+                    key={product.id}
+                    thumbnail={product.imageUrl}
+                    productName={product.name}
+                    productDescription={product.description}
                   />
                 ))}
               </S.ProductList>
@@ -178,7 +184,7 @@ export default function SponsorDetailScreen() {
 
       <S.EventSection>
         <S.EventTitle>
-          {sponsorDetail.sponsorName}와 EMC가 준비한
+          {sponsorDetail.name}와 EMC가 준비한
           {'\n'}
           다양한 이벤트를 만나보세요.
         </S.EventTitle>
@@ -197,3 +203,7 @@ export default function SponsorDetailScreen() {
     </S.SponsorDetailContainer>
   );
 }
+
+const OPERATING_TIME_LABEL = Object.fromEntries(
+  OPERATING_TIME_OPTIONS.map(({ label, value }) => [value, label]),
+);
