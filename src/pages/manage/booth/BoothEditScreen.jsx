@@ -24,7 +24,6 @@ import { useToggleMap } from './hooks/useToggleMap';
 import useModal from '@/hooks/modal/useModal';
 import { InfiniteScrollLoader } from '@/components/common/style';
 import Spinner from '@/designsystem/components/spinner/Spinner';
-import { useMyBoothData } from '@/api/feature/booth/useBoothData';
 import { useBoothDraftStore } from '../store/useBoothDraftStore';
 import { useSaveBoothDraft } from './hooks/useSaveBoothDraft';
 import {
@@ -33,6 +32,11 @@ import {
   resetDraft,
   setThumbnail,
 } from '../store/boothDraftStore';
+import {
+  useDeleteNotice,
+  useMyBoothData,
+  useNoticeList,
+} from '@/api/feature/booth/useBoothData';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -54,6 +58,8 @@ function BoothEditForm({ booth, boothId }) {
   const { showModal } = useModal();
   const draft = useBoothDraftStore();
   const { save, isSaving } = useSaveBoothDraft(booth, boothId);
+  const deleteNoticeMutation = useDeleteNotice();
+  const { data: noticeList } = useNoticeList(boothId);
 
   const [expanded, toggleExpanded] = useToggleMap([
     'boothIntroduction',
@@ -64,14 +70,10 @@ function BoothEditForm({ booth, boothId }) {
     'announcement',
   ]);
 
-  const {
-    boothForm,
-    updateField,
-    handleEditNotice,
-    handleDeleteNotice,
-    errors,
-    validate,
-  } = useBoothForm(booth, boothId);
+  const { boothForm, updateField, errors, validate } = useBoothForm(
+    booth,
+    boothId,
+  );
 
   const {
     productSections,
@@ -113,6 +115,15 @@ function BoothEditForm({ booth, boothId }) {
     });
   };
 
+  const handleEditNotice = (noticeId) => {
+    const targetNotice = noticeList?.find((notice) => notice.id === noticeId);
+    if (!targetNotice) return;
+
+    navigate(BOOTH_ROUTES.EDIT(boothId, noticeId), {
+      state: { noticeData: targetNotice },
+    });
+  };
+
   const clickDeleteNotice = (noticeId) => {
     showModal({
       variant: 'danger',
@@ -120,7 +131,9 @@ function BoothEditForm({ booth, boothId }) {
       description: '삭제하시면 다시 되돌릴 수 없어요.',
       confirmText: '삭제하기',
       cancelText: '취소',
-      onConfirm: () => handleDeleteNotice(noticeId),
+      onConfirm: () => {
+        deleteNoticeMutation.mutate(noticeId);
+      },
     });
   };
 
@@ -309,13 +322,13 @@ function BoothEditForm({ booth, boothId }) {
           }
           onClick={() => navigate(BOOTH_ROUTES.REGISTER(boothId))}
         />
-        {boothForm.notices.map((notice) => (
+        {noticeList?.map((notice) => (
           <AdminNoticeCard
             key={notice.id}
             title={notice.title}
             content={notice.content}
             date={notice.date ?? notice.createdAt}
-            onEdit={() => handleEditNotice(notice.id, navigate)}
+            onEdit={() => handleEditNotice(notice.id)}
             onDelete={() => clickDeleteNotice(notice.id)}
           />
         ))}

@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useBoothDraftStore } from '../../store/useBoothDraftStore';
-import {
-  initDraft,
-  markNoticeDeleted,
-  updateBoothField,
-} from '../../store/boothDraftStore';
+import { initDraft, updateBoothField } from '../../store/boothDraftStore';
 import { getBoothMarks, marksToFlags } from '@/utils/formatBooth';
-import { BOOTH_ROUTES } from '@/constants/routes';
 
 const REQUIRED_FIELDS = [
   { key: 'categories', check: (form) => form.categories.length > 0 },
@@ -21,24 +16,6 @@ const REQUIRED_FIELDS = [
 ];
 
 const REQUIRED_MESSAGE = '내용을 입력해주세요.';
-
-function buildNotices(serverNotices, draftNotices) {
-  const base = serverNotices
-    .map((notice) => {
-      const entry = draftNotices[notice.id];
-      if (entry?.status === 'deleted') return null;
-      return entry?.status === 'updated'
-        ? { ...notice, ...entry.data }
-        : notice;
-    })
-    .filter(Boolean);
-
-  const created = Object.entries(draftNotices)
-    .filter(([, entry]) => entry.status === 'created')
-    .map(([tempId, entry]) => ({ id: tempId, ...entry.data }));
-
-  return [...base, ...created];
-}
 
 export function useBoothForm(booth, boothId) {
   const draft = useBoothDraftStore();
@@ -55,7 +32,6 @@ export function useBoothForm(booth, boothId) {
     marks: getBoothMarks(fields),
     name: booth.name,
     location: booth.location,
-    notices: buildNotices(booth.notices, draft.notices),
   };
 
   const updateField = (field) => (value) => {
@@ -63,7 +39,7 @@ export function useBoothForm(booth, boothId) {
       const { isVegan, isEco } = marksToFlags(value);
       updateBoothField('isVegan', isVegan);
       updateBoothField('isEco', isEco);
-    } else if (field !== 'notices') {
+    } else {
       updateBoothField(field, value);
     }
     setErrors((prev) => {
@@ -72,20 +48,6 @@ export function useBoothForm(booth, boothId) {
       delete next[field];
       return next;
     });
-  };
-
-  const handleEditNotice = (noticeId, navigate) => {
-    const targetNotice = boothForm.notices.find(
-      (notice) => notice.id === noticeId,
-    );
-    if (!targetNotice) return;
-    navigate(BOOTH_ROUTES.EDIT(boothId, noticeId), {
-      state: { noticeData: targetNotice },
-    });
-  };
-
-  const handleDeleteNotice = (noticeId) => {
-    markNoticeDeleted(noticeId);
   };
 
   const validate = () => {
@@ -100,8 +62,6 @@ export function useBoothForm(booth, boothId) {
   return {
     boothForm,
     updateField,
-    handleEditNotice,
-    handleDeleteNotice,
     errors,
     validate,
   };

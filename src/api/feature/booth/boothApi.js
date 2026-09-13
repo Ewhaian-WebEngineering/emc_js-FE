@@ -23,3 +23,19 @@ export const getMyBoothData = async () => {
 export const updateMyBoothData = (payload) => {
   return instance.patch('/api/seller/booth', payload);
 };
+
+export const getNotices = (bid) => {
+  return instance.get(`/api/booths/${bid}/notices`);
+};
+
+export const createNotice = ({ title, content }) => {
+  return instance.post('/api/seller/notices', { title, content });
+};
+
+export const updateNotice = ({ nid, title, content }) => {
+  return instance.patch(`/api/seller/notices/${nid}`, { title, content });
+};
+
+export const deleteNotice = (nid) => {
+  return instance.delete(`/api/seller/notices/${nid}`);
+};
