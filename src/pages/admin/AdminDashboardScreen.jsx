@@ -7,6 +7,11 @@ import PeopleIcon from '@/assets/svg/24px/ic_people.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { CONGESTION_TOOLTIP, VISITOR_TOOLTIP } from '@/constants/tooltip';
 import { CONGESTION_LEVEL } from '@/constants/congestionLevel';
+import {
+  useAdminDashboard,
+  useUpdateCongestion,
+  useCongestionStream,
+} from '@/api/feature/admin/useAdminData';
 import CongestionBottomSheet from './components/CongestionBottomSheet';
 import SponsorSection from './components/SponsorSection';
 import EventSection from './components/EventSection';
@@ -19,23 +24,29 @@ import {
   ManagementCardStats,
   DashboardTitle,
 } from './style.js';
+import { useNavigate } from 'react-router-dom';
+import { TAB_ROUTES } from '../../constants/routes';
 
 export default function AdminDashboardScreen() {
-  const [congestionLevel, setCongestionLevel] = useState('crowded');
-  const [visitorCount] = useState(0);
+  const navigate = useNavigate();
+  const { data } = useAdminDashboard();
+  const { mutate: updateCongestion } = useUpdateCongestion();
+  useCongestionStream();
   const [isCongestionSheetOpen, setIsCongestionSheetOpen] = useState(false);
 
-  const congestion = CONGESTION_LEVEL[congestionLevel];
+  const congestionLevel = data.congestion;
+  const congestion = CONGESTION_LEVEL[congestionLevel] ?? CONGESTION_LEVEL.red;
 
   const handleCongestionClick = () => setIsCongestionSheetOpen(true);
   const handleCongestionSheetClose = () => setIsCongestionSheetOpen(false);
   const handleCongestionSave = (value) => {
-    if (value) setCongestionLevel(value);
+    if (!value) return;
+    updateCongestion({ level: value });
   };
 
   return (
     <DashboardContainer>
-      <Header onBack={() => {}} title="대시보드" border />
+      <Header onBack={() => navigate(TAB_ROUTES.MY)} title="대시보드" border />
 
       <FestivalInfo>
         <DashboardTitle>
@@ -57,16 +68,16 @@ export default function AdminDashboardScreen() {
             icon={<PeopleIcon color={semantic.fillPrimaryNormal} />}
             label="방문자 수"
             tooltip={VISITOR_TOOLTIP}
-            value={visitorCount}
+            value={data.visitorCount}
           />
         </ManagementCardStats>
       </FestivalInfo>
 
-      <SponsorSection />
-      <EventSection />
-      <BannerSection />
-      <FaqSection />
-      <BoothSection />
+      <SponsorSection sponsors={data.sponsors.list} />
+      <EventSection events={data.events} />
+      <BannerSection banners={data.banners.list} />
+      <FaqSection faqs={data.faqs.list} />
+      <BoothSection booths={data.booths.list} />
 
       <CongestionBottomSheet
         isOpen={isCongestionSheetOpen}
