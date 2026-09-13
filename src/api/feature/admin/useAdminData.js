@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   useMutation,
   useQueryClient,
@@ -13,8 +12,10 @@ import {
   deleteBannerApi,
   deleteFaqApi,
 } from './adminDashboardApi';
-
-const STREAM_URL = `${import.meta.env.VITE_API_BASE_URL}/api/stream/congestion`;
+import {
+  useUpdateCongestion as useUpdateCongestionBase,
+  useCongestionStream,
+} from './useCongestion';
 
 export function useAdminVerify() {
   return useMutation({
@@ -29,16 +30,9 @@ export function useAdminDashboard() {
   });
 }
 
-export function useUpdateCongestion() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: updateCongestionApi,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
-    },
-  });
-}
+export const useUpdateCongestion = () =>
+  useUpdateCongestionBase(updateCongestionApi);
+export { useCongestionStream };
 
 export function useDeleteEvent() {
   const queryClient = useQueryClient();
@@ -82,33 +76,4 @@ export function useDeleteFaq() {
       queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
     },
   });
-}
-
-export function useCongestionStream() {
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    const eventSource = new EventSource(STREAM_URL);
-
-    eventSource.onmessage = (event) => {
-      try {
-        const { level } = JSON.parse(event.data);
-        queryClient.setQueryData(['adminDashboard'], (old) =>
-          old ? { ...old, congestion: level } : old,
-        );
-      } catch (err) {
-        console.error('Failed to parse SSE message:', err, event.data);
-      }
-    };
-
-    eventSource.onerror = () => {
-      if (eventSource.readyState === EventSource.CLOSED) {
-        console.error('SSE connection permanently closed');
-      }
-    };
-
-    return () => {
-      eventSource.close();
-    };
-  }, [queryClient]);
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Header from '../../designsystem/components/header/FillRightHeader';
 import MyUserRow from './components/MyUserRow';
 import MyDefaultContent from './components/MyDefaultContent';
@@ -12,19 +12,11 @@ import {
 import AdminCertification from '@/components/footer/AdminCertification';
 import LoginBottomSheet from './components/LoginBottomSheet';
 import {
-  getAccessToken,
-  getUserNickname,
-  getUserRole,
-} from '@/api/core/tokenStorage';
-import { getKakaoAuthorizeUrl, useLogout } from '@/api/feature/auth/useAuth';
-
-const MOCK_DATA = {
-  userName: '김이화',
-  boothName: 'EMC 이벤트 부스',
-  scrapCount: 46,
-  visitorCount: 10999,
-  fairVisitorCount: 46,
-};
+  getKakaoAuthorizeUrl,
+  useLogout,
+  useAuth,
+} from '@/api/feature/auth/useAuth';
+import { useGetMyInfo, useGetBanners } from '@/api/feature/my/useMyData';
 
 const CONTENT_BY_ROLE = {
   user: MyDefaultContent,
@@ -32,29 +24,60 @@ const CONTENT_BY_ROLE = {
   admin: MyAdminContent,
 };
 
+function MyScreenLoggedIn({ onLogout, onLoginClick }) {
+  const { data } = useGetMyInfo();
+  const ContentComponent = CONTENT_BY_ROLE[data.role] ?? MyDefaultContent;
+  const showFooter = data.role === 'user';
+
+  return (
+    <>
+      <MyContentContainer>
+        <MyUserRow
+          isLoggedIn
+          userName={data.nickname}
+          onLogout={onLogout}
+          onLoginClick={onLoginClick}
+        />
+        <ContentComponent data={data} />
+      </MyContentContainer>
+
+      {showFooter && (
+        <AdminCertificationWrapper>
+          <AdminCertification />
+        </AdminCertificationWrapper>
+      )}
+    </>
+  );
+}
+
+function MyScreenLoggedOut({ onLoginClick }) {
+  const { data: banners } = useGetBanners();
+
+  return (
+    <>
+      <MyContentContainer>
+        <MyUserRow isLoggedIn={false} onLoginClick={onLoginClick} />
+        <MyDefaultContent data={{ banners }} />
+      </MyContentContainer>
+
+      <AdminCertificationWrapper>
+        <AdminCertification />
+      </AdminCertificationWrapper>
+    </>
+  );
+}
+
 export default function MyScreen() {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!getAccessToken());
-  const [userRole, setUserRole] = useState(getUserRole() ?? 'user');
-  const [userName, setUserName] = useState(getUserNickname() ?? '');
-  const [data, setData] = useState(MOCK_DATA);
+  const [, forceUpdate] = useState(0);
   const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
+  const { isLoggedIn } = useAuth();
   const { mutate: logout } = useLogout();
 
-  useEffect(() => {
-    // TODO: isLoggedIn, userRole에 따른 유저/부스/행사 정보 조회
-  }, [isLoggedIn, userRole]);
-
   const handleLogout = () => {
-    logout();
-
-    setIsLoggedIn(false);
-    setUserRole('user');
-    setUserName('');
-  };
-
-  const handleLoginClick = () => {
-    setIsLoginSheetOpen(true);
+    logout(undefined, {
+      onSuccess: () => forceUpdate((n) => n + 1),
+    });
   };
 
   const handleKakaoLogin = () => {
@@ -62,29 +85,17 @@ export default function MyScreen() {
     setIsLoginSheetOpen(false);
   };
 
-  const ContentComponent = isLoggedIn
-    ? CONTENT_BY_ROLE[userRole]
-    : MyDefaultContent;
-  const showFooter = !isLoggedIn || userRole === 'user';
-
   return (
     <MyContainer>
       <Header title="마이페이지" border />
 
-      <MyContentContainer>
-        <MyUserRow
-          isLoggedIn={isLoggedIn}
-          userName={userName}
+      {isLoggedIn ? (
+        <MyScreenLoggedIn
           onLogout={handleLogout}
-          onLoginClick={handleLoginClick}
+          onLoginClick={() => setIsLoginSheetOpen(true)}
         />
-        <ContentComponent {...data} />
-      </MyContentContainer>
-
-      {showFooter && (
-        <AdminCertificationWrapper>
-          <AdminCertification />
-        </AdminCertificationWrapper>
+      ) : (
+        <MyScreenLoggedOut onLoginClick={() => setIsLoginSheetOpen(true)} />
       )}
 
       <LoginBottomSheet
