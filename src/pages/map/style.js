@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { typography } from '@/designsystem/tokens/typography';
+import { css } from '@emotion/react';
+import { gray } from '@/designsystem/tokens/colors';
 
 export const MapScreenWrapper = styled.div`
   display: flex;
@@ -18,6 +20,7 @@ export const MapArea = styled.div`
 
 export const InstructionsContainer = styled.div`
   padding: ${measurement.spacing12} ${measurement.spacing16};
+  padding-top: 0;
 `;
 
 export const InstructionsText = styled.p`
@@ -56,6 +59,10 @@ export const BoothName = styled.div`
   ${typography.caption1Medium};
   color: ${semantic.textNormalStrong};
   text-decoration: underline;
+
+  &[data-focused='true'] {
+    color: ${semantic.textPrimaryNormal};
+  }
 `;
 
 export const BoothListContainer = styled.div`
@@ -72,4 +79,27 @@ export const NoticeTagWrapper = styled.div`
   top: 10px;
   left: ${measurement.spacing16};
   z-index: 10;
+`;
+
+export const boothSelectionStyles = css`
+  g[id^='booth-'],
+  g[id^='sponsor-booth-'] {
+    cursor: pointer;
+  }
+
+  g[id^='booth-'].selected > rect,
+  g[id^='sponsor-booth-'].selected > rect {
+    stroke: ${semantic.fillPrimaryNormal};
+    stroke-width: 2;
+  }
+  g[id^='booth-'].selected g[id^='digit_'] > path:not([mask]),
+  g[id^='sponsor-booth-'].selected g[id^='digit_'] > path:not([mask]) {
+    fill: ${semantic.fillPrimaryNormal};
+  }
+`;
+
+export const TabRow = styled.div`
+  display: flex;
+  gap: ${measurement.spacing8};
+  padding-inline: ${measurement.spacing16};
 `;

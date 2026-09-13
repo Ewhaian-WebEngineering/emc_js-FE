@@ -8,8 +8,7 @@ import { Z_INDEX } from '@/constants/zIndex';
 export const BottomSheetDragHandleWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: ${measurement.spacing16} ${measurement.spacing16} 0
-    ${measurement.spacing16};
+  padding: ${measurement.spacing16};
   touch-action: none;
 `;
 

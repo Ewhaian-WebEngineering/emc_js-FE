@@ -43,6 +43,7 @@ export default function BottomSheet({
   title,
   snapPoints,
   defaultSnap = 'half',
+  snap,
   dismissible = true,
   children,
   ...rest
@@ -67,6 +68,7 @@ export default function BottomSheet({
   const { currentSnap, heightPx, onDrag, resolveAfterDrag } = useSnapPoint({
     allowedSnaps,
     defaultSnap,
+    snap,
     onClose: dismissible ? requestClose : undefined,
     onFull,
   });

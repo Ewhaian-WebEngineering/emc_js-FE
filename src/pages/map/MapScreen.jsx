@@ -2,13 +2,19 @@ import BoothMap from '@/assets/svg/map/booth_map.svg?react';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import { useGoBack } from '@/hooks/useGoBack';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
-import { MapArea, MapScreenWrapper, NoticeTagWrapper } from './style';
+import {
+  MapArea,
+  MapScreenWrapper,
+  NoticeTagWrapper,
+  boothSelectionStyles,
+} from './style';
 import MapBottomSheet from './components/MapBottomSheet';
 import Tag from '@/designsystem/components/tag/Tag';
 import NoticeIcon from '@/assets/svg/16px/ic_announce.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import NoticeBottomSheet from './components/NoticeBottomSheet';
+import { Global } from '@emotion/react';
 
 const MAP_WIDTH = 813;
 const MAP_HEIGHT = 939;
@@ -22,19 +28,60 @@ export default function MapScreen() {
   const containerRef = useRef(null);
   const [transformConfig, setTransformConfig] = useState(null);
 
+  const [selectedBooth, setSelectedBooth] = useState(null);
+  const mapContentRef = useRef(null);
+
   useLayoutEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const { width, height } = el.getBoundingClientRect();
 
-    const minScale = height / MAP_HEIGHT; // 세로가 화면(컨테이너) 높이에 딱 맞는 배율
+    const minScale = height / MAP_HEIGHT;
     const initialPositionX = -(MAP_WIDTH * INITIAL_SCALE - width);
 
     setTransformConfig({ minScale, initialPositionX });
   }, []);
 
+  useEffect(() => {
+    const container = mapContentRef.current;
+    if (!container) return;
+    container
+      .querySelectorAll('.selected')
+      .forEach((el) => el.classList.remove('selected'));
+    if (selectedBooth) {
+      const id =
+        selectedBooth.type === 'sponsor'
+          ? `sponsor-booth-${selectedBooth.number}`
+          : `booth-${selectedBooth.number}`;
+      container.querySelector(`#${id}`)?.classList.add('selected');
+    }
+  }, [selectedBooth]);
+
+  const handleMapClick = (e) => {
+    const boothEl = e.target.closest('[id^="booth-"], [id^="sponsor-booth-"]');
+    if (!boothEl) {
+      setSelectedBooth(null);
+      return;
+    }
+    const isSponsor = boothEl.id.startsWith('sponsor-booth-');
+    const number = parseInt(
+      isSponsor
+        ? boothEl.id.replace('sponsor-booth-', '')
+        : boothEl.id.replace('booth-', ''),
+      10,
+    );
+    const type = isSponsor ? 'sponsor' : 'general';
+
+    setSelectedBooth((prev) =>
+      prev && prev.type === type && prev.number === number
+        ? null
+        : { type, number },
+    );
+  };
+
   return (
     <MapScreenWrapper>
+      <Global styles={boothSelectionStyles} />
       <FillCenterHeader onBack={handleBack} title="배치도" />
       <MapArea ref={containerRef}>
         <NoticeTagWrapper>
@@ -73,7 +120,11 @@ export default function MapScreen() {
             <TransformComponent
               wrapperStyle={{ width: '100%', height: '100%' }}
             >
-              <div style={{ width: MAP_WIDTH, height: MAP_HEIGHT }}>
+              <div
+                ref={mapContentRef}
+                style={{ width: MAP_WIDTH, height: MAP_HEIGHT }}
+                onClick={handleMapClick}
+              >
                 <BoothMap />
               </div>
             </TransformComponent>
@@ -83,7 +134,10 @@ export default function MapScreen() {
       {showNotice ? (
         <NoticeBottomSheet onClose={() => setShowNotice(false)} />
       ) : (
-        <MapBottomSheet />
+        <MapBottomSheet
+          isExpanded={selectedBooth !== null}
+          selectedBooth={selectedBooth}
+        />
       )}
     </MapScreenWrapper>
   );
