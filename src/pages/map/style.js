@@ -3,7 +3,6 @@ import { semantic } from '@/designsystem/tokens/semantic';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { typography } from '@/designsystem/tokens/typography';
 import { css } from '@emotion/react';
-import { gray } from '@/designsystem/tokens/colors';
 
 export const MapScreenWrapper = styled.div`
   display: flex;

@@ -32,7 +32,7 @@ export const useSnapPoint = ({
   }, []);
 
   useEffect(() => {
-    if (snap === null) return;
+    if (snap === undefined || snap === null) return;
     moveTo(snap);
   }, [snap, moveTo]);
 
