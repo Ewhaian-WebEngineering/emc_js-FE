@@ -1,17 +1,24 @@
 import EventForm from './EventForm';
-import { mockEvent } from '../constants/eventDummy';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useEvent, useUpdateEvent } from '@/api/feature/admin/useEventData';
 
 export default function EventEditScreen() {
   const navigate = useNavigate();
+  const { eventId } = useParams();
+  const { data: event } = useEvent(eventId);
+  const { mutate: updateEvent } = useUpdateEvent();
+
   const handleSubmit = (payload) => {
-    // TODO: api로 교체
-    console.log('edit payload', payload);
-    navigate(ADMIN_ROUTES.DASHBOARD);
+    updateEvent(
+      { eid: eventId, ...payload },
+      {
+        onSuccess: () => {
+          navigate(ADMIN_ROUTES.DASHBOARD);
+        },
+      },
+    );
   };
 
-  return (
-    <EventForm mode="edit" initialData={mockEvent} onSubmit={handleSubmit} />
-  );
+  return <EventForm mode="edit" initialData={event} onSubmit={handleSubmit} />;
 }

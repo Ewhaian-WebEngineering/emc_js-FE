@@ -1,13 +1,18 @@
 import EventForm from './EventForm';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useCreateEvent } from '@/api/feature/admin/useEventData';
 
 export default function EventCreateScreen() {
   const navigate = useNavigate();
+  const { mutate: createEvent } = useCreateEvent();
+
   const handleSubmit = (payload) => {
-    // TODO: API로 교체
-    console.log('create payload', payload);
-    navigate(ADMIN_ROUTES.DASHBOARD);
+    createEvent(payload, {
+      onSuccess: () => {
+        navigate(ADMIN_ROUTES.DASHBOARD);
+      },
+    });
   };
 
   return <EventForm mode="create" onSubmit={handleSubmit} />;

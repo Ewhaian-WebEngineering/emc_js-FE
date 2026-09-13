@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
@@ -17,9 +17,18 @@ import {
   TagGroup,
 } from './style';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useImageUpload } from '@/api/core/s3/useImageUpload';
 
-const EVENT_TYPES = ['사전', '현장', '사후'];
-const HOST_TYPES = ['EMC 주최', '협찬사 주최'];
+const EVENT_TYPES = [
+  { label: '사전', value: 'pre' },
+  { label: '현장', value: 'live' },
+  { label: '사후', value: 'post' },
+];
+
+const ORGANIZER_TYPES = [
+  { label: 'EMC 주최', value: 'EMC' },
+  { label: '협찬사 주최', value: 'SPONSOR' },
+];
 
 /**
  * @param {'create' | 'edit'} mode - 등록/수정 모드
@@ -27,15 +36,27 @@ const HOST_TYPES = ['EMC 주최', '협찬사 주최'];
  * @param {function} onSubmit - 등록/수정 완료 시 호출되는 콜백
  */
 
+const toDateString = (date) => {
+  if (!date) return null;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 function createInitialFormData(initialData) {
   return {
     imageUrl: initialData?.imageUrl ?? '',
+    imageS3Key: initialData?.imageS3Key ?? '',
     title: initialData?.title ?? '',
     eventType: initialData?.eventType ?? null,
-    host: initialData?.host ?? null,
-    period: initialData?.period ?? { start: null, end: null },
-    content: initialData?.content ?? '',
-    notice: initialData?.notice ?? '',
+    organizer: initialData?.organizer ?? null,
+    period: {
+      start: initialData?.startDate ? new Date(initialData.startDate) : null,
+      end: initialData?.endDate ? new Date(initialData.endDate) : null,
+    },
+    description: initialData?.description ?? '',
+    caution: initialData?.caution ?? '',
   };
 }
 
@@ -43,15 +64,27 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
   const navigate = useNavigate();
   const { showModal } = useModal();
+  const ownerIdRef = useRef(initialData?.id ?? crypto.randomUUID());
+  const ownerId = ownerIdRef.current;
 
   const [formData, setFormData] = useState(() =>
     createInitialFormData(initialData),
   );
+  const [imageFile, setImageFile] = useState(null);
   const [touched, setTouched] = useState({
     title: false,
   });
-  const { imageUrl, title, eventType, host, period, content, notice } =
-    formData;
+  const {
+    imageUrl,
+    title,
+    eventType,
+    organizer,
+    period,
+    description,
+    caution,
+  } = formData;
+
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload();
 
   const updateField = (field) => (value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -64,15 +97,42 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const hasError =
     !title.trim() ||
     !eventType ||
-    !host ||
+    !organizer ||
     !period.start ||
     !period.end ||
-    !content.trim();
+    !description.trim();
 
-  const handleSubmit = () => {
+  const handleImageUpload = (file) => {
+    setImageFile(file);
+    setFormData((prev) => ({ ...prev, imageUrl: URL.createObjectURL(file) }));
+  };
+
+  const handleImageDelete = () => {
+    setImageFile(null);
+    setFormData((prev) => ({ ...prev, imageUrl: '', imageS3Key: '' }));
+  };
+
+  const handleSubmit = async () => {
+    const imageS3Key = imageFile
+      ? (
+          await uploadImage({
+            file: imageFile,
+            imageType: 'event_image',
+            ownerId,
+          })
+        ).fileKey
+      : isEdit
+        ? (initialData?.imageS3Key ?? '')
+        : '';
     onSubmit?.({
-      ...formData,
+      eventType,
       title: title.trim(),
+      organizer,
+      startDate: toDateString(period.start),
+      endDate: toDateString(period.end),
+      description: description.trim(),
+      caution: caution.trim(),
+      imageS3Key,
     });
   };
 
@@ -93,25 +153,25 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
         onBack={handleBack}
         right={
           <TextButton
-            disabled={hasError}
+            disabled={hasError || isUploading}
             onClick={handleSubmit}
             size="sm"
             variant="primary"
           >
-            {isEdit ? '저장' : '등록'}
+            {isUploading ? '업로드 중...' : isEdit ? '저장' : '등록'}
           </TextButton>
         }
         title="이벤트"
       />
       <MainImageUploader
         imageUrl={imageUrl}
-        onDelete={() => updateField('imageUrl')('')}
-        onUpload={updateField('imageUrl')}
+        onDelete={handleImageDelete}
+        onUpload={handleImageUpload}
       />
       <ContentContainer>
         <TextField
           maxLength={36}
-          onChange={(e) => updateField('title')(e.target.value)}
+          onChange={updateField('title')}
           onBlur={handleBlur('title')}
           placeholder="이벤트 제목을 작성해주세요."
           required
@@ -129,13 +189,13 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
             <span>*</span>
           </CategoryTitle>
           <TagGroup>
-            {EVENT_TYPES.map((type) => (
+            {EVENT_TYPES.map(({ label, value }) => (
               <Tag
-                key={type}
-                label={type}
+                key={value}
+                label={label}
                 variant="button"
-                selected={eventType === type}
-                onClick={() => updateField('eventType')(type)}
+                selected={eventType === value}
+                onClick={() => updateField('eventType')(value)}
               />
             ))}
           </TagGroup>
@@ -147,13 +207,13 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
             <span>*</span>
           </CategoryTitle>
           <TagGroup>
-            {HOST_TYPES.map((h) => (
+            {ORGANIZER_TYPES.map(({ label, value }) => (
               <Tag
-                key={h}
-                label={h}
+                key={value}
+                label={label}
                 variant="button"
-                selected={host === h}
-                onClick={() => updateField('host')(h)}
+                selected={organizer === value}
+                onClick={() => updateField('organizer')(value)}
               />
             ))}
           </TagGroup>
@@ -171,16 +231,21 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
             내용
             <span>*</span>
           </CategoryTitle>
-          <Editor content={content} onChange={updateField('content')} />
+          <Editor
+            content={description}
+            onChange={updateField('description')}
+            ownerId={ownerId}
+            imageType="event_description"
+          />
         </CategoryContainer>
 
         <TextArea
           maxLength={1000}
-          onChange={(e) => updateField('notice')(e.target.value)}
+          onChange={updateField('caution')}
           placeholder="이벤트 유의사항을 작성해주세요."
           rows={4}
           title="유의사항"
-          value={notice}
+          value={caution}
         />
       </ContentContainer>
     </EventFormContainer>
