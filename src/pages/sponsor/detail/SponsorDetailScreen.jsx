@@ -13,7 +13,8 @@ import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import DefaultRepresentativeImage from '@/assets/img/img_rectangle_lg.png';
 
 import { TAB_ROUTES } from '@/constants/routes';
-import { useSponsorDetail } from '@/api/feature/sponsor/useSponsorDetail';
+import { useSponsorDetail } from '@/api/feature/sponsor/useSponsor';
+import { OPERATING_TIME_OPTIONS } from '@/constants/filter';
 
 import * as S from './style';
 import { SPONSOR_TABS } from './constants/sponsorTabs';
@@ -66,7 +67,10 @@ export default function SponsorDetailScreen() {
         <S.InfoList>
           <S.InfoRow>
             <S.InfoLabel>운영 시간</S.InfoLabel>
-            <S.InfoValue>{sponsorDetail.operationTime}</S.InfoValue>
+            <S.InfoValue>
+              {OPERATING_TIME_LABEL[sponsorDetail.operationTime] ||
+                sponsorDetail.operationTime}
+            </S.InfoValue>
           </S.InfoRow>
 
           <S.InfoRow>
@@ -99,16 +103,20 @@ export default function SponsorDetailScreen() {
 
           <S.InfoRow>
             <S.InfoLabel>URL</S.InfoLabel>
-            <S.InfoValue>
-              <LinkButton
-                variant="secondary"
-                size="sm"
-                href={sponsorDetail.externalUrl}
-                target="_blank"
-              >
-                {sponsorDetail.externalUrl}
-              </LinkButton>
-            </S.InfoValue>
+            {sponsorDetail.externalUrl ? (
+              <S.InfoValue>
+                <LinkButton
+                  variant="secondary"
+                  size="sm"
+                  href={sponsorDetail.externalUrl}
+                  target="_blank"
+                >
+                  {sponsorDetail.externalUrl}
+                </LinkButton>
+              </S.InfoValue>
+            ) : (
+              <S.InfoValue>-</S.InfoValue>
+            )}
           </S.InfoRow>
         </S.InfoList>
       </S.SponsorInfoSection>
@@ -195,3 +203,7 @@ export default function SponsorDetailScreen() {
     </S.SponsorDetailContainer>
   );
 }
+
+const OPERATING_TIME_LABEL = Object.fromEntries(
+  OPERATING_TIME_OPTIONS.map(({ label, value }) => [value, label]),
+);
