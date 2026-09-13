@@ -18,16 +18,16 @@ import TrendingBoothList from './components/TrendingBoothList';
 import { useGoBack } from '@/hooks/useGoBack';
 import { SEARCH_ROUTES } from '@/constants/routes';
 import { useSearchData } from '@/api/feature/search/useSearchData';
+import { useRecentSearches } from './hooks/useRecentSearches';
+import { useAuth } from '@/api/feature/auth/useAuth';
 
 export default function SearchScreen() {
   const navigate = useNavigate();
   const handleBack = useGoBack();
+  const { userId } = useAuth();
   const [searchValue, setSearchValue] = useState('');
-  const [recentSearches, setRecentSearches] = useState([
-    '최근검색어1',
-    '최근검색어2',
-    '최근검색어3',
-  ]);
+  const { recentSearches, addSearch, removeSearch, clearAll } =
+    useRecentSearches(userId);
 
   const { popularBooths } = useSearchData();
 
@@ -41,11 +41,9 @@ export default function SearchScreen() {
         onSearch={() => {
           const trimmed = searchValue.trim();
           if (!trimmed) return;
+          addSearch(trimmed);
           navigate(
             `${SEARCH_ROUTES.SEARCH_RESULT}?query=${encodeURIComponent(trimmed)}`,
-            {
-              replace: true,
-            },
           );
         }}
         border
@@ -58,7 +56,7 @@ export default function SearchScreen() {
             <LinkButton
               variant="secondary"
               size="sm"
-              onClick={() => setRecentSearches([])}
+              onClick={() => clearAll()}
             >
               모두 삭제
             </LinkButton>
@@ -77,9 +75,7 @@ export default function SearchScreen() {
                   variant="sorting"
                   label={search}
                   onDelete={() => {
-                    const newSearches = [...recentSearches];
-                    newSearches.splice(index, 1);
-                    setRecentSearches(newSearches);
+                    removeSearch(index);
                   }}
                   onClick={() => {
                     navigate(

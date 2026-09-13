@@ -27,6 +27,7 @@ export default function SearchResultScreen() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading,
     error,
     isError,
   } = useSearchBooths({ q: query, category, sort, time });
@@ -52,8 +53,12 @@ export default function SearchResultScreen() {
         onSearch={() => {
           const trimmed = searchValue.trim();
           if (!trimmed) return;
-          navigate(`/search/result?query=${encodeURIComponent(trimmed)}`);
+          navigate(`/search/result?query=${encodeURIComponent(trimmed)}`, {
+            replace: true,
+          });
         }}
+        onIconClick={handleBack}
+        onFocus={handleBack}
         border
       />
       <BoothFilterBar
@@ -65,7 +70,11 @@ export default function SearchResultScreen() {
         filterValue={time}
         onFilterChange={setTime}
       />
-      {isError ? (
+      {isLoading ? (
+        <InfiniteScrollLoader>
+          <Spinner />
+        </InfiniteScrollLoader>
+      ) : isError ? (
         <EmptyState
           variant="md"
           title="검색 중 문제가 발생했어요"
