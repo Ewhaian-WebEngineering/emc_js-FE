@@ -10,6 +10,7 @@ export const MapScreenWrapper = styled.div`
 `;
 
 export const MapArea = styled.div`
+  flex: 1;
   min-height: 0;
   overflow: hidden;
   position: relative;
