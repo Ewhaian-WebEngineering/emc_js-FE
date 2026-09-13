@@ -1,32 +1,58 @@
 import { ADMIN_ROUTES } from '@/constants/routes';
 import useModal from '@/hooks/modal/useModal';
-import { useState } from 'react';
+import { buildSections } from '@/pages/manage/utils/buildSections';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const toSections = (sponsor) => sponsor?.itemSections ?? [];
+import { markSponsorItemDeleted } from '../store/sponsorDraftStore';
+import { useSponsorDraftStore } from './useSponsorDraftStore';
 
 export function useSponsorItemSections(sponsor, sponsorId) {
   const navigate = useNavigate();
   const { showModal } = useModal();
+  const draft = useSponsorDraftStore();
 
-  const [itemSections, setItemSections] = useState(toSections(sponsor));
+  const productGroups = sponsor?.productGroups ?? [];
+  const ungroupedItems = sponsor?.products ?? [];
+
+  const [itemSections, setItemSections] = useState(() =>
+    buildSections(
+      productGroups,
+      draft.groups,
+      draft.items,
+      ungroupedItems,
+      'items',
+    ),
+  );
+
+  useEffect(() => {
+    setItemSections(
+      buildSections(
+        productGroups,
+        draft.groups,
+        draft.items,
+        ungroupedItems,
+        'items',
+      ),
+    );
+  }, [productGroups, ungroupedItems, draft.groups, draft.items]);
+
   const [itemsError, setItemsError] = useState(undefined);
 
   const handleEditItem = (itemId) => {
-    let targetItem = null;
-
-    for (const section of itemSections) {
-      const found = section.items.find((item) => item.id === itemId);
-      if (found) {
-        targetItem = found;
-        break;
-      }
-    }
+    const section = itemSections.find((s) =>
+      s.items.some((item) => item.id === itemId),
+    );
+    const targetItem = section?.items.find((item) => item.id === itemId);
 
     if (!targetItem) return;
 
     navigate(ADMIN_ROUTES.SPONSOR_ITEM_EDIT(sponsorId, itemId), {
-      state: { itemData: targetItem },
+      state: {
+        itemData: {
+          ...targetItem,
+          groupId: section.isUngrouped ? null : section.id,
+        },
+      },
     });
   };
 
@@ -41,12 +67,7 @@ export function useSponsorItemSections(sponsor, sponsorId) {
 
     if (!result.confirmed) return;
 
-    setItemSections((prev) =>
-      prev.map((section) => ({
-        ...section,
-        items: section.items.filter((item) => item.id !== itemId),
-      })),
-    );
+    markSponsorItemDeleted(itemId);
   };
 
   const validateItems = () => {

@@ -1,53 +1,66 @@
-export function buildSections(productGroups, draft) {
+export function buildSections(
+  productGroups,
+  draftGroups,
+  draftItems,
+  ungroupedServerItems = [],
+  itemKey = 'products',
+) {
   const baseGroups = productGroups
     .map((group) => {
-      const entry = draft.groups[group.id];
+      const entry = draftGroups[group.id];
       if (entry?.status === 'deleted') return null;
       return entry?.status === 'updated' ? { ...group, ...entry.data } : group;
     })
     .filter(Boolean);
 
-  const newGroups = Object.entries(draft.groups)
+  const newGroups = Object.entries(draftGroups)
     .filter(([, entry]) => entry.status === 'created')
     .map(([tempId, entry]) => ({ id: tempId, ...entry.data }));
 
   const allGroups = [...baseGroups, ...newGroups];
 
-  const allServerProducts = productGroups.flatMap((group) =>
-    (group.products ?? []).map((product) => ({
-      ...product,
-      groupId: group.id,
-    })),
+  const groupedServerItems = productGroups.flatMap((group) =>
+    (group.products ?? []).map((item) => ({ ...item, groupId: group.id })),
   );
 
-  const overriddenProducts = allServerProducts
-    .map((product) => {
-      const entry = draft.products[product.id];
+  const ungroupedServerItemsWithGroupId = ungroupedServerItems.map((item) => ({
+    ...item,
+    groupId: null,
+  }));
+
+  const allServerItems = [
+    ...groupedServerItems,
+    ...ungroupedServerItemsWithGroupId,
+  ];
+
+  const overriddenItems = allServerItems
+    .map((item) => {
+      const entry = draftItems[item.id];
       if (entry?.status === 'deleted') return null;
       if (entry?.status === 'updated')
-        return { ...product, ...entry.data, id: product.id };
-      return product;
+        return { ...item, ...entry.data, id: item.id };
+      return item;
     })
     .filter(Boolean);
 
-  const draftCreatedProducts = Object.entries(draft.products)
+  const draftCreatedItems = Object.entries(draftItems)
     .filter(([, entry]) => entry.status === 'created')
     .map(([tempId, entry]) => ({ ...entry.data, id: tempId }));
 
-  const allProducts = [...overriddenProducts, ...draftCreatedProducts];
+  const allItems = [...overriddenItems, ...draftCreatedItems];
   const byDisplayOrder = (a, b) =>
     (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
 
   const sections = allGroups.map((group) => ({
     ...group,
     isUngrouped: false,
-    products: allProducts
-      .filter((p) => p.groupId === group.id)
+    [itemKey]: allItems
+      .filter((item) => item.groupId === group.id)
       .sort(byDisplayOrder),
   }));
 
-  const ungroupedProducts = allProducts
-    .filter((p) => !p.groupId)
+  const ungroupedItems = allItems
+    .filter((item) => !item.groupId)
     .sort(byDisplayOrder);
 
   return [
@@ -56,7 +69,7 @@ export function buildSections(productGroups, draft) {
       id: 'ungrouped',
       name: '그룹 없음',
       isUngrouped: true,
-      products: ungroupedProducts,
+      [itemKey]: ungroupedItems,
     },
   ];
 }

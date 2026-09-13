@@ -1,15 +1,34 @@
-import { ADMIN_ROUTES, MANAGE_ROUTES } from '@/constants/routes';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import SponsorFormScreen from './SponsorFormScreen';
+import { useSponsorDetail } from '@/api/feature/sponsor/useSponsor';
+import { useSponsorDraftStore } from './hooks/useSponsorDraftStore';
+import { useSaveSponsorDraft } from './hooks/useSaveSponsorDraft';
+import { InfiniteScrollLoader } from '@/components/common/style';
+import Spinner from '@/designsystem/components/spinner/Spinner';
 
 export default function SponsorCreateScreen() {
-  const navigate = useNavigate();
+  const { sponsorId } = useParams();
+  const { data: sponsor, isPending } = useSponsorDetail(sponsorId);
+  const draft = useSponsorDraftStore();
+  const { save } = useSaveSponsorDraft(sponsorId);
 
-  const handleSubmit = async (values) => {
-    // TODO: API 연동 시 sponsorId 받아오기
-    const sponsorId = 'temp-id';
-    navigate(ADMIN_ROUTES.DASHBOARD);
+  if (isPending) {
+    return (
+      <InfiniteScrollLoader>
+        <Spinner />
+      </InfiniteScrollLoader>
+    );
+  }
+
+  const handleSubmit = async (sponsorForm) => {
+    await save(sponsorForm, draft);
   };
 
-  return <SponsorFormScreen onSubmit={handleSubmit} submitLabel="create" />;
+  return (
+    <SponsorFormScreen
+      sponsor={sponsor}
+      onSubmit={handleSubmit}
+      submitLabel="create"
+    />
+  );
 }

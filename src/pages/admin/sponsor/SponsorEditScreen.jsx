@@ -1,37 +1,28 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useSponsorDetail } from '@/api/feature/sponsor/useSponsor';
+import { useParams } from 'react-router-dom';
+import { useSponsorDraftStore } from './hooks/useSponsorDraftStore';
+import { useSaveSponsorDraft } from './hooks/useSaveSponsorDraft';
+import { InfiniteScrollLoader } from '@/components/common/style';
+import Spinner from '@/designsystem/components/spinner/Spinner';
 import SponsorFormScreen from './SponsorFormScreen';
-import { mockSponsor } from './mocks/mockSponsor';
 
 export default function SponsorEditScreen() {
   const { sponsorId } = useParams();
-  const location = useLocation();
-  const stateSponsor = location.state?.sponsorData;
+  const { data: sponsor, isPending } = useSponsorDetail(sponsorId);
+  const draft = useSponsorDraftStore();
+  const { save } = useSaveSponsorDraft(sponsorId);
 
-  const [sponsor, setSponsor] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (stateSponsor) {
-      setSponsor(stateSponsor);
-      setIsLoading(false);
-      return;
-    }
-
-    // TODO: API 연동 시 sponsorId로 협찬사 정보 가져오기
-    setSponsor(mockSponsor);
-    setIsLoading(false);
-  }, [sponsorId, stateSponsor]);
-
-  const handleSubmit = async (values) => {
-    // TODO: API 연동 시 협찬사 정보 업데이트
-    setSponsor(values);
-  };
-
-  if (isLoading) {
-    // TODO: 로딩 화면 교체
-    return <div>Loading...</div>;
+  if (isPending) {
+    return (
+      <InfiniteScrollLoader>
+        <Spinner />
+      </InfiniteScrollLoader>
+    );
   }
+
+  const handleSubmit = async (sponsorForm) => {
+    await save(sponsorForm, draft);
+  };
 
   return (
     <SponsorFormScreen
