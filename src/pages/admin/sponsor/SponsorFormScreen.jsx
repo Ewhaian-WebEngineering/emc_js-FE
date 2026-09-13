@@ -1,12 +1,14 @@
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
+import { useToggleMap } from '@/pages/manage/booth/hooks/useToggleMap';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSponsorForm } from './hooks/useSponsorForm';
+import { useSponsorItemSections } from './hooks/useSponsorItemSections';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
-import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
-import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import { FieldLabel, RichTextField, SponsorFormContainer } from './style';
+import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import CategoryLabel from '@/pages/manage/booth/components/CategoryLabel';
 import { BOOTH_CATEGORY_OPTIONS } from '@/pages/manage/booth/constants/CategoryOptions';
 import Editor from '../components/Editor';
@@ -16,11 +18,9 @@ import {
   ActionButtonContent,
   CategoryLabelHelperText,
 } from '@/pages/manage/booth/style';
-import { useToggleMap } from '@/pages/manage/booth/hooks/useToggleMap';
-import SponsorItemList from './item/components/SponsorItemList';
-import { useSponsorItemSections } from './hooks/useSponsorItemSections';
-import { useNavigate, useParams } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import SponsorItemList from './item/components/SponsorItemList';
+import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 
 export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
   const { showModal } = useModal();
@@ -82,10 +82,8 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
 
       <MainImageUploader
         imageUrl={formValues.profileImage}
-        onUpload={(file) =>
-          updateField('profileImage', URL.createObjectURL(file))
-        }
-        onDelete={() => updateField('profileImage', '')}
+        onUpload={(file) => updateField('profileImage', file)}
+        onDelete={() => updateField('profileImage', null)}
         onUploadError={handleUploadError}
       />
 
@@ -103,35 +101,42 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
         <TextField
           title="위치"
           description="변경 불가"
-          value={`${formValues.location}번 부스`}
+          value={formValues.location}
           disabled
         />
 
         <CategoryLabel
           title="운영 시간"
           options={BOOTH_CATEGORY_OPTIONS.operatingTime}
-          selected={formValues.operatingTime}
-          onChange={(value) => updateField('operatingTime', value)}
-          hasError={!!visibleErrors.operatingTime}
-          helperText={visibleErrors.operatingTime}
+          selected={formValues.operationTime}
+          onChange={(value) => updateField('operationTime', value)}
+          hasError={!!visibleErrors.operationTime}
+          helperText={visibleErrors.operationTime}
+        />
+
+        <TextField
+          title="SNS"
+          placeholder="인스타그램 URL을 입력해주세요."
+          value={formValues.snsUrl}
+          onChange={(value) => updateField('snsUrl', value)}
         />
 
         <TextField
           title="URL"
-          placeholder="공식 SNS 등 외부 채널 링크를 등록해보세요."
-          value={formValues.url}
-          onChange={(value) => updateField('url', value)}
+          placeholder="공식 사이트 링크를 등록해보세요."
+          value={formValues.externalUrl}
+          onChange={(value) => updateField('externalUrl', value)}
         />
 
         <TextField
           title="협찬사 한 줄 소개"
           required
           placeholder="협찬사를 한 줄로 소개해주세요."
-          value={formValues.shortDescription}
-          onChange={(value) => updateField('shortDescription', value)}
+          value={formValues.introShort}
+          onChange={(value) => updateField('introShort', value)}
           maxLength={50}
-          hasError={!!visibleErrors.shortDescription}
-          helperText={visibleErrors.shortDescription}
+          hasError={!!visibleErrors.introShort}
+          helperText={visibleErrors.introShort}
         />
 
         <RichTextField>
@@ -149,10 +154,8 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
           title="프로필 이미지"
           isRequired
           imageUrl={formValues.profileImage}
-          onUpload={(file) =>
-            updateField('profileImage', URL.createObjectURL(file))
-          }
-          onDelete={() => updateField('profileImage', '')}
+          onUpload={(file) => updateField('profileImage', file)}
+          onDelete={() => updateField('profileImage', null)}
           isError={!!visibleErrors.profileImage}
           helperText={
             visibleErrors.profileImage ??
