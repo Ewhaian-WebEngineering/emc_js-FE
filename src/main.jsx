@@ -7,6 +7,10 @@ import { ToastProvider } from './designsystem/components/toast/ToastContext';
 import { ToastContainer } from './designsystem/components/toast/ToastContainer';
 import { ModalProvider } from './designsystem/components/modal/ModalContext';
 
+if ('scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ModalProvider>
