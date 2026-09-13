@@ -1,37 +1,54 @@
-import { useEffect, useState } from 'react';
+import { useGoBack } from '@/hooks/useGoBack';
 import { useLocation, useParams } from 'react-router-dom';
+import { useBoothDraftStore } from '../store/useBoothDraftStore';
+import { useProductDetail } from '@/api/feature/product/useProductData';
+import { useMemo } from 'react';
+import { upsertProductDraft } from '../store/boothDraftStore';
 import ProductFormScreen from './ProductFormScreen';
-import { mockProduct } from './mocks/mockProduct';
 
 export default function ProductEditScreen() {
   const { productId } = useParams();
   const location = useLocation();
+  const goBack = useGoBack();
+  const draft = useBoothDraftStore();
+
   const stateProduct = location.state?.productData;
+  const isTemp = productId.startsWith('temp-product-');
 
-  const [product, setProduct] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: fetchedProduct, isPending } = useProductDetail(productId, {
+    enabled: !stateProduct && !isTemp,
+  });
 
-  useEffect(() => {
-    if (stateProduct) {
-      setProduct(stateProduct);
-      setIsLoading(false);
-      return;
-    }
+  const draftEntry = draft.products[productId];
 
-    // TODO: API 연동 시 productId로 상품 정보 가져오기
-    setProduct(mockProduct);
-    setIsLoading(false);
-  }, [productId, stateProduct]);
+  const product = useMemo(() => {
+    const base = stateProduct ?? fetchedProduct;
+    if (!base) return null;
+    return draftEntry ? { ...base, ...draftEntry.data } : base;
+  }, [stateProduct, fetchedProduct, draftEntry]);
 
-  const handleSubmit = async (values) => {
-    // TODO: API 연동 시 상품 정보 업데이트
-    setProduct(values);
-  };
-
-  if (isLoading) {
-    // TODO: 로딩 화면 교체
+  if (!isTemp && !stateProduct && isPending) {
     return <div>Loading...</div>;
   }
+
+  const handleSubmit = async (values, thumbnailFile) => {
+    const { name, price, isOnSale, description, groupId } = values;
+
+    upsertProductDraft(productId, {
+      status: isTemp ? 'created' : 'updated',
+      data: {
+        name,
+        price,
+        isOnSale,
+        description,
+        groupId,
+        imageKey: product.imageKey,
+      },
+      file: thumbnailFile ?? draftEntry?.file ?? null,
+    });
+
+    goBack();
+  };
 
   return (
     <ProductFormScreen

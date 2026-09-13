@@ -1,29 +1,41 @@
 import { Fragment, useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import EventBannerCard from '../../../designsystem/components/card/admin/AdminEventBannerCard';
-import { mockEvents, EVENT_PHASE_LABEL } from '../constants/dashboardDummy';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
 import { ButtonContent, SectionTitle, CardWrapper } from './style';
 import useModal from '@/hooks/modal/useModal';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useDeleteEvent } from '@/api/feature/admin/useAdminData';
 
-const PHASE_ORDER = ['pre', 'onsite', 'post'];
+const PHASE_ORDER = ['pre', 'live', 'post'];
 
-// TODO: mockEvents 대신 실제 API 데이터로 교체
-export default function EventSection() {
+const PHASE_LABEL = {
+  pre: '사전 이벤트',
+  live: '현장 이벤트',
+  post: '사후 이벤트',
+};
+
+export default function EventSection({
+  events = { pre: [], live: [], post: [] },
+}) {
   const navigate = useNavigate();
   const { showModal } = useModal();
+  const { mutateAsync: deleteEvent } = useDeleteEvent();
 
   const [expanded, setExpanded] = useState(false);
-  const [events, setEvents] = useState(mockEvents);
 
   const groupedEvents = PHASE_ORDER.map((phase) => ({
     phase,
-    label: EVENT_PHASE_LABEL[phase],
-    items: events.filter((event) => event.phase === phase),
+    label: PHASE_LABEL[phase],
+    items: events[phase] ?? [],
   }));
+
+  const totalCount = PHASE_ORDER.reduce(
+    (sum, phase) => sum + (events[phase]?.length ?? 0),
+    0,
+  );
 
   const handleAdd = () => {
     navigate(ADMIN_ROUTES.EVENT);
@@ -44,7 +56,7 @@ export default function EventSection() {
 
     if (!result.confirmed) return;
 
-    setEvents((prev) => prev.filter((event) => event.id !== id));
+    await deleteEvent({ eid: id });
   };
 
   return (
@@ -53,7 +65,7 @@ export default function EventSection() {
       onToggle={() => setExpanded((prev) => !prev)}
       size="lg"
       title="이벤트 등록/수정"
-      count={events.length}
+      count={totalCount}
     >
       <Accordion.ActionButton
         buttonText={

@@ -1,36 +1,67 @@
+import { useNavigate, useParams } from 'react-router-dom';
+import { useBoothDraftStore } from '../../store/useBoothDraftStore';
+import { useCallback, useEffect, useState } from 'react';
+import { buildSections } from '../../utils/buildSections';
 import { MANAGE_ROUTES } from '@/constants/routes';
-import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {
+  markProductDeleted,
+  upsertProductDraft,
+} from '../../store/boothDraftStore';
 
 export function useProductSections({ productGroups }) {
   const navigate = useNavigate();
+  const { boothId } = useParams();
+  const draft = useBoothDraftStore();
 
-  const [productSections, setProductSections] = useState(() => [
-    ...productGroups.map((group) => ({ ...group, isUngrouped: false })),
-    { id: 'ungrouped', name: '그룹 없음', products: [], isUngrouped: true },
-  ]);
+  const [productSections, setProductSections] = useState(() =>
+    buildSections(productGroups, draft),
+  );
+
+  useEffect(() => {
+    setProductSections(buildSections(productGroups, draft));
+  }, [productGroups, draft.groups, draft.products]);
 
   const [productsError, setProductsError] = useState(null);
 
-  const handleEditProduct = useCallback((productId) => {
-    navigate(MANAGE_ROUTES.PRODUCT_EDIT(productId), {
-      state: {
-        productData: productSections
-          .flatMap((s) => s.products)
-          .find((p) => p.id === productId),
-      },
-    });
-  }, []);
+  const handleEditProduct = useCallback(
+    (productId) => {
+      const section = productSections.find((s) =>
+        s.products.some((p) => p.id === productId),
+      );
+      const target = section?.products.find((p) => p.id === productId);
+
+      navigate(MANAGE_ROUTES.PRODUCT_EDIT(boothId, productId), {
+        state: {
+          productData: target && {
+            ...target,
+            groupId: section.isUngrouped ? null : section.id,
+          },
+        },
+      });
+    },
+    [productSections, boothId],
+  );
 
   const handleDeleteProduct = useCallback((productId) => {
-    // TODO: 제품 삭제 로직 구현
-    setProductSections((prev) =>
-      prev.map((section) => ({
-        ...section,
-        products: section.products.filter((p) => p.id !== productId),
-      })),
-    );
+    markProductDeleted(productId);
   }, []);
+
+  const handleReorderProducts = useCallback(
+    (updatedProducts) => {
+      updatedProducts.forEach((product) => {
+        const { id, ...data } = product;
+        const isTemp = String(id).startsWith('temp-product-');
+        const existingEntry = draft.products[id];
+
+        upsertProductDraft(id, {
+          status: isTemp ? 'created' : 'updated',
+          data,
+          file: existingEntry?.file ?? null,
+        });
+      });
+    },
+    [draft.products],
+  );
 
   const hasAnyProduct = productSections.some((s) => s.products.length > 0);
 
@@ -45,6 +76,7 @@ export function useProductSections({ productGroups }) {
     setProductSections,
     handleEditProduct,
     handleDeleteProduct,
+    handleReorderProducts,
     productsError,
     validateProducts,
   };

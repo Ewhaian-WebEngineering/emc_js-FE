@@ -47,10 +47,13 @@ export default function SponsorItemFormScreen({ item, onSubmit, submitLabel }) {
     isButtonDisabled: isGroupButtonDisabled,
     groupNameError,
     handleConfirmAddGroup,
-  } = useProductGroups({
-    groupId: formValues.groupId,
-    onGroupIdChange: (value) => updateField('groupId', value),
-  });
+  } = useProductGroups(
+    [{ label: '그룹 없음', value: null, hideActions: true }],
+    {
+      groupId: formValues.groupId,
+      onGroupIdChange: (value) => updateField('groupId', value),
+    },
+  );
 
   const handleBack = async () => {
     await showModal({

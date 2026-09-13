@@ -13,6 +13,7 @@ import {
   BoothDetailCardContainer,
 } from './style';
 import Image from '../../Image';
+import { getBoothMarks } from '@/utils/formatBooth';
 
 /**
  * 부스 상세 카드 컴포넌트입니다.
@@ -34,7 +35,7 @@ export default function BoothDetailCard({
   thumbnail,
   onClick,
 }) {
-  const marks = [isEco && 'eco', isVegan && 'vegan'].filter(Boolean);
+  const marks = getBoothMarks({ isEco, isVegan, categories });
 
   return (
     <BoothDetailCardContainer onClick={onClick}>

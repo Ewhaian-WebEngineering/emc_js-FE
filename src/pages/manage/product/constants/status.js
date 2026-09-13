@@ -1,4 +1,4 @@
 export const STATUS_OPTIONS = [
-  { value: 'ON_SALE', label: '판매중' },
-  { value: 'SOLD_OUT', label: '판매종료' },
+  { label: '판매중', value: true },
+  { label: '판매종료', value: false },
 ];

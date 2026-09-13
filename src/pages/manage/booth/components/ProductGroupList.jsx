@@ -172,7 +172,7 @@ export default function ProductGroupList({
       <DragOverlay>
         {activeProduct && (
           <AdminProductCard
-            thumbnail={activeProduct.thumbnail}
+            thumbnail={activeProduct.imageUrl}
             title={activeProduct.name}
             price={activeProduct.price}
           />

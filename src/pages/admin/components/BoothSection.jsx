@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import BoothCard from '../../../designsystem/components/card/admin/AdminBoothCard';
-import { mockBooths } from '../constants/dashboardDummy';
 import { CardWrapper } from './style';
 import { MANAGE_ROUTES } from '@/constants/routes';
 import { useNavigate } from 'react-router-dom';
 
-// TODO: mockBooths 대신 실제 API 데이터로 교체
-export default function BoothSection() {
+export default function BoothSection({ booths: initialBooths = [] }) {
   const navigate = useNavigate();
 
   const [expanded, setExpanded] = useState(false);
-  const booths = mockBooths;
+  const booths = initialBooths;
 
   const handleEdit = (id) => {
     navigate(MANAGE_ROUTES.BOOTH_EDIT(id));
@@ -34,9 +32,9 @@ export default function BoothSection() {
         {booths.map((booth) => (
           <BoothCard
             key={booth.id}
-            cardNumber={booth.cardNumber}
-            content={booth.content}
-            title={booth.title}
+            cardNumber={booth.boothNumber}
+            content={booth.description ?? ''}
+            title={booth.name}
             onEdit={() => handleEdit(booth.id)}
             onPreview={() => handlePreview(booth.id)}
           />
