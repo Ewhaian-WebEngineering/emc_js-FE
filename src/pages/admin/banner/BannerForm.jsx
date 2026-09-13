@@ -8,38 +8,37 @@ import DatePicker from '@/designsystem/components/datepicker/DatePicker';
 import useModal from '@/hooks/modal/useModal';
 import { BannerFormContainer, ContentContainer } from './style';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useImageUpload } from '@/api/core/s3/useImageUpload';
 
-const urlRegExp =
+const URL_REGEXP =
   /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)$/;
 
 const normalizeUrl = (url) => {
   const trimmed = url.trim();
-
-  if (trimmed.startsWith('/')) {
+  if (trimmed.startsWith('/') || /^https?:\/\//i.test(trimmed)) {
     return trimmed;
   }
-
-  if (/^https?:\/\//i.test(trimmed)) {
-    return trimmed;
-  }
-
   return `https://${trimmed}`;
 };
 
-/**
- * @param {'create' | 'edit'} mode - 등록/수정 모드
- * @param {object} [initialData] - 수정 모드일 때 미리 채울 기존 데이터
- * @param {function} onSubmit - 등록/수정 완료 시 호출되는 콜백
- */
+const toDateString = (date) => {
+  if (!date) return null;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
-function createInitialFormData(initialData) {
-  return {
-    imageUrl: initialData?.imageUrl ?? '',
-    title: initialData?.title ?? '',
-    period: initialData?.period ?? { start: null, end: null },
-    url: initialData?.url ?? '',
-  };
-}
+const createInitialFormData = (initialData) => ({
+  imageUrl: initialData?.imageUrl ?? '',
+  imageS3Key: initialData?.imageS3Key ?? '',
+  title: initialData?.title ?? '',
+  period: {
+    start: initialData?.startDate ? new Date(initialData.startDate) : null,
+    end: initialData?.endDate ? new Date(initialData.endDate) : null,
+  },
+  url: initialData?.linkUrl ?? '',
+});
 
 export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
@@ -49,37 +48,56 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const [formData, setFormData] = useState(() =>
     createInitialFormData(initialData),
   );
-  const [touched, setTouched] = useState({
-    title: false,
-    url: false,
-  });
+  const [imageFile, setImageFile] = useState(null);
+  const [touched, setTouched] = useState({ title: false, url: false });
+
   const { imageUrl, title, period, url } = formData;
+  const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload();
 
-  const updateField = (field) => (value) => {
+  const updateField = (field) => (value) =>
     setFormData((prev) => ({ ...prev, [field]: value }));
-  };
 
-  const handleBlur = (field) => () => {
+  const handleBlur = (field) => () =>
     setTouched((prev) => ({ ...prev, [field]: true }));
-  };
 
+  const trimmedUrl = url.trim();
   const isUrlInvalid =
-    url.trim() !== '' &&
-    !url.trim().startsWith('/') &&
-    !urlRegExp.test(url.trim());
+    trimmedUrl !== '' &&
+    !trimmedUrl.startsWith('/') &&
+    !URL_REGEXP.test(trimmedUrl);
 
   const hasError =
     !title.trim() ||
     !period.start ||
     !period.end ||
-    !url.trim() ||
-    isUrlInvalid;
+    !trimmedUrl ||
+    isUrlInvalid ||
+    !imageUrl;
 
-  const handleSubmit = () => {
+  const handleImageUpload = (file) => {
+    setImageFile(file);
+    setFormData((prev) => ({ ...prev, imageUrl: URL.createObjectURL(file) }));
+  };
+
+  const handleImageDelete = () => {
+    setImageFile(null);
+    setFormData((prev) => ({ ...prev, imageUrl: '' }));
+  };
+
+  const handleSubmit = async () => {
+    const imageS3Key = imageFile
+      ? (await uploadImage({ file: imageFile, imageType: 'banner_image' }))
+          .fileKey
+      : isEdit
+        ? (initialData?.imageS3Key ?? '')
+        : '';
+
     onSubmit?.({
-      ...formData,
       title: title.trim(),
-      url: normalizeUrl(url),
+      imageS3Key,
+      linkUrl: normalizeUrl(url),
+      startDate: toDateString(period.start),
+      endDate: toDateString(period.end),
     });
   };
 
@@ -96,7 +114,7 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
 
   const getUrlHelperText = () => {
     if (!touched.url) return '';
-    if (!url.trim()) return '내용을 입력해주세요.';
+    if (!trimmedUrl) return '내용을 입력해주세요.';
     if (isUrlInvalid) return '잘못된 URL 형식입니다.';
     return '';
   };
@@ -107,25 +125,27 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
         onBack={handleBack}
         right={
           <TextButton
-            disabled={hasError}
+            disabled={hasError || isUploading}
             onClick={handleSubmit}
             size="sm"
             variant="primary"
           >
-            {isEdit ? '저장' : '등록'}
+            {isUploading ? '업로드 중...' : isEdit ? '저장' : '등록'}
           </TextButton>
         }
         title="배너"
       />
+
       <MainImageUploader
         imageUrl={imageUrl}
-        onDelete={() => updateField('imageUrl')('')}
-        onUpload={updateField('imageUrl')}
+        onDelete={handleImageDelete}
+        onUpload={handleImageUpload}
       />
+
       <ContentContainer>
         <TextField
           maxLength={36}
-          onChange={(e) => updateField('title')(e.target.value)}
+          onChange={updateField('title')}
           onBlur={handleBlur('title')}
           placeholder="배너 제목을 작성해주세요."
           required
@@ -145,13 +165,13 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
         />
 
         <TextField
-          onChange={(e) => updateField('url')(e.target.value)}
+          onChange={updateField('url')}
           onBlur={handleBlur('url')}
           placeholder="https:// 또는 /path 형태로 입력해주세요."
           required
           title="URL"
           value={url}
-          hasError={touched.url && (!url.trim() || isUrlInvalid)}
+          hasError={touched.url && (!trimmedUrl || isUrlInvalid)}
           helperText={getUrlHelperText()}
         />
       </ContentContainer>
