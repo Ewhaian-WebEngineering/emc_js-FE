@@ -11,6 +11,10 @@ if ('scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual';
 }
 
+if (window.Kakao && !window.Kakao.isInitialized()) {
+  window.Kakao.init(import.meta.env.VITE_KAKAO_JS_KEY);
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ModalProvider>

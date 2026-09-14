@@ -35,14 +35,40 @@ export default function EventDetailScreen() {
 function EventDetailContent({ id }) {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { data: event } = useEventDetail(id); // useSuspenseQuery, 에러는 throw됨
+  const { data: event } = useEventDetail(id);
 
   const handleSponsorClick = () => {
     navigate(SPONSOR_ROUTES.LIST);
   };
 
   const handleKakaoShare = () => {
-    // TODO: 카카오 SDK 연결
+    if (!window.Kakao?.isInitialized()) return;
+
+    window.Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: event.title,
+        description: formatEventPeriod(
+          event.eventType,
+          event.startDate,
+          event.endDate,
+        ),
+        imageUrl: event.imageUrl,
+        link: {
+          mobileWebUrl: window.location.href,
+          webUrl: window.location.href,
+        },
+      },
+      buttons: [
+        {
+          title: '자세히 보기',
+          link: {
+            mobileWebUrl: window.location.href,
+            webUrl: window.location.href,
+          },
+        },
+      ],
+    });
   };
 
   const trimmedCaution = event.caution?.trim();
