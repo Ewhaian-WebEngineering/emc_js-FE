@@ -9,11 +9,16 @@ const CERTIFICATION_OPTIONS = [
   { label: '관리자(EMC)', value: 'admin' },
 ];
 
-export default function AdminCertification() {
+export default function AdminCertification({ isLoggedIn, onLoginClick }) {
   const { showModal } = useModal();
   const navigate = useNavigate();
 
   const handleCertificationClick = () => {
+    if (!isLoggedIn) {
+      onLoginClick?.();
+      return;
+    }
+
     showModal({
       variant: 'form',
       title: '셀러/관리자 인증',

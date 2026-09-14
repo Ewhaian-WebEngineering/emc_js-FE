@@ -44,7 +44,7 @@ function MyScreenLoggedIn({ onLogout, onLoginClick }) {
 
       {showFooter && (
         <AdminCertificationWrapper>
-          <AdminCertification />
+          <AdminCertification isLoggedIn />
         </AdminCertificationWrapper>
       )}
     </>
@@ -62,7 +62,7 @@ function MyScreenLoggedOut({ onLoginClick }) {
       </MyContentContainer>
 
       <AdminCertificationWrapper>
-        <AdminCertification />
+        <AdminCertification isLoggedIn={false} onLoginClick={onLoginClick} />
       </AdminCertificationWrapper>
     </>
   );
