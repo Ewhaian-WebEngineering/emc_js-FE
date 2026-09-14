@@ -5,6 +5,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import {
   MapArea,
   MapScreenWrapper,
+  NoticeTagContent,
   NoticeTagWrapper,
   boothSelectionStyles,
 } from './style';
@@ -87,7 +88,7 @@ export default function MapScreen() {
         <NoticeTagWrapper>
           <Tag
             label={
-              <>
+              <NoticeTagContent>
                 <NoticeIcon
                   color={
                     showNotice
@@ -96,7 +97,7 @@ export default function MapScreen() {
                   }
                 />
                 안내사항
-              </>
+              </NoticeTagContent>
             }
             variant="notice"
             selected={showNotice}

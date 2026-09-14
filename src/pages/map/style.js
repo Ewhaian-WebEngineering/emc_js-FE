@@ -80,6 +80,12 @@ export const NoticeTagWrapper = styled.div`
   z-index: 10;
 `;
 
+export const NoticeTagContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${measurement.spacing2};
+`;
+
 export const boothSelectionStyles = css`
   g[id^='booth-'],
   g[id^='sponsor-booth-'] {

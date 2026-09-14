@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { BottomSheetContentsSection } from './style';
 
 /**
@@ -7,20 +8,22 @@ import { BottomSheetContentsSection } from './style';
  * @param {boolean} isDragging - 드래그 중 여부
  * @param {number} heightPx - 바텀시트 현재 높이 (px 단위)
  * @param {React.ReactNode} children - 바텀시트 내부에 렌더링할 콘텐츠
+ * @param {React.Ref<HTMLDivElement>} ref - 바텀시트 내부 콘텐츠 영역에 대한 참조
  */
-export default function BottomSheetContents({
-  isDragging,
-  heightPx,
-  scrollLocked,
-  children,
-}) {
+const BottomSheetContents = forwardRef(function BottomSheetContents(
+  { isDragging, heightPx, scrollLocked, children },
+  ref,
+) {
   return (
     <BottomSheetContentsSection
       heightPx={heightPx}
       isDragging={isDragging}
       scrollLocked={scrollLocked}
+      ref={ref}
     >
       {children}
     </BottomSheetContentsSection>
   );
-}
+});
+
+export default BottomSheetContents;
