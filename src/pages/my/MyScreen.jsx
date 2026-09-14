@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../../designsystem/components/header/FillRightHeader';
 import MyUserRow from './components/MyUserRow';
 import MyDefaultContent from './components/MyDefaultContent';
@@ -17,6 +17,7 @@ import {
   useAuth,
 } from '@/api/feature/auth/useAuth';
 import { useGetMyInfo, useGetBanners } from '@/api/feature/my/useMyData';
+import { queryClient } from '@/api/core/query/queryClient';
 
 const CONTENT_BY_ROLE = {
   user: MyDefaultContent,
@@ -71,6 +72,10 @@ function MyScreenLoggedOut({ onLoginClick }) {
 export default function MyScreen() {
   const [, forceUpdate] = useState(0);
   const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['myInfo'] });
+  }, []);
 
   const { isLoggedIn } = useAuth();
   const { mutate: logout } = useLogout();
