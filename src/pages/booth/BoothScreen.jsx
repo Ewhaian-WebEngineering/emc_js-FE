@@ -1,7 +1,7 @@
 import FillRightHeader from '@/designsystem/components/header/FillRightHeader';
 import SearchIcon from '@/assets/svg/28px/ic_search.svg?react';
 import { semantic } from '@/designsystem/tokens/semantic';
-import { ScreenWrapper, SearchButton } from './style';
+import { PagerItem, PagerWrapper, ScreenWrapper, SearchButton } from './style';
 import { SEARCH_ROUTES } from '@/constants/routes';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import BoothList from '@/components/BoothList';
@@ -11,6 +11,11 @@ import { useBoothData } from '@/api/feature/booth/useBoothData';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import Spinner from '@/designsystem/components/spinner/Spinner';
 import { InfiniteScrollLoader } from '@/components/common/style';
+import { CATEGORY_TABS } from '@/constants/categoryTabs';
+import { useMemo, useRef } from 'react';
+import useHorizontalPager from './hooks/useHorizontalPages';
+
+const CATEGORY_LIST = CATEGORY_TABS.map((tab) => tab.value);
 
 export default function BoothScreen() {
   const navigate = useNavigate();
@@ -21,20 +26,26 @@ export default function BoothScreen() {
   const { category, setCategory, sort, setSort, time, setTime } =
     useBoothFilter(initialCategory);
 
-  const {
-    boothListData,
-    totalCount,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useBoothData({ category, sort, time, limit: 20 });
+  const pagerRef = useRef(null);
 
-  const observerRef = useInfiniteScroll({
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
+  const currentIndex = useMemo(
+    () => CATEGORY_LIST.indexOf(category),
+    [category],
+  );
+
+  const { onScroll, scrollToIndex } = useHorizontalPager({
+    pagerRef,
+    items: CATEGORY_LIST,
+    activeItem: category,
+    onActiveChange: setCategory,
   });
+
+  const handleCategoryChange = (nextCategory) => {
+    const idx = CATEGORY_LIST.indexOf(nextCategory);
+    if (idx === -1) return;
+    scrollToIndex(idx);
+    setCategory(nextCategory);
+  };
 
   return (
     <ScreenWrapper>
@@ -52,29 +63,60 @@ export default function BoothScreen() {
         border
       />
       <BoothFilterBar
-        count={totalCount}
+        categoryTabs={CATEGORY_TABS}
         categoryValue={category}
         sortValue={sort}
         onSortChange={setSort}
         filterValue={time}
         onFilterChange={setTime}
-        onCategoryChange={setCategory}
+        onCategoryChange={handleCategoryChange}
       />
-      {isLoading ? (
+
+      <PagerWrapper ref={pagerRef} onScroll={onScroll}>
+        {CATEGORY_LIST.map((cat, idx) => (
+          <PagerItem key={cat}>
+            {Math.abs(idx - currentIndex) <= 1 ? (
+              <CategoryPanel category={cat} sort={sort} time={time} />
+            ) : null}
+          </PagerItem>
+        ))}
+      </PagerWrapper>
+    </ScreenWrapper>
+  );
+}
+
+function CategoryPanel({ category, sort, time }) {
+  const {
+    boothListData,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useBoothData({ category, sort, time, limit: 20 });
+
+  const observerRef = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
+
+  if (isLoading) {
+    return (
+      <InfiniteScrollLoader>
+        <Spinner />
+      </InfiniteScrollLoader>
+    );
+  }
+
+  return (
+    <>
+      <BoothList booths={boothListData} />
+      <div ref={observerRef} style={{ height: 1 }} />
+      {isFetchingNextPage && (
         <InfiniteScrollLoader>
           <Spinner />
         </InfiniteScrollLoader>
-      ) : (
-        <>
-          <BoothList booths={boothListData} />
-          <div ref={observerRef} style={{ height: 1 }} />
-          {isFetchingNextPage && (
-            <InfiniteScrollLoader>
-              <Spinner />
-            </InfiniteScrollLoader>
-          )}
-        </>
       )}
-    </ScreenWrapper>
+    </>
   );
 }
