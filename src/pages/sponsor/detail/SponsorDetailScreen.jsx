@@ -20,13 +20,26 @@ import { SPONSOR_TABS } from './constants/sponsorTabs';
 import DOMPurify from 'dompurify';
 import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
 import CardPlaceholder from '@/designsystem/components/Placeholder';
+import { QueryBoundary } from '@/components/common/QueryBoundary';
 
 export default function SponsorDetailScreen() {
-  const { sponsorId } = useParams();
-  const { data: sponsorDetail } = useSponsorDetail(sponsorId);
+  const { id } = useParams();
+  const handleBack = useGoBack();
+
+  return (
+    <>
+      <TransparentHeader onBack={handleBack} border />
+      <QueryBoundary>
+        <SponsorDetailContent id={id} />
+      </QueryBoundary>
+    </>
+  );
+}
+
+function SponsorDetailContent({ id }) {
+  const { data: sponsorDetail } = useSponsorDetail(id);
 
   const navigate = useNavigate();
-  const handleBack = useGoBack();
 
   const tabBarRef = useRef(null);
   const [tabBarHeight, setTabBarHeight] = useState(0);
@@ -54,8 +67,6 @@ export default function SponsorDetailScreen() {
 
   return (
     <S.SponsorDetailContainer>
-      <TransparentHeader onBack={handleBack} />
-
       {sponsorDetail ? (
         <S.RepresentativeImage
           src={sponsorDetail.imageUrl}
