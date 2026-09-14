@@ -33,7 +33,7 @@ export default function BoothPreviewScreen() {
         right={
           <TextButton
             onClick={() => {
-              navigate(MANAGE_ROUTES.BOOTH_EDIT(boothId));
+              navigate(MANAGE_ROUTES.BOOTH_EDIT(boothId), { replace: true });
             }}
           >
             수정

@@ -112,7 +112,7 @@ export function useSaveBoothDraft(booth, boothId) {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
       queryClient.invalidateQueries({ queryKey: ['booth-detail', boothId] });
       queryClient.invalidateQueries({ queryKey: ['product-groups'] });
-      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
+      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
     } finally {
       setIsSaving(false);
     }

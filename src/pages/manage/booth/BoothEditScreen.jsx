@@ -97,7 +97,7 @@ function BoothEditForm({ booth, boothId }) {
 
     if (!confirmed) {
       resetDraft();
-      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
+      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
     }
   };
 
