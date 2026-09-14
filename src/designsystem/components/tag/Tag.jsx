@@ -1,4 +1,4 @@
-import { TagWrapper } from './style';
+import { TagLabel, TagWrapper } from './style';
 import CloseButton from '@/assets/svg/16px/ic_close.svg?react';
 
 /**
@@ -17,9 +17,16 @@ export default function Tag({
   onDelete,
   onClick,
 }) {
+  const isTruncated = variant === 'sorting' && label.length >= 11;
+
   return (
-    <TagWrapper variant={variant} selected={selected} onClick={onClick}>
-      {label}
+    <TagWrapper
+      variant={variant}
+      selected={selected}
+      onClick={onClick}
+      title={isTruncated ? label : undefined}
+    >
+      <TagLabel variant={variant}>{label}</TagLabel>
       {onDelete && (
         <CloseButton
           onClick={(e) => {
