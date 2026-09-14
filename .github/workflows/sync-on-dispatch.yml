@@ -29,5 +29,5 @@ jobs:
           git fetch upstream
           git checkout develop
           git merge upstream/develop --no-edit
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/joyrii/hands_on.git
+          git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/joyrii/hands_on.git
           git push origin develop
