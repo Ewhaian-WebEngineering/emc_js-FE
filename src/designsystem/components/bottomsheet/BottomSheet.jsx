@@ -45,6 +45,7 @@ export default function BottomSheet({
   defaultSnap = 'half',
   snap,
   dismissible = true,
+  contentRef,
   children,
   ...rest
 }) {
@@ -117,6 +118,7 @@ export default function BottomSheet({
               )}
             </div>
             <BottomSheetContentsSection
+              ref={contentRef}
               heightPx={hasSnapPoints ? heightPx : 'auto'}
               isDragging={isDragging}
               scrollLocked={currentSnap === 'min'}

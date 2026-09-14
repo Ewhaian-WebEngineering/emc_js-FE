@@ -108,6 +108,11 @@ export const NoticeCard = styled.div`
   border: none;
   width: 100%;
   cursor: pointer;
+
+  & > svg {
+    flex-shrink: 0;
+    size: 16px;
+  }
 `;
 
 export const NoticeContent = styled.p`

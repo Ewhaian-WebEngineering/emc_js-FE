@@ -37,6 +37,7 @@ export const RecentSearchList = styled.div`
 export const TrendingBoothWrapper = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const Ranking = styled.div`

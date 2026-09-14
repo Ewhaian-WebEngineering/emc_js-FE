@@ -34,7 +34,7 @@ const parseMonthDay = (dateString) => {
 export function formatEventPeriod(eventType, startDate, endDate) {
   if (!startDate) return '';
 
-  if (eventType === 'onsite') {
+  if (eventType === 'live') {
     const { month, day } = parseMonthDay(startDate);
     return `${month}월 ${day}일 (행사 당일)`;
   }

@@ -11,8 +11,16 @@ import DeleteIcon from '@/assets/svg/20px/ic_circle_close.svg?react';
  * @param {function} onChange - 입력값이 변경될 때 호출되는 함수
  * @param {function} [onDelete] - 삭제 버튼 클릭 시 호출되는 함수
  * @param {function} [onSearch] - 검색 버튼 클릭 시 호출되는 함수
+ * @param {function} [onIconClick] - 아이콘 클릭 시 호출되는 함수
  */
-export default function Search({ value, onChange, onDelete, onSearch }) {
+export default function Search({
+  value,
+  onChange,
+  onDelete,
+  onSearch,
+  onIconClick,
+  onFocus,
+}) {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -23,7 +31,10 @@ export default function Search({ value, onChange, onDelete, onSearch }) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="내용을 입력해 주세요."
-        onFocus={() => setFocused(true)}
+        onFocus={() => {
+          setFocused(true);
+          onFocus?.();
+        }}
         onBlur={() => setFocused(false)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
@@ -42,7 +53,7 @@ export default function Search({ value, onChange, onDelete, onSearch }) {
         )}
         <SearchIconButton
           onMouseDown={(e) => e.preventDefault()}
-          onClick={onSearch}
+          onClick={onIconClick ?? onSearch}
         >
           <SearchIcon
             width="20"

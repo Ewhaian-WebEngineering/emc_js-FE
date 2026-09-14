@@ -19,7 +19,6 @@ import ProductGroupList from './components/ProductGroupList';
 import TextInput from '@/designsystem/components/textinput/TextInput';
 import AdminNoticeCard from '@/designsystem/components/card/admin/AdminNoticeCard';
 import { useBoothForm } from './hooks/useBoothForm';
-import { useProductSections } from './hooks/useProductSections';
 import { useToggleMap } from './hooks/useToggleMap';
 import useModal from '@/hooks/modal/useModal';
 import { InfiniteScrollLoader } from '@/components/common/style';
@@ -37,6 +36,7 @@ import {
   useMyBoothData,
   useNoticeList,
 } from '@/api/feature/booth/useBoothData';
+import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSections';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -81,27 +81,24 @@ function BoothEditForm({ booth, boothId }) {
     handleEditProduct,
     handleDeleteProduct,
     handleReorderProducts,
+    handleReorderGroups,
     productsError,
     validateProducts,
   } = useProductSections(booth);
 
   const handleBack = async () => {
-    if (!isDraftDirty()) {
-      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
-      return;
-    }
-
-    await showModal({
+    const { confirmed } = await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
-      confirmText: '계속 작성하기',
       cancelText: '나가기',
-      onCancel: () => {
-        resetDraft();
-        navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
-      },
+      confirmText: '계속 작성하기',
     });
+
+    if (!confirmed) {
+      resetDraft();
+      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
+    }
   };
 
   const clickDeleteProduct = (productId) => {
@@ -160,7 +157,10 @@ function BoothEditForm({ booth, boothId }) {
         onBack={handleBack}
         title="부스 수정"
         right={
-          <TextButton onClick={handleSave} disabled={isSaving}>
+          <TextButton
+            onClick={handleSave}
+            disabled={isSaving || !isDraftDirty()}
+          >
             저장
           </TextButton>
         }
@@ -274,6 +274,7 @@ function BoothEditForm({ booth, boothId }) {
           onEditProduct={handleEditProduct}
           onDeleteProduct={clickDeleteProduct}
           onReorderProducts={handleReorderProducts}
+          onReorderGroups={handleReorderGroups}
         />
       </AccordionLine>
 
@@ -293,19 +294,21 @@ function BoothEditForm({ booth, boothId }) {
         />
       </AccordionLine>
 
-      <AccordionLine
-        title="원재료 / 알레르기 정보"
-        expanded={expanded.allergyInfo}
-        onToggle={() => toggleExpanded('allergyInfo')}
-      >
-        <AccordionLine.ContentGuide description="수제 먹거리 부스라면 관련 내용을 꼭 작성해 주세요." />
-        <TextArea
-          placeholder="예) 밀, 우유, 계란, 초콜릿(대두 포함)"
-          value={boothForm.allergenInfo}
-          onChange={updateField('allergenInfo')}
-          maxLength={1000}
-        />
-      </AccordionLine>
+      {boothForm.categories.includes('food') && (
+        <AccordionLine
+          title="원재료 / 알레르기 정보"
+          expanded={expanded.allergyInfo}
+          onToggle={() => toggleExpanded('allergyInfo')}
+        >
+          <AccordionLine.ContentGuide description="수제 먹거리 부스라면 관련 내용을 꼭 작성해 주세요." />
+          <TextArea
+            placeholder="예) 밀, 우유, 계란, 초콜릿(대두 포함)"
+            value={boothForm.allergenInfo}
+            onChange={updateField('allergenInfo')}
+            maxLength={1000}
+          />
+        </AccordionLine>
+      )}
 
       <AccordionLine
         title="공지사항"

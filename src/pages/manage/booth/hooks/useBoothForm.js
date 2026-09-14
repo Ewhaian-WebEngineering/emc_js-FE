@@ -29,7 +29,7 @@ export function useBoothForm(booth, boothId) {
   const fields = draft.boothFields ?? booth;
   const boothForm = {
     ...fields,
-    marks: getBoothMarks(fields),
+    marks: getBoothMarks(fields).length > 0 ? getBoothMarks(fields) : ['none'],
     name: booth.name,
     location: booth.location,
   };

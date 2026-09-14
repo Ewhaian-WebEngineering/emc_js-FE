@@ -16,7 +16,7 @@ export default function TrendingBoothList({ trendingBooths }) {
           key={booth.id}
           ranking={booth.rank}
           boothName={booth.name}
-          onClick={() => navigate(`/booth/${booth.boothId}`)}
+          onClick={() => navigate(`/booth/${booth.id}`)}
         />
       ))}
     </TrendingBoothGrid>

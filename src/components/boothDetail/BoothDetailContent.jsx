@@ -146,7 +146,7 @@ export default function BoothDetailContent({
         <NoticeCard onClick={handleNoticeClick}>
           <NoticeIcon color={semantic.iconPrimaryNormal} />
           <NoticeContent announcement={booth.latestNotice?.title}>
-            {booth.latestNotice?.content || '등록된 공지가 없습니다.'}
+            {booth.latestNotice?.title || '등록된 공지가 없습니다.'}
           </NoticeContent>
         </NoticeCard>
       </BoothInfo>
@@ -209,7 +209,11 @@ export default function BoothDetailContent({
                 isVegan={recommendation.isVegan}
                 isEco={recommendation.isEco}
                 categories={recommendation.categories}
-                onClick={interactive ? () => {} : undefined}
+                onClick={
+                  interactive
+                    ? () => navigate(BOOTH_ROUTES.DETAIL(recommendation.id))
+                    : undefined
+                }
               />
             ))}
           </RecommendBoothList>

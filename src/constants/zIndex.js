@@ -11,7 +11,7 @@ export const Z_INDEX = {
 
   navigationBar: 100,
   bottomSheetScrim: 90,
-  bottomSheet: 100,
+  bottomSheet: 101,
   datepicker: 100,
 
   select: 200,

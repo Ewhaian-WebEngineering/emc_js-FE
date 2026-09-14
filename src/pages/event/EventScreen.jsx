@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, Fragment } from 'react';
+import { useEffect, useRef, useState, Fragment, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './style';
 import Header from '@/designsystem/components/header/FillRightHeader';
@@ -21,8 +21,8 @@ export default function EventScreen() {
   const stickyHeaderRef = useRef(null);
   const tabWrapperRef = useRef(null);
 
-  const blockHeight = stickyHeaderRef.current?.offsetHeight ?? 0;
-  const tabHeight = tabWrapperRef.current?.offsetHeight ?? 0;
+  const [blockHeight, setBlockHeight] = useState(0);
+  const [tabHeight, setTabHeight] = useState(0);
   const offset = isHeaderVisible ? blockHeight : tabHeight;
 
   const { activeTab, scrollToTab, registerSection } = useScrollSpyTabs(
@@ -30,18 +30,42 @@ export default function EventScreen() {
     offset,
   );
 
-  useEffect(() => {
-    const handleHeaderScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY < 0) return;
+  const isProgrammaticScrollRef = useRef(false);
+  const [pendingTabId, setPendingTabId] = useState(null);
 
-      const last = lastScrollYRef.current;
-      if (currentScrollY > last && currentScrollY > headerHideScrollThreshold) {
-        setIsHeaderVisible(false);
-      } else if (currentScrollY < last) {
-        setIsHeaderVisible(true);
-      }
-      lastScrollYRef.current = currentScrollY;
+  useLayoutEffect(() => {
+    if (stickyHeaderRef.current) {
+      setBlockHeight(stickyHeaderRef.current.offsetHeight);
+    }
+    if (tabWrapperRef.current) {
+      setTabHeight(tabWrapperRef.current.offsetHeight);
+    }
+  }, []);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleHeaderScroll = () => {
+      if (isProgrammaticScrollRef.current) return;
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY >= 0) {
+          const last = lastScrollYRef.current;
+          if (
+            currentScrollY > last &&
+            currentScrollY > headerHideScrollThreshold
+          ) {
+            setIsHeaderVisible(false);
+          } else if (currentScrollY < last) {
+            setIsHeaderVisible(true);
+          }
+          lastScrollYRef.current = currentScrollY;
+        }
+        ticking = false;
+      });
     };
 
     window.addEventListener('scroll', handleHeaderScroll, { passive: true });
@@ -54,9 +78,23 @@ export default function EventScreen() {
 
   const handleTabChange = (newTabId) => {
     const isFirstTab = newTabId === eventTabs[0]?.id;
+    isProgrammaticScrollRef.current = true;
     setIsHeaderVisible(isFirstTab);
-    scrollToTab(newTabId);
+    setPendingTabId(newTabId);
   };
+
+  useEffect(() => {
+    if (pendingTabId === null) return;
+
+    scrollToTab(pendingTabId);
+    setPendingTabId(null);
+
+    window.clearTimeout(isProgrammaticScrollRef._timer);
+    isProgrammaticScrollRef._timer = window.setTimeout(() => {
+      isProgrammaticScrollRef.current = false;
+      lastScrollYRef.current = window.scrollY;
+    }, 600);
+  }, [pendingTabId, offset]);
 
   const activeTabIndex = eventTabs.findIndex((tab) => tab.id === activeTab);
 

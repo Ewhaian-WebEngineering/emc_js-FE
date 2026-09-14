@@ -19,6 +19,8 @@ export default function SearchHeader({
   onChange,
   onDelete,
   onSearch,
+  onIconClick,
+  onFocus,
   border = false,
 }) {
   return (
@@ -36,6 +38,8 @@ export default function SearchHeader({
           onChange={onChange}
           onDelete={onDelete}
           onSearch={onSearch}
+          onIconClick={onIconClick}
+          onFocus={onFocus}
         />
       }
       gap

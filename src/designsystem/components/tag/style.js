@@ -63,3 +63,14 @@ export const TagWrapper = styled.button`
 
   ${css(typography.body2Medium)};
 `;
+
+export const TagLabel = styled.span`
+  ${({ variant }) =>
+    variant === 'sorting' &&
+    css`
+      max-width: 9.5em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    `}
+`;

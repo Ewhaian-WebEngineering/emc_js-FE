@@ -185,6 +185,9 @@ export const EventContent = styled.section`
   background-color: ${semantic.fillNormalNormal};
   padding-block: ${measurement.spacing32};
   padding-inline: ${measurement.spacing16};
+  min-height: 680px;
+  align-items: center;
+  justify-content: center;
 
   ${typography.body2Regular}
   color: ${semantic.textNormalNormal};

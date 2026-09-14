@@ -17,6 +17,7 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('general');
   const itemRefs = useRef({});
+  const contentRef = useRef(null);
 
   const { generalBooths: generalData, sponsorBooths: sponsorData } =
     useMapData();
@@ -44,7 +45,10 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
   }, [selectedBooth]);
 
   useEffect(() => {
-    if (!selectedBooth) return;
+    if (!selectedBooth) {
+      contentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     itemRefs.current[selectedBooth.number]?.scrollIntoView({
       block: 'nearest',
       behavior: 'smooth',
@@ -68,6 +72,7 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
 
   return (
     <BottomSheet
+      contentRef={contentRef}
       variant="handle"
       isOpen={true}
       defaultSnap="min"

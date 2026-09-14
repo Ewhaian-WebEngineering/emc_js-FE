@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../../designsystem/components/header/FillCenterHeader';
 import TextInput from '../../designsystem/components/textinput/TextInput';
 import BoxButton from '../../designsystem/components/button/boxbutton/BoxButton';
@@ -11,12 +11,18 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES, TAB_ROUTES } from '../../constants/routes';
 import { useAdminVerify } from '../../api/feature/admin/useAdminData';
-import { setTokens } from '@/api/core/tokenStorage';
+import { getUserRole, setTokens } from '@/api/core/tokenStorage';
 
 export default function AdminCodeScreen() {
   const navigate = useNavigate();
   const [code, setCode] = useState('');
   const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    if (getUserRole() === 'admin') {
+      navigate(TAB_ROUTES.MY, { replace: true });
+    }
+  }, []);
 
   const handleChange = (e) => {
     setCode(e.target.value);

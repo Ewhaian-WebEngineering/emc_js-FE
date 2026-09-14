@@ -16,32 +16,66 @@ import * as S from './style';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useToast } from '@/hooks/toast/useToast';
 import DOMPurify from 'dompurify';
+import { QueryBoundary } from '@/components/common/QueryBoundary';
 
 export default function EventDetailScreen() {
   const { id } = useParams();
   const handleBack = useGoBack(EVENT_ROUTES.LIST);
-  const { toast } = useToast();
-
-  const { data: event } = useEventDetail(id);
-
-  const navigate = useNavigate();
-  const handleSponsorClick = () => {
-    if (!event.sponsor) return;
-    navigate(SPONSOR_ROUTES.DETAIL(event.sponsor.id));
-  };
-
-  const handleKakaoShare = () => {
-    // TODO: 카카오 SDK 연결
-  };
-
-  const trimmedCaution = event.caution?.trim();
-  const hasCaution = Boolean(trimmedCaution);
-  const hasSponsor = Boolean(event.sponsor?.name);
 
   return (
     <>
       <FillCenterHeader title="이벤트 상세" onBack={handleBack} border />
+      <QueryBoundary notFoundText="존재하지 않는 이벤트입니다.">
+        <EventDetailContent id={id} />
+      </QueryBoundary>
+    </>
+  );
+}
 
+function EventDetailContent({ id }) {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { data: event } = useEventDetail(id);
+
+  const handleSponsorClick = () => {
+    navigate(SPONSOR_ROUTES.LIST);
+  };
+
+  const handleKakaoShare = () => {
+    if (!window.Kakao?.isInitialized()) return;
+
+    window.Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: event.title,
+        description: formatEventPeriod(
+          event.eventType,
+          event.startDate,
+          event.endDate,
+        ),
+        imageUrl: event.imageUrl,
+        link: {
+          mobileWebUrl: window.location.href,
+          webUrl: window.location.href,
+        },
+      },
+      buttons: [
+        {
+          title: '자세히 보기',
+          link: {
+            mobileWebUrl: window.location.href,
+            webUrl: window.location.href,
+          },
+        },
+      ],
+    });
+  };
+
+  const trimmedCaution = event.caution?.trim();
+  const hasCaution = Boolean(trimmedCaution);
+
+  return (
+    <>
       <S.EventHero>
         <S.EventTypeBadge>{eventTypeLabel[event.eventType]}</S.EventTypeBadge>
         <S.EventTitle>{event.title}</S.EventTitle>
@@ -61,26 +95,28 @@ export default function EventDetailScreen() {
         />
       )}
 
-      {hasSponsor && (
-        <S.SponsorSection>
-          <S.SponsorContent>
-            <S.SponsorTitle>
-              {event.sponsor.name}에 대해
-              <br />더 궁금하다면?
-            </S.SponsorTitle>
-            <S.SponsorButton
-              variant="primary"
-              size="md"
-              onClick={handleSponsorClick}
-            >
-              협찬사 바로가기
-              <ArrowRightIcon />
-            </S.SponsorButton>
-          </S.SponsorContent>
-        </S.SponsorSection>
+      {event.organizer !== 'EMC' && (
+        <>
+          {' '}
+          <S.SponsorSection>
+            <S.SponsorContent>
+              <S.SponsorTitle>
+                이번 행사와 함께하는 <br />
+                협찬사들을 만나보세요
+              </S.SponsorTitle>
+              <S.SponsorButton
+                variant="primary"
+                size="md"
+                onClick={handleSponsorClick}
+              >
+                협찬사 둘러보기
+                <ArrowRightIcon />
+              </S.SponsorButton>
+            </S.SponsorContent>
+          </S.SponsorSection>
+          <Divider size="lg" />
+        </>
       )}
-
-      <Divider size="lg" />
 
       <S.ShareSection>
         <S.ShareBox>
@@ -103,13 +139,11 @@ export default function EventDetailScreen() {
               <CopyToClipboard
                 text={window.location.href}
                 onCopy={(text, result) => {
-                  if (result) {
-                    toast({ message: '✅ 링크가 복사되었어요.' });
-                  } else {
-                    toast({
-                      message: '❌ 복사에 실패했어요. 다시 시도해주세요.',
-                    });
-                  }
+                  toast({
+                    message: result
+                      ? '✅ 링크가 복사되었어요.'
+                      : '❌ 복사에 실패했어요. 다시 시도해주세요.',
+                  });
                 }}
               >
                 <S.LinkShareIconCircle aria-label="링크 복사하기">

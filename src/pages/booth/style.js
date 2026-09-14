@@ -161,3 +161,22 @@ export const NoticeContentText = styled.p`
 export const WhiteSpace = styled.div`
   height: ${measurement.spacing128};
 `;
+
+export const PagerWrapper = styled.div`
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  width: 100%;
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const PagerItem = styled.div`
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  min-width: 100%;
+`;

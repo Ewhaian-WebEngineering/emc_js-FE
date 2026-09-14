@@ -4,7 +4,7 @@ export const BOOTH_CATEGORY_OPTIONS = {
     { value: 'fashion_beauty', label: '패션/뷰티' },
     { value: 'craft', label: '공예' },
     { value: 'stationery', label: '문구류' },
-    { value: 'performance', label: '시연/퍼포먼스' },
+    { value: 'performance', label: '퍼포먼스' },
   ],
   marks: [
     { value: 'none', label: '해당 없음' },

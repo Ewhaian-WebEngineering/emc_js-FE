@@ -5,6 +5,7 @@ import {
   clearTokens,
   getAccessToken,
   getRefreshToken,
+  getUserId,
   getUserNickname,
   setTokens,
 } from '@/api/core/tokenStorage';
@@ -39,10 +40,12 @@ export function getKakaoAuthorizeUrl() {
 
 export const useAuth = () => {
   const accessToken = getAccessToken();
+  const userId = getUserId();
   const nickname = getUserNickname();
 
   return {
     isLoggedIn: !!accessToken,
+    userId,
     nickname,
   };
 };

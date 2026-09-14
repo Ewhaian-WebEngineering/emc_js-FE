@@ -10,7 +10,6 @@ import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 import LinkButton from '@/designsystem/components/button/linkbutton/LinkButton';
 
 import ArrowRightIcon from '@/assets/svg/20px/ic_arrow_right.svg?react';
-import DefaultRepresentativeImage from '@/assets/img/img_rectangle_lg.png';
 
 import { TAB_ROUTES } from '@/constants/routes';
 import { useSponsorDetail } from '@/api/feature/sponsor/useSponsor';
@@ -20,13 +19,27 @@ import * as S from './style';
 import { SPONSOR_TABS } from './constants/sponsorTabs';
 import DOMPurify from 'dompurify';
 import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
+import CardPlaceholder from '@/designsystem/components/Placeholder';
+import { QueryBoundary } from '@/components/common/QueryBoundary';
 
 export default function SponsorDetailScreen() {
-  const { sponsorId } = useParams();
-  const { data: sponsorDetail } = useSponsorDetail(sponsorId);
+  const { id } = useParams();
+  const handleBack = useGoBack();
+
+  return (
+    <>
+      <TransparentHeader onBack={handleBack} border />
+      <QueryBoundary>
+        <SponsorDetailContent id={id} />
+      </QueryBoundary>
+    </>
+  );
+}
+
+function SponsorDetailContent({ id }) {
+  const { data: sponsorDetail } = useSponsorDetail(id);
 
   const navigate = useNavigate();
-  const handleBack = useGoBack();
 
   const tabBarRef = useRef(null);
   const [tabBarHeight, setTabBarHeight] = useState(0);
@@ -54,12 +67,16 @@ export default function SponsorDetailScreen() {
 
   return (
     <S.SponsorDetailContainer>
-      <TransparentHeader onBack={handleBack} />
-
-      <S.RepresentativeImage
-        src={sponsorDetail.imageUrl || DefaultRepresentativeImage}
-        alt={`${sponsorDetail.name} 대표 이미지`}
-      />
+      {sponsorDetail ? (
+        <S.RepresentativeImage
+          src={sponsorDetail.imageUrl}
+          alt={`${sponsorDetail.name} 대표 이미지`}
+        />
+      ) : (
+        <S.RepresentativeImagePlaceholder>
+          <CardPlaceholder />
+        </S.RepresentativeImagePlaceholder>
+      )}
 
       <S.SponsorInfoSection>
         <S.SponsorName>{sponsorDetail.name}</S.SponsorName>
@@ -89,16 +106,20 @@ export default function SponsorDetailScreen() {
 
           <S.InfoRow>
             <S.InfoLabel>SNS</S.InfoLabel>
-            <S.InfoValue>
-              <LinkButton
-                variant="secondary"
-                size="sm"
-                href={getSnsUrl(sponsorDetail.snsUrl)}
-                target="_blank"
-              >
-                {sponsorDetail.snsUrl}
-              </LinkButton>
-            </S.InfoValue>
+            {sponsorDetail.snsUrl ? (
+              <S.InfoValue>
+                <LinkButton
+                  variant="secondary"
+                  size="sm"
+                  href={getSnsUrl(sponsorDetail.snsUrl)}
+                  target="_blank"
+                >
+                  {sponsorDetail.snsUrl}
+                </LinkButton>
+              </S.InfoValue>
+            ) : (
+              <S.InfoValue>-</S.InfoValue>
+            )}
           </S.InfoRow>
 
           <S.InfoRow>

@@ -14,10 +14,12 @@ export function buildSections(
     .filter(Boolean);
 
   const newGroups = Object.entries(draftGroups)
-    .filter(([, entry]) => entry.status === 'created')
+    .filter(([, entry]) => entry?.status === 'created')
     .map(([tempId, entry]) => ({ id: tempId, ...entry.data }));
 
-  const allGroups = [...baseGroups, ...newGroups];
+  const allGroups = [...baseGroups, ...newGroups].sort(
+    (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+  );
 
   const groupedServerItems = productGroups.flatMap((group) =>
     (group.products ?? []).map((item) => ({ ...item, groupId: group.id })),
@@ -44,7 +46,7 @@ export function buildSections(
     .filter(Boolean);
 
   const draftCreatedItems = Object.entries(draftItems)
-    .filter(([, entry]) => entry.status === 'created')
+    .filter(([, entry]) => entry?.status === 'created')
     .map(([tempId, entry]) => ({ ...entry.data, id: tempId }));
 
   const allItems = [...overriddenItems, ...draftCreatedItems];

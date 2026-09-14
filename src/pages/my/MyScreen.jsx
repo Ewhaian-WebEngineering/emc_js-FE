@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../../designsystem/components/header/FillRightHeader';
 import MyUserRow from './components/MyUserRow';
 import MyDefaultContent from './components/MyDefaultContent';
@@ -17,6 +17,7 @@ import {
   useAuth,
 } from '@/api/feature/auth/useAuth';
 import { useGetMyInfo, useGetBanners } from '@/api/feature/my/useMyData';
+import { queryClient } from '@/api/core/query/queryClient';
 
 const CONTENT_BY_ROLE = {
   user: MyDefaultContent,
@@ -26,6 +27,7 @@ const CONTENT_BY_ROLE = {
 
 function MyScreenLoggedIn({ onLogout, onLoginClick }) {
   const { data } = useGetMyInfo();
+  const { data: banners } = useGetBanners();
   const ContentComponent = CONTENT_BY_ROLE[data.role] ?? MyDefaultContent;
   const showFooter = data.role === 'user';
 
@@ -38,12 +40,12 @@ function MyScreenLoggedIn({ onLogout, onLoginClick }) {
           onLogout={onLogout}
           onLoginClick={onLoginClick}
         />
-        <ContentComponent data={data} />
+        <ContentComponent data={{ ...data, banners }} />
       </MyContentContainer>
 
       {showFooter && (
         <AdminCertificationWrapper>
-          <AdminCertification />
+          <AdminCertification isLoggedIn />
         </AdminCertificationWrapper>
       )}
     </>
@@ -61,7 +63,7 @@ function MyScreenLoggedOut({ onLoginClick }) {
       </MyContentContainer>
 
       <AdminCertificationWrapper>
-        <AdminCertification />
+        <AdminCertification isLoggedIn={false} onLoginClick={onLoginClick} />
       </AdminCertificationWrapper>
     </>
   );
@@ -70,6 +72,10 @@ function MyScreenLoggedOut({ onLoginClick }) {
 export default function MyScreen() {
   const [, forceUpdate] = useState(0);
   const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['myInfo'] });
+  }, []);
 
   const { isLoggedIn } = useAuth();
   const { mutate: logout } = useLogout();
