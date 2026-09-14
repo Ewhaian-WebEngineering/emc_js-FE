@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import TextInput from '@/designsystem/components/textinput/TextInput';
 import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
-import { BOOTH_ROUTES, TAB_ROUTES } from '@/constants/routes';
+import { MANAGE_ROUTES, TAB_ROUTES } from '@/constants/routes';
 import { useSellerVerify } from '@/api/feature/seller/useSellerData';
-import { setTokens } from '@/api/core/tokenStorage';
+import { getUserRole, setTokens } from '@/api/core/tokenStorage';
 import {
   SellerAuthContainer,
   SellerAuthContent,
@@ -19,6 +19,12 @@ export default function SellerCodeScreen() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const { mutate: verifySellerCode, isPending } = useSellerVerify();
+
+  useEffect(() => {
+    if (getUserRole() === 'seller') {
+      navigate(TAB_ROUTES.MY, { replace: true });
+    }
+  }, []);
 
   const handleChange = (e) => {
     setCode(e.target.value);
@@ -34,7 +40,7 @@ export default function SellerCodeScreen() {
           userRole: 'seller',
         });
         setErrorMessage('');
-        navigate(BOOTH_ROUTES.DETAIL(data.boothId));
+        navigate(MANAGE_ROUTES.BOOTH_PREVIEW(data.boothId));
       },
       onError: (error) => {
         if (error.code === 'SELLER_CODE_INVALID') {
