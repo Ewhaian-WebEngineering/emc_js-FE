@@ -9,7 +9,18 @@ import {
   InquirySubtitle,
 } from './style.js';
 
+const INQUIRY_URL = 'http://pf.kakao.com/_KxjZhX/chat';
+const ERROR_REPORT_URL = 'http://pf.kakao.com/_QCjvn/chat';
+
 export default function InquiryList() {
+  const handleInquiryClick = () => {
+    window.open(INQUIRY_URL, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleErrorReportClick = () => {
+    window.open(ERROR_REPORT_URL, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <InquiryListWrapper>
       <InquiryItem>
@@ -21,6 +32,7 @@ export default function InquiryList() {
           size="md"
           variant="transparent"
           color={semantic.iconNormalInverse}
+          onClick={handleInquiryClick}
         >
           <ArrowRightIcon />
         </IconButton>
@@ -34,6 +46,7 @@ export default function InquiryList() {
           size="md"
           variant="transparent"
           color={semantic.iconNormalInverse}
+          onClick={handleErrorReportClick}
         >
           <ArrowRightIcon />
         </IconButton>
