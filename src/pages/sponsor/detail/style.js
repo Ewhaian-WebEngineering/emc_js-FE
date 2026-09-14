@@ -22,6 +22,14 @@ export const RepresentativeImage = styled.img`
   border-radius: ${measurement.borderRadiusRectangle};
 `;
 
+export const RepresentativeImagePlaceholder = styled.div`
+  width: 100%;
+  height: 250px;
+  border: ${measurement.borderWidthXs} solid ${semantic.borderNormalNormal};
+  border-radius: ${measurement.borderRadiusRectangle};
+  overflow: hidden;
+`;
+
 export const SponsorInfoSection = styled.section`
   display: flex;
   flex-direction: column;
@@ -85,6 +93,7 @@ export const IntroductionContent = styled.div`
   background-color: ${semantic.fillNormalNormal};
   padding-block: ${measurement.spacing32};
   padding-inline: ${measurement.spacing16};
+  min-height: 680px;
 
   ${typography.body2Regular}
   color: ${semantic.textNormalNormal};
