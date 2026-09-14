@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import HomeHeader from '@/designsystem/components/header/HomeHeader';
 import ArrowRightIconSmall from '@/assets/svg/20px/ic_arrow_right.svg?react';
 import ArrowRightIcon from '@/assets/svg/24px/ic_arrow_right.svg?react';
@@ -40,11 +41,20 @@ import {
 } from '@/constants/routes';
 import AdminCertification from '@/components/footer/AdminCertification';
 import { useHomeData } from '@/api/feature/home/useHomeData';
+import { getKakaoAuthorizeUrl, useAuth } from '@/api/feature/auth/useAuth';
+import LoginBottomSheet from '../my/components/LoginBottomSheet';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
+  const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
   const { popularBoothData, sponsorData, eventData, faqData } = useHomeData();
+
+  const handleKakaoLogin = () => {
+    window.location.href = getKakaoAuthorizeUrl();
+    setIsLoginSheetOpen(false);
+  };
 
   return (
     <>
@@ -163,8 +173,17 @@ export default function HomeScreen() {
       </ContactUsSection>
 
       <AdminCertificationWrapper>
-        <AdminCertification />
+        <AdminCertification
+          isLoggedIn={isLoggedIn}
+          onLoginClick={() => setIsLoginSheetOpen(true)}
+        />
       </AdminCertificationWrapper>
+
+      <LoginBottomSheet
+        isOpen={isLoginSheetOpen}
+        onClose={() => setIsLoginSheetOpen(false)}
+        onKakaoLogin={handleKakaoLogin}
+      />
     </>
   );
 }
