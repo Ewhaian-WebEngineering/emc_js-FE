@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Trigger fork sync via API
         run: |
-          curl -L \
+          curl -i -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
