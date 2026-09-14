@@ -3,6 +3,7 @@ let listeners = new Set();
 let state = {
   boothId: null,
   boothFields: null,
+  originalFields: null,
   thumbnail: { file: null, preview: null, removed: false },
   products: {},
   groups: {},
@@ -30,20 +31,23 @@ function setState(partial) {
 export function initDraft(boothId, booth) {
   if (state.boothId === boothId && state.boothFields) return;
 
+  const fields = {
+    categories: booth.categories,
+    isVegan: booth.isVegan,
+    isEco: booth.isEco,
+    operationTime: booth.operationTime,
+    isCash: booth.isCash,
+    externalUrl: booth.externalUrl,
+    inquiryUrl: booth.inquiryUrl,
+    description: booth.description,
+    allergenInfo: booth.allergenInfo,
+    guides: booth.guides,
+  };
+
   setState({
     boothId,
-    boothFields: {
-      categories: booth.categories,
-      isVegan: booth.isVegan,
-      isEco: booth.isEco,
-      operationTime: booth.operationTime,
-      isCash: booth.isCash,
-      externalUrl: booth.externalUrl,
-      inquiryUrl: booth.inquiryUrl,
-      description: booth.description,
-      allergenInfo: booth.allergenInfo,
-      guides: booth.guides,
-    },
+    boothFields: fields,
+    originalFields: fields,
     thumbnail: { file: null, preview: booth.thumbnailUrl, removed: false },
     products: {},
     groups: {},
@@ -124,7 +128,11 @@ export function markNoticeDeleted(key) {
 }
 
 export function isDraftDirty() {
+  const fieldsChanged =
+    JSON.stringify(state.boothFields) !== JSON.stringify(state.originalFields);
+
   return (
+    fieldsChanged ||
     Object.keys(state.products).length > 0 ||
     Object.keys(state.groups).length > 0 ||
     Object.keys(state.notices).length > 0 ||
@@ -137,6 +145,7 @@ export function resetDraft() {
   state = {
     boothId: null,
     boothFields: null,
+    originalFields: null,
     thumbnail: { file: null, preview: null, removed: false },
     products: {},
     groups: {},

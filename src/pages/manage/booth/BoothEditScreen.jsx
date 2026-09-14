@@ -87,22 +87,18 @@ function BoothEditForm({ booth, boothId }) {
   } = useProductSections(booth);
 
   const handleBack = async () => {
-    if (!isDraftDirty()) {
-      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
-      return;
-    }
-
-    await showModal({
+    const { confirmed } = await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
-      confirmText: '계속 작성하기',
       cancelText: '나가기',
-      onCancel: () => {
-        resetDraft();
-        navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
-      },
+      confirmText: '계속 작성하기',
     });
+
+    if (!confirmed) {
+      resetDraft();
+      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
+    }
   };
 
   const clickDeleteProduct = (productId) => {
@@ -161,7 +157,10 @@ function BoothEditForm({ booth, boothId }) {
         onBack={handleBack}
         title="부스 수정"
         right={
-          <TextButton onClick={handleSave} disabled={isSaving}>
+          <TextButton
+            onClick={handleSave}
+            disabled={isSaving || !isDraftDirty()}
+          >
             저장
           </TextButton>
         }
