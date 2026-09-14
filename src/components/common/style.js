@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 export const CommonScreenContainer = styled.div`
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
   justify-content: center;

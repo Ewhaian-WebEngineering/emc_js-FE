@@ -16,15 +16,27 @@ import * as S from './style';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useToast } from '@/hooks/toast/useToast';
 import DOMPurify from 'dompurify';
+import { QueryBoundary } from '@/components/common/QueryBoundary';
 
 export default function EventDetailScreen() {
   const { id } = useParams();
   const handleBack = useGoBack(EVENT_ROUTES.LIST);
+
+  return (
+    <>
+      <FillCenterHeader title="이벤트 상세" onBack={handleBack} border />
+      <QueryBoundary notFoundText="존재하지 않는 이벤트입니다.">
+        <EventDetailContent id={id} />
+      </QueryBoundary>
+    </>
+  );
+}
+
+function EventDetailContent({ id }) {
   const { toast } = useToast();
-
-  const { data: event } = useEventDetail(id);
-
   const navigate = useNavigate();
+  const { data: event } = useEventDetail(id); // useSuspenseQuery, 에러는 throw됨
+
   const handleSponsorClick = () => {
     navigate(SPONSOR_ROUTES.LIST);
   };
@@ -38,8 +50,6 @@ export default function EventDetailScreen() {
 
   return (
     <>
-      <FillCenterHeader title="이벤트 상세" onBack={handleBack} border />
-
       <S.EventHero>
         <S.EventTypeBadge>{eventTypeLabel[event.eventType]}</S.EventTypeBadge>
         <S.EventTitle>{event.title}</S.EventTitle>
@@ -99,13 +109,11 @@ export default function EventDetailScreen() {
               <CopyToClipboard
                 text={window.location.href}
                 onCopy={(text, result) => {
-                  if (result) {
-                    toast({ message: '✅ 링크가 복사되었어요.' });
-                  } else {
-                    toast({
-                      message: '❌ 복사에 실패했어요. 다시 시도해주세요.',
-                    });
-                  }
+                  toast({
+                    message: result
+                      ? '✅ 링크가 복사되었어요.'
+                      : '❌ 복사에 실패했어요. 다시 시도해주세요.',
+                  });
                 }}
               >
                 <S.LinkShareIconCircle aria-label="링크 복사하기">
