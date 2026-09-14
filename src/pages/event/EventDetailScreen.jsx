@@ -26,8 +26,7 @@ export default function EventDetailScreen() {
 
   const navigate = useNavigate();
   const handleSponsorClick = () => {
-    if (!event.sponsor) return;
-    navigate(SPONSOR_ROUTES.DETAIL(event.sponsor.id));
+    navigate(SPONSOR_ROUTES.LIST);
   };
 
   const handleKakaoShare = () => {
@@ -36,7 +35,6 @@ export default function EventDetailScreen() {
 
   const trimmedCaution = event.caution?.trim();
   const hasCaution = Boolean(trimmedCaution);
-  const hasSponsor = Boolean(event.sponsor?.name);
 
   return (
     <>
@@ -61,24 +59,22 @@ export default function EventDetailScreen() {
         />
       )}
 
-      {hasSponsor && (
-        <S.SponsorSection>
-          <S.SponsorContent>
-            <S.SponsorTitle>
-              {event.sponsor.name}에 대해
-              <br />더 궁금하다면?
-            </S.SponsorTitle>
-            <S.SponsorButton
-              variant="primary"
-              size="md"
-              onClick={handleSponsorClick}
-            >
-              협찬사 바로가기
-              <ArrowRightIcon />
-            </S.SponsorButton>
-          </S.SponsorContent>
-        </S.SponsorSection>
-      )}
+      <S.SponsorSection>
+        <S.SponsorContent>
+          <S.SponsorTitle>
+            이번 행사와 함께하는 <br />
+            협찬사들을 만나보세요
+          </S.SponsorTitle>
+          <S.SponsorButton
+            variant="primary"
+            size="md"
+            onClick={handleSponsorClick}
+          >
+            협찬사 둘러보기
+            <ArrowRightIcon />
+          </S.SponsorButton>
+        </S.SponsorContent>
+      </S.SponsorSection>
 
       <Divider size="lg" />
 
