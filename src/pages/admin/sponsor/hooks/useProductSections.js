@@ -1,6 +1,6 @@
+import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { MANAGE_ROUTES } from '@/constants/routes';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useBoothDraftStore } from '@/pages/manage/store/useBoothDraftStore';
 import { buildSections } from '@/pages/manage/utils/buildSections';
 import {

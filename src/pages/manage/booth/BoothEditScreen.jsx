@@ -19,7 +19,6 @@ import ProductGroupList from './components/ProductGroupList';
 import TextInput from '@/designsystem/components/textinput/TextInput';
 import AdminNoticeCard from '@/designsystem/components/card/admin/AdminNoticeCard';
 import { useBoothForm } from './hooks/useBoothForm';
-import { useProductSections } from './hooks/useProductSections';
 import { useToggleMap } from './hooks/useToggleMap';
 import useModal from '@/hooks/modal/useModal';
 import { InfiniteScrollLoader } from '@/components/common/style';
@@ -37,6 +36,7 @@ import {
   useMyBoothData,
   useNoticeList,
 } from '@/api/feature/booth/useBoothData';
+import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSections';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -293,19 +293,21 @@ function BoothEditForm({ booth, boothId }) {
         />
       </AccordionLine>
 
-      <AccordionLine
-        title="원재료 / 알레르기 정보"
-        expanded={expanded.allergyInfo}
-        onToggle={() => toggleExpanded('allergyInfo')}
-      >
-        <AccordionLine.ContentGuide description="수제 먹거리 부스라면 관련 내용을 꼭 작성해 주세요." />
-        <TextArea
-          placeholder="예) 밀, 우유, 계란, 초콜릿(대두 포함)"
-          value={boothForm.allergenInfo}
-          onChange={updateField('allergenInfo')}
-          maxLength={1000}
-        />
-      </AccordionLine>
+      {boothForm.categories.includes('food') && (
+        <AccordionLine
+          title="원재료 / 알레르기 정보"
+          expanded={expanded.allergyInfo}
+          onToggle={() => toggleExpanded('allergyInfo')}
+        >
+          <AccordionLine.ContentGuide description="수제 먹거리 부스라면 관련 내용을 꼭 작성해 주세요." />
+          <TextArea
+            placeholder="예) 밀, 우유, 계란, 초콜릿(대두 포함)"
+            value={boothForm.allergenInfo}
+            onChange={updateField('allergenInfo')}
+            maxLength={1000}
+          />
+        </AccordionLine>
+      )}
 
       <AccordionLine
         title="공지사항"

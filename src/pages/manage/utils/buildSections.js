@@ -14,7 +14,7 @@ export function buildSections(
     .filter(Boolean);
 
   const newGroups = Object.entries(draftGroups)
-    .filter(([, entry]) => entry.status === 'created')
+    .filter(([, entry]) => entry?.status === 'created')
     .map(([tempId, entry]) => ({ id: tempId, ...entry.data }));
 
   const allGroups = [...baseGroups, ...newGroups];
@@ -44,7 +44,7 @@ export function buildSections(
     .filter(Boolean);
 
   const draftCreatedItems = Object.entries(draftItems)
-    .filter(([, entry]) => entry.status === 'created')
+    .filter(([, entry]) => entry?.status === 'created')
     .map(([tempId, entry]) => ({ ...entry.data, id: tempId }));
 
   const allItems = [...overriddenItems, ...draftCreatedItems];
