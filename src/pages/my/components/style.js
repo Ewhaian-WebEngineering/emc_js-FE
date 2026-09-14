@@ -99,3 +99,22 @@ export const KakaoLoginButton = styled.button`
   border: none;
   cursor: pointer;
 `;
+
+export const BannerCarouselContainer = styled.div`
+  overflow: hidden;
+  width: 100%;
+  height: 80px;
+`;
+
+export const BannerSlideTrack = styled.div`
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+`;
+
+export const BannerSlide = styled.div`
+  flex: 0 0 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: ${({ clickable }) => (clickable ? 'pointer' : 'default')};
+`;

@@ -26,6 +26,7 @@ const CONTENT_BY_ROLE = {
 
 function MyScreenLoggedIn({ onLogout, onLoginClick }) {
   const { data } = useGetMyInfo();
+  const { data: banners } = useGetBanners();
   const ContentComponent = CONTENT_BY_ROLE[data.role] ?? MyDefaultContent;
   const showFooter = data.role === 'user';
 
@@ -38,7 +39,7 @@ function MyScreenLoggedIn({ onLogout, onLoginClick }) {
           onLogout={onLogout}
           onLoginClick={onLoginClick}
         />
-        <ContentComponent data={data} />
+        <ContentComponent data={{ ...data, banners }} />
       </MyContentContainer>
 
       {showFooter && (
