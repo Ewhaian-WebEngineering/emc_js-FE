@@ -90,6 +90,7 @@ export const IntroductionContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-color: ${semantic.fillNormalNormal};
   padding-block: ${measurement.spacing32};
   padding-inline: ${measurement.spacing16};
