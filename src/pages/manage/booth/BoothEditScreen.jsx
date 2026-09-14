@@ -81,6 +81,7 @@ function BoothEditForm({ booth, boothId }) {
     handleEditProduct,
     handleDeleteProduct,
     handleReorderProducts,
+    handleReorderGroups,
     productsError,
     validateProducts,
   } = useProductSections(booth);
@@ -274,6 +275,7 @@ function BoothEditForm({ booth, boothId }) {
           onEditProduct={handleEditProduct}
           onDeleteProduct={clickDeleteProduct}
           onReorderProducts={handleReorderProducts}
+          onReorderGroups={handleReorderGroups}
         />
       </AccordionLine>
 

@@ -23,6 +23,7 @@ export default function ProductGroupList({
   onEditProduct,
   onDeleteProduct,
   onReorderProducts,
+  onReorderGroups,
 }) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -117,16 +118,31 @@ export default function ProductGroupList({
     if (!over || active.id === over.id) return;
 
     const activeData = active.data.current;
+    const overData = over.data.current;
 
     if (activeData?.type === 'section') {
       const activeIndex = sections.findIndex(
         (s) => `section:${s.id}` === active.id,
       );
-      const overIndex = sections.findIndex(
-        (s) => `section:${s.id}` === over.id,
-      );
-      if (activeIndex === -1 || overIndex === -1) return;
-      onSectionsChange(arrayMove(sections, activeIndex, overIndex));
+      if (activeIndex === -1) return;
+
+      let overSectionId = null;
+      if (overData?.type === 'section') {
+        overSectionId = sections.find((s) => `section:${s.id}` === over.id)?.id;
+      } else if (
+        overData?.type === 'product' ||
+        overData?.type === 'container'
+      ) {
+        overSectionId = overData.sectionId;
+      }
+      if (!overSectionId) return;
+
+      const overIndex = sections.findIndex((s) => s.id === overSectionId);
+      if (overIndex === -1 || overIndex === activeIndex) return;
+
+      const reordered = arrayMove(sections, activeIndex, overIndex);
+      onSectionsChange(reordered);
+      onReorderGroups?.(reordered);
       return;
     }
 

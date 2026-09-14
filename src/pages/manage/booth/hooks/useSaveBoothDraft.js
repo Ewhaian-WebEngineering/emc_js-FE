@@ -28,7 +28,8 @@ export function useSaveBoothDraft(booth, boothId) {
 
       for (const [key, entry] of groupEntries) {
         if (entry.status === 'created') {
-          const created = await createProductGroup(entry.data);
+          const { displayOrder: _omit, ...createPayload } = entry.data;
+          const created = await createProductGroup(createPayload);
           groupIdMap[key] = created.id;
         }
       }
@@ -110,6 +111,7 @@ export function useSaveBoothDraft(booth, boothId) {
       resetDraft();
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
       queryClient.invalidateQueries({ queryKey: ['booth-detail', boothId] });
+      queryClient.invalidateQueries({ queryKey: ['product-groups'] });
       navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
     } finally {
       setIsSaving(false);

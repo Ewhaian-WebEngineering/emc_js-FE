@@ -17,7 +17,9 @@ export function buildSections(
     .filter(([, entry]) => entry?.status === 'created')
     .map(([tempId, entry]) => ({ id: tempId, ...entry.data }));
 
-  const allGroups = [...baseGroups, ...newGroups];
+  const allGroups = [...baseGroups, ...newGroups].sort(
+    (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+  );
 
   const groupedServerItems = productGroups.flatMap((group) =>
     (group.products ?? []).map((item) => ({ ...item, groupId: group.id })),

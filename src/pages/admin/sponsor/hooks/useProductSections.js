@@ -1,12 +1,13 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
 import { MANAGE_ROUTES } from '@/constants/routes';
-import { useBoothDraftStore } from '@/pages/manage/store/useBoothDraftStore';
-import { buildSections } from '@/pages/manage/utils/buildSections';
 import {
   markProductDeleted,
+  upsertGroupDraft,
   upsertProductDraft,
 } from '@/pages/manage/store/boothDraftStore';
+import { useBoothDraftStore } from '@/pages/manage/store/useBoothDraftStore';
+import { buildSections } from '@/pages/manage/utils/buildSections';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export function useProductSections({ productGroups }) {
   const navigate = useNavigate();
@@ -71,6 +72,22 @@ export function useProductSections({ productGroups }) {
     [draft.products],
   );
 
+  const handleReorderGroups = useCallback((reorderedSections) => {
+    reorderedSections
+      .filter((section) => !section.isUngrouped)
+      .forEach((section, index) => {
+        const isTemp = String(section.id).startsWith('temp-group-');
+        upsertGroupDraft(section.id, {
+          status: isTemp ? 'created' : 'updated',
+          data: {
+            name: section.name,
+            description: section.description ?? null,
+            displayOrder: index,
+          },
+        });
+      });
+  }, []);
+
   const hasAnyProduct = productSections.some((s) => s.products.length > 0);
 
   const validateProducts = () => {
@@ -85,6 +102,7 @@ export function useProductSections({ productGroups }) {
     handleEditProduct,
     handleDeleteProduct,
     handleReorderProducts,
+    handleReorderGroups,
     productsError,
     validateProducts,
   };
