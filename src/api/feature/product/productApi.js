@@ -18,8 +18,8 @@ export const deleteProduct = (productId) => {
   return instance.delete(`/api/seller/products/${productId}`);
 };
 
-export const getProductGroup = (groupId) => {
-  return instance.get(`/api/seller/product-groups/${groupId}`);
+export const getProductGroups = () => {
+  return instance.get('/api/seller/product-groups');
 };
 
 export const createProductGroup = (payload) => {

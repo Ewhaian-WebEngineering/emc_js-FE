@@ -5,6 +5,7 @@ import {
   deleteProduct,
   deleteProductGroup,
   getProduct,
+  getProductGroups,
   updateProduct,
   updateProductGroup,
 } from './productApi';
@@ -47,6 +48,13 @@ export const useDeleteProduct = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
     },
+  });
+};
+
+export const useProductGroupList = () => {
+  return useQuery({
+    queryKey: ['product-groups'],
+    queryFn: getProductGroups,
   });
 };
 

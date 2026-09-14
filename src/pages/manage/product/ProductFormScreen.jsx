@@ -20,7 +20,7 @@ import Select from '@/designsystem/components/select/Select';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
-import { useMyBoothData } from '@/api/feature/booth/useBoothData';
+import { useProductGroupList } from '@/api/feature/product/useProductData';
 import { useBoothDraftStore } from '../store/useBoothDraftStore';
 import { buildGroupOptions } from '../utils/buildGroupOptions';
 import { useEntityGroups } from '@/hooks/useEntityGroups';
@@ -60,12 +60,12 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     hasThumbnail: !!thumbnailPreview,
   });
 
-  const { data: booth } = useMyBoothData();
+  const { data: productGroups } = useProductGroupList();
   const draft = useBoothDraftStore();
 
   const boothGroupOptions = useMemo(
-    () => buildGroupOptions(booth?.productGroups ?? [], draft.groups),
-    [booth?.productGroups, draft.groups],
+    () => buildGroupOptions(productGroups ?? [], draft.groups),
+    [productGroups, draft.groups],
   );
 
   const {

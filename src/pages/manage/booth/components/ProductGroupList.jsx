@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   closestCorners,
   DndContext,
@@ -22,15 +22,18 @@ export default function ProductGroupList({
   onSectionsChange,
   onEditProduct,
   onDeleteProduct,
+  onReorderProducts,
 }) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
   );
 
   const [activeProduct, setActiveProduct] = useState(null);
+  const dragOriginSectionId = useRef(null);
 
   const visibleSections = sections.filter(
-    (section) => section.products.length > 0,
+    (section) =>
+      section.products.length > 0 || section.id === dragOriginSectionId.current,
   );
 
   const findProduct = (productId) => {
@@ -45,6 +48,7 @@ export default function ProductGroupList({
     const { active } = event;
     if (active.data.current?.type === 'product') {
       setActiveProduct(findProduct(active.id));
+      dragOriginSectionId.current = active.data.current.sectionId;
     }
   };
 
@@ -107,10 +111,12 @@ export default function ProductGroupList({
     setActiveProduct(null);
 
     const { active, over } = event;
+    const originSectionId = dragOriginSectionId.current;
+    dragOriginSectionId.current = null;
+
     if (!over || active.id === over.id) return;
 
     const activeData = active.data.current;
-    const overData = over.data.current;
 
     if (activeData?.type === 'section') {
       const activeIndex = sections.findIndex(
@@ -125,17 +131,41 @@ export default function ProductGroupList({
     }
 
     if (activeData?.type === 'product') {
-      const sectionId = activeData.sectionId;
-      const overSectionId = overData?.sectionId;
-      if (sectionId !== overSectionId) return;
+      const currentSection = sections.find((s) =>
+        s.products.some((p) => p.id === active.id),
+      );
+      if (!currentSection) return;
+
+      if (originSectionId && originSectionId !== currentSection.id) {
+        const originSection = sections.find((s) => s.id === originSectionId);
+        const reorderedProducts = [originSection, currentSection]
+          .filter(Boolean)
+          .flatMap((section) =>
+            section.products.map((product, index) => ({
+              ...product,
+              groupId: section.isUngrouped ? null : section.id,
+              displayOrder: index,
+            })),
+          );
+        onReorderProducts?.(reorderedProducts);
+        return;
+      }
 
       onSectionsChange((prev) =>
         prev.map((s) => {
-          if (s.id !== sectionId) return s;
+          if (s.id !== currentSection.id) return s;
           const oldIndex = s.products.findIndex((p) => p.id === active.id);
           const newIndex = s.products.findIndex((p) => p.id === over.id);
           if (oldIndex === -1 || newIndex === -1) return s;
-          return { ...s, products: arrayMove(s.products, oldIndex, newIndex) };
+          const reordered = arrayMove(s.products, oldIndex, newIndex);
+          onReorderProducts?.(
+            reordered.map((product, index) => ({
+              ...product,
+              groupId: s.isUngrouped ? null : s.id,
+              displayOrder: index,
+            })),
+          );
+          return { ...s, products: reordered };
         }),
       );
     }
