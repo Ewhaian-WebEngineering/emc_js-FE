@@ -1,0 +1,31 @@
+name: Sync on Upstream Update
+
+on:
+  repository_dispatch:
+    types: [upstream-updated]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync with upstream
+        run: |
+          git remote add upstream https://github.com/Ewhaian-WebEngineering/emc_js-FE.git
+          git fetch upstream
+          git checkout develop
+          git merge upstream/develop --no-edit
+          git push origin develop
