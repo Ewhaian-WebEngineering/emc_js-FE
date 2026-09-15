@@ -141,6 +141,7 @@ function BoothEditForm({ booth, boothId }) {
 
     try {
       await save(boothForm, draft);
+      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
     } catch (error) {
       showModal({
         variant: 'danger',
