@@ -28,6 +28,6 @@ jobs:
           git remote add upstream https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Ewhaian-WebEngineering/emc_js-FE.git
           git fetch upstream
           git checkout develop
-          git merge upstream/develop --no-edit
+          git merge upstream/develop --no-ff --no-edit
           git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/joyrii/hands_on.git
           git push origin develop
