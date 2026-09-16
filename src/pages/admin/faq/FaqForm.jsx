@@ -45,6 +45,13 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
 
   const hasError = !que.trim() || !ans.trim();
 
+  const isUnchanged =
+    isEdit &&
+    que.trim() === (initialData?.que ?? '').trim() &&
+    ans.trim() === (initialData?.ans ?? '').trim();
+
+  const isSubmitDisabled = hasError || isUnchanged;
+
   const handleSubmit = () => {
     onSubmit?.({
       ...formData,
@@ -71,7 +78,7 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
         onBack={handleBack}
         right={
           <TextButton
-            disabled={hasError}
+            disabled={isSubmitDisabled}
             onClick={handleSubmit}
             size="sm"
             variant="primary"
