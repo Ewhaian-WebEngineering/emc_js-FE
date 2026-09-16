@@ -20,8 +20,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "joyrii"
+          git config user.email "joyri0202@gmail.com"
 
       - name: Sync with upstream
         run: |
