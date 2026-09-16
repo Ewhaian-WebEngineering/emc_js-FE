@@ -6,7 +6,7 @@ import { typography } from '../../designsystem/tokens/typography';
 export const AdminAuthContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
 `;
 
 export const AdminAuthContent = styled.div`
