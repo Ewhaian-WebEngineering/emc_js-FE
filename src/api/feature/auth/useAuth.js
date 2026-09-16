@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { kakaoLogin, logout } from './authApi';
+import { deleteAccount, kakaoLogin, logout } from './authApi';
 import { useMutation } from '@tanstack/react-query';
 import {
   clearTokens,
@@ -53,6 +53,15 @@ export const useAuth = () => {
 export const useLogout = () => {
   return useMutation({
     mutationFn: () => logout(getRefreshToken()),
+    onSettled: () => {
+      clearTokens();
+    },
+  });
+};
+
+export const useDeleteAccount = () => {
+  return useMutation({
+    mutationFn: () => deleteAccount(),
     onSettled: () => {
       clearTokens();
     },
