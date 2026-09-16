@@ -43,8 +43,10 @@ export default function BoothNoticeFormScreen({ mode }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isFormFilled = title.trim().length > 0 && content.trim().length > 0;
+  const hasAnyInput = title.trim().length > 0 || content.trim().length > 0;
   const hasChanges = title !== initial.title || content !== initial.content;
-  const isDirty = isEdit ? hasChanges : isFormFilled;
+  const isDirty = isEdit ? hasChanges : hasAnyInput;
+  const canSubmit = isEdit ? hasChanges : isFormFilled;
 
   const handleFieldChange = (field, value) => {
     if (field === 'title') setTitle(value);
@@ -120,7 +122,7 @@ export default function BoothNoticeFormScreen({ mode }) {
           <TextButton
             variant="primary"
             size="sm"
-            disabled={!isDirty || isSubmitting}
+            disabled={!canSubmit || isSubmitting}
             onClick={handleSubmit}
           >
             {actionLabel}
