@@ -60,7 +60,16 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
     });
   };
 
+  const isEmpty = !isEdit && !que.trim() && !ans.trim();
+
+  const hasNoChanges = isEmpty || isUnchanged;
+
   const handleBack = () => {
+    if (hasNoChanges) {
+      navigate(ADMIN_ROUTES.DASHBOARD);
+      return;
+    }
+
     showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
