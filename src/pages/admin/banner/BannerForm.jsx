@@ -29,13 +29,28 @@ const toDateString = (date) => {
   return `${year}-${month}-${day}`;
 };
 
+const getDefaultStart = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+};
+
+const getDefaultEnd = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+  return tomorrow;
+};
+
 const createInitialFormData = (initialData) => ({
   imageUrl: initialData?.imageUrl ?? '',
   imageS3Key: initialData?.imageS3Key ?? '',
   title: initialData?.title ?? '',
   period: {
-    start: initialData?.startDate ? new Date(initialData.startDate) : null,
-    end: initialData?.endDate ? new Date(initialData.endDate) : null,
+    start: initialData?.startDate
+      ? new Date(initialData.startDate)
+      : getDefaultStart(),
+    end: initialData?.endDate ? new Date(initialData.endDate) : getDefaultEnd(),
   },
   url: initialData?.linkUrl ?? '',
 });
