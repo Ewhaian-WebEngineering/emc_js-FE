@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resetSponsorDraft } from '../store/sponsorDraftStore';
 import { queryClient } from '@/api/core/query/queryClient';
-import { SPONSOR_ROUTES } from '@/constants/routes';
+import { ADMIN_ROUTES } from '@/constants/routes';
 
 export function useSaveSponsorDraft(sponsorId) {
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ export function useSaveSponsorDraft(sponsorId) {
         const payload = {
           name,
           description,
-          groupId: resolvedGroupId,
+          ...(resolvedGroupId !== null && { groupId: resolvedGroupId }),
           ...(productImageKey !== undefined && { imageKey: productImageKey }),
           ...(displayOrder !== undefined && { displayOrder }),
         };
@@ -112,7 +112,7 @@ export function useSaveSponsorDraft(sponsorId) {
       queryClient.invalidateQueries({
         queryKey: ['sponsor-detail', sponsorId],
       });
-      navigate(SPONSOR_ROUTES.DETAIL(sponsorId));
+      navigate(ADMIN_ROUTES.DASHBOARD);
     } finally {
       setIsSaving(false);
     }

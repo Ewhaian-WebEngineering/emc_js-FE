@@ -65,14 +65,7 @@ export function useSponsorForm({ sponsor, onSubmit }) {
 
   const visibleErrors = hasAttemptedSubmit ? errors : {};
 
-  const isFormValid =
-    !!formValues.name.trim() &&
-    !!formValues.operationTime &&
-    !!formValues.introShort.trim() &&
-    !!formValues.description.trim() &&
-    !!formValues.profileImage;
-
-  const isButtonDisabled = !isFormValid || !isSponsorDraftDirty();
+  const isButtonDisabled = !isSponsorDraftDirty();
 
   const handleUploadError = async (retryUploadFn) => {
     const { confirmed } = await showModal({
