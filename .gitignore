@@ -25,9 +25,8 @@ dist-ssr
 
 # Environment variables
 .env
+.env.development
+.env.production
 .env.*.local
 *storybook.log
 storybook-static
-
-# dev test accounts
-/src/api/core/devAccounts.js
