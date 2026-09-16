@@ -9,13 +9,19 @@ export function buildSections(
     .map((group) => {
       const entry = draftGroups[group.id];
       if (entry?.status === 'deleted') return null;
-      return entry?.status === 'updated' ? { ...group, ...entry.data } : group;
+      return entry?.status === 'updated'
+        ? { ...group, ...entry.data, status: 'updated' }
+        : { ...group, status: 'server' };
     })
     .filter(Boolean);
 
   const newGroups = Object.entries(draftGroups)
     .filter(([, entry]) => entry?.status === 'created')
-    .map(([tempId, entry]) => ({ id: tempId, ...entry.data }));
+    .map(([tempId, entry]) => ({
+      id: tempId,
+      ...entry.data,
+      status: 'created',
+    }));
 
   const allGroups = [...baseGroups, ...newGroups].sort(
     (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
@@ -40,14 +46,18 @@ export function buildSections(
       const entry = draftItems[item.id];
       if (entry?.status === 'deleted') return null;
       if (entry?.status === 'updated')
-        return { ...item, ...entry.data, id: item.id };
-      return item;
+        return { ...item, ...entry.data, id: item.id, status: 'updated' };
+      return { ...item, status: 'server' };
     })
     .filter(Boolean);
 
   const draftCreatedItems = Object.entries(draftItems)
     .filter(([, entry]) => entry?.status === 'created')
-    .map(([tempId, entry]) => ({ ...entry.data, id: tempId }));
+    .map(([tempId, entry]) => ({
+      ...entry.data,
+      id: tempId,
+      status: 'created',
+    }));
 
   const allItems = [...overriddenItems, ...draftCreatedItems];
   const byDisplayOrder = (a, b) =>

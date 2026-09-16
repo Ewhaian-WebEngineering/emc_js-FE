@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
-import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
-import { semantic } from '@/designsystem/tokens/semantic';
-import { ButtonContent, CardWrapper } from './style';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import useModal from '@/hooks/modal/useModal';
 import { useDeleteSponsor } from '@/api/feature/admin/useAdminData';
+import { CardWrapper } from './style';
 
 export default function SponsorSection({ sponsors = [] }) {
   const navigate = useNavigate();
@@ -16,9 +14,7 @@ export default function SponsorSection({ sponsors = [] }) {
 
   const [expanded, setExpanded] = useState(false);
 
-  const handleAdd = () => {
-    navigate(ADMIN_ROUTES.SPONSOR_CREATE);
-  };
+  const reversedSponsors = [...sponsors].reverse();
 
   const handleEdit = (id) => {
     navigate(ADMIN_ROUTES.SPONSOR_EDIT(id));
@@ -46,17 +42,8 @@ export default function SponsorSection({ sponsors = [] }) {
       title="협찬사 등록/수정"
       count={sponsors.length}
     >
-      <Accordion.ActionButton
-        buttonText={
-          <ButtonContent>
-            협찬사 등록하기
-            <AddIcon color={semantic.iconNormalInverse} />
-          </ButtonContent>
-        }
-        onClick={handleAdd}
-      />
       <CardWrapper>
-        {sponsors.map((sponsor) => (
+        {reversedSponsors.map((sponsor) => (
           <SpCard
             key={sponsor.id}
             content={sponsor.introShort}

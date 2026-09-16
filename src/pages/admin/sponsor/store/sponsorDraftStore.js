@@ -103,6 +103,27 @@ export function markSponsorGroupDeleted(key) {
   });
 }
 
+export function reassignSponsorItemsGroup(items, groupId) {
+  const updates = {};
+
+  items.forEach((item) => {
+    if (item.status === 'created') {
+      updates[item.id] = {
+        status: 'created',
+        data: { ...(state.items[item.id]?.data ?? {}), groupId },
+      };
+      return;
+    }
+
+    updates[item.id] = {
+      status: 'updated',
+      data: { ...(state.items[item.id]?.data ?? {}), groupId },
+    };
+  });
+
+  setState({ items: { ...state.items, ...updates } });
+}
+
 export function isSponsorDraftDirty() {
   const fieldsChanged =
     JSON.stringify(state.sponsorFields) !==
