@@ -171,7 +171,6 @@ export default function HomeScreen() {
           <ArrowRightIconSmall />
         </KakaoOpenChannelButton>
       </ContactUsSection>
-
       <AdminCertificationWrapper>
         <AdminCertification
           isLoggedIn={isLoggedIn}
@@ -184,6 +183,7 @@ export default function HomeScreen() {
         onClose={() => setIsLoginSheetOpen(false)}
         onKakaoLogin={handleKakaoLogin}
       />
+      <p>테스트</p>
     </>
   );
 }
