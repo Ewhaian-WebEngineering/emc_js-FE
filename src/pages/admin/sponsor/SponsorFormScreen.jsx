@@ -90,12 +90,9 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
       <SponsorFormContainer>
         <TextField
           title="이름"
-          required
-          placeholder="협찬사 이름을 입력해주세요."
+          description="변경 불가"
           value={formValues.name}
-          onChange={(value) => updateField('name', value)}
-          hasError={!!visibleErrors.name}
-          helperText={visibleErrors.name}
+          disabled
         />
 
         <TextField
@@ -193,6 +190,8 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
           onDeleteItem={handleDeleteItem}
         />
       </AccordionLine>
+
+      <div style={{ height: '144px' }} />
     </>
   );
 }

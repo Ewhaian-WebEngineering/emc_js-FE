@@ -107,9 +107,7 @@ export default function SponsorItemFormScreen({ item, onSubmit, submitLabel }) {
           title="협찬품 이미지"
           isRequired
           imageUrl={formValues.thumbnail}
-          onUpload={(file) =>
-            updateField('thumbnail', URL.createObjectURL(file))
-          }
+          onUpload={(file) => updateField('thumbnail', file)}
           onDelete={() => updateField('thumbnail', '')}
           isError={!!visibleErrors.thumbnail}
           helperText={
