@@ -1,7 +1,11 @@
 import instance from '@/api/core/instance';
 
-export const kakaoLogin = (code) => {
-  return instance.post('/api/auth/kakao', { code }, { skipErrorModal: true });
+export const kakaoLogin = (code, redirectUri) => {
+  return instance.post(
+    '/api/auth/kakao',
+    { code, redirectUri },
+    { skipErrorModal: true },
+  );
 };
 
 export const refreshAccessToken = (refreshToken) => {
