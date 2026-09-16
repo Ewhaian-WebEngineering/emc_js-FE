@@ -44,6 +44,7 @@ import MapScreen from '@/pages/map/MapScreen';
 import { manageRoutes } from '@/pages/manage/routes';
 import { adminRoutes } from '@/pages/admin/sponsor/routes';
 import KakaoCallBackScreen from '@/pages/auth/KakaoCallBackScreen';
+import DevScreen from '@/components/common/DevScreen';
 
 /**
  * 앱 전체 라우트 트리입니다.
@@ -125,6 +126,10 @@ export const router = createBrowserRouter([
       {
         path: LOGIN_ROUTE,
         element: <KakaoCallBackScreen />,
+      },
+      {
+        path: '/dev',
+        element: <DevScreen />,
       },
 
       ...adminRoutes.withoutFooter,
