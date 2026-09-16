@@ -144,7 +144,7 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
 
       <ContentContainer>
         <TextField
-          maxLength={36}
+          maxLength={50}
           onChange={updateField('title')}
           onBlur={handleBlur('title')}
           placeholder="배너 제목을 작성해주세요."
