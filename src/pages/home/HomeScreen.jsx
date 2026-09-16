@@ -183,7 +183,7 @@ export default function HomeScreen() {
         onClose={() => setIsLoginSheetOpen(false)}
         onKakaoLogin={handleKakaoLogin}
       />
-      <p>테스트</p>
+      <p>테스트2</p>
     </>
   );
 }
