@@ -85,6 +85,7 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
         <TextField
           maxLength={25}
           onChange={(value) => updateField('que')(value)}
+          onBlur={handleBlur('que')}
           placeholder="예) 종합손물세트가 무엇인가요?"
           required
           title="질문 내용"
