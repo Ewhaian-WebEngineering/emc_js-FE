@@ -37,11 +37,11 @@ export function initDraft(boothId, booth) {
     isEco: booth.isEco,
     operationTime: booth.operationTime,
     isCash: booth.isCash,
-    externalUrl: booth.externalUrl,
-    inquiryUrl: booth.inquiryUrl,
-    description: booth.description,
-    allergenInfo: booth.allergenInfo,
-    guides: booth.guides,
+    externalUrl: booth.externalUrl ?? '',
+    inquiryUrl: booth.inquiryUrl ?? '',
+    description: booth.description ?? '',
+    allergenInfo: booth.allergenInfo ?? '',
+    guides: booth.guides ?? '',
   };
 
   setState({

@@ -24,8 +24,8 @@ export default function BoothNoticeFormScreen({ mode }) {
   const navigate = useNavigate();
   const handleBack = useGoBack();
   const { showModal } = useModal();
-  const createNoticeMutation = useCreateNotice();
-  const updateNoticeMutation = useUpdateNotice();
+  const createNoticeMutation = useCreateNotice(boothId);
+  const updateNoticeMutation = useUpdateNotice(boothId);
 
   const isEdit = mode === 'edit';
 

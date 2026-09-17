@@ -15,6 +15,7 @@ import {
   updateMyBoothData,
   updateNotice,
 } from './boothApi';
+import { getProductGroups } from '../product/productApi';
 
 export const useBoothData = ({ category, sort, time, limit = 20 }) => {
   const {
@@ -67,11 +68,11 @@ export const useMyBoothData = (boothId) => {
   });
 };
 
-export const useUpdateMyBoothData = () => {
+export const useUpdateMyBoothData = (boothId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateMyBoothData,
+    mutationFn: (payload) => updateMyBoothData(payload, boothId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
     },
@@ -85,11 +86,11 @@ export const useNoticeList = (bid) => {
   });
 };
 
-export const useCreateNotice = () => {
+export const useCreateNotice = (boothId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createNotice,
+    mutationFn: (payload) => createNotice(payload, boothId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['notices'],
@@ -99,11 +100,11 @@ export const useCreateNotice = () => {
   });
 };
 
-export const useUpdateNotice = () => {
+export const useUpdateNotice = (boothId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateNotice,
+    mutationFn: (payload) => updateNotice(payload, boothId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['notices'],
@@ -113,16 +114,24 @@ export const useUpdateNotice = () => {
   });
 };
 
-export const useDeleteNotice = () => {
+export const useDeleteNotice = (boothId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteNotice,
+    mutationFn: (nid) => deleteNotice(nid, boothId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['notices'],
         refetchType: 'all',
       });
     },
+  });
+};
+
+export const useProductGroupList = (boothId) => {
+  return useQuery({
+    queryKey: ['product-groups', boothId],
+    queryFn: () => getProductGroups(boothId),
+    enabled: !!boothId,
   });
 };

@@ -10,28 +10,33 @@ import {
   updateProductGroup,
 } from './productApi';
 
-export const useProductDetail = (productId, { enabled = true } = {}) => {
+export const useProductDetail = (
+  productId,
+  boothId,
+  { enabled = true } = {},
+) => {
   return useQuery({
-    queryKey: ['product-detail', productId],
-    queryFn: () => getProduct(productId),
+    queryKey: ['product-detail', productId, boothId],
+    queryFn: () => getProduct(productId, boothId),
     enabled: enabled && !!productId,
   });
 };
 
-export const useCreateProduct = () => {
+export const useCreateProduct = (boothId) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createProduct,
+    mutationFn: (payload) => createProduct(payload, boothId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
     },
   });
 };
 
-export const useUpdateProduct = () => {
+export const useUpdateProduct = (boothId) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ productId, payload }) => updateProduct(productId, payload),
+    mutationFn: ({ productId, payload }) =>
+      updateProduct(productId, payload, boothId),
     onSuccess: (_, { productId }) => {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
       queryClient.invalidateQueries({
@@ -41,47 +46,49 @@ export const useUpdateProduct = () => {
   });
 };
 
-export const useDeleteProduct = () => {
+export const useDeleteProduct = (boothId) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteProduct,
+    mutationFn: (productId) => deleteProduct(productId, boothId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
     },
   });
 };
 
-export const useProductGroupList = () => {
+export const useProductGroupList = (boothId) => {
   return useQuery({
-    queryKey: ['product-groups'],
-    queryFn: getProductGroups,
+    queryKey: ['product-groups', boothId],
+    queryFn: () => getProductGroups(boothId),
+    enabled: !!boothId,
   });
 };
 
-export const useCreateProductGroup = () => {
+export const useCreateProductGroup = (boothId) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createProductGroup,
+    mutationFn: (payload) => createProductGroup(payload, boothId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
     },
   });
 };
 
-export const useUpdateProductGroup = () => {
+export const useUpdateProductGroup = (boothId) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ groupId, payload }) => updateProductGroup(groupId, payload),
+    mutationFn: ({ groupId, payload }) =>
+      updateProductGroup(groupId, payload, boothId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
     },
   });
 };
 
-export const useDeleteProductGroup = () => {
+export const useDeleteProductGroup = (boothId) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteProductGroup,
+    mutationFn: (groupId) => deleteProductGroup(groupId, boothId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
     },

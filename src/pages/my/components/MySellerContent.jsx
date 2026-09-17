@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import Banner from '../../../designsystem/components/banner/Banner';
 import ManagementBoothCard from '../../../designsystem/components/card/management/ManagementBoothCard';
 import InquiryList from './InquiryList';
 import { MANAGE_ROUTES } from '../../../constants/routes';
+import BannerCarousel from './BannerCarousel';
 
 const MOCK_BOOTH = {
   id: 'mock-booth-id',
@@ -13,7 +13,6 @@ const MOCK_BOOTH = {
 
 export default function MySellerContent({ data }) {
   const navigate = useNavigate();
-  const banner = data.banners?.[0];
   const booth = data.booth ?? MOCK_BOOTH;
 
   const handleBoothLinkClick = (id) => {
@@ -22,7 +21,7 @@ export default function MySellerContent({ data }) {
 
   return (
     <>
-      <Banner src={banner?.imageUrl} />
+      <BannerCarousel banners={data.banners ?? []} />
       <ManagementBoothCard
         boothName={booth.name}
         onLinkClick={() => handleBoothLinkClick(booth.id)}

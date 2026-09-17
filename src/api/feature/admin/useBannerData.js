@@ -36,6 +36,7 @@ export const useUpdateBanner = () => {
     mutationFn: updateBannerApi,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: BANNER_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
     },
   });
 };
