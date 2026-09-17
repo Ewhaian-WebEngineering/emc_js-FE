@@ -60,10 +60,10 @@ export const useBoothDetailData = (boothId) => {
   };
 };
 
-export const useMyBoothData = () => {
+export const useMyBoothData = (boothId) => {
   return useQuery({
-    queryKey: ['my-booth'],
-    queryFn: () => getMyBoothData(),
+    queryKey: ['my-booth', boothId],
+    queryFn: () => getMyBoothData(boothId),
   });
 };
 
