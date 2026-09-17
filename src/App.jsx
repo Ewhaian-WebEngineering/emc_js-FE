@@ -8,7 +8,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      {import.meta.env.DEV && <TestAccountSwitcher />}
+      <TestAccountSwitcher />
     </QueryClientProvider>
   );
 }
