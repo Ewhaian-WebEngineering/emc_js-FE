@@ -1,3 +1,5 @@
+const NO_GROUP_OPTION = { value: null, label: '그룹 없음', hideActions: true };
+
 export function buildGroupOptions(productGroups, draftGroups) {
   const base = productGroups
     .map((group) => {
@@ -21,5 +23,5 @@ export function buildGroupOptions(productGroups, draftGroups) {
       description: entry.data.description,
     }));
 
-  return [...base, ...created];
+  return [NO_GROUP_OPTION, ...base, ...created];
 }

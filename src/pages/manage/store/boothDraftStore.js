@@ -107,6 +107,31 @@ export function markGroupDeleted(key) {
   });
 }
 
+export function reassignProductsGroup(items, newGroupId) {
+  const nextProducts = { ...state.products };
+
+  items.forEach(({ id, status }) => {
+    const existing = nextProducts[id];
+
+    if (status === 'created') {
+      nextProducts[id] = {
+        status: 'created',
+        data: { ...(existing?.data ?? {}), groupId: newGroupId },
+        file: existing?.file ?? null,
+      };
+      return;
+    }
+
+    nextProducts[id] = {
+      status: 'updated',
+      data: { ...(existing?.data ?? {}), groupId: newGroupId },
+      file: existing?.file ?? null,
+    };
+  });
+
+  setState({ products: nextProducts });
+}
+
 export function upsertNoticeDraft(key, entry) {
   setState({ notices: { ...state.notices, [key]: entry } });
 }

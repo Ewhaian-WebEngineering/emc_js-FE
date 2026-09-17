@@ -2,8 +2,10 @@ import { useState } from 'react';
 import useModal from './modal/useModal';
 import {
   markGroupDeleted,
+  reassignProductsGroup,
   upsertGroupDraft,
 } from '@/pages/manage/store/boothDraftStore';
+import { useBoothDraftStore } from '@/pages/manage/store/useBoothDraftStore';
 
 const INITIAL_NEW_GROUP = { name: '', description: '' };
 
@@ -11,8 +13,13 @@ function createTempGroupId() {
   return `temp-group-${crypto.randomUUID()}`;
 }
 
-export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
+export function useEntityGroups(
+  initialGroups,
+  productGroups,
+  { groupId, onGroupIdChange },
+) {
   const { showModal } = useModal();
+  const draft = useBoothDraftStore();
 
   const [isGroupSheetOpen, setIsGroupSheetOpen] = useState(false);
   const [editingGroupId, setEditingGroupId] = useState(null);
@@ -123,7 +130,25 @@ export function useEntityGroups(initialGroups, { groupId, onGroupIdChange }) {
 
     if (!confirmed) return;
 
+    const serverGroup = productGroups?.find((g) => g.id === option.value);
+    const serverItemsInGroup = (serverGroup?.products ?? []).map((item) => ({
+      id: item.id,
+      status: draft.products[item.id]?.status ?? 'server',
+    }));
+
+    const draftCreatedItemsInGroup = Object.entries(draft.products)
+      .filter(
+        ([, entry]) =>
+          entry?.status === 'created' && entry.data.groupId === option.value,
+      )
+      .map(([tempId]) => ({ id: tempId, status: 'created' }));
+
+    reassignProductsGroup(
+      [...serverItemsInGroup, ...draftCreatedItemsInGroup],
+      null,
+    );
     markGroupDeleted(option.value);
+
     if (option.value === groupId) {
       onGroupIdChange(null);
     }

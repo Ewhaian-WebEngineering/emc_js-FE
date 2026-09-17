@@ -87,7 +87,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     isButtonDisabled: isGroupButtonDisabled,
     groupNameError,
     handleConfirmAddGroup,
-  } = useEntityGroups(boothGroupOptions, {
+  } = useEntityGroups(boothGroupOptions, productGroups, {
     groupId: formValues.groupId,
     onGroupIdChange: (value) => updateField('groupId', value),
   });
