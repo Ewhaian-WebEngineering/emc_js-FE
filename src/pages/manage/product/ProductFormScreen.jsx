@@ -206,6 +206,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
         onClose={handleCloseGroupSheet}
         onBeforeClose={handleCheckBeforeClose}
         title={isEditMode ? '제품 그룹 수정' : '제품 그룹 추가'}
+        dismissible={false}
       >
         <ProductAddSheetBody>
           <TextField
