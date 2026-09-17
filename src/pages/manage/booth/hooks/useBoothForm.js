@@ -69,7 +69,10 @@ export function useBoothForm(booth, boothId) {
     if (!value?.trim()) return true;
     try {
       const url = new URL(value);
-      return url.protocol === 'http:' || url.protocol === 'https:';
+      if (url.protocol !== 'http:' && url.protocol !== 'https:') return false;
+
+      const hostname = url.hostname;
+      return /^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$/.test(hostname);
     } catch {
       return false;
     }
