@@ -9,13 +9,22 @@ import { buildSections } from '@/pages/manage/utils/buildSections';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export function useProductSections({ productGroups }) {
+export function useProductSections({
+  productGroups = [],
+  ungroupedProducts = [],
+}) {
   const navigate = useNavigate();
   const { boothId } = useParams();
   const draft = useBoothDraftStore();
 
   const [productSections, setProductSections] = useState(() =>
-    buildSections(productGroups, draft.groups, draft.products, [], 'products'),
+    buildSections(
+      productGroups,
+      draft.groups,
+      draft.products,
+      ungroupedProducts,
+      'products',
+    ),
   );
 
   useEffect(() => {
@@ -24,11 +33,11 @@ export function useProductSections({ productGroups }) {
         productGroups,
         draft.groups,
         draft.products,
-        [],
+        ungroupedProducts,
         'products',
       ),
     );
-  }, [productGroups, draft.groups, draft.products]);
+  }, [productGroups, ungroupedProducts, draft.groups, draft.products]);
 
   const [productsError, setProductsError] = useState(null);
 

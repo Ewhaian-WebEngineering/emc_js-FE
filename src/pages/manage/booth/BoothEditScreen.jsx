@@ -37,6 +37,7 @@ import {
   useNoticeList,
 } from '@/api/feature/booth/useBoothData';
 import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSections';
+import { useProductGroupList } from '@/api/feature/booth/useBoothData';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -58,7 +59,7 @@ function BoothEditForm({ booth, boothId }) {
   const { showModal } = useModal();
   const draft = useBoothDraftStore();
   const { save, isSaving } = useSaveBoothDraft(booth, boothId);
-  const deleteNoticeMutation = useDeleteNotice();
+  const deleteNoticeMutation = useDeleteNotice(boothId);
   const { data: noticeList } = useNoticeList(boothId);
 
   const [expanded, toggleExpanded] = useToggleMap([
@@ -84,7 +85,10 @@ function BoothEditForm({ booth, boothId }) {
     handleReorderGroups,
     productsError,
     validateProducts,
-  } = useProductSections(booth);
+  } = useProductSections({
+    productGroups: booth.productGroups,
+    ungroupedProducts: booth.ungroupedProducts,
+  });
 
   const handleBack = async () => {
     if (!isDraftDirty()) {
