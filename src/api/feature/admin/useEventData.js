@@ -36,6 +36,7 @@ export const useUpdateEvent = () => {
     mutationFn: updateEventApi,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
     },
   });
 };
