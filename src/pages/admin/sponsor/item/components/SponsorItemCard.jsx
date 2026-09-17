@@ -24,7 +24,7 @@ export default function SponsorItemCard({ item, sectionId, onEdit, onDelete }) {
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <AdminSpProductCard
-        thumbnail={item.thumbnail}
+        thumbnail={item.imageUrl}
         title={item.name}
         content={item.description}
         onEdit={() => onEdit(item.id)}

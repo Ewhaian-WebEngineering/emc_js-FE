@@ -81,9 +81,9 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
       />
 
       <MainImageUploader
-        imageUrl={formValues.profileImage}
-        onUpload={(file) => updateField('profileImage', file)}
-        onDelete={() => updateField('profileImage', null)}
+        imageUrl={formValues.imageUrl}
+        onUpload={(file) => updateField('imageUrl', file)}
+        onDelete={() => updateField('imageUrl', null)}
         onUploadError={handleUploadError}
       />
 
@@ -150,10 +150,10 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
         <ProductImageUploader
           title="프로필 이미지"
           isRequired
-          imageUrl={formValues.profileImage}
-          onUpload={(file) => updateField('profileImage', file)}
-          onDelete={() => updateField('profileImage', null)}
-          isError={!!visibleErrors.profileImage}
+          imageUrl={formValues.imageUrl}
+          onUpload={(file) => updateField('imageUrl', file)}
+          onDelete={() => updateField('imageUrl', null)}
+          isError={!!visibleErrors.imageUrl}
           helperText={
             visibleErrors.profileImage ??
             '이미지 1개만 업로드할 수 있습니다. (JPG, JPEG, PNG / 최대 10MB)'

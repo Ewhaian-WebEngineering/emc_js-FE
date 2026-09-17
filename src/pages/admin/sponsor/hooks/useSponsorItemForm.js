@@ -4,14 +4,14 @@ import { useState } from 'react';
 const getInitialValues = (item) => ({
   name: item?.name ?? '',
   description: item?.description ?? '',
-  thumbnail: item?.thumbnail ?? '',
+  imageUrl: item?.imageUrl ?? '',
   groupId: item?.groupId ?? null,
 });
 
 const FIELD_ERROR_MESSAGES = {
   name: '내용을 입력해주세요.',
   description: '내용을 입력해주세요.',
-  thumbnail: '이미지를 업로드 해주세요.',
+  imageUrl: '이미지를 업로드 해주세요.',
 };
 
 export function useSponsorItemForm({ item, submitLabel, onSubmit }) {
@@ -22,24 +22,23 @@ export function useSponsorItemForm({ item, submitLabel, onSubmit }) {
     getInitialValues(item),
   );
   const [formValues, setFormValues] = useState(initialValues);
-  // 실제 업로드할 File 객체. formValues.thumbnail은 미리보기 URL 문자열만 담당.
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   const updateField = (key, value) => {
-    if (key === 'thumbnail' && value instanceof File) {
+    if (key === 'imageUrl' && value instanceof File) {
       setThumbnailFile(value);
       setFormValues((prev) => ({
         ...prev,
-        thumbnail: URL.createObjectURL(value),
+        imageUrl: URL.createObjectURL(value),
       }));
       return;
     }
 
-    if (key === 'thumbnail' && value === '') {
+    if (key === 'imageUrl' && value === '') {
       setThumbnailFile(null);
-      setFormValues((prev) => ({ ...prev, thumbnail: '' }));
+      setFormValues((prev) => ({ ...prev, imageUrl: '' }));
       return;
     }
 
@@ -49,7 +48,7 @@ export function useSponsorItemForm({ item, submitLabel, onSubmit }) {
   const fieldErrors = {
     name: formValues.name.trim() === '',
     description: formValues.description.trim() === '',
-    thumbnail: formValues.thumbnail === '',
+    imageUrl: formValues.imageUrl === '',
   };
 
   const isFormValid = !Object.values(fieldErrors).some(Boolean);

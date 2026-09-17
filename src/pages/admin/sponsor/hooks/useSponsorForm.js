@@ -18,8 +18,7 @@ const validate = (values) => {
     errors.introShort = '한 줄 소개를 입력해주세요.';
   if (!values.description.trim())
     errors.description = '협찬사 소개를 입력해주세요.';
-  if (!values.profileImage)
-    errors.profileImage = '프로필 이미지를 등록해주세요.';
+  if (!values.imageUrl) errors.imageUrl = '프로필 이미지를 등록해주세요.';
 
   return errors;
 };
@@ -45,10 +44,10 @@ export function useSponsorForm({ sponsor, onSubmit }) {
     description: '',
   };
 
-  const formValues = { ...fields, profileImage: draft.thumbnail.preview };
+  const formValues = { ...fields, imageUrl: draft.thumbnail.preview };
 
   const updateField = (field, value) => {
-    if (field === 'profileImage') {
+    if (field === 'imageUrl') {
       if (value instanceof File) {
         setSponsorThumbnail(value, URL.createObjectURL(value));
       } else {
