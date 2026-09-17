@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
@@ -80,6 +80,8 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const ownerIdRef = useRef(initialData?.id ?? crypto.randomUUID());
   const ownerId = ownerIdRef.current;
 
+  const initialFormDataRef = useRef(createInitialFormData(initialData));
+
   const [formData, setFormData] = useState(() =>
     createInitialFormData(initialData),
   );
@@ -100,6 +102,24 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload();
 
   const isLiveEvent = eventType === 'live';
+
+  const isDirty = useMemo(() => {
+    const initial = initialFormDataRef.current;
+    if (imageFile) return true;
+    if (title !== initial.title) return true;
+    if (eventType !== initial.eventType) return true;
+    if (organizer !== initial.organizer) return true;
+    if (description !== initial.description) return true;
+    if (caution !== initial.caution) return true;
+    if (imageUrl !== initial.imageUrl) return true;
+    if (
+      toDateString(period.start) !== toDateString(initial.period.start) ||
+      toDateString(period.end) !== toDateString(initial.period.end)
+    ) {
+      return true;
+    }
+    return false;
+  }, [formData, imageFile]);
 
   const updateField = (field) => (value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -160,6 +180,10 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   };
 
   const handleBack = () => {
+    if (!isDirty) {
+      navigate(ADMIN_ROUTES.DASHBOARD);
+      return;
+    }
     showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
@@ -176,7 +200,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
         onBack={handleBack}
         right={
           <TextButton
-            disabled={hasError || isUploading}
+            disabled={hasError || isUploading || (isEdit && !isDirty)}
             onClick={handleSubmit}
             size="sm"
             variant="primary"
