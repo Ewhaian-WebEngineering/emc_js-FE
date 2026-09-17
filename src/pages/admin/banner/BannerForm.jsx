@@ -13,10 +13,8 @@ import { useImageUpload } from '@/api/core/s3/useImageUpload';
 const URL_REGEXP =
   /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)$/;
 
-// 이미지가 없을 때 서버로 보내는 기본(placeholder) 이미지
 const DEFAULT_IMAGE_KEY = '@/assets/img/img_checker.png';
 
-// 서버에서 내려온 값이 기본 이미지인지 판별
 const isDefaultImage = (imageS3Key) =>
   !imageS3Key || imageS3Key === DEFAULT_IMAGE_KEY;
 
@@ -51,7 +49,6 @@ const getDefaultEnd = () => {
 
 const createInitialFormData = (initialData) => {
   const rawImageS3Key = initialData?.imageS3Key ?? '';
-  // 기본 이미지(checker)라면 실제 이미지가 없는 것으로 취급 → 화면에 노출하지 않음
   const hasRealImage = rawImageS3Key && !isDefaultImage(rawImageS3Key);
 
   return {
@@ -74,10 +71,6 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
   const navigate = useNavigate();
   const { showModal } = useModal();
-
-  // 최초 진입 시점의 폼 상태를 스냅샷으로 저장 (dirty 체크 기준)
-  // createInitialFormData에서 이미 기본 이미지를 ''로 정규화했으므로
-  // 이후 dirty 체크에서 별도 분기 없이 동일 기준으로 비교 가능
   const initialFormDataRef = useRef(createInitialFormData(initialData));
   const [formData, setFormData] = useState(() => initialFormDataRef.current);
   const [imageFile, setImageFile] = useState(null);
@@ -98,51 +91,9 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     !trimmedUrl.startsWith('/') &&
     !URL_REGEXP.test(trimmedUrl);
 
-  // 필수 입력 항목: 제목, 기간, URL (이미지는 필수 아님)
-  const hasError =
-    !title.trim() ||
-    !period.start ||
-    !period.end ||
-    !trimmedUrl ||
-    isUrlInvalid;
+  const isRequiredFilled =
+    title.trim() && period.start && period.end && trimmedUrl && !isUrlInvalid;
 
-  const handleImageUpload = (file) => {
-    setImageFile(file);
-    setFormData((prev) => ({ ...prev, imageUrl: URL.createObjectURL(file) }));
-  };
-
-  const handleImageDelete = () => {
-    setImageFile(null);
-    // 기존에 붙어있던 imageS3Key도 함께 비워야 제출 시 "이미지 없음"으로 판단됨
-    setFormData((prev) => ({ ...prev, imageUrl: '', imageS3Key: '' }));
-  };
-
-  const handleSubmit = async () => {
-    let imageS3Key = DEFAULT_IMAGE_KEY;
-
-    if (imageFile) {
-      // 새로 업로드한 이미지가 있는 경우
-      imageS3Key = (
-        await uploadImage({ file: imageFile, imageType: 'banner_image' })
-      ).fileKey;
-    } else if (formData.imageS3Key) {
-      // 수정 화면에서 기존 실제 이미지를 그대로 유지하는 경우
-      imageS3Key = formData.imageS3Key;
-    }
-    // 둘 다 없으면 (신규 등록 시 이미지 미첨부 / 수정 중 이미지 삭제) 기본 이미지 사용
-
-    onSubmit?.({
-      title: title.trim(),
-      imageS3Key,
-      linkUrl: trimmedUrl ? normalizeUrl(url) : '',
-      startDate: toDateString(period.start),
-      endDate: toDateString(period.end),
-    });
-  };
-
-  // 초기 상태와 비교해 실제로 입력/수정된 내용이 있는지 확인
-  // imageUrl/imageS3Key는 이미 기본 이미지가 ''로 정규화된 상태이므로
-  // 기본 이미지 <-> 빈 값 전환은 dirty로 잡히지 않음
   const isFormDirty = () => {
     const initial = initialFormDataRef.current;
 
@@ -156,6 +107,40 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
       return true;
 
     return false;
+  };
+
+  const hasError = isEdit
+    ? !isRequiredFilled || !isFormDirty()
+    : !isRequiredFilled;
+
+  const handleImageUpload = (file) => {
+    setImageFile(file);
+    setFormData((prev) => ({ ...prev, imageUrl: URL.createObjectURL(file) }));
+  };
+
+  const handleImageDelete = () => {
+    setImageFile(null);
+    setFormData((prev) => ({ ...prev, imageUrl: '', imageS3Key: '' }));
+  };
+
+  const handleSubmit = async () => {
+    let imageS3Key = DEFAULT_IMAGE_KEY;
+
+    if (imageFile) {
+      imageS3Key = (
+        await uploadImage({ file: imageFile, imageType: 'banner_image' })
+      ).fileKey;
+    } else if (formData.imageS3Key) {
+      imageS3Key = formData.imageS3Key;
+    }
+
+    onSubmit?.({
+      title: title.trim(),
+      imageS3Key,
+      linkUrl: trimmedUrl ? normalizeUrl(url) : '',
+      startDate: toDateString(period.start),
+      endDate: toDateString(period.end),
+    });
   };
 
   const handleBack = () => {
