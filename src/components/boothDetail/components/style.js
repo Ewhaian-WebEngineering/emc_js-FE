@@ -118,3 +118,57 @@ export const ProductList = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: ${measurement.spacing16} ${measurement.spacing12};
 `;
+
+export const Overlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100dvh;
+`;
+
+export const ModalCard = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+`;
+
+export const ModalHeader = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-top: ${measurement.spacing16};
+  padding-right: ${measurement.spacing16};
+  min-height: 0;
+`;
+
+export const CloseButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+
+export const PreviewViewport = styled.div`
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: transparent;
+`;
+
+export const PreviewStage = styled.div`
+  width: fit-content;
+  transform-origin: top left;
+  transition:
+    transform 0.3s ease,
+    opacity 0.2s ease;
+`;
+
+export const ModalFooter = styled.div`
+  flex: 1;
+  min-height: 0;
+`;
