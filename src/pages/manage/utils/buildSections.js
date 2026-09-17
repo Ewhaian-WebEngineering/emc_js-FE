@@ -17,10 +17,12 @@ export function buildSections(
 
   const newGroups = Object.entries(draftGroups)
     .filter(([, entry]) => entry?.status === 'created')
-    .map(([tempId, entry]) => ({
+    .map(([tempId, entry], index) => ({
       id: tempId,
       ...entry.data,
       status: 'created',
+      displayOrder:
+        entry.data.displayOrder ?? Number.MAX_SAFE_INTEGER - 1000 + index,
     }));
 
   const allGroups = [...baseGroups, ...newGroups].sort(
@@ -53,10 +55,12 @@ export function buildSections(
 
   const draftCreatedItems = Object.entries(draftItems)
     .filter(([, entry]) => entry?.status === 'created')
-    .map(([tempId, entry]) => ({
+    .map(([tempId, entry], index) => ({
       ...entry.data,
       id: tempId,
       status: 'created',
+      displayOrder:
+        entry.data.displayOrder ?? Number.MAX_SAFE_INTEGER - 1000 + index,
     }));
 
   const allItems = [...overriddenItems, ...draftCreatedItems];

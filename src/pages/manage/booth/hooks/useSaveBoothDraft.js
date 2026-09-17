@@ -37,7 +37,9 @@ export function useSaveBoothDraft(booth, boothId) {
 
       for (const [key, entry] of groupEntries) {
         if (entry.status === 'created') {
-          const { displayOrder: _omit, ...createPayload } = entry.data;
+          const createPayload = { ...entry.data };
+          delete createPayload.id;
+          delete createPayload.displayOrder;
           const created = await createProductGroup(createPayload, boothId);
           groupIdMap[key] = created.id;
         }
