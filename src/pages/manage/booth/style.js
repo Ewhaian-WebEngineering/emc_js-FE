@@ -107,3 +107,18 @@ export const GroupProductList = styled.div`
   flex-direction: column;
   gap: ${measurement.spacing8};
 `;
+
+export const EditButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  background: ${semantic.fillNormalStrong};
+  border: none;
+  border-radius: ${measurement.borderRadiusLg};
+  padding: ${measurement.spacing12} ${measurement.spacing16};
+  cursor: pointer;
+
+  ${typography.body2Semibold};
+  color: ${semantic.textNormalNormal};
+`;

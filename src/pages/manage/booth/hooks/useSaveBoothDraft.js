@@ -1,5 +1,8 @@
 import { useImageUpload } from '@/api/core/s3/useImageUpload';
-import { useUpdateMyBoothData } from '@/api/feature/booth/useBoothData';
+import {
+  useProductGroupList,
+  useUpdateMyBoothData,
+} from '@/api/feature/booth/useBoothData';
 import {
   createProduct,
   createProductGroup,
@@ -16,7 +19,8 @@ import { MANAGE_ROUTES } from '@/constants/routes';
 
 export function useSaveBoothDraft(booth, boothId) {
   const navigate = useNavigate();
-  const { mutateAsync: updateBoothAsync } = useUpdateMyBoothData();
+  const { data: productGroups } = useProductGroupList(boothId);
+  const { mutateAsync: updateBoothAsync } = useUpdateMyBoothData(boothId);
   const { mutateAsync: uploadImage } = useImageUpload();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -29,14 +33,14 @@ export function useSaveBoothDraft(booth, boothId) {
       for (const [key, entry] of groupEntries) {
         if (entry.status === 'created') {
           const { displayOrder: _omit, ...createPayload } = entry.data;
-          const created = await createProductGroup(createPayload);
+          const created = await createProductGroup(createPayload, boothId);
           groupIdMap[key] = created.id;
         }
       }
 
       for (const [key, entry] of groupEntries) {
         if (entry.status === 'updated') {
-          await updateProductGroup(key, entry.data);
+          await updateProductGroup(key, entry.data, boothId);
         }
       }
 
@@ -75,21 +79,21 @@ export function useSaveBoothDraft(booth, boothId) {
 
         if (entry.status === 'created') {
           const { displayOrder: _omit, ...createPayload } = payload;
-          await createProduct(createPayload);
+          await createProduct(createPayload, boothId);
         } else if (entry.status === 'updated') {
-          await updateProduct(key, payload);
+          await updateProduct(key, payload, boothId);
         }
       }
 
       for (const [key, entry] of productEntries) {
         if (entry.status === 'deleted') {
-          await deleteProduct(key);
+          await deleteProduct(key, boothId);
         }
       }
 
       for (const [key, entry] of groupEntries) {
         if (entry.status === 'deleted') {
-          await deleteProductGroup(key);
+          await deleteProductGroup(key, boothId);
         }
       }
 
@@ -111,7 +115,7 @@ export function useSaveBoothDraft(booth, boothId) {
       resetDraft();
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
       queryClient.invalidateQueries({ queryKey: ['booth-detail', boothId] });
-      queryClient.invalidateQueries({ queryKey: ['product-groups'] });
+      queryClient.invalidateQueries({ queryKey: ['product-groups', boothId] });
       navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
     } finally {
       setIsSaving(false);

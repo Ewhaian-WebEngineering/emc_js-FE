@@ -7,14 +7,20 @@ import {
 } from './style';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 
-export default function ProductListTab({ productGroups }) {
-  if (!productGroups?.length) {
+export default function ProductListTab({
+  productGroups,
+  ungroupedProducts = [],
+}) {
+  const hasGrouped = productGroups?.length > 0;
+  const hasUngrouped = ungroupedProducts.length > 0;
+
+  if (!hasGrouped && !hasUngrouped) {
     return <EmptyState height={600} description="등록된 상품이 없습니다." />;
   }
 
   return (
     <ProductListTabContainer>
-      {productGroups.map((group) => (
+      {productGroups?.map((group) => (
         <ProductListTabContent key={group.id}>
           {(group.name || group.description) && (
             <ProductListTabHeader>
@@ -35,6 +41,22 @@ export default function ProductListTab({ productGroups }) {
           </ProductList>
         </ProductListTabContent>
       ))}
+
+      {hasUngrouped && (
+        <ProductListTabContent>
+          <ProductList>
+            {ungroupedProducts.map((product) => (
+              <ProductVerticalCard
+                key={product.id}
+                thumbnail={product.imageUrl}
+                productName={product.name}
+                productDescription={product.description}
+                productPrice={product.price}
+              />
+            ))}
+          </ProductList>
+        </ProductListTabContent>
+      )}
     </ProductListTabContainer>
   );
 }
