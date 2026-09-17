@@ -15,7 +15,7 @@ export default function MySellerContent({ data }) {
 
   return (
     <>
-      {banner && <Banner src={banner.imageUrl} />}
+      <Banner src={banner?.imageUrl} />
       <ManagementBoothCard
         boothName={booth.name}
         onLinkClick={() => handleBoothLinkClick(booth.id)}

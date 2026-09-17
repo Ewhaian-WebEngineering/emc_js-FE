@@ -31,13 +31,14 @@ export default function BannerCarousel({ banners = [] }) {
     [banners],
   );
 
-  const slides = useMemo(
-    () =>
-      visibleBanners.length > 1
-        ? [...visibleBanners, visibleBanners[0]]
-        : visibleBanners,
-    [visibleBanners],
-  );
+  const slides = useMemo(() => {
+    if (visibleBanners.length === 0) {
+      return [{ id: 'placeholder', imageUrl: Placeholder, title: 'Banner' }];
+    }
+    return visibleBanners.length > 1
+      ? [...visibleBanners, visibleBanners[0]]
+      : visibleBanners;
+  }, [visibleBanners]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [withTransition, setWithTransition] = useState(true);
@@ -75,8 +76,6 @@ export default function BannerCarousel({ banners = [] }) {
     if (!banner.linkUrl) return;
     window.location.href = banner.linkUrl;
   };
-
-  if (visibleBanners.length === 0) return null;
 
   return (
     <BannerCarouselContainer>
