@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
@@ -12,6 +12,11 @@ import { useImageUpload } from '@/api/core/s3/useImageUpload';
 
 const URL_REGEXP =
   /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)$/;
+
+const DEFAULT_IMAGE_KEY = '@/assets/img/img_checker.png';
+
+const isDefaultImage = (imageS3Key) =>
+  !imageS3Key || imageS3Key === DEFAULT_IMAGE_KEY;
 
 const normalizeUrl = (url) => {
   const trimmed = url.trim();
@@ -42,27 +47,32 @@ const getDefaultEnd = () => {
   return tomorrow;
 };
 
-const createInitialFormData = (initialData) => ({
-  imageUrl: initialData?.imageUrl ?? '',
-  imageS3Key: initialData?.imageS3Key ?? '',
-  title: initialData?.title ?? '',
-  period: {
-    start: initialData?.startDate
-      ? new Date(initialData.startDate)
-      : getDefaultStart(),
-    end: initialData?.endDate ? new Date(initialData.endDate) : getDefaultEnd(),
-  },
-  url: initialData?.linkUrl ?? '',
-});
+const createInitialFormData = (initialData) => {
+  const rawImageS3Key = initialData?.imageS3Key ?? '';
+  const hasRealImage = rawImageS3Key && !isDefaultImage(rawImageS3Key);
+
+  return {
+    imageUrl: hasRealImage ? (initialData?.imageUrl ?? '') : '',
+    imageS3Key: hasRealImage ? rawImageS3Key : '',
+    title: initialData?.title ?? '',
+    period: {
+      start: initialData?.startDate
+        ? new Date(initialData.startDate)
+        : getDefaultStart(),
+      end: initialData?.endDate
+        ? new Date(initialData.endDate)
+        : getDefaultEnd(),
+    },
+    url: initialData?.linkUrl ?? '',
+  };
+};
 
 export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
   const navigate = useNavigate();
   const { showModal } = useModal();
-
-  const [formData, setFormData] = useState(() =>
-    createInitialFormData(initialData),
-  );
+  const initialFormDataRef = useRef(createInitialFormData(initialData));
+  const [formData, setFormData] = useState(() => initialFormDataRef.current);
   const [imageFile, setImageFile] = useState(null);
   const [touched, setTouched] = useState({ title: false, url: false });
 
@@ -81,13 +91,27 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     !trimmedUrl.startsWith('/') &&
     !URL_REGEXP.test(trimmedUrl);
 
-  const hasError =
-    !title.trim() ||
-    !period.start ||
-    !period.end ||
-    !trimmedUrl ||
-    isUrlInvalid ||
-    !imageUrl;
+  const isRequiredFilled =
+    title.trim() && period.start && period.end && trimmedUrl && !isUrlInvalid;
+
+  const isFormDirty = () => {
+    const initial = initialFormDataRef.current;
+
+    if (imageFile) return true;
+    if (imageUrl !== initial.imageUrl) return true;
+    if (title.trim() !== initial.title.trim()) return true;
+    if (trimmedUrl !== initial.url.trim()) return true;
+    if (toDateString(period.start) !== toDateString(initial.period.start))
+      return true;
+    if (toDateString(period.end) !== toDateString(initial.period.end))
+      return true;
+
+    return false;
+  };
+
+  const hasError = isEdit
+    ? !isRequiredFilled || !isFormDirty()
+    : !isRequiredFilled;
 
   const handleImageUpload = (file) => {
     setImageFile(file);
@@ -96,27 +120,35 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
 
   const handleImageDelete = () => {
     setImageFile(null);
-    setFormData((prev) => ({ ...prev, imageUrl: '' }));
+    setFormData((prev) => ({ ...prev, imageUrl: '', imageS3Key: '' }));
   };
 
   const handleSubmit = async () => {
-    const imageS3Key = imageFile
-      ? (await uploadImage({ file: imageFile, imageType: 'banner_image' }))
-          .fileKey
-      : isEdit
-        ? (initialData?.imageS3Key ?? '')
-        : '';
+    let imageS3Key = DEFAULT_IMAGE_KEY;
+
+    if (imageFile) {
+      imageS3Key = (
+        await uploadImage({ file: imageFile, imageType: 'banner_image' })
+      ).fileKey;
+    } else if (formData.imageS3Key) {
+      imageS3Key = formData.imageS3Key;
+    }
 
     onSubmit?.({
       title: title.trim(),
       imageS3Key,
-      linkUrl: normalizeUrl(url),
+      linkUrl: trimmedUrl ? normalizeUrl(url) : '',
       startDate: toDateString(period.start),
       endDate: toDateString(period.end),
     });
   };
 
   const handleBack = () => {
+    if (!isFormDirty()) {
+      navigate(ADMIN_ROUTES.DASHBOARD);
+      return;
+    }
+
     showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
