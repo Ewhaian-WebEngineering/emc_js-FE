@@ -31,6 +31,11 @@ export function useBoothForm(booth, boothId) {
     ...fields,
     categories: fields.categories?.length > 0 ? fields.categories : ['food'],
     marks: getBoothMarks(fields).length > 0 ? getBoothMarks(fields) : ['none'],
+    description: fields.description ?? '',
+    externalUrl: fields.externalUrl ?? '',
+    inquiryUrl: fields.inquiryUrl ?? '',
+    allergenInfo: fields.allergenInfo ?? '',
+    guides: fields.guides ?? '',
     name: booth.name,
     location: booth.location,
   };
@@ -60,9 +65,34 @@ export function useBoothForm(booth, boothId) {
     return nextErrors;
   };
 
+  const isValidUrl = (value) => {
+    if (!value?.trim()) return true;
+    try {
+      const url = new URL(value);
+      return url.protocol === 'http:' || url.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
+  const URL_FIELDS = {
+    externalUrl: 'URL 형식이 올바르지 않아요.',
+    inquiryUrl: 'URL 형식이 올바르지 않아요.',
+  };
+
+  const handleBlur = (field) => () => {
+    if (!(field in URL_FIELDS)) return;
+
+    const value = boothForm[field];
+    if (!isValidUrl(value)) {
+      setErrors((prev) => ({ ...prev, [field]: URL_FIELDS[field] }));
+    }
+  };
+
   return {
     boothForm,
     updateField,
+    handleBlur,
     errors,
     validate,
   };
