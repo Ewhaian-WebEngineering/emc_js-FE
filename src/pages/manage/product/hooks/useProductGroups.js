@@ -1,9 +1,10 @@
 import { useState, useSyncExternalStore } from 'react';
 import useModal from '@/hooks/modal/useModal';
-import { getSnapshot, subscribe } from '../../store/boothDraftStore';
 import {
+  getSnapshot,
   markSponsorGroupDeleted,
   reassignSponsorItemsGroup,
+  subscribe,
   upsertSponsorGroupDraft,
 } from '@/pages/admin/sponsor/store/sponsorDraftStore';
 

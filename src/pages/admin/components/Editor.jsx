@@ -41,7 +41,10 @@ export default function Editor({ content = '', onChange, ownerId, imageType }) {
   const { mutateAsync: uploadImage } = useImageUpload();
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        link: false,
+        underline: false,
+      }),
       Underline,
       Link.configure({
         openOnClick: true,
@@ -63,6 +66,12 @@ export default function Editor({ content = '', onChange, ownerId, imageType }) {
       onChange?.(editor.getHTML());
     },
   });
+
+  useEffect(() => {
+    if (!editor) return;
+    if (content === editor.getHTML()) return;
+    editor.commands.setContent(content, { emitUpdate: false });
+  }, [content, editor]);
 
   const editorState = useEditorState({
     editor,

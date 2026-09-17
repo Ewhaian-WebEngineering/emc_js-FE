@@ -167,7 +167,7 @@ export default function SponsorItemList({
       <DragOverlay>
         {activeItem && (
           <AdminSpProductCard
-            thumbnail={activeItem.thumbnail}
+            thumbnail={activeItem.imageUrl}
             title={activeItem.name}
             content={activeItem.description}
           />
