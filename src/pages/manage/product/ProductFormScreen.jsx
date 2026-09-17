@@ -51,6 +51,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const {
     formValues,
     updateField,
+    handleBlur,
     visibleErrors,
     isButtonDisabled: isProductButtonDisabled,
     handleSubmit,
@@ -132,6 +133,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           placeholder="예) 999,999원"
           value={formValues.price}
           onChange={(value) => updateField('price', value)}
+          onBlur={handleBlur('price')}
           hasError={!!visibleErrors.price}
           helperText={visibleErrors.price}
         />

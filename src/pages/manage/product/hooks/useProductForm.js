@@ -16,6 +16,13 @@ const FIELD_ERROR_MESSAGES = {
   thumbnail: '이미지를 업로드 해주세요.',
 };
 
+const PRICE_FORMAT_ERROR_MESSAGE = '숫자만 입력할 수 있습니다.';
+
+const isValidPriceFormat = (value) => {
+  if (value === '') return true;
+  return /^[0-9]+$/.test(String(value));
+};
+
 export function useProductForm({
   product,
   submitLabel,
@@ -31,9 +38,14 @@ export function useProductForm({
   const [formValues, setFormValues] = useState(initialValues);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+  const [touchedFields, setTouchedFields] = useState({});
 
   const updateField = (key, value) => {
     setFormValues((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleBlur = (key) => () => {
+    setTouchedFields((prev) => ({ ...prev, [key]: true }));
   };
 
   const fieldErrors = {
@@ -43,7 +55,10 @@ export function useProductForm({
     thumbnail: !hasThumbnail,
   };
 
-  const isFormValid = !Object.values(fieldErrors).some(Boolean);
+  const priceFormatInvalid = !isValidPriceFormat(formValues.price);
+
+  const isFormValid =
+    !Object.values(fieldErrors).some(Boolean) && !priceFormatInvalid;
 
   const isDirty =
     !isCreateMode &&
@@ -97,18 +112,22 @@ export function useProductForm({
     }
   };
 
-  const visibleErrors = hasAttemptedSubmit
-    ? Object.fromEntries(
-        Object.entries(fieldErrors).map(([key, hasError]) => [
-          key,
-          hasError ? FIELD_ERROR_MESSAGES[key] : undefined,
-        ]),
-      )
-    : {};
+  const visibleErrors = Object.fromEntries(
+    Object.entries(fieldErrors).map(([key, hasError]) => {
+      const shouldShow = hasAttemptedSubmit || touchedFields[key];
+      if (!shouldShow) return [key, undefined];
+      if (hasError) return [key, FIELD_ERROR_MESSAGES[key]];
+      if (key === 'price' && priceFormatInvalid) {
+        return [key, PRICE_FORMAT_ERROR_MESSAGE];
+      }
+      return [key, undefined];
+    }),
+  );
 
   return {
     formValues,
     updateField,
+    handleBlur,
     visibleErrors,
     isButtonDisabled,
     handleSubmit,
