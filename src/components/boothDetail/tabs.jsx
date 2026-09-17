@@ -6,7 +6,12 @@ export const BOOTH_DETAIL_TABS = [
   {
     id: 'products',
     label: '제품목록',
-    render: (booth) => <ProductListTab productGroups={booth.productGroups} />,
+    render: (booth) => (
+      <ProductListTab
+        productGroups={booth.productGroups}
+        ungroupedProducts={booth.ungroupedProducts}
+      />
+    ),
   },
   {
     id: 'notice',
