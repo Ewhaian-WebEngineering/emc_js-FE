@@ -24,10 +24,12 @@ import { useProductGroupList } from '@/api/feature/product/useProductData';
 import { useBoothDraftStore } from '../store/useBoothDraftStore';
 import { buildGroupOptions } from '../utils/buildGroupOptions';
 import { useEntityGroups } from '@/hooks/useEntityGroups';
+import { useParams } from 'react-router-dom';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
   const goBack = useGoBack();
+  const { boothId } = useParams();
 
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(
@@ -60,7 +62,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     hasThumbnail: !!thumbnailPreview,
   });
 
-  const { data: productGroups } = useProductGroupList();
+  const { data: productGroups } = useProductGroupList(boothId);
   const draft = useBoothDraftStore();
 
   const boothGroupOptions = useMemo(

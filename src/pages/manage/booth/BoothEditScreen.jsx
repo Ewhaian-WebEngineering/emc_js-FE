@@ -37,6 +37,7 @@ import {
   useNoticeList,
 } from '@/api/feature/booth/useBoothData';
 import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSections';
+import { useProductGroupList } from '@/api/feature/booth/useBoothData';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -58,7 +59,7 @@ function BoothEditForm({ booth, boothId }) {
   const { showModal } = useModal();
   const draft = useBoothDraftStore();
   const { save, isSaving } = useSaveBoothDraft(booth, boothId);
-  const deleteNoticeMutation = useDeleteNotice();
+  const deleteNoticeMutation = useDeleteNotice(boothId);
   const { data: noticeList } = useNoticeList(boothId);
 
   const [expanded, toggleExpanded] = useToggleMap([
@@ -70,7 +71,7 @@ function BoothEditForm({ booth, boothId }) {
     'announcement',
   ]);
 
-  const { boothForm, updateField, errors, validate } = useBoothForm(
+  const { boothForm, updateField, handleBlur, errors, validate } = useBoothForm(
     booth,
     boothId,
   );
@@ -84,9 +85,17 @@ function BoothEditForm({ booth, boothId }) {
     handleReorderGroups,
     productsError,
     validateProducts,
-  } = useProductSections(booth);
+  } = useProductSections({
+    productGroups: booth.productGroups,
+    ungroupedProducts: booth.ungroupedProducts,
+  });
 
   const handleBack = async () => {
+    if (!isDraftDirty()) {
+      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
+      return;
+    }
+
     const { confirmed } = await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
@@ -226,6 +235,9 @@ function BoothEditForm({ booth, boothId }) {
           placeholder="공식 SNS 등 외부 채널 링크를 등록해보세요."
           value={boothForm.externalUrl}
           onChange={updateField('externalUrl')}
+          onBlur={handleBlur('externalUrl')}
+          hasError={!!errors.externalUrl}
+          helperText={errors.externalUrl}
         />
       </CategoryContainer>
 
@@ -289,6 +301,7 @@ function BoothEditForm({ booth, boothId }) {
         <TextInput
           value={boothForm.inquiryUrl}
           onChange={(e) => updateField('inquiryUrl')(e.target.value)}
+          onBlur={handleBlur('inquiryUrl')}
           placeholder="예) https://pf.kakao.com/_jwmVd"
           hasError={!!errors.inquiryUrl}
           helperText={errors.inquiryUrl}
