@@ -32,7 +32,7 @@ export function initDraft(boothId, booth) {
   if (state.boothId === boothId && state.boothFields) return;
 
   const fields = {
-    categories: booth.categories,
+    categories: booth.categories?.length > 0 ? booth.categories : ['food'],
     isVegan: booth.isVegan,
     isEco: booth.isEco,
     operationTime: booth.operationTime,
