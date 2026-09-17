@@ -1,20 +1,20 @@
 import EventForm from './EventForm';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ADMIN_ROUTES } from '@/constants/routes';
+import { useParams } from 'react-router-dom';
 import { useEvent, useUpdateEvent } from '@/api/feature/admin/useEventData';
+import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
 export default function EventEditScreen() {
-  const navigate = useNavigate();
   const { eventId } = useParams();
   const { data: event } = useEvent(eventId);
   const { mutate: updateEvent } = useUpdateEvent();
+  const { toast } = useToastContext();
 
   const handleSubmit = (payload) => {
     updateEvent(
       { eid: eventId, ...payload },
       {
         onSuccess: () => {
-          navigate(ADMIN_ROUTES.DASHBOARD);
+          toast({ message: '변경 사항이 저장되었어요.' });
         },
       },
     );
