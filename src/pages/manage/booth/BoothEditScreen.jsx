@@ -28,7 +28,6 @@ import { useSaveBoothDraft } from './hooks/useSaveBoothDraft';
 import {
   isDraftDirty,
   removeThumbnail,
-  resetDraft,
   setThumbnail,
 } from '../store/boothDraftStore';
 import {
@@ -95,15 +94,22 @@ function BoothEditForm({ booth, boothId }) {
       return;
     }
 
-    const { confirmed } = await showModal({
+    await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       cancelText: '나가기',
       confirmText: '계속 작성하기',
+      onConfirm: () => {
+        return;
+      },
+      onCancel: () => {
+        navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
+      },
+      onDismiss: () => {
+        return;
+      },
     });
-
-    if (!confirmed) return;
   };
 
   const clickDeleteProduct = (productId) => {
