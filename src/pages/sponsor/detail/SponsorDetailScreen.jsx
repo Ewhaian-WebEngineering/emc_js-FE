@@ -21,16 +21,21 @@ import DOMPurify from 'dompurify';
 import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
 import CardPlaceholder from '@/designsystem/components/Placeholder';
 import { QueryBoundary } from '@/components/common/QueryBoundary';
+import BoothLocationModal from '@/components/boothDetail/components/BoothLocationModal';
+
+const SPONSOR_NAME_TO_BOOTH_TARGET = {
+  이화이언: '13',
+};
 
 export default function SponsorDetailScreen() {
-  const { id } = useParams();
+  const { sponsorId } = useParams();
   const handleBack = useGoBack();
 
   return (
     <>
       <TransparentHeader onBack={handleBack} border />
       <QueryBoundary>
-        <SponsorDetailContent id={id} />
+        <SponsorDetailContent id={sponsorId} />
       </QueryBoundary>
     </>
   );
@@ -43,6 +48,13 @@ function SponsorDetailContent({ id }) {
 
   const tabBarRef = useRef(null);
   const [tabBarHeight, setTabBarHeight] = useState(0);
+
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+
+  const boothNumber =
+    SPONSOR_NAME_TO_BOOTH_TARGET[sponsorDetail.location] ??
+    sponsorDetail.location;
+  const boothTargetId = `sponsor-booth-${boothNumber}`;
 
   useEffect(() => {
     if (!tabBarRef.current) return;
@@ -63,6 +75,10 @@ function SponsorDetailContent({ id }) {
     if (sns.startsWith('http://') || sns.startsWith('https://')) return sns;
     if (sns.startsWith('@')) return `https://www.instagram.com/${sns.slice(1)}`;
     return `https://www.instagram.com/${sns}`;
+  };
+
+  const handleLocationClick = () => {
+    setIsLocationModalOpen(true);
   };
 
   return (
@@ -96,10 +112,11 @@ function SponsorDetailContent({ id }) {
               <LinkButton
                 variant="secondary"
                 size="sm"
-                href="#"
-                onClick={(event) => event.preventDefault()}
+                onClick={handleLocationClick}
               >
-                {sponsorDetail.location}
+                {boothTargetId !== 'sponsor-booth-13'
+                  ? `${sponsorDetail.location}번 부스`
+                  : `${sponsorDetail.location}`}
               </LinkButton>
             </S.InfoValue>
           </S.InfoRow>
@@ -221,6 +238,12 @@ function SponsorDetailContent({ id }) {
           </S.EventButtonContent>
         </BoxButton>
       </S.EventSection>
+      {isLocationModalOpen && boothTargetId && (
+        <BoothLocationModal
+          boothTargetId={boothTargetId}
+          onClose={() => setIsLocationModalOpen(false)}
+        />
+      )}
     </S.SponsorDetailContainer>
   );
 }

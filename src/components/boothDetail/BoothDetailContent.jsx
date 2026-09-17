@@ -38,6 +38,7 @@ import BoothDetailCard from '@/designsystem/components/card/booth/BoothDetailCar
 import Image from '@/designsystem/components/Image';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 import { getBoothMarks } from '@/utils/formatBooth';
+import BoothLocationModal from './components/BoothLocationModal';
 
 export default function BoothDetailContent({
   booth,
@@ -49,6 +50,7 @@ export default function BoothDetailContent({
     useState(false);
   const [allergyDescriptionExpanded, setAllergyDescriptionExpanded] =
     useState(false);
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
 
   const tabBarRef = useRef(null);
   const [tabBarHeight, setTabBarHeight] = useState(0);
@@ -73,6 +75,11 @@ export default function BoothDetailContent({
   const handleNoticeClick = () => {
     if (!interactive) return;
     navigate(BOOTH_ROUTES.NOTICE(boothId));
+  };
+
+  const handleLocationClick = () => {
+    if (!interactive) return;
+    setIsLocationModalOpen(true);
   };
 
   const marks = getBoothMarks(booth);
@@ -122,7 +129,13 @@ export default function BoothDetailContent({
           <InfoRow>
             <InfoLabel>위치</InfoLabel>
             {booth.location ? (
-              <InfoValue>{booth.location}번 부스</InfoValue>
+              <LinkButton
+                size="sm"
+                variant="secondary"
+                onClick={handleLocationClick}
+              >
+                {booth.location}번 부스
+              </LinkButton>
             ) : (
               <InfoValue>-</InfoValue>
             )}
@@ -219,6 +232,14 @@ export default function BoothDetailContent({
           </RecommendBoothList>
         )}
       </RecommendBooths>
+
+      {isLocationModalOpen && (
+        <BoothLocationModal
+          boothTargetId={`booth-${booth.location}`}
+          boothName={booth.name}
+          onClose={() => setIsLocationModalOpen(false)}
+        />
+      )}
     </>
   );
 }
