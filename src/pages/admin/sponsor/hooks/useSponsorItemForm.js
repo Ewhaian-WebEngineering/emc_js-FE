@@ -22,10 +22,27 @@ export function useSponsorItemForm({ item, submitLabel, onSubmit }) {
     getInitialValues(item),
   );
   const [formValues, setFormValues] = useState(initialValues);
+  // 실제 업로드할 File 객체. formValues.thumbnail은 미리보기 URL 문자열만 담당.
+  const [thumbnailFile, setThumbnailFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   const updateField = (key, value) => {
+    if (key === 'thumbnail' && value instanceof File) {
+      setThumbnailFile(value);
+      setFormValues((prev) => ({
+        ...prev,
+        thumbnail: URL.createObjectURL(value),
+      }));
+      return;
+    }
+
+    if (key === 'thumbnail' && value === '') {
+      setThumbnailFile(null);
+      setFormValues((prev) => ({ ...prev, thumbnail: '' }));
+      return;
+    }
+
     setFormValues((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -39,7 +56,8 @@ export function useSponsorItemForm({ item, submitLabel, onSubmit }) {
 
   const isDirty =
     !isCreateMode &&
-    JSON.stringify(formValues) !== JSON.stringify(initialValues);
+    (JSON.stringify(formValues) !== JSON.stringify(initialValues) ||
+      thumbnailFile !== null);
 
   const isSubmittable = isCreateMode ? isFormValid : isDirty && isFormValid;
 
@@ -59,11 +77,10 @@ export function useSponsorItemForm({ item, submitLabel, onSubmit }) {
     };
 
     try {
-      await onSubmit(trimmedValues);
+      await onSubmit(trimmedValues, thumbnailFile);
       setFormValues(trimmedValues);
       setInitialValues(trimmedValues);
-    } catch (error) {
-      // TODO: 에러 핸들링
+      setThumbnailFile(null);
     } finally {
       setIsSubmitting(false);
     }

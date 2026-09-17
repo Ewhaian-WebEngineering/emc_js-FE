@@ -1,21 +1,57 @@
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import useModal from '@/hooks/modal/useModal';
+import { getSnapshot, subscribe } from '../../store/boothDraftStore';
+import {
+  markSponsorGroupDeleted,
+  reassignSponsorItemsGroup,
+  upsertSponsorGroupDraft,
+} from '@/pages/admin/sponsor/store/sponsorDraftStore';
 
 const INITIAL_NEW_GROUP = { name: '', description: '' };
+const NO_GROUP_OPTION = { label: '그룹 없음', value: null, hideActions: true };
 
-export function useProductGroups(initialGroups, { groupId, onGroupIdChange }) {
+export function useProductGroups(productGroups, { groupId, onGroupIdChange }) {
   const { showModal } = useModal();
+  const draft = useSyncExternalStore(subscribe, getSnapshot);
 
   const [isGroupSheetOpen, setIsGroupSheetOpen] = useState(false);
   const [editingGroupId, setEditingGroupId] = useState(null);
   const [newGroup, setNewGroup] = useState(INITIAL_NEW_GROUP);
   const [originalGroup, setOriginalGroup] = useState(INITIAL_NEW_GROUP);
-  const [groups, setGroups] = useState(initialGroups);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   const isEditMode = editingGroupId !== null;
 
-  const selectedGroupOption = groups.find((option) => option.value === groupId);
+  const baseGroupOptions = productGroups
+    .map((group) => {
+      const entry = draft.groups[group.id];
+      if (entry?.status === 'deleted') return null;
+      const merged =
+        entry?.status === 'updated' ? { ...group, ...entry.data } : group;
+      return {
+        label: merged.name,
+        value: merged.id,
+        description: merged.description ?? '',
+      };
+    })
+    .filter(Boolean);
+
+  const newGroupOptions = Object.entries(draft.groups)
+    .filter(([, entry]) => entry?.status === 'created')
+    .map(([tempId, entry]) => ({
+      label: entry.data.name,
+      value: tempId,
+      description: entry.data.description ?? '',
+    }));
+
+  const groupOptions = [
+    NO_GROUP_OPTION,
+    ...baseGroupOptions,
+    ...newGroupOptions,
+  ];
+
+  const selectedGroupOption =
+    groupOptions.find((option) => option.value === groupId) ?? NO_GROUP_OPTION;
 
   const updateNewGroupField = (field, value) => {
     setNewGroup((prev) => ({ ...prev, [field]: value }));
@@ -90,23 +126,28 @@ export function useProductGroups(initialGroups, { groupId, onGroupIdChange }) {
     if (isSubmitDisabled) return;
 
     if (isEditMode) {
-      setGroups((prev) =>
-        prev.map((group) =>
-          group.value === editingGroupId
-            ? {
-                ...group,
-                label: newGroup.name.trim(),
-                description: newGroup.description.trim(),
-              }
-            : group,
-        ),
-      );
+      const existingEntry = draft.groups[editingGroupId];
+      const status =
+        existingEntry?.status === 'created' ? 'created' : 'updated';
+
+      upsertSponsorGroupDraft(editingGroupId, {
+        status,
+        data: {
+          id: editingGroupId,
+          name: newGroup.name.trim(),
+          description: newGroup.description.trim(),
+        },
+      });
     } else {
-      const newOption = {
-        label: newGroup.name.trim(),
-        description: newGroup.description.trim(),
-      };
-      setGroups((prev) => [...prev, newOption]);
+      const tempId = `temp-${crypto.randomUUID()}`;
+      upsertSponsorGroupDraft(tempId, {
+        status: 'created',
+        data: {
+          id: tempId,
+          name: newGroup.name.trim(),
+          description: newGroup.description.trim(),
+        },
+      });
     }
 
     handleCloseGroupSheet();
@@ -125,7 +166,24 @@ export function useProductGroups(initialGroups, { groupId, onGroupIdChange }) {
 
     if (!confirmed) return;
 
-    setGroups((prev) => prev.filter((g) => g.value !== option.value));
+    const serverGroup = productGroups.find((g) => g.id === option.value);
+    const serverItemsInGroup = (serverGroup?.products ?? []).map((item) => ({
+      id: item.id,
+      status: draft.items[item.id]?.status ?? 'server',
+    }));
+
+    const draftCreatedItemsInGroup = Object.entries(draft.items)
+      .filter(
+        ([, entry]) =>
+          entry?.status === 'created' && entry.data.groupId === option.value,
+      )
+      .map(([tempId]) => ({ id: tempId, status: 'created' }));
+
+    reassignSponsorItemsGroup(
+      [...serverItemsInGroup, ...draftCreatedItemsInGroup],
+      null,
+    );
+    markSponsorGroupDeleted(option.value);
 
     if (option.value === groupId) {
       onGroupIdChange(null);
@@ -133,7 +191,7 @@ export function useProductGroups(initialGroups, { groupId, onGroupIdChange }) {
   };
 
   return {
-    groupOptions: groups,
+    groupOptions,
     selectedGroupOption,
     handleSelectGroup,
     handleAddGroup,
