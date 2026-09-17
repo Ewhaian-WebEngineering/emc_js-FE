@@ -1,11 +1,15 @@
+import Placeholder from '@/assets/img/img_checker.png';
+
 export default function Image({ eager = false, src, width = 400, ...props }) {
-  const isRemote = /^https?:\/\//.test(src ?? '');
+  const resolvedSrc = src?.endsWith('img_checker.png') ? Placeholder : src;
+
+  const isRemote = /^https?:\/\//.test(resolvedSrc ?? '');
 
   const resizedSrc = isRemote
     ? `https://images.weserv.nl/?url=${encodeURIComponent(
-        src.replace(/^https?:\/\//, ''),
+        resolvedSrc.replace(/^https?:\/\//, ''),
       )}&w=${width}&output=webp`
-    : src;
+    : resolvedSrc;
 
   return <img src={resizedSrc} loading={eager ? 'eager' : 'lazy'} {...props} />;
 }
