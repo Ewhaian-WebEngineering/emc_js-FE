@@ -13,7 +13,7 @@ export default function BoothPreviewScreen() {
   const handleBack = useGoBack();
   const navigate = useNavigate();
 
-  const { data: booth, isPending } = useMyBoothData();
+  const { data: booth, isPending } = useMyBoothData(boothId);
 
   if (isPending) {
     return (

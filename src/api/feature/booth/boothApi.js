@@ -10,8 +10,10 @@ export const getBoothDetail = (boothId) => {
   return instance.get(`/api/booths/${boothId}`);
 };
 
-export const getMyBoothData = async () => {
-  const booth = await instance.get('/api/seller/booth');
+export const getMyBoothData = async (boothId) => {
+  const booth = await instance.get('/api/seller/booth', {
+    params: boothId ? { boothId } : undefined,
+  });
 
   const latestNotice = [...(booth.notices ?? [])].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt),

@@ -40,7 +40,7 @@ import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSectio
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
-  const { data: booth, isPending } = useMyBoothData();
+  const { data: booth, isPending } = useMyBoothData(boothId);
 
   if (isPending) {
     return (
