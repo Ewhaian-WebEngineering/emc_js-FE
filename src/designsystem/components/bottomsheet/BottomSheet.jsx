@@ -92,7 +92,10 @@ export default function BottomSheet({
       {internalOpen && (
         <>
           {showScrim !== 'none' && (
-            <Scrim onClick={requestClose} visible={showScrim === 'dim'} />
+            <Scrim
+              onClick={dismissible ? requestClose : undefined}
+              visible={showScrim === 'dim'}
+            />
           )}
           <BottomSheetContainer
             as={motion.div}

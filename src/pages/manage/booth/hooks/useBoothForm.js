@@ -29,7 +29,7 @@ export function useBoothForm(booth, boothId) {
   const fields = draft.boothFields ?? booth;
   const boothForm = {
     ...fields,
-    categories: fields.categories?.length > 0 ? fields.categories : ['food'],
+    categories: fields.categories,
     marks: getBoothMarks(fields).length > 0 ? getBoothMarks(fields) : ['none'],
     description: fields.description ?? '',
     externalUrl: fields.externalUrl ?? '',
@@ -61,6 +61,13 @@ export function useBoothForm(booth, boothId) {
     REQUIRED_FIELDS.forEach(({ key, check }) => {
       if (!check(boothForm)) nextErrors[key] = REQUIRED_MESSAGE;
     });
+
+    Object.keys(URL_FIELDS).forEach((key) => {
+      if (!nextErrors[key] && !isValidUrl(boothForm[key])) {
+        nextErrors[key] = URL_FIELDS[key];
+      }
+    });
+
     setErrors(nextErrors);
     return nextErrors;
   };

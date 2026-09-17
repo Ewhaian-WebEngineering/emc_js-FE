@@ -7,10 +7,15 @@ import {
 } from './style';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 
+const byDisplayOrder = (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
+
 export default function ProductListTab({
   productGroups,
   ungroupedProducts = [],
 }) {
+  const sortedGroups = [...(productGroups ?? [])].sort(byDisplayOrder);
+  const sortedUngrouped = [...ungroupedProducts].sort(byDisplayOrder);
+
   const hasGrouped = productGroups?.length > 0;
   const hasUngrouped = ungroupedProducts.length > 0;
 
@@ -20,7 +25,7 @@ export default function ProductListTab({
 
   return (
     <ProductListTabContainer>
-      {productGroups?.map((group) => (
+      {sortedGroups.map((group) => (
         <ProductListTabContent key={group.id}>
           {(group.name || group.description) && (
             <ProductListTabHeader>
@@ -29,7 +34,7 @@ export default function ProductListTab({
             </ProductListTabHeader>
           )}
           <ProductList>
-            {group.products.map((product) => (
+            {[...group.products].sort(byDisplayOrder).map((product) => (
               <ProductVerticalCard
                 key={product.id}
                 thumbnail={product.imageUrl}
@@ -45,7 +50,7 @@ export default function ProductListTab({
       {hasUngrouped && (
         <ProductListTabContent>
           <ProductList>
-            {ungroupedProducts.map((product) => (
+            {sortedUngrouped.map((product) => (
               <ProductVerticalCard
                 key={product.id}
                 thumbnail={product.imageUrl}
