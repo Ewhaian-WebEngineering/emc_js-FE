@@ -11,6 +11,11 @@ import {
   updateProduct,
   updateProductGroup,
 } from '@/api/feature/product/productApi';
+import {
+  createNotice,
+  deleteNotice,
+  updateNotice,
+} from '@/api/feature/booth/boothApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resetDraft } from '../../store/boothDraftStore';
@@ -97,6 +102,28 @@ export function useSaveBoothDraft(booth, boothId) {
         }
       }
 
+      const noticeEntries = Object.entries(draft.notices);
+
+      for (const [key, entry] of noticeEntries) {
+        if (entry.status === 'created') {
+          await createNotice(
+            { title: entry.data.title, content: entry.data.content },
+            boothId,
+          );
+        } else if (entry.status === 'updated') {
+          await updateNotice(
+            { nid: key, title: entry.data.title, content: entry.data.content },
+            boothId,
+          );
+        }
+      }
+
+      for (const [key, entry] of noticeEntries) {
+        if (entry.status === 'deleted') {
+          await deleteNotice(key, boothId);
+        }
+      }
+
       let thumbnailKey = booth.thumbnailKey;
       if (draft.thumbnail.file) {
         const { fileKey } = await uploadImage({
@@ -116,6 +143,7 @@ export function useSaveBoothDraft(booth, boothId) {
       queryClient.invalidateQueries({ queryKey: ['my-booth'] });
       queryClient.invalidateQueries({ queryKey: ['booth-detail', boothId] });
       queryClient.invalidateQueries({ queryKey: ['product-groups', boothId] });
+      queryClient.invalidateQueries({ queryKey: ['notices', boothId] });
       navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
     } finally {
       setIsSaving(false);
