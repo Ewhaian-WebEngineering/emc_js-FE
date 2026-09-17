@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { ADMIN_ROUTES } from '@/constants/routes';
 import SponsorItemFormScreen from './SponsorItemFormScreen';
 import { mockSponsorItem } from '../mocks/mockSponsorItem';
+import { upsertSponsorItemDraft } from '../store/sponsorDraftStore';
 
 export default function SponsorItemEditScreen() {
   const { sponsorId, itemId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const stateItem = location.state?.itemData;
 
   const [item, setItem] = useState(null);
@@ -22,9 +25,17 @@ export default function SponsorItemEditScreen() {
   }, [sponsorId, itemId, stateItem]);
 
   if (isLoading) return <div>Loading...</div>;
-  const handleSubmit = async (values) => {
-    // TODO: API 연동 시 협찬품 정보 업데이트
-    setItem(values);
+
+  const handleSubmit = async (values, thumbnailFile) => {
+    const status = stateItem?.status === 'created' ? 'created' : 'updated';
+
+    upsertSponsorItemDraft(itemId, {
+      status,
+      data: { id: itemId, ...values },
+      file: thumbnailFile,
+    });
+
+    navigate(ADMIN_ROUTES.SPONSOR_EDIT(sponsorId));
   };
 
   return (

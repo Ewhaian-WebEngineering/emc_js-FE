@@ -36,7 +36,6 @@ export const ADMIN_ROUTES = {
   BANNER_EDIT: (bannerId) => `/admin/banner/${bannerId}/edit`,
   EVENT: '/admin/event',
   EVENT_EDIT: (eventId) => `/admin/event/${eventId}/edit`,
-  SPONSOR_CREATE: '/admin/sponsor/register',
   SPONSOR_EDIT: (sponsorId) => `/admin/sponsor/${sponsorId}/edit`,
   SPONSOR_ITEM_CREATE: (sponsorId) =>
     `/admin/sponsor/${sponsorId}/item/register`,

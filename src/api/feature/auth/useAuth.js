@@ -14,7 +14,8 @@ export const useKakaoLogin = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (code) => kakaoLogin(code),
+    mutationFn: (code) =>
+      kakaoLogin(code, import.meta.env.VITE_KAKAO_REDIRECT_URI),
     onSuccess: ({ accessToken, refreshToken, user }) => {
       setTokens({
         accessToken,

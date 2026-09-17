@@ -45,6 +45,13 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
 
   const hasError = !que.trim() || !ans.trim();
 
+  const isUnchanged =
+    isEdit &&
+    que.trim() === (initialData?.que ?? '').trim() &&
+    ans.trim() === (initialData?.ans ?? '').trim();
+
+  const isSubmitDisabled = hasError || isUnchanged;
+
   const handleSubmit = () => {
     onSubmit?.({
       ...formData,
@@ -53,7 +60,16 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
     });
   };
 
+  const isEmpty = !isEdit && !que.trim() && !ans.trim();
+
+  const hasNoChanges = isEmpty || isUnchanged;
+
   const handleBack = () => {
+    if (hasNoChanges) {
+      navigate(ADMIN_ROUTES.DASHBOARD);
+      return;
+    }
+
     showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
@@ -71,7 +87,7 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
         onBack={handleBack}
         right={
           <TextButton
-            disabled={hasError}
+            disabled={isSubmitDisabled}
             onClick={handleSubmit}
             size="sm"
             variant="primary"
@@ -85,6 +101,7 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
         <TextField
           maxLength={25}
           onChange={(value) => updateField('que')(value)}
+          onBlur={handleBlur('que')}
           placeholder="예) 종합손물세트가 무엇인가요?"
           required
           title="질문 내용"
