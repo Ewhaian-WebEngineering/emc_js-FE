@@ -14,15 +14,14 @@ export const ProductVerticalCardContainer = styled.div`
 export const ProductVerticalCardThumbnail = styled.div`
   width: 100%;
   aspect-ratio: 1 / 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden;
 
   img,
   & > div {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
     border-radius: 0;
   }
 `;

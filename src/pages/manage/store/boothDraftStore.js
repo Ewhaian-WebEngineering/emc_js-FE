@@ -32,7 +32,7 @@ export function initDraft(boothId, booth) {
   if (state.boothId === boothId && state.boothFields) return;
 
   const fields = {
-    categories: booth.categories,
+    categories: booth.categories?.length > 0 ? booth.categories : ['food'],
     isVegan: booth.isVegan,
     isEco: booth.isEco,
     operationTime: booth.operationTime,
@@ -105,6 +105,31 @@ export function markGroupDeleted(key) {
       [key]: { status: 'deleted', data: existing?.data ?? { id: key } },
     },
   });
+}
+
+export function reassignProductsGroup(items, newGroupId) {
+  const nextProducts = { ...state.products };
+
+  items.forEach(({ id, status }) => {
+    const existing = nextProducts[id];
+
+    if (status === 'created') {
+      nextProducts[id] = {
+        status: 'created',
+        data: { ...(existing?.data ?? {}), groupId: newGroupId },
+        file: existing?.file ?? null,
+      };
+      return;
+    }
+
+    nextProducts[id] = {
+      status: 'updated',
+      data: { ...(existing?.data ?? {}), groupId: newGroupId },
+      file: existing?.file ?? null,
+    };
+  });
+
+  setState({ products: nextProducts });
 }
 
 export function upsertNoticeDraft(key, entry) {

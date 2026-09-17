@@ -27,17 +27,17 @@ import { useBoothDraftStore } from '../store/useBoothDraftStore';
 import { useSaveBoothDraft } from './hooks/useSaveBoothDraft';
 import {
   isDraftDirty,
+  markNoticeDeleted,
   removeThumbnail,
   resetDraft,
   setThumbnail,
 } from '../store/boothDraftStore';
 import {
-  useDeleteNotice,
   useMyBoothData,
   useNoticeList,
+  useProductGroupList,
 } from '@/api/feature/booth/useBoothData';
 import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSections';
-import { useProductGroupList } from '@/api/feature/booth/useBoothData';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -54,13 +54,37 @@ export default function BoothEditScreen() {
   return <BoothEditForm booth={booth} boothId={boothId} />;
 }
 
+function buildNoticeList(serverNotices, draftNotices) {
+  const overridden = (serverNotices ?? [])
+    .map((notice) => {
+      const entry = draftNotices[notice.id];
+      if (entry?.status === 'deleted') return null;
+      if (entry?.status === 'updated') {
+        return { ...notice, ...entry.data, status: 'updated' };
+      }
+      return { ...notice, status: 'server' };
+    })
+    .filter(Boolean);
+
+  const created = Object.entries(draftNotices)
+    .filter(([, entry]) => entry?.status === 'created')
+    .map(([tempId, entry]) => ({
+      ...entry.data,
+      id: tempId,
+      status: 'created',
+    }));
+
+  return [...created, ...overridden];
+}
+
 function BoothEditForm({ booth, boothId }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
   const draft = useBoothDraftStore();
   const { save, isSaving } = useSaveBoothDraft(booth, boothId);
-  const deleteNoticeMutation = useDeleteNotice(boothId);
-  const { data: noticeList } = useNoticeList(boothId);
+  const { data: rawNoticeList } = useNoticeList(boothId);
+  const noticeList = buildNoticeList(rawNoticeList, draft.notices);
+  const { data: productGroups } = useProductGroupList(boothId);
 
   const [expanded, toggleExpanded] = useToggleMap([
     'boothIntroduction',
@@ -96,18 +120,23 @@ function BoothEditForm({ booth, boothId }) {
       return;
     }
 
-    const { confirmed } = await showModal({
+    await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       cancelText: '나가기',
       confirmText: '계속 작성하기',
+      onConfirm: () => {
+        return;
+      },
+      onCancel: () => {
+        resetDraft();
+        navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
+      },
+      onDismiss: () => {
+        return;
+      },
     });
-
-    if (!confirmed) {
-      resetDraft();
-      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
-    }
   };
 
   const clickDeleteProduct = (productId) => {
@@ -138,7 +167,7 @@ function BoothEditForm({ booth, boothId }) {
       confirmText: '삭제하기',
       cancelText: '취소',
       onConfirm: () => {
-        deleteNoticeMutation.mutate(noticeId);
+        markNoticeDeleted(noticeId);
       },
     });
   };

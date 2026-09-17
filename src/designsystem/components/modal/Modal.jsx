@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Scrim from '../scrim/Scrim';
 import BoxButton from '../button/boxbutton/BoxButton';
 import Select from '../select/Select';
@@ -40,6 +40,35 @@ export default function Modal({
 }) {
   // 드롭다운
   const [selectedOption, setSelectedOption] = useState(defaultValue || '');
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const scrollY = window.scrollY;
+
+    const originalStyle = {
+      position: html.style.position,
+      top: html.style.top,
+      width: html.style.width,
+      overflow: html.style.overflow,
+    };
+
+    html.style.position = 'fixed';
+    html.style.top = `-${scrollY}px`;
+    html.style.width = '100%';
+    html.style.overflow = 'hidden';
+
+    const root = document.getElementById('root');
+    root?.setAttribute('inert', '');
+
+    return () => {
+      html.style.position = originalStyle.position;
+      html.style.top = originalStyle.top;
+      html.style.width = originalStyle.width;
+      html.style.overflow = originalStyle.overflow;
+      window.scrollTo(0, scrollY);
+      root?.removeAttribute('inert');
+    };
+  }, []);
 
   const handleConfirm = () => {
     onConfirm?.(variant === 'form' ? selectedOption : undefined);

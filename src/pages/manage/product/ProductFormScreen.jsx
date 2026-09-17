@@ -51,6 +51,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const {
     formValues,
     updateField,
+    handleBlur,
     visibleErrors,
     isButtonDisabled: isProductButtonDisabled,
     handleSubmit,
@@ -86,7 +87,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     isButtonDisabled: isGroupButtonDisabled,
     groupNameError,
     handleConfirmAddGroup,
-  } = useEntityGroups(boothGroupOptions, {
+  } = useEntityGroups(boothGroupOptions, productGroups, {
     groupId: formValues.groupId,
     onGroupIdChange: (value) => updateField('groupId', value),
   });
@@ -132,6 +133,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           placeholder="예) 999,999원"
           value={formValues.price}
           onChange={(value) => updateField('price', value)}
+          onBlur={handleBlur('price')}
           hasError={!!visibleErrors.price}
           helperText={visibleErrors.price}
         />
@@ -204,6 +206,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
         onClose={handleCloseGroupSheet}
         onBeforeClose={handleCheckBeforeClose}
         title={isEditMode ? '제품 그룹 수정' : '제품 그룹 추가'}
+        dismissible={false}
       >
         <ProductAddSheetBody>
           <TextField
