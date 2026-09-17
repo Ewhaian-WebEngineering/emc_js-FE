@@ -6,7 +6,8 @@ import styled from '@emotion/styled';
 export const ScreenWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
 `;
 
 export const SearchButton = styled.button`
