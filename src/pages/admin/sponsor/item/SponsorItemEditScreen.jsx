@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
-import SponsorItemFormScreen from './SponsorItemFormScreen';
-import { mockSponsorItem } from '../mocks/mockSponsorItem';
+import { useSponsorDetail } from '@/api/feature/admin/useSponsorManageData';
 import { upsertSponsorItemDraft } from '../store/sponsorDraftStore';
+import SponsorItemFormScreen from './SponsorItemFormScreen';
 
 export default function SponsorItemEditScreen() {
   const { sponsorId, itemId } = useParams();
@@ -11,20 +11,17 @@ export default function SponsorItemEditScreen() {
   const navigate = useNavigate();
   const stateItem = location.state?.itemData;
 
-  const [item, setItem] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: sponsor, isPending } = useSponsorDetail(sponsorId);
 
-  useEffect(() => {
-    if (stateItem) {
-      setItem(stateItem);
-      setIsLoading(false);
-      return;
-    }
-    setItem(mockSponsorItem);
-    setIsLoading(false);
-  }, [sponsorId, itemId, stateItem]);
+  const item =
+    stateItem ??
+    sponsor?.productGroups
+      ?.flatMap((group) => group.products ?? [])
+      .find((product) => product.id === itemId) ??
+    sponsor?.products?.find((product) => product.id === itemId) ??
+    null;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isPending) return <div>Loading...</div>;
 
   const handleSubmit = async (values, thumbnailFile) => {
     const status = stateItem?.status === 'created' ? 'created' : 'updated';
@@ -41,6 +38,7 @@ export default function SponsorItemEditScreen() {
   return (
     <SponsorItemFormScreen
       item={item}
+      productGroups={sponsor?.productGroups ?? []}
       onSubmit={handleSubmit}
       submitLabel="edit"
     />

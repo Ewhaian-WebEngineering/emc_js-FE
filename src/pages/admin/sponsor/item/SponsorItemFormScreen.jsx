@@ -18,7 +18,12 @@ import {
   ProductFormTitle,
 } from '@/pages/manage/product/style';
 
-export default function SponsorItemFormScreen({ item, onSubmit, submitLabel }) {
+export default function SponsorItemFormScreen({
+  item,
+  productGroups = [],
+  onSubmit,
+  submitLabel,
+}) {
   const { showModal } = useModal();
   const goBack = useGoBack();
 
@@ -47,13 +52,10 @@ export default function SponsorItemFormScreen({ item, onSubmit, submitLabel }) {
     isButtonDisabled: isGroupButtonDisabled,
     groupNameError,
     handleConfirmAddGroup,
-  } = useProductGroups(
-    [{ label: '그룹 없음', value: null, hideActions: true }],
-    {
-      groupId: formValues.groupId,
-      onGroupIdChange: (value) => updateField('groupId', value),
-    },
-  );
+  } = useProductGroups(productGroups, {
+    groupId: formValues.groupId,
+    onGroupIdChange: (value) => updateField('groupId', value),
+  });
 
   const handleBack = async () => {
     await showModal({
@@ -106,12 +108,12 @@ export default function SponsorItemFormScreen({ item, onSubmit, submitLabel }) {
         <ProductImageUploader
           title="협찬품 이미지"
           isRequired
-          imageUrl={formValues.thumbnail}
-          onUpload={(file) => updateField('thumbnail', file)}
-          onDelete={() => updateField('thumbnail', '')}
-          isError={!!visibleErrors.thumbnail}
+          imageUrl={formValues.imageUrl}
+          onUpload={(file) => updateField('imageUrl', file)}
+          onDelete={() => updateField('imageUrl', '')}
+          isError={!!visibleErrors.imageUrl}
           helperText={
-            visibleErrors.thumbnail ??
+            visibleErrors.imageUrl ??
             '이미지 1개만 업로드할 수 있습니다. (JPG, JPEG, PNG / 최대 10MB)'
           }
           onUploadError={handleUploadError}

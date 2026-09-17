@@ -22,21 +22,39 @@ export function useSaveSponsorDraft(sponsorId) {
   const save = async (sponsorForm, draft) => {
     setIsSaving(true);
     try {
-      let sponsorImageKey;
+      let sponsorImageS3Key;
       if (draft.thumbnail.file) {
         const { fileKey } = await uploadImage({
           file: draft.thumbnail.file,
           imageType: 'sponsor_thumbnail',
           ownerId: sponsorId,
         });
-        sponsorImageKey = fileKey;
+        sponsorImageS3Key = fileKey;
       } else if (draft.thumbnail.removed) {
-        sponsorImageKey = null;
+        sponsorImageS3Key = null;
       }
 
+      const {
+        name,
+        location,
+        operationTime,
+        snsUrl,
+        externalUrl,
+        introShort,
+        description,
+      } = sponsorForm;
+
       await updateSponsor(sponsorId, {
-        ...sponsorForm,
-        ...(sponsorImageKey !== undefined && { imageKey: sponsorImageKey }),
+        name,
+        location,
+        operationTime,
+        snsUrl,
+        externalUrl,
+        introShort,
+        description,
+        ...(sponsorImageS3Key !== undefined && {
+          imageS3Key: sponsorImageS3Key,
+        }),
       });
 
       const groupIdMap = {};
@@ -44,9 +62,10 @@ export function useSaveSponsorDraft(sponsorId) {
 
       for (const [key, entry] of groupEntries) {
         if (entry.status === 'created') {
+          const { id, ...groupPayload } = entry.data;
           const created = await createSponsorProductGroup(
             sponsorId,
-            entry.data,
+            groupPayload,
           );
           groupIdMap[key] = created.id;
         }
@@ -54,7 +73,8 @@ export function useSaveSponsorDraft(sponsorId) {
 
       for (const [key, entry] of groupEntries) {
         if (entry.status === 'updated') {
-          await updateSponsorProductGroup(sponsorId, key, entry.data);
+          const { id, ...groupPayload } = entry.data;
+          await updateSponsorProductGroup(sponsorId, key, groupPayload);
         }
       }
 
@@ -63,28 +83,29 @@ export function useSaveSponsorDraft(sponsorId) {
       for (const [key, entry] of productEntries) {
         if (entry.status === 'deleted') continue;
 
-        let productImageKey;
+        let productImageS3Key;
         if (entry.file) {
           const { fileKey } = await uploadImage({
             file: entry.file,
             imageType: 'sponsor_product',
             ownerId: sponsorId,
           });
-          productImageKey = fileKey;
+          productImageS3Key = fileKey;
         }
 
-        const resolvedGroupId = String(entry.data.groupId).startsWith(
-          'temp-group-',
-        )
-          ? groupIdMap[entry.data.groupId]
-          : entry.data.groupId;
+        const resolvedGroupId =
+          entry.data.groupId in groupIdMap
+            ? groupIdMap[entry.data.groupId]
+            : entry.data.groupId;
 
         const { name, description, displayOrder } = entry.data;
         const payload = {
           name,
           description,
           ...(resolvedGroupId !== null && { groupId: resolvedGroupId }),
-          ...(productImageKey !== undefined && { imageKey: productImageKey }),
+          ...(productImageS3Key !== undefined && {
+            imageS3Key: productImageS3Key,
+          }),
           ...(displayOrder !== undefined && { displayOrder }),
         };
 
