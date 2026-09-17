@@ -30,6 +30,8 @@ const ORGANIZER_TYPES = [
   { label: '협찬사 주최', value: 'SPONSOR' },
 ];
 
+const LIVE_EVENT_DATE = new Date(2026, 9, 13);
+
 /**
  * @param {'create' | 'edit'} mode - 등록/수정 모드
  * @param {object} [initialData] - 수정 모드일 때 미리 채울 기존 데이터
@@ -42,6 +44,17 @@ const toDateString = (date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
+};
+
+const getDefaultPeriodForType = (type) => {
+  if (type === 'live') {
+    return { start: LIVE_EVENT_DATE, end: LIVE_EVENT_DATE };
+  }
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  return { start: today, end: tomorrow };
 };
 
 function createInitialFormData(initialData) {
@@ -86,8 +99,18 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
 
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload();
 
+  const isLiveEvent = eventType === 'live';
+
   const updateField = (field) => (value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleEventTypeChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      eventType: value,
+      period: getDefaultPeriodForType(value),
+    }));
   };
 
   const handleBlur = (field) => () => {
@@ -195,7 +218,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
                 label={label}
                 variant="button"
                 selected={eventType === value}
-                onClick={() => updateField('eventType')(value)}
+                onClick={() => handleEventTypeChange(value)}
               />
             ))}
           </TagGroup>
@@ -222,6 +245,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
         <DatePicker
           label="기간 설정"
           required
+          disabled={isLiveEvent}
           value={period}
           onChange={updateField('period')}
         />
