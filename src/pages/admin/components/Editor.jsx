@@ -9,6 +9,7 @@ import Placeholder from '@tiptap/extension-placeholder';
 import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 import { useImageUpload } from '@/api/core/s3/useImageUpload';
 import {
+  Wrapper,
   EditorWrapper,
   Toolbar,
   ToolbarButton,
@@ -17,6 +18,7 @@ import {
   LinkBubbleMenu,
   LinkInput,
   LinkActionButton,
+  ErrorText,
 } from './style';
 import {
   PiTextBLight,
@@ -37,6 +39,7 @@ export default function Editor({ content = '', onChange, ownerId, imageType }) {
   const savedSelectionRef = useRef(null);
   const [linkUrl, setLinkUrl] = useState('');
   const [showLinkMenu, setShowLinkMenu] = useState(false);
+  const [touched, setTouched] = useState(false);
   const { toast } = useToastContext();
   const { mutateAsync: uploadImage } = useImageUpload();
   const editor = useEditor({
@@ -65,6 +68,9 @@ export default function Editor({ content = '', onChange, ownerId, imageType }) {
     onUpdate: ({ editor }) => {
       onChange?.(editor.getHTML());
     },
+    onBlur: () => {
+      setTouched(true);
+    },
   });
 
   useEffect(() => {
@@ -84,8 +90,11 @@ export default function Editor({ content = '', onChange, ownerId, imageType }) {
       isBlockquote: ctx.editor?.isActive('blockquote') ?? false,
       isImage: ctx.editor?.isActive('image') ?? false,
       isHorizontalRule: ctx.editor?.isActive('horizontalRule') ?? false,
+      isEmpty: ctx.editor?.isEmpty ?? true,
     }),
   });
+
+  const showError = touched && editorState.isEmpty;
 
   useEffect(() => {
     if (showLinkMenu && savedSelectionRef.current && editor) {
@@ -179,99 +188,102 @@ export default function Editor({ content = '', onChange, ownerId, imageType }) {
   };
 
   return (
-    <EditorWrapper>
-      <Toolbar>
-        <ToolbarButton
-          active={editorState.isBold}
-          onMouseDown={preventMouseDown}
-          onClick={() => editor.chain().focus().toggleBold().run()}
-        >
-          <PiTextBLight />
-        </ToolbarButton>
-        <ToolbarButton
-          active={editorState.isItalic}
-          onMouseDown={preventMouseDown}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-        >
-          <PiTextItalicLight />
-        </ToolbarButton>
-        <ToolbarButton
-          active={editorState.isUnderline}
-          onMouseDown={preventMouseDown}
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-        >
-          <PiTextUnderlineLight />
-        </ToolbarButton>
-        <ToolbarButton
-          active={editorState.isStrike}
-          onMouseDown={preventMouseDown}
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-        >
-          <PiTextStrikethroughLight />
-        </ToolbarButton>
-        <ToolbarButton
-          active={editorState.isLink}
-          onMouseDown={preventMouseDown}
-          onClick={setLink}
-        >
-          <PiLinkSimpleLight />
-        </ToolbarButton>
-        <ToolbarButton
-          active={editorState.isImage}
-          onMouseDown={preventMouseDown}
-          onClick={handleImageClick}
-        >
-          <PiImageLight />
-        </ToolbarButton>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          style={{ display: 'none' }}
-        />
-        <ToolbarButton
-          active={editorState.isBlockquote}
-          onMouseDown={preventMouseDown}
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        >
-          <PiQuotesLight />
-        </ToolbarButton>
-        <ToolbarButton
-          active={editorState.isHorizontalRule}
-          onMouseDown={preventMouseDown}
-          onClick={handleHorizontalRuleClick}
-        >
-          <PiMinusLight />
-        </ToolbarButton>
-      </Toolbar>
-      <Divider />
-      <ContentArea>
-        <BubbleMenu editor={editor} shouldShow={() => showLinkMenu}>
-          <LinkBubbleMenu ref={linkMenuRef}>
-            <LinkInput
-              type="text"
-              value={linkUrl}
-              onChange={(e) => setLinkUrl(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  applyLink();
-                }
-              }}
-              placeholder="링크 URL을 입력하세요"
-            />
-            <LinkActionButton
-              type="button"
-              onMouseDown={preventMouseDown}
-              onClick={applyLink}
-            >
-              적용
-            </LinkActionButton>
-          </LinkBubbleMenu>
-        </BubbleMenu>
-        <EditorContent editor={editor} style={{ width: '100%' }} />
-      </ContentArea>
-    </EditorWrapper>
+    <Wrapper>
+      <EditorWrapper hasError={showError}>
+        <Toolbar>
+          <ToolbarButton
+            active={editorState.isBold}
+            onMouseDown={preventMouseDown}
+            onClick={() => editor.chain().focus().toggleBold().run()}
+          >
+            <PiTextBLight />
+          </ToolbarButton>
+          <ToolbarButton
+            active={editorState.isItalic}
+            onMouseDown={preventMouseDown}
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+          >
+            <PiTextItalicLight />
+          </ToolbarButton>
+          <ToolbarButton
+            active={editorState.isUnderline}
+            onMouseDown={preventMouseDown}
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+          >
+            <PiTextUnderlineLight />
+          </ToolbarButton>
+          <ToolbarButton
+            active={editorState.isStrike}
+            onMouseDown={preventMouseDown}
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+          >
+            <PiTextStrikethroughLight />
+          </ToolbarButton>
+          <ToolbarButton
+            active={editorState.isLink}
+            onMouseDown={preventMouseDown}
+            onClick={setLink}
+          >
+            <PiLinkSimpleLight />
+          </ToolbarButton>
+          <ToolbarButton
+            active={editorState.isImage}
+            onMouseDown={preventMouseDown}
+            onClick={handleImageClick}
+          >
+            <PiImageLight />
+          </ToolbarButton>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+          <ToolbarButton
+            active={editorState.isBlockquote}
+            onMouseDown={preventMouseDown}
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          >
+            <PiQuotesLight />
+          </ToolbarButton>
+          <ToolbarButton
+            active={editorState.isHorizontalRule}
+            onMouseDown={preventMouseDown}
+            onClick={handleHorizontalRuleClick}
+          >
+            <PiMinusLight />
+          </ToolbarButton>
+        </Toolbar>
+        <Divider hasError={showError} />
+        <ContentArea>
+          <BubbleMenu editor={editor} shouldShow={() => showLinkMenu}>
+            <LinkBubbleMenu ref={linkMenuRef}>
+              <LinkInput
+                type="text"
+                value={linkUrl}
+                onChange={(e) => setLinkUrl(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyLink();
+                  }
+                }}
+                placeholder="링크 URL을 입력하세요"
+              />
+              <LinkActionButton
+                type="button"
+                onMouseDown={preventMouseDown}
+                onClick={applyLink}
+              >
+                적용
+              </LinkActionButton>
+            </LinkBubbleMenu>
+          </BubbleMenu>
+          <EditorContent editor={editor} style={{ width: '100%' }} />
+        </ContentArea>
+      </EditorWrapper>
+      <ErrorText hasError={showError}>내용을 입력해주세요.</ErrorText>
+    </Wrapper>
   );
 }
