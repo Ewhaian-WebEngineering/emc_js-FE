@@ -1,14 +1,21 @@
-import { DEV_TEST_ACCOUNTS } from '@/api/core/devAccounts';
+import { setTokens } from '@/api/core/tokenStorage';
+
+const DEV_TEST_ACCOUNTS = JSON.parse(
+  import.meta.env.VITE_DEV_ACCOUNTS_JSON || '[]',
+);
 
 export function TestAccountSwitcher() {
   const handleChange = (e) => {
     const value = e.target.value;
-
     const account = DEV_TEST_ACCOUNTS.find((a) => String(a.userId) === value);
     if (!account) return;
 
-    localStorage.setItem('access_token', account.token);
-    localStorage.setItem('user_role', account.role);
+    setTokens({
+      accessToken: account.token,
+      refreshToken: account.token,
+      userRole: account.role,
+      userId: account.userId,
+    });
     window.location.reload();
   };
 
