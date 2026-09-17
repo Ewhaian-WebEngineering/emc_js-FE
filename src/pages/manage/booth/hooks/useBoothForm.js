@@ -29,6 +29,7 @@ export function useBoothForm(booth, boothId) {
   const fields = draft.boothFields ?? booth;
   const boothForm = {
     ...fields,
+    categories: fields.categories?.length > 0 ? fields.categories : ['food'],
     marks: getBoothMarks(fields).length > 0 ? getBoothMarks(fields) : ['none'],
     name: booth.name,
     location: booth.location,
