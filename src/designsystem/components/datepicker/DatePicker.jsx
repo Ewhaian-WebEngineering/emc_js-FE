@@ -34,6 +34,7 @@ export default function DatePicker({
   const [internalStart, setInternalStart] = useState(value?.start ?? null);
   const [internalEnd, setInternalEnd] = useState(value?.end ?? null);
   const [activeField, setActiveField] = useState(null);
+  const [lastEditedField, setLastEditedField] = useState(null);
 
   const anchorRef = useRef(null);
 
@@ -42,9 +43,16 @@ export default function DatePicker({
 
   const rangeError = useMemo(() => {
     if (start && end && isAfter(start, end)) {
-      return '시작일은 종료일보다 이후일 수 없어요.';
+      return lastEditedField === 'end'
+        ? '종료일은 시작일보다 이전일 수 없어요.'
+        : '시작일은 종료일보다 이후일 수 없어요.';
     }
-  }, [start, end]);
+
+    const onlySelectedOneSide = Boolean(start) !== Boolean(end);
+    if (required && !activeField && onlySelectedOneSide) {
+      return '날짜를 모두 선택해 주세요.';
+    }
+  }, [start, end, lastEditedField, required, activeField]);
 
   const errorMessage = externalError || rangeError;
 
@@ -61,8 +69,10 @@ export default function DatePicker({
 
   const handleSelectDate = (date) => {
     if (activeField === 'start') {
+      setLastEditedField('start');
       emitChange(date, end);
     } else if (activeField === 'end') {
+      setLastEditedField('end');
       emitChange(start, date);
     }
   };
