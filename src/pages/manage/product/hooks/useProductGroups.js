@@ -160,7 +160,7 @@ export function useProductGroups(productGroups, { groupId, onGroupIdChange }) {
     const { confirmed } = await showModal({
       variant: 'danger',
       title: '해당 그룹을 삭제하시겠습니까?',
-      description: '삭제하시면 다시 되돌릴 수 없어요.',
+      description: `해당 그룹으로 설정된 제품은\n'그룹없음'으로 이동합니다.`,
       cancelText: '취소',
       confirmText: '삭제하기',
     });
