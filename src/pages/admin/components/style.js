@@ -3,14 +3,18 @@ import { semantic } from '@/designsystem/tokens/semantic';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { typography } from '@/designsystem/tokens/typography';
 
+export const Wrapper = styled.div``;
+
 export const EditorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: ${measurement.spacing8};
   align-self: stretch;
-  border-radius: ${measurement.spacing20};
-  border: ${measurement.borderRadiusSm} solid ${semantic.borderNormalNormal};
+  border-radius: ${measurement.borderRadiusXl};
+  border: ${measurement.borderWidthXs} solid
+    ${({ hasError }) =>
+      hasError ? semantic.statusDanger : semantic.borderNormalNormal};
   background: ${semantic.fillNormalWhite};
   overflow: hidden;
 `;
@@ -49,8 +53,9 @@ export const ToolbarButton = styled.button`
 
 export const Divider = styled.div`
   align-self: stretch;
-  border-bottom: ${measurement.borderRadiusSm} solid
-    ${semantic.borderNormalNormal};
+  border-bottom: ${measurement.borderWidthXs} solid
+    ${({ hasError }) =>
+      hasError ? semantic.statusDanger : semantic.borderNormalNormal};
 `;
 
 export const ContentArea = styled.div`
@@ -171,4 +176,11 @@ export const LinkActionButton = styled.button`
   &:hover {
     background: ${semantic.fillNormalStrong};
   }
+`;
+
+export const ErrorText = styled.p`
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: ${semantic.statusDanger};
+  visibility: ${({ hasError }) => (hasError ? 'visible' : 'hidden')};
 `;
