@@ -37,7 +37,6 @@ import {
   useNoticeList,
 } from '@/api/feature/booth/useBoothData';
 import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSections';
-import { useProductGroupList } from '@/api/feature/booth/useBoothData';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -104,10 +103,7 @@ function BoothEditForm({ booth, boothId }) {
       confirmText: '계속 작성하기',
     });
 
-    if (!confirmed) {
-      resetDraft();
-      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
-    }
+    if (!confirmed) return;
   };
 
   const clickDeleteProduct = (productId) => {
