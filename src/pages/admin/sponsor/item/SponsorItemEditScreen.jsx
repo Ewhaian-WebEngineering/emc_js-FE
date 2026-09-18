@@ -4,9 +4,11 @@ import { ADMIN_ROUTES } from '@/constants/routes';
 import { useSponsorDetail } from '@/api/feature/admin/useSponsorManageData';
 import { upsertSponsorItemDraft } from '../store/sponsorDraftStore';
 import SponsorItemFormScreen from './SponsorItemFormScreen';
+import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
 export default function SponsorItemEditScreen() {
   const { sponsorId, itemId } = useParams();
+  const { toast } = useToastContext();
   const location = useLocation();
   const navigate = useNavigate();
   const stateItem = location.state?.itemData;
@@ -32,6 +34,7 @@ export default function SponsorItemEditScreen() {
       file: thumbnailFile,
     });
 
+    toast({ message: '변경사항이 저장되었어요.' });
     navigate(ADMIN_ROUTES.SPONSOR_EDIT(sponsorId));
   };
 

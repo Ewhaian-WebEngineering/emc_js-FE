@@ -1,6 +1,7 @@
 import { useGoBack } from '@/hooks/useGoBack';
 import { upsertProductDraft } from '../store/boothDraftStore';
 import ProductFormScreen from './ProductFormScreen';
+import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
 function createTempProductId() {
   return `temp-product-${crypto.randomUUID()}`;
@@ -8,6 +9,7 @@ function createTempProductId() {
 
 export default function ProductCreateScreen() {
   const goBack = useGoBack();
+  const { toast } = useToastContext();
 
   const handleSubmit = async (values, thumbnailFile) => {
     const { name, price, isOnSale, description, groupId } = values;
@@ -25,6 +27,8 @@ export default function ProductCreateScreen() {
       },
       file: thumbnailFile,
     });
+
+    toast({ message: '변경사항이 저장되었어요.' });
 
     goBack();
   };

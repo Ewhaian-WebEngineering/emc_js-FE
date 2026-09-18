@@ -10,12 +10,14 @@ import { NoticeFormContainer, NoticeFormContent } from './style';
 import { useNoticeList } from '@/api/feature/booth/useBoothData';
 import { useBoothDraftStore } from '../manage/store/useBoothDraftStore';
 import { upsertNoticeDraft } from '../manage/store/boothDraftStore';
+import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
 export default function BoothNoticeFormScreen({ mode }) {
   const { boothId, noticeId } = useParams();
   const location = useLocation();
   const { data: noticeList } = useNoticeList(boothId);
   const draft = useBoothDraftStore();
+  const { toast } = useToastContext();
 
   const isEdit = mode === 'edit';
   const draftEntry = isEdit ? draft.notices[noticeId] : null;
@@ -94,6 +96,10 @@ export default function BoothNoticeFormScreen({ mode }) {
         data: { title: trimmedTitle, content: trimmedContent },
       });
     }
+
+    toast({
+      message: '변경사항이 저장되었어요.',
+    });
 
     navigate(MANAGE_ROUTES.BOOTH_EDIT(boothId));
   };
