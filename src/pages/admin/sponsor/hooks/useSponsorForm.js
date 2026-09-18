@@ -95,6 +95,7 @@ export function useSponsorForm({ sponsor, onSubmit }) {
     updateField,
     visibleErrors,
     isButtonDisabled,
+    isDirty: isSponsorDraftDirty(),
     handleSubmit,
     handleUploadError,
   };

@@ -131,7 +131,7 @@ export function useSaveSponsorDraft(sponsorId) {
 
       resetSponsorDraft();
       queryClient.invalidateQueries({
-        queryKey: ['sponsor-detail', sponsorId],
+        queryKey: ['sponsor', sponsorId],
       });
       navigate(ADMIN_ROUTES.DASHBOARD);
     } finally {

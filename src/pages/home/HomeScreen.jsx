@@ -113,15 +113,15 @@ export default function HomeScreen() {
         <SectionHeader>
           <SectionTitleWrapper>
             <SectionTitle>협찬사</SectionTitle>
-            <SectionSubTitle>
-              제12회 종합손물세트와 함께하는 협찬사가 궁금하다면?
-            </SectionSubTitle>
+            <ViewAllButton
+              onClick={() => {
+                navigate(SPONSOR_ROUTES.LIST);
+              }}
+            />
           </SectionTitleWrapper>
-          <ViewAllButton
-            onClick={() => {
-              navigate(SPONSOR_ROUTES.LIST);
-            }}
-          />
+          <SectionSubTitle>
+            제12회 종합손물세트와 함께하는 협찬사가 궁금하다면?
+          </SectionSubTitle>
         </SectionHeader>
         <SponsorList list={sponsorData || []} />
       </SectionContainer>
@@ -132,15 +132,15 @@ export default function HomeScreen() {
         <SectionHeader>
           <SectionTitleWrapper>
             <SectionTitle>EVENT</SectionTitle>
-            <SectionSubTitle>
-              이벤트 참여하고 제12회 종합손물세트 200% 즐기기
-            </SectionSubTitle>
+            <ViewAllButton
+              onClick={() => {
+                navigate(EVENT_ROUTES.LIST);
+              }}
+            />
           </SectionTitleWrapper>
-          <ViewAllButton
-            onClick={() => {
-              navigate(EVENT_ROUTES.LIST);
-            }}
-          />
+          <SectionSubTitle>
+            이벤트 참여하고 제12회 종합손물세트 200% 즐기기
+          </SectionSubTitle>
         </SectionHeader>
         <EventTabs list={eventData || []} />
       </SectionContainer>
