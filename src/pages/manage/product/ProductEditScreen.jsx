@@ -5,12 +5,14 @@ import { useProductDetail } from '@/api/feature/product/useProductData';
 import { useMemo } from 'react';
 import { upsertProductDraft } from '../store/boothDraftStore';
 import ProductFormScreen from './ProductFormScreen';
+import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
 export default function ProductEditScreen() {
   const { productId } = useParams();
   const location = useLocation();
   const goBack = useGoBack();
   const draft = useBoothDraftStore();
+  const { toast } = useToastContext();
 
   const stateProduct = location.state?.productData;
   const isTemp = productId.startsWith('temp-product-');
@@ -46,6 +48,8 @@ export default function ProductEditScreen() {
       },
       file: thumbnailFile ?? draftEntry?.file ?? null,
     });
+
+    toast({ message: '변경사항이 저장되었어요.' });
 
     goBack();
   };
