@@ -9,9 +9,7 @@ import { useNoticeList } from '@/api/feature/booth/useBoothData';
 
 export default function BoothNoticeScreen() {
   const { boothId } = useParams();
-  const handleBack = useGoBack({
-    fallback: BOOTH_ROUTES.DETAIL(boothId),
-  });
+  const handleBack = useGoBack(BOOTH_ROUTES.DETAIL(boothId));
 
   const { data: noticeList } = useNoticeList(boothId);
 

@@ -5,6 +5,7 @@ import { BoothListCardWrapper, BoothListWrapper } from './style';
 import { useNavigate } from 'react-router-dom';
 import { BOOTH_ROUTES } from '@/constants/routes';
 import { useBoothScrap } from '@/api/feature/scrap/useScrap';
+import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
 export default function BoothList({ booths }) {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function BoothList({ booths }) {
 }
 
 function BoothListItem({ booth, onClick }) {
+  const { toast } = useToastContext();
   const { mutate: scrapBooth, isPending } = useBoothScrap(booth.id);
 
   return (
@@ -43,7 +45,15 @@ function BoothListItem({ booth, onClick }) {
       onClick={onClick}
       onBookmarkClick={() => {
         if (isPending) return;
-        scrapBooth();
+        scrapBooth(undefined, {
+          onSuccess: (data) => {
+            toast({
+              message: data.isScrapped
+                ? '스크랩했어요.'
+                : '스크랩을 취소했어요.',
+            });
+          },
+        });
       }}
     />
   );
