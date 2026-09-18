@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
@@ -89,6 +89,19 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const [touched, setTouched] = useState({
     title: false,
   });
+
+  const prevInitialDataRef = useRef(initialData);
+
+  useEffect(() => {
+    if (initialData && initialData !== prevInitialDataRef.current) {
+      prevInitialDataRef.current = initialData;
+      const next = createInitialFormData(initialData);
+      initialFormDataRef.current = next;
+      setFormData(next);
+      setImageFile(null);
+    }
+  }, [initialData]);
+
   const {
     imageUrl,
     title,

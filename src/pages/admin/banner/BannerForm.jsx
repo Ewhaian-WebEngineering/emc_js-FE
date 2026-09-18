@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
@@ -75,6 +75,18 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const [formData, setFormData] = useState(() => initialFormDataRef.current);
   const [imageFile, setImageFile] = useState(null);
   const [touched, setTouched] = useState({ title: false, url: false });
+
+  const prevInitialDataRef = useRef(initialData);
+
+  useEffect(() => {
+    if (initialData && initialData !== prevInitialDataRef.current) {
+      prevInitialDataRef.current = initialData;
+      const next = createInitialFormData(initialData);
+      initialFormDataRef.current = next;
+      setFormData(next);
+      setImageFile(null);
+    }
+  }, [initialData]);
 
   const { imageUrl, title, period, url } = formData;
   const { mutateAsync: uploadImage, isPending: isUploading } = useImageUpload();

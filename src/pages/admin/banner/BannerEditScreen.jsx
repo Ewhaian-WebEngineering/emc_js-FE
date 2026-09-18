@@ -1,20 +1,20 @@
 import BannerForm from './BannerForm';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ADMIN_ROUTES } from '@/constants/routes';
+import { useParams } from 'react-router-dom';
 import { useBanner, useUpdateBanner } from '@/api/feature/admin/useBannerData';
+import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
 export default function BannerEditScreen() {
-  const navigate = useNavigate();
   const { bannerId } = useParams();
   const { data: banner } = useBanner(bannerId);
   const { mutate: updateBanner } = useUpdateBanner();
+  const { toast } = useToastContext();
 
   const handleSubmit = (payload) => {
     updateBanner(
       { bid: bannerId, ...payload },
       {
         onSuccess: () => {
-          navigate(ADMIN_ROUTES.DASHBOARD);
+          toast({ message: '변경 사항이 저장되었어요.' });
         },
       },
     );
