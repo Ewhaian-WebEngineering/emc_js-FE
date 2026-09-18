@@ -108,6 +108,8 @@ export default function BoothListCard({
           {categories.map((category) => (
             <Badge key={category} size="sm" variant={category} />
           ))}
+          {isEco && <Badge key="eco" size="sm" variant="eco" />}
+          {isVegan && <Badge key="vegan" size="sm" variant="vegan" />}
         </BoothCardBadges>
       </BoothCardContent>
     </BoothListCardContainer>
