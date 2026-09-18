@@ -165,6 +165,7 @@ export const SponsorItemContainer = styled.div`
   align-items: center;
   gap: ${measurement.spacing8};
   cursor: pointer;
+  text-align: center;
 `;
 
 export const SponsorItemThumbnail = styled.div`

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import { useSponsorDetail } from '@/api/feature/admin/useSponsorManageData';
