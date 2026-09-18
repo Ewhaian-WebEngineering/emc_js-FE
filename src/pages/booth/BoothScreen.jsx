@@ -47,6 +47,8 @@ export default function BoothScreen() {
     setCategory(nextCategory);
   };
 
+  const { totalCount } = useBoothData({ category, sort, time, limit: 20 });
+
   return (
     <ScreenWrapper>
       <FillRightHeader
@@ -63,6 +65,7 @@ export default function BoothScreen() {
         border
       />
       <BoothFilterBar
+        count={totalCount}
         categoryTabs={CATEGORY_TABS}
         categoryValue={category}
         sortValue={sort}

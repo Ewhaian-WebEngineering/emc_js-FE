@@ -36,6 +36,7 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
     updateField,
     visibleErrors,
     isButtonDisabled,
+    isDirty,
     handleSubmit,
     handleUploadError,
   } = useSponsorForm({ sponsor, submitLabel, onSubmit });
@@ -50,6 +51,11 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
   } = useSponsorItemSections(sponsor, sponsorId);
 
   const handleBack = async () => {
+    if (!isDirty) {
+      goBack();
+      return;
+    }
+
     await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
