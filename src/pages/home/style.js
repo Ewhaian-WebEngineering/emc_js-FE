@@ -124,14 +124,14 @@ export const SectionContainer = styled.div`
 
 export const SectionHeader = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: ${measurement.spacing4};
 `;
 
 export const SectionTitleWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: ${measurement.spacing4};
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const SectionTitle = styled.h2`
