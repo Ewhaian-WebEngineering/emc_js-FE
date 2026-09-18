@@ -158,6 +158,7 @@ export const NoticeFormContent = styled.div`
 export const NoticeContentText = styled.p`
   ${typography.body2Regular};
   color: ${semantic.textNormalNormal};
+  white-space: pre-line;
 `;
 
 export const WhiteSpace = styled.div`
