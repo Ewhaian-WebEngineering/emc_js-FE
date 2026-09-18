@@ -54,6 +54,7 @@ export default function BannerSection({ banners = [] }) {
           </ButtonContent>
         }
         onClick={handleAdd}
+        disabled={banners.length >= 3}
       />
       <CardWrapper>
         {banners.map((banner) => (

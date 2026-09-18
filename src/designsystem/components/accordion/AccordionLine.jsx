@@ -96,10 +96,16 @@ function AccordionLineContentGuide({ description }) {
  *
  * @param {string} buttonText - 버튼 텍스트
  * @param {function} onClick - 버튼 클릭 시 실행될 함수
+ * @param {boolean} disabled - 버튼 비활성화 여부
  */
-function AccordionLineActionButton({ buttonText, onClick }) {
+function AccordionLineActionButton({ buttonText, onClick, disabled }) {
   return (
-    <BoxButton variant="primary" size="md" onClick={onClick}>
+    <BoxButton
+      variant="primary"
+      size="md"
+      onClick={onClick}
+      disabled={disabled}
+    >
       {buttonText}
     </BoxButton>
   );
