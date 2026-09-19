@@ -41,6 +41,8 @@ import { getBoothMarks } from '@/utils/formatBooth';
 import BoothLocationModal from './components/BoothLocationModal';
 import { useBoothScrap } from '@/api/feature/scrap/useScrap';
 import { useToast } from '@/hooks/toast/useToast';
+import { getKakaoAuthorizeUrl, useAuth } from '@/api/feature/auth/useAuth';
+import LoginBottomSheet from '@/pages/my/components/LoginBottomSheet';
 
 export default function BoothDetailContent({
   booth,
@@ -49,11 +51,13 @@ export default function BoothDetailContent({
 }) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isLoggedIn } = useAuth();
   const [boothDescriptionExpanded, setBoothDescriptionExpanded] =
     useState(false);
   const [allergyDescriptionExpanded, setAllergyDescriptionExpanded] =
     useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
   const tabBarRef = useRef(null);
   const [tabBarHeight, setTabBarHeight] = useState(0);
@@ -79,7 +83,14 @@ export default function BoothDetailContent({
     useBoothScrap(boothId);
 
   const handleBookmarkClick = () => {
-    if (!interactive || isScrapPending) return;
+    if (!interactive) return;
+
+    if (!isLoggedIn) {
+      setIsLoginSheetOpen(true);
+      return;
+    }
+
+    if (isScrapPending) return;
     toggleScrap(undefined, {
       onSuccess: (data) => {
         toast({
@@ -87,14 +98,22 @@ export default function BoothDetailContent({
           ...(data.isScrapped && {
             action: {
               label: '바로가기',
-              onClick: () => {
-                navigate(TAB_ROUTES.SCRAP);
-              },
+              onClick: () => navigate(TAB_ROUTES.SCRAP),
             },
           }),
         });
       },
+      onError: (error) => {
+        const status = error.status ?? error.response?.status;
+        if (status === 401) {
+          setIsLoginSheetOpen(true);
+        }
+      },
     });
+  };
+
+  const handleKakaoLogin = () => {
+    window.location.href = getKakaoAuthorizeUrl();
   };
 
   const handleNoticeClick = () => {
@@ -273,6 +292,12 @@ export default function BoothDetailContent({
           onClose={() => setIsLocationModalOpen(false)}
         />
       )}
+
+      <LoginBottomSheet
+        isOpen={isLoginSheetOpen}
+        onClose={() => setIsLoginSheetOpen(false)}
+        onKakaoLogin={handleKakaoLogin}
+      />
     </>
   );
 }
