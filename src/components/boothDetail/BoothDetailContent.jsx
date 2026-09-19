@@ -13,7 +13,7 @@ import Divider from '@/designsystem/components/divider/Divider';
 import AccordionDescription from '@/designsystem/components/accordion/AccordionDescription';
 import Tab from '@/designsystem/components/tab/Tab';
 import { useScrollSpyTabs } from '@/hooks/useScrollSpyTabs';
-import { BOOTH_ROUTES } from '@/constants/routes';
+import { BOOTH_ROUTES, TAB_ROUTES } from '@/constants/routes';
 import { BOOTH_DETAIL_TABS } from '@/components/boothDetail/tabs';
 import {
   RepresentativeImageWrapper,
@@ -39,6 +39,10 @@ import Image from '@/designsystem/components/Image';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 import { getBoothMarks } from '@/utils/formatBooth';
 import BoothLocationModal from './components/BoothLocationModal';
+import { useBoothScrap } from '@/api/feature/scrap/useScrap';
+import { useToast } from '@/hooks/toast/useToast';
+import { getKakaoAuthorizeUrl, useAuth } from '@/api/feature/auth/useAuth';
+import LoginBottomSheet from '@/pages/my/components/LoginBottomSheet';
 
 export default function BoothDetailContent({
   booth,
@@ -46,11 +50,14 @@ export default function BoothDetailContent({
   interactive = true,
 }) {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { isLoggedIn } = useAuth();
   const [boothDescriptionExpanded, setBoothDescriptionExpanded] =
     useState(false);
   const [allergyDescriptionExpanded, setAllergyDescriptionExpanded] =
     useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
 
   const tabBarRef = useRef(null);
   const [tabBarHeight, setTabBarHeight] = useState(0);
@@ -71,6 +78,43 @@ export default function BoothDetailContent({
     BOOTH_DETAIL_TABS,
     tabBarHeight,
   );
+
+  const { mutate: toggleScrap, isPending: isScrapPending } =
+    useBoothScrap(boothId);
+
+  const handleBookmarkClick = () => {
+    if (!interactive) return;
+
+    if (!isLoggedIn) {
+      setIsLoginSheetOpen(true);
+      return;
+    }
+
+    if (isScrapPending) return;
+    toggleScrap(undefined, {
+      onSuccess: (data) => {
+        toast({
+          message: data.isScrapped ? '스크랩했어요.' : '스크랩을 취소했어요.',
+          ...(data.isScrapped && {
+            action: {
+              label: '바로가기',
+              onClick: () => navigate(TAB_ROUTES.SCRAP),
+            },
+          }),
+        });
+      },
+      onError: (error) => {
+        const status = error.status ?? error.response?.status;
+        if (status === 401) {
+          setIsLoginSheetOpen(true);
+        }
+      },
+    });
+  };
+
+  const handleKakaoLogin = () => {
+    window.location.href = getKakaoAuthorizeUrl();
+  };
 
   const handleNoticeClick = () => {
     if (!interactive) return;
@@ -105,9 +149,15 @@ export default function BoothDetailContent({
           <BoothName>{booth.name || '-'}</BoothName>
           {interactive &&
             (booth.isScrapped ? (
-              <BookMarkFill color={semantic.iconPrimaryNormal} />
+              <BookMarkFill
+                color={semantic.iconPrimaryNormal}
+                onClick={handleBookmarkClick}
+              />
             ) : (
-              <BookMarkStroke color={semantic.iconNormalAssistive} />
+              <BookMarkStroke
+                color={semantic.iconNormalAssistive}
+                onClick={handleBookmarkClick}
+              />
             ))}
         </BoothInfoHeader>
         <Badges>
@@ -173,12 +223,14 @@ export default function BoothDetailContent({
         onToggle={() => setBoothDescriptionExpanded(!boothDescriptionExpanded)}
       />
 
-      {booth.categories?.includes('food') && booth.allergenInfo && (
+      {booth.categories?.includes('food') && (
         <>
           <Divider size="lg" />
           <AccordionDescription
             title="원재료 / 알레르기 정보"
-            description={booth.allergenInfo || '등록된 정보가 없습니다.'}
+            description={
+              booth.allergenInfo || '등록된 식품영양정보가 없습니다.'
+            }
             expanded={allergyDescriptionExpanded}
             onToggle={() =>
               setAllergyDescriptionExpanded(!allergyDescriptionExpanded)
@@ -242,6 +294,12 @@ export default function BoothDetailContent({
           onClose={() => setIsLocationModalOpen(false)}
         />
       )}
+
+      <LoginBottomSheet
+        isOpen={isLoginSheetOpen}
+        onClose={() => setIsLoginSheetOpen(false)}
+        onKakaoLogin={handleKakaoLogin}
+      />
     </>
   );
 }

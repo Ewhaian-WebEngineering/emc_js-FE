@@ -14,6 +14,7 @@ import { InfiniteScrollLoader } from '@/components/common/style';
 import { CATEGORY_TABS } from '@/constants/categoryTabs';
 import { useMemo, useRef } from 'react';
 import useHorizontalPager from './hooks/useHorizontalPages';
+import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 
 const CATEGORY_LIST = CATEGORY_TABS.map((tab) => tab.value);
 
@@ -108,6 +109,17 @@ function CategoryPanel({ category, sort, time }) {
       <InfiniteScrollLoader>
         <Spinner />
       </InfiniteScrollLoader>
+    );
+  }
+
+  if (boothListData.length === 0) {
+    return (
+      <EmptyState
+        variant="md"
+        title="조건에 맞는 부스가 없어요."
+        description="카테고리나 필터를 변경해보세요."
+        height={375}
+      />
     );
   }
 

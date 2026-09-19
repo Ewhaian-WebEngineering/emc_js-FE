@@ -16,6 +16,7 @@ import {
   IntroImage,
   KakaoOpenChannelButton,
   KakaoOpenChannelContent,
+  PopularBoothSectionHeader,
   PopularBoothUpdateTime,
   SectionContainer,
   SectionHeader,
@@ -98,12 +99,12 @@ export default function HomeScreen() {
       <Divider size="lg" />
 
       <SectionContainer>
-        <SectionHeader>
+        <PopularBoothSectionHeader>
           <SectionTitle>실시간 인기 부스 TOP 10</SectionTitle>
           <PopularBoothUpdateTime>
             오늘 {popularBoothData?.updatedAt || '00:00'} 기준
           </PopularBoothUpdateTime>
-        </SectionHeader>
+        </PopularBoothSectionHeader>
         <PopularBoothRanking list={popularBoothData?.booths || []} />
       </SectionContainer>
 

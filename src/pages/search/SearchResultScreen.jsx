@@ -1,6 +1,6 @@
 import SearchHeader from '@/designsystem/components/header/SearchHeader';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 import SearchBoothList from '../../components/BoothList';
 import { useGoBack } from '@/hooks/useGoBack';
@@ -11,13 +11,17 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import Spinner from '@/designsystem/components/spinner/Spinner';
 import { useSearchBooths } from '@/api/feature/search/useSearchData';
 import { InfiniteScrollLoader } from '@/components/common/style';
+import { cleanSearchInput } from './utils/searchInput';
 
 export default function SearchResultScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
   const handleBack = useGoBack();
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query') || '';
-  const [searchValue, setSearchValue] = useState(query);
+  const rawQuery = location.state?.rawQuery;
+
+  const [searchValue, setSearchValue] = useState(rawQuery ?? query);
 
   const { category, setCategory, sort, setSort, time, setTime } =
     useBoothFilter('all');
@@ -51,7 +55,7 @@ export default function SearchResultScreen() {
           navigate(SEARCH_ROUTES.SEARCH, { replace: true });
         }}
         onSearch={() => {
-          const trimmed = searchValue.trim();
+          const trimmed = cleanSearchInput(searchValue);
           if (!trimmed) return;
           navigate(`/search/result?query=${encodeURIComponent(trimmed)}`, {
             replace: true,

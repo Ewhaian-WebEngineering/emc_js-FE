@@ -29,6 +29,7 @@ export const NoticeContent = styled.div`
   padding-inline: ${measurement.spacing4};
   ${typography.caption1Regular};
   color: ${semantic.textNormalStrong};
+  white-space: pre-line;
 `;
 
 export const ContactTabContainer = styled.div`

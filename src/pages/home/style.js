@@ -128,6 +128,13 @@ export const SectionHeader = styled.div`
   gap: ${measurement.spacing4};
 `;
 
+export const PopularBoothSectionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${measurement.spacing4};
+`;
+
 export const SectionTitleWrapper = styled.div`
   display: flex;
   align-items: center;

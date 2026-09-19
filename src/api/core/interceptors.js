@@ -67,19 +67,29 @@ export function attachResponseInterceptor(instance) {
 
       const apiError = ApiError.from(error);
 
-      // POST(등록/생성) 요청 실패했을 때만 공통 모달 노출.
+      const MODAL_TARGET_METHODS = ['post', 'patch', 'put'];
+
       const shouldShowModal =
         config?.showErrorModal ??
-        (config?.method?.toLowerCase() === 'post' && !config?.skipErrorModal);
+        (MODAL_TARGET_METHODS.includes(config?.method?.toLowerCase()) &&
+          !config?.skipErrorModal);
 
       if (shouldShowModal) {
+        const customOptions =
+          typeof config?.errorModal === 'function'
+            ? config.errorModal(apiError)
+            : config?.errorModal;
+
         modalStore.show({
           variant: 'alert',
           title: '등록에 실패했습니다.',
           description: '잠시 후 다시 시도해주세요.',
           cancelText: '확인',
+          onCancel: () => {},
+          ...customOptions,
         });
       }
+
       return Promise.reject(apiError);
     },
   );

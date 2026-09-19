@@ -20,6 +20,7 @@ import { SEARCH_ROUTES } from '@/constants/routes';
 import { useSearchData } from '@/api/feature/search/useSearchData';
 import { useRecentSearches } from './hooks/useRecentSearches';
 import { useAuth } from '@/api/feature/auth/useAuth';
+import { cleanSearchInput } from './utils/searchInput';
 
 export default function SearchScreen() {
   const navigate = useNavigate();
@@ -39,11 +40,12 @@ export default function SearchScreen() {
         onChange={setSearchValue}
         onDelete={() => setSearchValue('')}
         onSearch={() => {
-          const trimmed = searchValue.trim();
+          const trimmed = cleanSearchInput(searchValue);
           if (!trimmed) return;
-          addSearch(trimmed);
+          addSearch(searchValue);
           navigate(
             `${SEARCH_ROUTES.SEARCH_RESULT}?query=${encodeURIComponent(trimmed)}`,
+            { state: { rawQuery: searchValue } },
           );
         }}
         border
@@ -74,12 +76,12 @@ export default function SearchScreen() {
                   key={index}
                   variant="sorting"
                   label={search}
-                  onDelete={() => {
-                    removeSearch(index);
-                  }}
+                  onDelete={() => removeSearch(index)}
                   onClick={() => {
+                    const trimmed = cleanSearchInput(search);
                     navigate(
-                      `${SEARCH_ROUTES.SEARCH_RESULT}?query=${encodeURIComponent(search)}`,
+                      `${SEARCH_ROUTES.SEARCH_RESULT}?query=${encodeURIComponent(trimmed)}`,
+                      { state: { rawQuery: search } },
                     );
                   }}
                 />
