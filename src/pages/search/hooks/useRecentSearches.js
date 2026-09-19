@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getRecentSearchKey } from '../utils/recentSearchKey';
 
-const MAX_COUNT = 10;
+const MAX_COUNT = 3;
 
 export function useRecentSearches(userId) {
   const key = getRecentSearchKey(userId);
