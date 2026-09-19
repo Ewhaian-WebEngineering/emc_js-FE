@@ -15,7 +15,8 @@ export const useCreateEvent = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createEventApi,
+    mutationFn: ({ errorModal, ...data }) =>
+      createEventApi(data, { errorModal }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEY });
     },
@@ -33,7 +34,8 @@ export const useUpdateEvent = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateEventApi,
+    mutationFn: ({ errorModal, ...data }) =>
+      updateEventApi(data, { errorModal }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEY });
       queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
