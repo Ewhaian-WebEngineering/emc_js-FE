@@ -40,7 +40,7 @@ export default function EventList({ list }) {
               thumbnail={event.imageUrl}
               eventTitle={event.title}
               startDate={event.startDate}
-              endDate={event.endDate}
+              endDate={selectedTab === 'live' ? undefined : event.endDate}
               status={event.status}
               onClick={() => navigate(EVENT_ROUTES.DETAIL(event.id))}
             />
