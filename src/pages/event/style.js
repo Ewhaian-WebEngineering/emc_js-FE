@@ -204,6 +204,52 @@ export const EventContent = styled.section`
   strong {
     font-weight: 700;
   }
+
+  i,
+  em {
+    font-style: italic;
+  }
+
+  u {
+    text-decoration: underline;
+  }
+
+  s {
+    text-decoration: line-through;
+  }
+
+  a {
+    color: ${semantic.textPrimaryNormal};
+    text-decoration: underline;
+  }
+
+  hr {
+    border: none;
+    border-top: ${measurement.borderWidthSm} solid
+      ${semantic.borderNormalNormal};
+    margin: ${measurement.spacing24} 0;
+    width: 100%;
+  }
+
+  blockquote {
+    width: 100%;
+    margin: ${measurement.spacing16} 0;
+    padding: ${measurement.spacing12} ${measurement.spacing16};
+    border-left: 3px solid ${semantic.borderNormalNormal};
+    background-color: ${semantic.fillPrimaryAssistive};
+    color: ${semantic.textNormalNormal};
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: ${measurement.borderRadiusMd};
+    margin: ${measurement.spacing12} 0;
+  }
 `;
 
 export const SponsorSection = styled.section`
