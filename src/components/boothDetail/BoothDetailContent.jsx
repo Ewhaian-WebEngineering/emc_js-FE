@@ -223,12 +223,14 @@ export default function BoothDetailContent({
         onToggle={() => setBoothDescriptionExpanded(!boothDescriptionExpanded)}
       />
 
-      {booth.categories?.includes('food') && booth.allergenInfo && (
+      {booth.categories?.includes('food') && (
         <>
           <Divider size="lg" />
           <AccordionDescription
             title="원재료 / 알레르기 정보"
-            description={booth.allergenInfo || '등록된 정보가 없습니다.'}
+            description={
+              booth.allergenInfo || '등록된 식품영양정보가 없습니다.'
+            }
             expanded={allergyDescriptionExpanded}
             onToggle={() =>
               setAllergyDescriptionExpanded(!allergyDescriptionExpanded)
