@@ -99,7 +99,7 @@ export const makers = [
           {
             name: '노가령',
             studentId: '2618029',
-            major: '데이터사이언스학부',
+            major: '인공지능데이터사이언스학부',
           },
         ],
       },
