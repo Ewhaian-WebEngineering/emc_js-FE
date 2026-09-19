@@ -11,7 +11,14 @@ export default function EventEditScreen() {
 
   const handleSubmit = (payload) => {
     updateEvent(
-      { eid: eventId, ...payload },
+      {
+        eid: eventId,
+        ...payload,
+        errorModal: {
+          title: '등록에 실패했습니다.',
+          description: '잠시 후 다시 시도해주세요.',
+        },
+      },
       {
         onSuccess: () => {
           toast({ message: '변경 사항이 저장되었어요.' });

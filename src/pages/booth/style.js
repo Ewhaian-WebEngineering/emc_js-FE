@@ -8,7 +8,7 @@ export const ScreenWrapper = styled.div`
   flex-direction: column;
   min-height: 100dvh;
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 `;
 
 export const SearchButton = styled.button`

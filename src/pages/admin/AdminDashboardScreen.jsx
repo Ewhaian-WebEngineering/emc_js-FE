@@ -24,11 +24,12 @@ import {
   ManagementCardStats,
   DashboardTitle,
 } from './style.js';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { TAB_ROUTES } from '../../constants/routes';
 
 export default function AdminDashboardScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { data } = useAdminDashboard();
   const { mutate: updateCongestion } = useUpdateCongestion();
   useCongestionStream();
@@ -43,6 +44,8 @@ export default function AdminDashboardScreen() {
     if (!value) return;
     updateCongestion({ level: value });
   };
+
+  const expandSection = location.state?.expandSection;
 
   return (
     <DashboardContainer>
@@ -74,7 +77,10 @@ export default function AdminDashboardScreen() {
       </FestivalInfo>
 
       <SponsorSection sponsors={data.sponsors.list} />
-      <EventSection events={data.events} />
+      <EventSection
+        events={data.events}
+        defaultExpanded={expandSection === 'event'}
+      />
       <BannerSection banners={data.banners.list} />
       <FaqSection faqs={data.faqs.list} />
       <BoothSection booths={data.booths.list} />
