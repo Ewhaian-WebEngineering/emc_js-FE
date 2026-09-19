@@ -128,7 +128,7 @@ export default function EventScreen() {
                     key={event.id}
                     eventTitle={event.title}
                     startDate={event.startDate}
-                    endDate={event.endDate}
+                    endDate={tab.apiKey === 'live' ? undefined : event.endDate}
                     status={event.status}
                     thumbnail={event.imageUrl}
                     onClick={() => handleCardClick(event.id)}
