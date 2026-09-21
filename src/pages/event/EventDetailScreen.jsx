@@ -41,34 +41,24 @@ function EventDetailContent({ id }) {
     navigate(SPONSOR_ROUTES.LIST);
   };
 
-  const handleKakaoShare = () => {
-    if (!window.Kakao?.isInitialized()) return;
+  const handleNativeShare = async () => {
+    const shareData = {
+      title: event.title,
+      text: formatEventPeriod(event.eventType, event.startDate, event.endDate),
+      url: window.location.href,
+    };
 
-    window.Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: event.title,
-        description: formatEventPeriod(
-          event.eventType,
-          event.startDate,
-          event.endDate,
-        ),
-        imageUrl: event.imageUrl,
-        link: {
-          mobileWebUrl: window.location.href,
-          webUrl: window.location.href,
-        },
-      },
-      buttons: [
-        {
-          title: '자세히 보기',
-          link: {
-            mobileWebUrl: window.location.href,
-            webUrl: window.location.href,
-          },
-        },
-      ],
-    });
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        toast({ message: '이 브라우저에서는 지원하지 않는 기능이에요.' });
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        toast({ message: '❌ 공유에 실패했어요. 다시 시도해주세요.' });
+      }
+    }
   };
 
   const trimmedCaution = event.caution?.trim();
@@ -125,7 +115,7 @@ function EventDetailContent({ id }) {
             <S.ShareAction>
               <S.KakaoShareIconCircle
                 aria-label="카카오톡 공유하기"
-                onClick={handleKakaoShare}
+                onClick={handleNativeShare}
               >
                 <KakaoIcon />
               </S.KakaoShareIconCircle>
