@@ -33,7 +33,6 @@ export const AccordionLineTextWrapper = styled.div`
 export const AccordionLineTitle = styled.span`
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: ${measurement.spacing4};
 
   ${({ size }) =>
