@@ -8,6 +8,10 @@ export const getFaqsApi = async () => {
   return instance.get('/api/faqs');
 };
 
-export const updateFaqApi = async ({ fid, question, answer }) => {
-  return instance.patch(`/api/admin/faqs/${fid}`, { question, answer });
+export const updateFaqApi = async ({ fid, question, answer, displayOrder }) => {
+  return instance.patch(`/api/admin/faqs/${fid}`, {
+    question,
+    answer,
+    displayOrder,
+  });
 };

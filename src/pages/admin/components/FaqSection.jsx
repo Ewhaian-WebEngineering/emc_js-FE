@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
@@ -8,21 +8,24 @@ import useModal from '@/hooks/modal/useModal';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import { useDeleteFaq } from '@/api/feature/admin/useAdminData';
+import { SortableItem, SortableList } from '@/components/SortableList';
+import { useUpdateFaq } from '@/api/feature/admin/useFaqData';
 
 export default function FaqSection({ faqs = [] }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
   const { mutateAsync: deleteFaq } = useDeleteFaq();
+  const { mutateAsync: updateFaq } = useUpdateFaq();
 
   const [expanded, setExpanded] = useState(false);
+  const [localFaqs, setLocalFaqs] = useState(faqs);
 
-  const handleAdd = () => {
-    navigate(ADMIN_ROUTES.FAQ);
-  };
+  useEffect(() => {
+    setLocalFaqs(faqs);
+  }, [faqs]);
 
-  const handleEdit = (id) => {
-    navigate(ADMIN_ROUTES.FAQ_EDIT(id));
-  };
+  const handleAdd = () => navigate(ADMIN_ROUTES.FAQ);
+  const handleEdit = (id) => navigate(ADMIN_ROUTES.FAQ_EDIT(id));
 
   const handleDelete = async (id) => {
     const result = await showModal({
@@ -38,13 +41,32 @@ export default function FaqSection({ faqs = [] }) {
     await deleteFaq({ fid: id });
   };
 
+  const handleReorder = async (reordered) => {
+    setLocalFaqs(reordered);
+
+    const changed = reordered
+      .map((faq, index) => ({ faq, index }))
+      .filter(({ faq, index }) => faq.displayOrder !== index);
+
+    await Promise.all(
+      changed.map(({ faq, index }) =>
+        updateFaq({
+          fid: faq.id,
+          question: faq.question,
+          answer: faq.answer,
+          displayOrder: index,
+        }),
+      ),
+    );
+  };
+
   return (
     <Accordion
       expanded={expanded}
       onToggle={() => setExpanded((prev) => !prev)}
       size="lg"
       title="FAQ 등록/수정"
-      count={faqs.length}
+      count={localFaqs.length}
     >
       <Accordion.ActionButton
         buttonText={
@@ -56,15 +78,22 @@ export default function FaqSection({ faqs = [] }) {
         onClick={handleAdd}
       />
       <CardWrapper>
-        {faqs.map((faq) => (
-          <SpCard
-            key={faq.id}
-            content={faq.answer}
-            title={faq.question}
-            onDelete={() => handleDelete(faq.id)}
-            onEdit={() => handleEdit(faq.id)}
-          />
-        ))}
+        <SortableList
+          items={localFaqs}
+          getId={(f) => f.id}
+          onReorder={handleReorder}
+        >
+          {localFaqs.map((faq) => (
+            <SortableItem key={faq.id} id={faq.id}>
+              <SpCard
+                content={faq.answer}
+                title={faq.question}
+                onDelete={() => handleDelete(faq.id)}
+                onEdit={() => handleEdit(faq.id)}
+              />
+            </SortableItem>
+          ))}
+        </SortableList>
       </CardWrapper>
     </Accordion>
   );

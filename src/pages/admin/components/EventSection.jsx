@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 import EventBannerCard from '../../../designsystem/components/card/admin/AdminEventBannerCard';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
@@ -8,6 +8,8 @@ import useModal from '@/hooks/modal/useModal';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import { useDeleteEvent } from '@/api/feature/admin/useAdminData';
+import { useUpdateEvent } from '@/api/feature/admin/useEventData';
+import { SortableItem, SortableList } from '@/components/SortableList';
 
 const PHASE_ORDER = ['pre', 'live', 'post'];
 
@@ -24,27 +26,28 @@ export default function EventSection({
   const navigate = useNavigate();
   const { showModal } = useModal();
   const { mutateAsync: deleteEvent } = useDeleteEvent();
+  const { mutateAsync: updateEvent } = useUpdateEvent();
 
   const [expanded, setExpanded] = useState(defaultExpanded);
+  const [localEvents, setLocalEvents] = useState(events);
+
+  useEffect(() => {
+    setLocalEvents(events);
+  }, [events]);
 
   const groupedEvents = PHASE_ORDER.map((phase) => ({
     phase,
     label: PHASE_LABEL[phase],
-    items: events[phase] ?? [],
+    items: localEvents[phase] ?? [],
   }));
 
   const totalCount = PHASE_ORDER.reduce(
-    (sum, phase) => sum + (events[phase]?.length ?? 0),
+    (sum, phase) => sum + (localEvents[phase]?.length ?? 0),
     0,
   );
 
-  const handleAdd = () => {
-    navigate(ADMIN_ROUTES.EVENT);
-  };
-
-  const handleEdit = (id) => {
-    navigate(ADMIN_ROUTES.EVENT_EDIT(id));
-  };
+  const handleAdd = () => navigate(ADMIN_ROUTES.EVENT);
+  const handleEdit = (id) => navigate(ADMIN_ROUTES.EVENT_EDIT(id));
 
   const handleDelete = async (id) => {
     const result = await showModal({
@@ -58,6 +61,23 @@ export default function EventSection({
     if (!result.confirmed) return;
 
     await deleteEvent({ eid: id });
+  };
+
+  const handleReorder = async (phase, reordered) => {
+    setLocalEvents((prev) => ({ ...prev, [phase]: reordered }));
+
+    const changed = reordered
+      .map((event, index) => ({ event, index }))
+      .filter(({ event, index }) => event.displayOrder !== index);
+
+    await Promise.all(
+      changed.map(({ event, index }) =>
+        updateEvent({
+          eid: event.id,
+          displayOrder: index,
+        }),
+      ),
+    );
   };
 
   return (
@@ -83,16 +103,23 @@ export default function EventSection({
           .map(({ phase, label, items }, index) => (
             <Fragment key={phase}>
               <SectionTitle isFirst={index === 0}>{label}</SectionTitle>
-              {items.map((event) => (
-                <EventBannerCard
-                  key={event.id}
-                  endDate={event.endDate}
-                  startDate={event.startDate}
-                  title={event.title}
-                  onDelete={() => handleDelete(event.id)}
-                  onEdit={() => handleEdit(event.id)}
-                />
-              ))}
+              <SortableList
+                items={items}
+                getId={(e) => e.id}
+                onReorder={(reordered) => handleReorder(phase, reordered)}
+              >
+                {items.map((event) => (
+                  <SortableItem key={event.id} id={event.id}>
+                    <EventBannerCard
+                      endDate={event.endDate}
+                      startDate={event.startDate}
+                      title={event.title}
+                      onDelete={() => handleDelete(event.id)}
+                      onEdit={() => handleEdit(event.id)}
+                    />
+                  </SortableItem>
+                ))}
+              </SortableList>
             </Fragment>
           ))}
       </CardWrapper>
