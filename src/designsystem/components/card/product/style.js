@@ -16,12 +16,17 @@ export const ProductVerticalCardThumbnail = styled.div`
   aspect-ratio: 1 / 1;
   overflow: hidden;
 
-  img,
-  & > div {
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    border-radius: 0;
+  }
+
+  & > div {
+    width: 100%;
+    height: 100%;
     border-radius: 0;
   }
 `;
@@ -83,12 +88,17 @@ export const ProductHorizontalCardThumbnail = styled.div`
   flex-shrink: 0;
   overflow: hidden;
 
-  img,
-  & > div {
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    border-radius: 0;
+  }
+
+  & > div {
+    width: 100%;
+    height: 100%;
     border-radius: 0;
   }
 `;

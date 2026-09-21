@@ -28,6 +28,7 @@ export default function SponsorCard({
   onClick,
 }) {
   const [mainImage, ...subImages] = thumbnails;
+  const displaySubImages = [subImages[0], subImages[1]];
 
   return (
     <SponsorCardContainer onClick={onClick}>
@@ -44,7 +45,7 @@ export default function SponsorCard({
           )}
         </SponsorCardMainImage>
         <SponsorCardSubImages>
-          {subImages.slice(0, 2).map((thumbnail, index) => {
+          {displaySubImages.map((thumbnail, index) => {
             const Wrapper =
               index === 0 ? SponsorCardSubImageTop : SponsorCardSubImageBottom;
             return (
