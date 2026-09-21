@@ -16,12 +16,17 @@ export const ProductVerticalCardThumbnail = styled.div`
   aspect-ratio: 1 / 1;
   overflow: hidden;
 
-  img,
-  & > div {
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    border-radius: 0;
+  }
+
+  & > div {
+    width: 100%;
+    height: 100%;
     border-radius: 0;
   }
 `;
@@ -81,12 +86,19 @@ export const ProductHorizontalCardThumbnail = styled.div`
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+  overflow: hidden;
 
-  img,
-  & > div {
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+    border-radius: 0;
+  }
+
+  & > div {
+    width: 100%;
+    height: 100%;
     border-radius: 0;
   }
 `;
@@ -100,6 +112,12 @@ export const ProductHorizontalCardContent = styled.div`
 export const ProductHorizontalCardName = styled.h3`
   ${typography.body1Medium};
   color: ${semantic.textNormalStrong};
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 export const ProductHorizontalCardDescription = styled.p`

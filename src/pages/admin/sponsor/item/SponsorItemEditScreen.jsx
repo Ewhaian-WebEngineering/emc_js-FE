@@ -2,6 +2,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import { useSponsorDetail } from '@/api/feature/admin/useSponsorManageData';
 import { upsertSponsorItemDraft } from '../store/sponsorDraftStore';
+import { useSponsorItemSections } from '../hooks/useSponsorItemSections';
 import SponsorItemFormScreen from './SponsorItemFormScreen';
 import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
@@ -13,6 +14,7 @@ export default function SponsorItemEditScreen() {
   const stateItem = location.state?.itemData;
 
   const { data: sponsor, isPending } = useSponsorDetail(sponsorId);
+  const { itemSections } = useSponsorItemSections(sponsor, sponsorId);
 
   const item =
     stateItem ??
@@ -27,9 +29,16 @@ export default function SponsorItemEditScreen() {
   const handleSubmit = async (values, thumbnailFile) => {
     const status = stateItem?.status === 'created' ? 'created' : 'updated';
 
+    const targetGroupId = values.groupId;
+    const targetSection = itemSections.find((section) =>
+      targetGroupId ? section.id === targetGroupId : section.isUngrouped,
+    );
+    const siblingCount =
+      targetSection?.items.filter((i) => i.id !== itemId).length ?? 0;
+
     upsertSponsorItemDraft(itemId, {
       status,
-      data: { id: itemId, ...values },
+      data: { id: itemId, ...values, displayOrder: siblingCount },
       file: thumbnailFile,
     });
 
