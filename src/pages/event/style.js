@@ -184,7 +184,6 @@ export const EventContent = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 10px;
   background-color: ${semantic.fillNormalWhite};
   padding: ${measurement.spacing32};
   min-height: 500px;
@@ -249,7 +248,7 @@ export const EventContent = styled.section`
   img {
     max-width: 100%;
     height: auto;
-    border-radius: ${measurement.borderRadiusMd};
+    border-radius: ${measurement.borderRadius2xl};
     margin: ${measurement.spacing12} 0;
   }
 `;

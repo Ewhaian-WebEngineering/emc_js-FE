@@ -59,11 +59,8 @@ export const Divider = styled.div`
 `;
 
 export const ContentArea = styled.div`
-  display: flex;
   height: 220px;
   padding: ${measurement.spacing12} ${measurement.spacing16};
-  align-items: flex-start;
-  gap: 62px;
   flex-shrink: 0;
   align-self: stretch;
   overflow-y: auto;
