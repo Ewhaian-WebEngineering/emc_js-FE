@@ -86,13 +86,8 @@ export function useProductForm({
       await onSubmit(trimmedValues);
       setFormValues(trimmedValues);
       setInitialValues(trimmedValues);
-    } catch (error) {
-      await showModal({
-        variant: 'confirmation',
-        title: isCreateMode ? '등록에 실패했어요.' : '저장에 실패했어요.',
-        description: error.message || '잠시 후 다시 시도해주세요.',
-        confirmText: '확인',
-      });
+    } catch {
+      // 공통 에러 모달
     } finally {
       setIsSubmitting(false);
     }

@@ -1,7 +1,7 @@
 import EventForm from './EventForm';
 import { useNavigate } from 'react-router-dom';
-import { ADMIN_ROUTES } from '@/constants/routes';
 import { useCreateEvent } from '@/api/feature/admin/useEventData';
+import { ADMIN_ROUTES } from '@/constants/routes';
 
 export default function EventCreateScreen() {
   const navigate = useNavigate();
@@ -14,11 +14,6 @@ export default function EventCreateScreen() {
         errorModal: {
           title: '등록에 실패했습니다.',
           description: '잠시 후 다시 시도해주세요.',
-          onCancel: () => {
-            navigate(ADMIN_ROUTES.DASHBOARD, {
-              state: { expandSection: 'event' },
-            });
-          },
         },
       },
       {
