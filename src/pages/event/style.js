@@ -181,13 +181,15 @@ export const EventTypeBadge = styled.span`
 `;
 
 export const EventContent = styled.section`
-  ${sectionColumn};
-  background-color: ${semantic.fillNormalNormal};
-  padding-block: ${measurement.spacing32};
-  padding-inline: ${measurement.spacing16};
-  min-height: 680px;
-  align-items: center;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  background-color: ${semantic.fillNormalWhite};
+  padding: ${measurement.spacing32};
+  min-height: 500px;
+  align-items: flex-start;
+  justify-content: flex-start;
 
   ${typography.body2Regular}
   color: ${semantic.textNormalNormal};

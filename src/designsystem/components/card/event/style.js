@@ -12,8 +12,8 @@ export const EventCardContainer = styled.div`
 `;
 
 export const EventCardThumbnail = styled.div`
-  width: 100%;
   aspect-ratio: 2 / 1;
+  height: 172px;
 
   img,
   & > div {
@@ -51,4 +51,5 @@ export const EventCardStatus = styled.span`
   ${typography.body2Medium};
   color: ${({ status }) =>
     status === '진행중' ? semantic.statusInfo : semantic.textNormalNormal};
+  flex-shrink: 0;
 `;

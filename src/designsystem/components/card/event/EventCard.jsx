@@ -44,7 +44,9 @@ export default function EventCard({
           <EventCardTitle>{eventTitle}</EventCardTitle>
           <EventCardDate>
             {formatDate(startDate)}
-            {endDate && ` - ${formatDate(endDate)}`}
+            {endDate &&
+              formatDate(endDate) !== formatDate(startDate) &&
+              ` - ${formatDate(endDate)}`}
           </EventCardDate>
         </EventCardInfoWrapper>
         <EventCardStatus status={status}>{status}</EventCardStatus>

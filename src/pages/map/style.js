@@ -77,7 +77,7 @@ export const NoticeTagWrapper = styled.div`
   position: absolute;
   top: 10px;
   left: ${measurement.spacing16};
-  z-index: 10;
+  z-index: 101;
 `;
 
 export const NoticeTagContent = styled.div`

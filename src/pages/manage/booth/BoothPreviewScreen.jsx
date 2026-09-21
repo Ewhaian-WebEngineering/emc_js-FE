@@ -6,7 +6,7 @@ import TransparentHeader from '@/designsystem/components/header/TransparentHeade
 import Spinner from '@/designsystem/components/spinner/Spinner';
 import { useGoBack } from '@/hooks/useGoBack';
 import { useNavigate, useParams } from 'react-router-dom';
-import { EditButton } from './style';
+import { BoothPreviewContainer, EditButton } from './style';
 
 export default function BoothPreviewScreen() {
   const { boothId } = useParams();
@@ -27,7 +27,7 @@ export default function BoothPreviewScreen() {
   }
 
   return (
-    <>
+    <BoothPreviewContainer>
       <TransparentHeader
         onBack={handleBack}
         right={
@@ -41,6 +41,6 @@ export default function BoothPreviewScreen() {
         }
       />
       <BoothDetailContent booth={booth} boothId={boothId} onBack={handleBack} />
-    </>
+    </BoothPreviewContainer>
   );
 }
