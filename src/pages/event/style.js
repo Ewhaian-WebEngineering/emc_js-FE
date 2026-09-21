@@ -248,7 +248,7 @@ export const EventContent = styled.section`
   img {
     max-width: 100%;
     height: auto;
-    border-radius: ${measurement.borderRadiusMd};
+    border-radius: ${measurement.borderRadius2xl};
     margin: ${measurement.spacing12} 0;
   }
 `;

@@ -86,27 +86,25 @@ function EventDetailContent({ id }) {
       )}
 
       {event.organizer !== 'EMC' && (
-        <>
-          {' '}
-          <S.SponsorSection>
-            <S.SponsorContent>
-              <S.SponsorTitle>
-                이번 행사와 함께하는 <br />
-                협찬사들을 만나보세요
-              </S.SponsorTitle>
-              <S.SponsorButton
-                variant="primary"
-                size="md"
-                onClick={handleSponsorClick}
-              >
-                협찬사 둘러보기
-                <ArrowRightIcon />
-              </S.SponsorButton>
-            </S.SponsorContent>
-          </S.SponsorSection>
-          <Divider size="lg" />
-        </>
+        <S.SponsorSection>
+          <S.SponsorContent>
+            <S.SponsorTitle>
+              이번 행사와 함께하는 <br />
+              협찬사들을 만나보세요
+            </S.SponsorTitle>
+            <S.SponsorButton
+              variant="primary"
+              size="md"
+              onClick={handleSponsorClick}
+            >
+              협찬사 둘러보기
+              <ArrowRightIcon />
+            </S.SponsorButton>
+          </S.SponsorContent>
+        </S.SponsorSection>
       )}
+
+      <Divider size="lg" />
 
       <S.ShareSection>
         <S.ShareBox>
