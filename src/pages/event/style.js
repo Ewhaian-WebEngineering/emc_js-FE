@@ -184,7 +184,6 @@ export const EventContent = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 10px;
   background-color: ${semantic.fillNormalWhite};
   padding: ${measurement.spacing32};
   min-height: 500px;
