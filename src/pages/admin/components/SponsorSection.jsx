@@ -14,8 +14,6 @@ export default function SponsorSection({ sponsors = [] }) {
 
   const [expanded, setExpanded] = useState(false);
 
-  const reversedSponsors = [...sponsors].reverse();
-
   const handleEdit = (id) => {
     navigate(ADMIN_ROUTES.SPONSOR_EDIT(id));
   };
@@ -43,7 +41,7 @@ export default function SponsorSection({ sponsors = [] }) {
       count={sponsors.length}
     >
       <CardWrapper>
-        {reversedSponsors.map((sponsor) => (
+        {sponsors.map((sponsor) => (
           <SpCard
             key={sponsor.id}
             content={sponsor.introShort}

@@ -215,6 +215,21 @@ function SponsorDetailContent({ id }) {
               </S.ProductList>
             </S.ProductGroup>
           ))}
+
+          {sponsorDetail.products?.length > 0 && (
+            <S.ProductGroup>
+              <S.ProductList>
+                {sponsorDetail.products.map((product) => (
+                  <ProductHorizontalCard
+                    key={product.id}
+                    thumbnail={product.imageUrl}
+                    productName={product.name}
+                    productDescription={product.description}
+                  />
+                ))}
+              </S.ProductList>
+            </S.ProductGroup>
+          )}
         </S.ProductGroups>
       </S.ProductSection>
 

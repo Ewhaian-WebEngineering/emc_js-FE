@@ -1,9 +1,13 @@
 import { ADMIN_ROUTES } from '@/constants/routes';
 import useModal from '@/hooks/modal/useModal';
 import { buildSections } from '@/pages/manage/utils/buildSections';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { markSponsorItemDeleted } from '../store/sponsorDraftStore';
+import {
+  markSponsorItemDeleted,
+  upsertSponsorGroupDraft,
+  upsertSponsorItemDraft,
+} from '../store/sponsorDraftStore';
 import { useSponsorDraftStore } from './useSponsorDraftStore';
 
 export function useSponsorItemSections(sponsor, sponsorId) {
@@ -70,6 +74,39 @@ export function useSponsorItemSections(sponsor, sponsorId) {
     markSponsorItemDeleted(itemId);
   };
 
+  const handleReorderItems = useCallback(
+    (updatedItems) => {
+      updatedItems.forEach((item) => {
+        const { id, ...data } = item;
+        const isTemp = String(id).startsWith('temp-');
+        const existingEntry = draft.items[id];
+
+        upsertSponsorItemDraft(id, {
+          status: isTemp ? 'created' : 'updated',
+          data,
+          file: existingEntry?.file ?? null,
+        });
+      });
+    },
+    [draft.items],
+  );
+
+  const handleReorderGroups = useCallback((reorderedSections) => {
+    reorderedSections
+      .filter((section) => !section.isUngrouped)
+      .forEach((section, index) => {
+        const isTemp = String(section.id).startsWith('temp-');
+        upsertSponsorGroupDraft(section.id, {
+          status: isTemp ? 'created' : 'updated',
+          data: {
+            name: section.name,
+            description: section.description ?? null,
+            displayOrder: index,
+          },
+        });
+      });
+  }, []);
+
   const validateItems = () => {
     const isEmpty = itemSections.every((section) => section.items.length === 0);
     const error = isEmpty ? '내용을 입력해주세요.' : undefined;
@@ -82,6 +119,8 @@ export function useSponsorItemSections(sponsor, sponsorId) {
     setItemSections,
     handleEditItem,
     handleDeleteItem,
+    handleReorderItems,
+    handleReorderGroups,
     itemsError,
     validateItems,
   };
