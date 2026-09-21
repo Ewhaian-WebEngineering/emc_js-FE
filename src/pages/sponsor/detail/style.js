@@ -78,7 +78,7 @@ export const IntroductionSection = styled.section`
   display: flex;
   flex-direction: column;
   padding: ${measurement.spacing24} ${measurement.spacing16};
-  gap: ${measurement.spacing24};
+  gap: ${measurement.spacing40};
 `;
 
 export const SectionTitle = styled.h2`
@@ -89,12 +89,11 @@ export const SectionTitle = styled.h2`
 export const IntroductionContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: ${semantic.fillNormalNormal};
-  padding-block: ${measurement.spacing32};
-  padding-inline: ${measurement.spacing16};
-  min-height: 680px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  background-color: ${semantic.fillNormalWhite};
+  min-height: 500px;
 
   ${typography.body2Regular}
   color: ${semantic.textNormalNormal};
