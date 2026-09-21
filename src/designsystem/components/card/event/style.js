@@ -51,4 +51,5 @@ export const EventCardStatus = styled.span`
   ${typography.body2Medium};
   color: ${({ status }) =>
     status === '진행중' ? semantic.statusInfo : semantic.textNormalNormal};
+  flex-shrink: 0;
 `;
