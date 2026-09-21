@@ -28,11 +28,12 @@ export const SponsorCardDescription = styled.p`
 export const SponsorCardThumbnailWrapper = styled.div`
   display: flex;
   gap: ${measurement.spacing6};
+  height: 170px;
 `;
 
 export const SponsorCardMainImage = styled.div`
   flex: 8;
-  aspect-ratio: 1.5 / 1;
+  height: 100%;
 
   img,
   & > div {
@@ -50,11 +51,13 @@ export const SponsorCardSubImages = styled.div`
   flex-direction: column;
   gap: ${measurement.spacing6};
   flex-shrink: 0;
+  height: 100%;
 `;
 
 export const SponsorCardSubImageTop = styled.div`
   width: 100%;
   flex: 1;
+  min-height: 0;
 
   img,
   & > div {
@@ -68,6 +71,7 @@ export const SponsorCardSubImageTop = styled.div`
 export const SponsorCardSubImageBottom = styled.div`
   width: 100%;
   flex: 1;
+  min-height: 0;
 
   img,
   & > div {
