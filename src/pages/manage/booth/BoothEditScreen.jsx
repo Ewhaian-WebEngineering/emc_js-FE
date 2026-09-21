@@ -180,13 +180,8 @@ function BoothEditForm({ booth, boothId }) {
     try {
       await save(boothForm, draft);
       navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
-    } catch (error) {
-      showModal({
-        variant: 'danger',
-        title: '저장에 실패했어요.',
-        description: error.message || '잠시 후 다시 시도해주세요.',
-        confirmText: '확인',
-      });
+    } catch {
+      // 공통 에러 모달
     }
   };
 
