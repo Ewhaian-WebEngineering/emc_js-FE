@@ -80,6 +80,12 @@ export default function MyScreen() {
   const { isLoggedIn } = useAuth();
   const { mutate: logout } = useLogout();
 
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setIsLoginSheetOpen(true);
+    }
+  }, [isLoggedIn]);
+
   const handleLogout = () => {
     logout(undefined, {
       onSuccess: () => forceUpdate((n) => n + 1),
