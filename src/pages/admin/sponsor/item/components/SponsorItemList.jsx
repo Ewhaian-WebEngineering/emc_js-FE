@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
-  closestCorners,
+  pointerWithin,
   DndContext,
   DragOverlay,
   MeasuringFrequency,
@@ -14,7 +14,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import SponsorItemGroupSection from './SponsorItemGroupSection';
+import SponsorItemSection from './SponsorItemSection';
 import AdminSpProductCard from '@/designsystem/components/card/admin/AdminSpProductCard';
 
 export default function SponsorItemList({
@@ -22,15 +22,19 @@ export default function SponsorItemList({
   onSectionsChange,
   onEditItem,
   onDeleteItem,
+  onReorderItems,
+  onReorderGroups,
 }) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
   );
 
   const [activeItem, setActiveItem] = useState(null);
+  const dragOriginSectionId = useRef(null);
 
   const visibleSections = sections.filter(
-    (section) => section.items.length > 0,
+    (section) =>
+      section.items.length > 0 || section.id === dragOriginSectionId.current,
   );
 
   const findItem = (itemId) => {
@@ -43,8 +47,9 @@ export default function SponsorItemList({
 
   const handleDragStart = (event) => {
     const { active } = event;
-    if (active.data.current?.type === 'product') {
+    if (active.data.current?.type === 'item') {
       setActiveItem(findItem(active.id));
+      dragOriginSectionId.current = active.data.current.sectionId;
     }
   };
 
@@ -54,11 +59,11 @@ export default function SponsorItemList({
 
     const activeData = active.data.current;
     const overData = over.data.current;
-    if (activeData?.type !== 'product') return;
+    if (activeData?.type !== 'item') return;
 
     const fromSectionId = activeData.sectionId;
     const toSectionId =
-      overData?.type === 'product'
+      overData?.type === 'item'
         ? overData.sectionId
         : overData?.type === 'container'
           ? overData.sectionId
@@ -79,7 +84,7 @@ export default function SponsorItemList({
         groupId: toSection.isUngrouped ? null : toSection.id,
       };
 
-      const overItemId = overData?.type === 'product' ? over.id : null;
+      const overItemId = overData?.type === 'item' ? over.id : null;
       const insertIndex = overItemId
         ? toSection.items.findIndex((i) => i.id === overItemId)
         : toSection.items.length;
@@ -102,35 +107,76 @@ export default function SponsorItemList({
     setActiveItem(null);
 
     const { active, over } = event;
-    if (!over || active.id === over.id) return;
+    const originSectionId = dragOriginSectionId.current;
+    dragOriginSectionId.current = null;
+
+    if (!over) return;
 
     const activeData = active.data.current;
     const overData = over.data.current;
 
+    // ── 그룹(섹션) 재정렬 ──
     if (activeData?.type === 'section') {
-      const activeIndex = sections.findIndex(
-        (s) => `section:${s.id}` === active.id,
-      );
-      const overIndex = sections.findIndex(
-        (s) => `section:${s.id}` === over.id,
-      );
+      const activeSectionId = String(active.id).replace('section:', '');
+
+      let overSectionId = null;
+      if (overData?.type === 'section') {
+        overSectionId = String(over.id).replace('section:', '');
+      } else if (overData?.sectionId) {
+        // 'item' 또는 'container' 위에 놓인 경우도 해당 섹션으로 인식
+        overSectionId = overData.sectionId;
+      }
+
+      if (!overSectionId || overSectionId === activeSectionId) return;
+
+      const activeIndex = sections.findIndex((s) => s.id === activeSectionId);
+      const overIndex = sections.findIndex((s) => s.id === overSectionId);
       if (activeIndex === -1 || overIndex === -1) return;
-      onSectionsChange(arrayMove(sections, activeIndex, overIndex));
+
+      const reordered = arrayMove(sections, activeIndex, overIndex);
+      onSectionsChange(reordered);
+      onReorderGroups?.(reordered);
       return;
     }
 
-    if (activeData?.type === 'product') {
-      const sectionId = activeData.sectionId;
-      const overSectionId = overData?.sectionId;
-      if (sectionId !== overSectionId) return;
+    if (activeData?.type === 'item') {
+      if (active.id === over.id) return;
+
+      const currentSection = sections.find((s) =>
+        s.items.some((i) => i.id === active.id),
+      );
+      if (!currentSection) return;
+
+      if (originSectionId && originSectionId !== currentSection.id) {
+        const originSection = sections.find((s) => s.id === originSectionId);
+        const reorderedItems = [originSection, currentSection]
+          .filter(Boolean)
+          .flatMap((section) =>
+            section.items.map((item, index) => ({
+              ...item,
+              groupId: section.isUngrouped ? null : section.id,
+              displayOrder: index,
+            })),
+          );
+        onReorderItems?.(reorderedItems);
+        return;
+      }
 
       onSectionsChange((prev) =>
         prev.map((s) => {
-          if (s.id !== sectionId) return s;
+          if (s.id !== currentSection.id) return s;
           const oldIndex = s.items.findIndex((i) => i.id === active.id);
           const newIndex = s.items.findIndex((i) => i.id === over.id);
           if (oldIndex === -1 || newIndex === -1) return s;
-          return { ...s, items: arrayMove(s.items, oldIndex, newIndex) };
+          const reordered = arrayMove(s.items, oldIndex, newIndex);
+          onReorderItems?.(
+            reordered.map((item, index) => ({
+              ...item,
+              groupId: s.isUngrouped ? null : s.id,
+              displayOrder: index,
+            })),
+          );
+          return { ...s, items: reordered };
         }),
       );
     }
@@ -139,7 +185,7 @@ export default function SponsorItemList({
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
+      collisionDetection={pointerWithin}
       measuring={{
         droppable: {
           strategy: MeasuringStrategy.Always,
@@ -155,7 +201,7 @@ export default function SponsorItemList({
         strategy={verticalListSortingStrategy}
       >
         {visibleSections.map((section) => (
-          <SponsorItemGroupSection
+          <SponsorItemSection
             key={section.id}
             section={section}
             onEditItem={onEditItem}

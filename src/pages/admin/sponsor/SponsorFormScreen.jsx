@@ -46,6 +46,8 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
     setItemSections,
     handleEditItem,
     handleDeleteItem,
+    handleReorderItems,
+    handleReorderGroups,
     itemsError,
     validateItems,
   } = useSponsorItemSections(sponsor, sponsorId);
@@ -194,6 +196,8 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
           onSectionsChange={setItemSections}
           onEditItem={handleEditItem}
           onDeleteItem={handleDeleteItem}
+          onReorderItems={handleReorderItems}
+          onReorderGroups={handleReorderGroups}
         />
       </AccordionLine>
 

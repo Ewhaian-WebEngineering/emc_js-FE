@@ -1,8 +1,17 @@
+import AdminSpProductCard from '@/designsystem/components/card/admin/AdminSpProductCard';
+import { SortableProductWrapper } from '@/pages/manage/booth/style';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import AdminSpProductCard from '@/designsystem/components/card/admin/AdminSpProductCard';
+import { memo } from 'react';
 
-export default function SponsorItemCard({ item, sectionId, onEdit, onDelete }) {
+function SponsorItemCard({
+  item,
+  sectionId,
+  selected,
+  onEdit,
+  onDelete,
+  onClick,
+}) {
   const {
     attributes,
     listeners,
@@ -12,7 +21,7 @@ export default function SponsorItemCard({ item, sectionId, onEdit, onDelete }) {
     isDragging,
   } = useSortable({
     id: item.id,
-    data: { type: 'product', sectionId },
+    data: { type: 'item', sectionId },
   });
 
   const style = {
@@ -22,14 +31,23 @@ export default function SponsorItemCard({ item, sectionId, onEdit, onDelete }) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <SortableProductWrapper
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
       <AdminSpProductCard
         thumbnail={item.imageUrl}
         title={item.name}
         content={item.description}
+        selected={selected}
         onEdit={() => onEdit(item.id)}
         onDelete={() => onDelete(item.id)}
+        onClick={onClick}
       />
-    </div>
+    </SortableProductWrapper>
   );
 }
+
+export default memo(SponsorItemCard);
