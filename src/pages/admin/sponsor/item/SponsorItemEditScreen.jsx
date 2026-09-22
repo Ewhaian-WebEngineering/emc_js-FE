@@ -29,16 +29,9 @@ export default function SponsorItemEditScreen() {
   const handleSubmit = async (values, thumbnailFile) => {
     const status = stateItem?.status === 'created' ? 'created' : 'updated';
 
-    const targetGroupId = values.groupId;
-    const targetSection = itemSections.find((section) =>
-      targetGroupId ? section.id === targetGroupId : section.isUngrouped,
-    );
-    const siblingCount =
-      targetSection?.items.filter((i) => i.id !== itemId).length ?? 0;
-
     upsertSponsorItemDraft(itemId, {
       status,
-      data: { id: itemId, ...values, displayOrder: siblingCount },
+      data: { id: itemId, ...values, displayOrder: item?.displayOrder },
       file: thumbnailFile,
     });
 

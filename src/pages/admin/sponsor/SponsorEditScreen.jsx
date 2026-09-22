@@ -1,10 +1,10 @@
-import { useSponsorDetail } from '@/api/feature/sponsor/useSponsor';
 import { useParams } from 'react-router-dom';
 import { useSponsorDraftStore } from './hooks/useSponsorDraftStore';
 import { useSaveSponsorDraft } from './hooks/useSaveSponsorDraft';
 import { InfiniteScrollLoader } from '@/components/common/style';
 import Spinner from '@/designsystem/components/spinner/Spinner';
 import SponsorFormScreen from './SponsorFormScreen';
+import { useSponsorDetail } from '@/api/feature/admin/useSponsorManageData';
 
 export default function SponsorEditScreen() {
   const { sponsorId } = useParams();
