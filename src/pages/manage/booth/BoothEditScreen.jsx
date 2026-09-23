@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
@@ -77,6 +78,19 @@ function buildNoticeList(serverNotices, draftNotices) {
   return [...created, ...overridden];
 }
 
+const FIELD_SCROLL_TARGET = {
+  categories: { scrollKey: 'categoryContainer' },
+  marks: { scrollKey: 'categoryContainer' },
+  operationTime: { scrollKey: 'categoryContainer' },
+  isCash: { scrollKey: 'categoryContainer' },
+  externalUrl: { scrollKey: 'categoryContainer' },
+  description: {
+    scrollKey: 'boothIntroduction',
+    accordionKey: 'boothIntroduction',
+  },
+  inquiryUrl: { scrollKey: 'customerInquiry', accordionKey: 'customerInquiry' },
+};
+
 function BoothEditForm({ booth, boothId }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
@@ -86,7 +100,9 @@ function BoothEditForm({ booth, boothId }) {
   const noticeList = buildNoticeList(rawNoticeList, draft.notices);
   const { data: productGroups } = useProductGroupList(boothId);
 
-  const [expanded, toggleExpanded] = useToggleMap([
+  const sectionRefs = useRef({});
+
+  const [expanded, toggleExpanded, openSection] = useToggleMap([
     'boothIntroduction',
     'productList',
     'customerInquiry',
@@ -172,10 +188,58 @@ function BoothEditForm({ booth, boothId }) {
     });
   };
 
+  const SECTION_ORDER = [
+    {
+      scrollKey: 'categoryContainer',
+      fields: ['categories', 'marks', 'operationTime', 'isCash', 'externalUrl'],
+    },
+    {
+      scrollKey: 'boothIntroduction',
+      accordionKey: 'boothIntroduction',
+      fields: ['description'],
+    },
+    {
+      scrollKey: 'productList',
+      accordionKey: 'productList',
+      isProductSection: true,
+    },
+    {
+      scrollKey: 'customerInquiry',
+      accordionKey: 'customerInquiry',
+      fields: ['inquiryUrl'],
+    },
+  ];
+
+  const scrollToFirstError = (fieldErrors, productError) => {
+    const errorFieldKeys = Object.keys(fieldErrors);
+
+    const target = SECTION_ORDER.find((section) => {
+      if (section.isProductSection) return !!productError;
+      return section.fields.some((field) => errorFieldKeys.includes(field));
+    });
+
+    if (!target) return;
+
+    if (target.accordionKey) {
+      openSection(target.accordionKey);
+    }
+
+    const delay = target.accordionKey ? 350 : 0;
+    setTimeout(() => {
+      sectionRefs.current[target.scrollKey]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }, delay);
+  };
+
   const handleSave = async () => {
     const fieldErrors = validate();
     const productError = validateProducts();
-    if (Object.keys(fieldErrors).length > 0 || productError) return;
+    if (Object.keys(fieldErrors).length > 0 || productError) {
+      scrollToFirstError(fieldErrors, productError);
+      return;
+    }
 
     try {
       await save(boothForm, draft);
@@ -206,7 +270,9 @@ function BoothEditForm({ booth, boothId }) {
         onDelete={() => removeThumbnail()}
       />
 
-      <CategoryContainer>
+      <CategoryContainer
+        ref={(el) => (sectionRefs.current.categoryContainer = el)}
+      >
         <TextField
           title="이름"
           description="변경 불가"
@@ -266,6 +332,7 @@ function BoothEditForm({ booth, boothId }) {
       </CategoryContainer>
 
       <AccordionLine
+        ref={(el) => (sectionRefs.current.boothIntroduction = el)}
         title="부스 소개"
         required
         expanded={expanded.boothIntroduction}
@@ -283,6 +350,7 @@ function BoothEditForm({ booth, boothId }) {
       </AccordionLine>
 
       <AccordionLine
+        ref={(el) => (sectionRefs.current.productList = el)}
         title="제품 목록"
         required
         expanded={expanded.productList}
@@ -316,6 +384,7 @@ function BoothEditForm({ booth, boothId }) {
       </AccordionLine>
 
       <AccordionLine
+        ref={(el) => (sectionRefs.current.customerInquiry = el)}
         title="고객 문의 창구"
         required
         expanded={expanded.customerInquiry}

@@ -28,7 +28,6 @@ const validate = (values) => {
 
   return errors;
 };
-
 export function useSponsorForm({ sponsor, onSubmit }) {
   const { showModal } = useModal();
   const draft = useSponsorDraftStore();
@@ -38,6 +37,7 @@ export function useSponsorForm({ sponsor, onSubmit }) {
   }, [sponsor?.id]);
 
   const [errors, setErrors] = useState({});
+  const [touchedFields, setTouchedFields] = useState({});
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   const fields = draft.sponsorFields ?? {
@@ -68,7 +68,21 @@ export function useSponsorForm({ sponsor, onSubmit }) {
     }
   };
 
-  const visibleErrors = hasAttemptedSubmit ? errors : {};
+  const handleBlur = (field) => () => {
+    setTouchedFields((prev) => ({ ...prev, [field]: true }));
+
+    const fieldErrors = validate(formValues);
+    if (fieldErrors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: fieldErrors[field] }));
+    }
+  };
+
+  const visibleErrors = Object.fromEntries(
+    Object.entries(errors).map(([key, message]) => [
+      key,
+      hasAttemptedSubmit || touchedFields[key] ? message : undefined,
+    ]),
+  );
 
   const isButtonDisabled = !isSponsorDraftDirty();
 
@@ -86,11 +100,15 @@ export function useSponsorForm({ sponsor, onSubmit }) {
     }
   };
 
-  const handleSubmit = async () => {
+  const validateFields = () => {
     setHasAttemptedSubmit(true);
     const nextErrors = validate(formValues);
     setErrors(nextErrors);
+    return nextErrors;
+  };
 
+  const handleSubmit = async () => {
+    const nextErrors = validateFields();
     if (Object.keys(nextErrors).length > 0) return;
 
     await onSubmit(formValues);
@@ -99,10 +117,13 @@ export function useSponsorForm({ sponsor, onSubmit }) {
   return {
     formValues,
     updateField,
+    handleBlur,
     visibleErrors,
     isButtonDisabled,
     isDirty: isSponsorDraftDirty(),
+    validateFields,
     handleSubmit,
     handleUploadError,
+    hasAttemptedSubmit,
   };
 }

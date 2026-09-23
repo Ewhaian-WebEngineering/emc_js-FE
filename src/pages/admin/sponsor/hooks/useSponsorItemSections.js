@@ -90,7 +90,6 @@ export function useSponsorItemSections(sponsor, sponsorId) {
 
   const handleReorderItems = useCallback(
     (updatedItems) => {
-      console.log('[handleReorderItems] called', updatedItems.length);
       updatedItems.forEach((item) => {
         const { id, ...data } = item;
         const isTemp = String(id).startsWith('temp-');
@@ -107,7 +106,6 @@ export function useSponsorItemSections(sponsor, sponsorId) {
   );
 
   const handleReorderGroups = useCallback((reorderedSections) => {
-    console.log('[handleReorderGroups] called', reorderedSections.length);
     reorderedSections.forEach((section, index) => {
       if (section.isUngrouped) {
         updateSponsorField('ungroupedDisplayOrder', index);

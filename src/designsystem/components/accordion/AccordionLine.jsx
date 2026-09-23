@@ -14,6 +14,7 @@ import {
 } from './style';
 import BoxButton from '../button/boxbutton/BoxButton';
 import { AnimatePresence, motion } from 'framer-motion';
+import { forwardRef } from 'react';
 
 /**
  * 제목만 보여주는 아코디언 컴포넌트입니다.
@@ -28,18 +29,21 @@ import { AnimatePresence, motion } from 'framer-motion';
  * @param {function} onToggle - 아코디언을 펼치거나 접는 함수
  * @param {React.ReactNode} [children] - 아코디언 안에 들어갈 콘텐츠
  */
-export default function AccordionLine({
-  title,
-  required = false,
-  subtitle,
-  count,
-  size = 'lg',
-  expanded,
-  onToggle,
-  children,
-}) {
+const AccordionLine = forwardRef(function AccordionLine(
+  {
+    title,
+    required = false,
+    subtitle,
+    count,
+    size = 'lg',
+    expanded,
+    onToggle,
+    children,
+  },
+  ref,
+) {
   return (
-    <AccordionLineWrapper>
+    <AccordionLineWrapper ref={ref}>
       {/* 아코디언 헤더 */}
       <AccordionLineHeader>
         <AccordionLineTextWrapper>
@@ -78,7 +82,7 @@ export default function AccordionLine({
       </AnimatePresence>
     </AccordionLineWrapper>
   );
-}
+});
 
 /**
  * 아코디언 콘텐츠 내부 가이드 텍스트 컴포넌트입니다.
@@ -119,3 +123,5 @@ function AccordionLineActionButton({ buttonText, onClick, disabled }) {
  */
 AccordionLine.ContentGuide = AccordionLineContentGuide;
 AccordionLine.ActionButton = AccordionLineActionButton;
+
+export default AccordionLine;
