@@ -149,6 +149,7 @@ export function useProductGroups(productGroups, { groupId, onGroupIdChange }) {
           description: newGroup.description.trim(),
         },
       });
+      onGroupIdChange(tempId);
     }
 
     handleCloseGroupSheet();
