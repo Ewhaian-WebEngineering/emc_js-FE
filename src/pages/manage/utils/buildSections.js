@@ -4,6 +4,7 @@ export function buildSections(
   draftItems,
   ungroupedServerItems = [],
   itemKey = 'products',
+  ungroupedDisplayOrder = Number.MAX_SAFE_INTEGER,
 ) {
   const baseGroups = productGroups
     .map((group) => {
@@ -25,7 +26,14 @@ export function buildSections(
         entry.data.displayOrder ?? Number.MAX_SAFE_INTEGER - 1000 + index,
     }));
 
-  const allGroups = [...baseGroups, ...newGroups].sort(
+  const ungroupedVirtualGroup = {
+    id: 'ungrouped',
+    name: '그룹 없음',
+    isUngrouped: true,
+    displayOrder: ungroupedDisplayOrder,
+  };
+
+  const allGroups = [...baseGroups, ...newGroups, ungroupedVirtualGroup].sort(
     (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
   );
 
@@ -67,25 +75,12 @@ export function buildSections(
   const byDisplayOrder = (a, b) =>
     (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
 
-  const sections = allGroups.map((group) => ({
+  return allGroups.map((group) => ({
     ...group,
-    isUngrouped: false,
     [itemKey]: allItems
-      .filter((item) => item.groupId === group.id)
+      .filter((item) =>
+        group.isUngrouped ? !item.groupId : item.groupId === group.id,
+      )
       .sort(byDisplayOrder),
   }));
-
-  const ungroupedItems = allItems
-    .filter((item) => !item.groupId)
-    .sort(byDisplayOrder);
-
-  return [
-    ...sections,
-    {
-      id: 'ungrouped',
-      name: '그룹 없음',
-      isUngrouped: true,
-      [itemKey]: ungroupedItems,
-    },
-  ];
 }

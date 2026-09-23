@@ -1,5 +1,6 @@
 import { ADMIN_ROUTES } from '@/constants/routes';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSponsorDetail } from '@/api/feature/admin/useSponsorManageData';
 import SponsorItemFormScreen from './SponsorItemFormScreen';
 import { upsertSponsorItemDraft } from '../store/sponsorDraftStore';
 import { useToastContext } from '@/designsystem/components/toast/ToastContext';
@@ -8,6 +9,8 @@ export default function SponsorItemCreateScreen() {
   const navigate = useNavigate();
   const { toast } = useToastContext();
   const { sponsorId } = useParams();
+
+  const { data: sponsor, isPending } = useSponsorDetail(sponsorId);
 
   const handleSubmit = async (values, thumbnailFile) => {
     const itemId = `temp-${crypto.randomUUID()}`;
@@ -22,5 +25,13 @@ export default function SponsorItemCreateScreen() {
     navigate(ADMIN_ROUTES.SPONSOR_EDIT(sponsorId));
   };
 
-  return <SponsorItemFormScreen onSubmit={handleSubmit} submitLabel="create" />;
+  if (isPending) return <div>Loading...</div>;
+
+  return (
+    <SponsorItemFormScreen
+      productGroups={sponsor?.productGroups ?? []}
+      onSubmit={handleSubmit}
+      submitLabel="create"
+    />
+  );
 }

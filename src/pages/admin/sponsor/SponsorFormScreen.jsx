@@ -21,6 +21,7 @@ import {
 import { ADMIN_ROUTES } from '@/constants/routes';
 import SponsorItemList from './item/components/SponsorItemList';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
+import { resetSponsorDraft } from './store/sponsorDraftStore';
 
 export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
   const { showModal } = useModal();
@@ -64,7 +65,10 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       cancelText: '나가기',
       confirmText: '계속 작성하기',
-      onCancel: () => goBack(),
+      onCancel: () => {
+        resetSponsorDraft();
+        goBack();
+      },
     });
   };
 

@@ -1,18 +1,28 @@
-import { useState } from 'react';
-import Accordion from '../../../designsystem/components/accordion/AccordionLine';
-import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
-import { useNavigate } from 'react-router-dom';
+import {
+  useDeleteSponsor,
+  useUpdateSponsor,
+} from '@/api/feature/admin/useAdminData';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import useModal from '@/hooks/modal/useModal';
-import { useDeleteSponsor } from '@/api/feature/admin/useAdminData';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CardWrapper } from './style';
+import { SortableItem, SortableList } from '@/components/SortableList';
+import SpCard from '../../../designsystem/components/card/admin/AdminSpCard';
+import Accordion from '../../../designsystem/components/accordion/AccordionLine';
 
 export default function SponsorSection({ sponsors = [] }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
   const { mutateAsync: deleteSponsor } = useDeleteSponsor();
+  const { mutateAsync: updateSponsor } = useUpdateSponsor();
 
   const [expanded, setExpanded] = useState(false);
+  const [localSponsors, setLocalSponsors] = useState(sponsors);
+
+  useEffect(() => {
+    setLocalSponsors(sponsors);
+  }, [sponsors]);
 
   const handleEdit = (id) => {
     navigate(ADMIN_ROUTES.SPONSOR_EDIT(id));
@@ -32,24 +42,48 @@ export default function SponsorSection({ sponsors = [] }) {
     await deleteSponsor({ sid: id });
   };
 
+  const handleReorder = async (reordered) => {
+    setLocalSponsors(reordered);
+
+    const changed = reordered
+      .map((sponsor, index) => ({ sponsor, index }))
+      .filter(({ sponsor, index }) => sponsor.displayOrder !== index);
+
+    await Promise.all(
+      changed.map(({ sponsor, index }) =>
+        updateSponsor({
+          sponsorId: sponsor.id,
+          payload: { displayOrder: index },
+        }),
+      ),
+    );
+  };
+
   return (
     <Accordion
       expanded={expanded}
       onToggle={() => setExpanded((prev) => !prev)}
       size="lg"
       title="협찬사 등록/수정"
-      count={sponsors.length}
+      count={localSponsors.length}
     >
       <CardWrapper>
-        {sponsors.map((sponsor) => (
-          <SpCard
-            key={sponsor.id}
-            content={sponsor.introShort}
-            title={sponsor.name}
-            onDelete={() => handleDelete(sponsor.id)}
-            onEdit={() => handleEdit(sponsor.id)}
-          />
-        ))}
+        <SortableList
+          items={localSponsors}
+          getId={(s) => s.id}
+          onReorder={handleReorder}
+        >
+          {localSponsors.map((sponsor) => (
+            <SortableItem key={sponsor.id} id={sponsor.id}>
+              <SpCard
+                content={sponsor.introShort}
+                title={sponsor.name}
+                onDelete={() => handleDelete(sponsor.id)}
+                onEdit={() => handleEdit(sponsor.id)}
+              />
+            </SortableItem>
+          ))}
+        </SortableList>
       </CardWrapper>
     </Accordion>
   );

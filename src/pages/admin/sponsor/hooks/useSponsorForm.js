@@ -9,6 +9,12 @@ import {
   updateSponsorField,
 } from '../store/sponsorDraftStore';
 
+const isEditorContentEmpty = (html) => {
+  if (!html) return true;
+  const textOnly = html.replace(/<[^>]*>/g, '').trim();
+  return textOnly === '';
+};
+
 const validate = (values) => {
   const errors = {};
 
@@ -16,7 +22,7 @@ const validate = (values) => {
   if (!values.operationTime) errors.operationTime = '운영 시간을 선택해주세요.';
   if (!values.introShort.trim())
     errors.introShort = '한 줄 소개를 입력해주세요.';
-  if (!values.description.trim())
+  if (isEditorContentEmpty(values.description))
     errors.description = '협찬사 소개를 입력해주세요.';
   if (!values.imageUrl) errors.imageUrl = '프로필 이미지를 등록해주세요.';
 

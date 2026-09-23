@@ -31,10 +31,13 @@ function SponsorItemSection({ section, onEditItem, onDeleteItem }) {
     data: { type: 'container', sectionId: section.id },
   });
 
+  const isEmpty = section.items.length === 0;
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
+    display: isEmpty ? 'none' : undefined,
   };
 
   return (

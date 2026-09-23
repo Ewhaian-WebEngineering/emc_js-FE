@@ -42,6 +42,7 @@ export function useSaveSponsorDraft(sponsorId) {
         externalUrl,
         introShort,
         description,
+        ungroupedDisplayOrder,
       } = sponsorForm;
 
       await updateSponsor(sponsorId, {
@@ -52,6 +53,7 @@ export function useSaveSponsorDraft(sponsorId) {
         externalUrl,
         introShort,
         description,
+        ungroupedDisplayOrder,
         ...(sponsorImageS3Key !== undefined && {
           imageS3Key: sponsorImageS3Key,
         }),
@@ -102,7 +104,7 @@ export function useSaveSponsorDraft(sponsorId) {
         const payload = {
           name,
           description,
-          ...(resolvedGroupId !== null && { groupId: resolvedGroupId }),
+          groupId: resolvedGroupId,
           ...(productImageS3Key !== undefined && {
             imageS3Key: productImageS3Key,
           }),
@@ -110,8 +112,7 @@ export function useSaveSponsorDraft(sponsorId) {
         };
 
         if (entry.status === 'created') {
-          const { displayOrder: _omit, ...createPayload } = payload;
-          await createSponsorProduct(sponsorId, createPayload);
+          await createSponsorProduct(sponsorId, payload);
         } else if (entry.status === 'updated') {
           await updateSponsorProduct(sponsorId, key, payload);
         }

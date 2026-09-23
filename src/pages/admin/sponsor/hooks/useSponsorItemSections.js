@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   markSponsorItemDeleted,
+  updateSponsorField,
   upsertSponsorGroupDraft,
   upsertSponsorItemDraft,
 } from '../store/sponsorDraftStore';
@@ -18,6 +19,11 @@ export function useSponsorItemSections(sponsor, sponsorId) {
   const productGroups = sponsor?.productGroups ?? [];
   const ungroupedItems = sponsor?.products ?? [];
 
+  const ungroupedDisplayOrder =
+    draft.sponsorFields?.ungroupedDisplayOrder ??
+    sponsor?.ungroupedDisplayOrder ??
+    Number.MAX_SAFE_INTEGER;
+
   const [itemSections, setItemSections] = useState(() =>
     buildSections(
       productGroups,
@@ -25,6 +31,7 @@ export function useSponsorItemSections(sponsor, sponsorId) {
       draft.items,
       ungroupedItems,
       'items',
+      ungroupedDisplayOrder,
     ),
   );
 
@@ -36,9 +43,16 @@ export function useSponsorItemSections(sponsor, sponsorId) {
         draft.items,
         ungroupedItems,
         'items',
+        ungroupedDisplayOrder,
       ),
     );
-  }, [productGroups, ungroupedItems, draft.groups, draft.items]);
+  }, [
+    productGroups,
+    ungroupedItems,
+    draft.groups,
+    draft.items,
+    ungroupedDisplayOrder,
+  ]);
 
   const [itemsError, setItemsError] = useState(undefined);
 
@@ -76,6 +90,7 @@ export function useSponsorItemSections(sponsor, sponsorId) {
 
   const handleReorderItems = useCallback(
     (updatedItems) => {
+      console.log('[handleReorderItems] called', updatedItems.length);
       updatedItems.forEach((item) => {
         const { id, ...data } = item;
         const isTemp = String(id).startsWith('temp-');
@@ -92,19 +107,23 @@ export function useSponsorItemSections(sponsor, sponsorId) {
   );
 
   const handleReorderGroups = useCallback((reorderedSections) => {
-    reorderedSections
-      .filter((section) => !section.isUngrouped)
-      .forEach((section, index) => {
-        const isTemp = String(section.id).startsWith('temp-');
-        upsertSponsorGroupDraft(section.id, {
-          status: isTemp ? 'created' : 'updated',
-          data: {
-            name: section.name,
-            description: section.description ?? null,
-            displayOrder: index,
-          },
-        });
+    console.log('[handleReorderGroups] called', reorderedSections.length);
+    reorderedSections.forEach((section, index) => {
+      if (section.isUngrouped) {
+        updateSponsorField('ungroupedDisplayOrder', index);
+        return;
+      }
+
+      const isTemp = String(section.id).startsWith('temp-');
+      upsertSponsorGroupDraft(section.id, {
+        status: isTemp ? 'created' : 'updated',
+        data: {
+          name: section.name,
+          description: section.description ?? null,
+          displayOrder: index,
+        },
       });
+    });
   }, []);
 
   const validateItems = () => {

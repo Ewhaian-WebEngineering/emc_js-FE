@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import {
-  closestCorners,
+  pointerWithin,
   DndContext,
   DragOverlay,
   MeasuringFrequency,
@@ -31,11 +31,6 @@ export default function ProductGroupList({
 
   const [activeProduct, setActiveProduct] = useState(null);
   const dragOriginSectionId = useRef(null);
-
-  const visibleSections = sections.filter(
-    (section) =>
-      section.products.length > 0 || section.id === dragOriginSectionId.current,
-  );
 
   const findProduct = (productId) => {
     for (const section of sections) {
@@ -115,30 +110,26 @@ export default function ProductGroupList({
     const originSectionId = dragOriginSectionId.current;
     dragOriginSectionId.current = null;
 
-    if (!over || active.id === over.id) return;
+    if (!over) return;
 
     const activeData = active.data.current;
     const overData = over.data.current;
 
     if (activeData?.type === 'section') {
-      const activeIndex = sections.findIndex(
-        (s) => `section:${s.id}` === active.id,
-      );
-      if (activeIndex === -1) return;
+      const activeSectionId = String(active.id).replace('section:', '');
 
       let overSectionId = null;
       if (overData?.type === 'section') {
-        overSectionId = sections.find((s) => `section:${s.id}` === over.id)?.id;
-      } else if (
-        overData?.type === 'product' ||
-        overData?.type === 'container'
-      ) {
+        overSectionId = String(over.id).replace('section:', '');
+      } else if (overData?.sectionId) {
         overSectionId = overData.sectionId;
       }
-      if (!overSectionId) return;
 
+      if (!overSectionId || overSectionId === activeSectionId) return;
+
+      const activeIndex = sections.findIndex((s) => s.id === activeSectionId);
       const overIndex = sections.findIndex((s) => s.id === overSectionId);
-      if (overIndex === -1 || overIndex === activeIndex) return;
+      if (activeIndex === -1 || overIndex === -1) return;
 
       const reordered = arrayMove(sections, activeIndex, overIndex);
       onSectionsChange(reordered);
@@ -147,6 +138,8 @@ export default function ProductGroupList({
     }
 
     if (activeData?.type === 'product') {
+      if (active.id === over.id) return;
+
       const currentSection = sections.find((s) =>
         s.products.some((p) => p.id === active.id),
       );
@@ -190,7 +183,7 @@ export default function ProductGroupList({
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
+      collisionDetection={pointerWithin}
       measuring={{
         droppable: {
           strategy: MeasuringStrategy.Always,
@@ -202,10 +195,10 @@ export default function ProductGroupList({
       onDragEnd={handleDragEnd}
     >
       <SortableContext
-        items={visibleSections.map((s) => `section:${s.id}`)}
+        items={sections.map((s) => `section:${s.id}`)}
         strategy={verticalListSortingStrategy}
       >
-        {visibleSections.map((section) => (
+        {sections.map((section) => (
           <ProductGroupSection
             key={section.id}
             section={section}
