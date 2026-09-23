@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import AddIcon from '@/assets/svg/20px/ic_add.svg?react';
 import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
@@ -21,6 +22,16 @@ import {
 import { ADMIN_ROUTES } from '@/constants/routes';
 import SponsorItemList from './item/components/SponsorItemList';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
+import { resetSponsorDraft } from './store/sponsorDraftStore';
+
+const SECTION_ORDER = [
+  { scrollKey: 'name', fields: ['name'] },
+  { scrollKey: 'operationTime', fields: ['operationTime'] },
+  { scrollKey: 'introShort', fields: ['introShort'] },
+  { scrollKey: 'description', fields: ['description'] },
+  { scrollKey: 'imageUrl', fields: ['imageUrl'] },
+  { scrollKey: 'itemList', accordionKey: 'itemList', isItemSection: true },
+];
 
 export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
   const { showModal } = useModal();
@@ -29,7 +40,8 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
 
   const { sponsorId } = useParams();
 
-  const [expanded, toggleExpanded] = useToggleMap(['itemList']);
+  const [expanded, toggleExpanded, openSection] = useToggleMap(['itemList']);
+  const sectionRefs = useRef({});
 
   const {
     formValues,
@@ -37,8 +49,10 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
     visibleErrors,
     isButtonDisabled,
     isDirty,
+    validateFields,
     handleSubmit,
     handleUploadError,
+    hasAttemptedSubmit,
   } = useSponsorForm({ sponsor, submitLabel, onSubmit });
 
   const {
@@ -64,13 +78,44 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       cancelText: '나가기',
       confirmText: '계속 작성하기',
-      onCancel: () => goBack(),
+      onCancel: () => {
+        resetSponsorDraft();
+        goBack();
+      },
     });
   };
 
+  const scrollToFirstError = (fieldErrors, itemError) => {
+    const errorFieldKeys = Object.keys(fieldErrors);
+
+    const target = SECTION_ORDER.find((section) => {
+      if (section.isItemSection) return !!itemError;
+      return section.fields.some((field) => errorFieldKeys.includes(field));
+    });
+
+    if (!target) return;
+
+    if (target.accordionKey) {
+      openSection(target.accordionKey);
+    }
+
+    const delay = target.accordionKey ? 350 : 0;
+    setTimeout(() => {
+      sectionRefs.current[target.scrollKey]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }, delay);
+  };
+
   const handleSave = () => {
+    const fieldErrors = validateFields();
     const itemError = validateItems();
-    if (itemError) return;
+
+    if (Object.keys(fieldErrors).length > 0 || itemError) {
+      scrollToFirstError(fieldErrors, itemError);
+      return;
+    }
 
     handleSubmit();
   };
@@ -96,12 +141,14 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
       />
 
       <SponsorFormContainer>
-        <TextField
-          title="이름"
-          description="변경 불가"
-          value={formValues.name}
-          disabled
-        />
+        <div ref={(el) => (sectionRefs.current.name = el)}>
+          <TextField
+            title="이름"
+            description="변경 불가"
+            value={formValues.name}
+            disabled
+          />
+        </div>
 
         <TextField
           title="위치"
@@ -110,14 +157,16 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
           disabled
         />
 
-        <CategoryLabel
-          title="운영 시간"
-          options={BOOTH_CATEGORY_OPTIONS.operatingTime}
-          selected={formValues.operationTime}
-          onChange={(value) => updateField('operationTime', value)}
-          hasError={!!visibleErrors.operationTime}
-          helperText={visibleErrors.operationTime}
-        />
+        <div ref={(el) => (sectionRefs.current.operationTime = el)}>
+          <CategoryLabel
+            title="운영 시간"
+            options={BOOTH_CATEGORY_OPTIONS.operatingTime}
+            selected={formValues.operationTime}
+            onChange={(value) => updateField('operationTime', value)}
+            hasError={!!visibleErrors.operationTime}
+            helperText={visibleErrors.operationTime}
+          />
+        </div>
 
         <TextField
           title="SNS"
@@ -133,44 +182,52 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
           onChange={(value) => updateField('externalUrl', value)}
         />
 
-        <TextField
-          title="협찬사 한 줄 소개"
-          required
-          placeholder="협찬사를 한 줄로 소개해주세요."
-          value={formValues.introShort}
-          onChange={(value) => updateField('introShort', value)}
-          maxLength={50}
-          hasError={!!visibleErrors.introShort}
-          helperText={visibleErrors.introShort}
-        />
-
-        <RichTextField>
-          <FieldLabel>
-            협찬사 소개
-            <span>*</span>
-          </FieldLabel>
-          <Editor
-            content={formValues.description}
-            onChange={(value) => updateField('description', value)}
+        <div ref={(el) => (sectionRefs.current.introShort = el)}>
+          <TextField
+            title="협찬사 한 줄 소개"
+            required
+            placeholder="협찬사를 한 줄로 소개해주세요."
+            value={formValues.introShort}
+            onChange={(value) => updateField('introShort', value)}
+            maxLength={50}
+            hasError={!!visibleErrors.introShort}
+            helperText={visibleErrors.introShort}
           />
-        </RichTextField>
+        </div>
 
-        <ProductImageUploader
-          title="프로필 이미지"
-          isRequired
-          imageUrl={formValues.imageUrl}
-          onUpload={(file) => updateField('imageUrl', file)}
-          onDelete={() => updateField('imageUrl', null)}
-          isError={!!visibleErrors.imageUrl}
-          helperText={
-            visibleErrors.profileImage ??
-            '이미지 1개만 업로드할 수 있습니다. (JPG, JPEG, PNG / 최대 10MB)'
-          }
-          onUploadError={handleUploadError}
-        />
+        <div ref={(el) => (sectionRefs.current.description = el)}>
+          <RichTextField>
+            <FieldLabel>
+              협찬사 소개
+              <span>*</span>
+            </FieldLabel>
+            <Editor
+              content={formValues.description}
+              onChange={(value) => updateField('description', value)}
+              forceShowError={hasAttemptedSubmit}
+            />
+          </RichTextField>
+        </div>
+
+        <div ref={(el) => (sectionRefs.current.imageUrl = el)}>
+          <ProductImageUploader
+            title="프로필 이미지"
+            isRequired
+            imageUrl={formValues.imageUrl}
+            onUpload={(file) => updateField('imageUrl', file)}
+            onDelete={() => updateField('imageUrl', null)}
+            isError={!!visibleErrors.imageUrl}
+            helperText={
+              visibleErrors.profileImage ??
+              '이미지 1개만 업로드할 수 있습니다. (JPG, JPEG, PNG / 최대 10MB)'
+            }
+            onUploadError={handleUploadError}
+          />
+        </div>
       </SponsorFormContainer>
 
       <AccordionLine
+        ref={(el) => (sectionRefs.current.itemList = el)}
         title="협찬품 목록"
         required
         expanded={expanded.itemList}

@@ -16,6 +16,7 @@ import {
   useUpdateCongestion as useUpdateCongestionBase,
   useCongestionStream,
 } from './useCongestion';
+import { updateSponsor } from './sponsorManageApi';
 
 export function useAdminVerify() {
   return useMutation({
@@ -77,3 +78,16 @@ export function useDeleteFaq() {
     },
   });
 }
+
+export const useUpdateSponsor = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ sponsorId, payload }) => updateSponsor(sponsorId, payload),
+    onSuccess: (_, { sponsorId }) => {
+      queryClient.invalidateQueries({
+        queryKey: ['sponsor-detail', sponsorId],
+      });
+    },
+  });
+};

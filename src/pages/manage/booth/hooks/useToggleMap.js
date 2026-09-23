@@ -9,5 +9,9 @@ export function useToggleMap(initialKeys = []) {
     setState((prev) => ({ ...prev, [key]: !prev[key] }));
   }, []);
 
-  return [state, toggle];
+  const open = useCallback((key) => {
+    setState((prev) => ({ ...prev, [key]: true }));
+  }, []);
+
+  return [state, toggle, open];
 }

@@ -32,11 +32,6 @@ export default function SponsorItemList({
   const [activeItem, setActiveItem] = useState(null);
   const dragOriginSectionId = useRef(null);
 
-  const visibleSections = sections.filter(
-    (section) =>
-      section.items.length > 0 || section.id === dragOriginSectionId.current,
-  );
-
   const findItem = (itemId) => {
     for (const section of sections) {
       const found = section.items.find((i) => i.id === itemId);
@@ -115,7 +110,6 @@ export default function SponsorItemList({
     const activeData = active.data.current;
     const overData = over.data.current;
 
-    // ── 그룹(섹션) 재정렬 ──
     if (activeData?.type === 'section') {
       const activeSectionId = String(active.id).replace('section:', '');
 
@@ -123,7 +117,6 @@ export default function SponsorItemList({
       if (overData?.type === 'section') {
         overSectionId = String(over.id).replace('section:', '');
       } else if (overData?.sectionId) {
-        // 'item' 또는 'container' 위에 놓인 경우도 해당 섹션으로 인식
         overSectionId = overData.sectionId;
       }
 
@@ -197,10 +190,10 @@ export default function SponsorItemList({
       onDragEnd={handleDragEnd}
     >
       <SortableContext
-        items={visibleSections.map((s) => `section:${s.id}`)}
+        items={sections.map((s) => `section:${s.id}`)}
         strategy={verticalListSortingStrategy}
       >
-        {visibleSections.map((section) => (
+        {sections.map((section) => (
           <SponsorItemSection
             key={section.id}
             section={section}

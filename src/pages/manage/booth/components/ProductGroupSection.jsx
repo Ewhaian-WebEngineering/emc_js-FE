@@ -24,12 +24,18 @@ function ProductGroupSection({ section, onEditProduct, onDeleteProduct }) {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: `section:${section.id}`, data: { type: 'section' } });
+  } = useSortable({
+    id: `section:${section.id}`,
+    data: { type: 'section' },
+    disabled: section.isUngrouped,
+  });
 
   const { setNodeRef: setDropRef } = useDroppable({
     id: `container:${section.id}`,
     data: { type: 'container', sectionId: section.id },
   });
+
+  const isEmpty = section.products.length === 0;
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -39,8 +45,11 @@ function ProductGroupSection({ section, onEditProduct, onDeleteProduct }) {
 
   return (
     <GroupSectionWrapper ref={setNodeRef} style={style}>
-      <GroupHeader>
-        <GroupHandle {...attributes} {...listeners}>
+      <GroupHeader style={isEmpty ? { display: 'none' } : undefined}>
+        <GroupHandle
+          {...attributes}
+          {...(section.isUngrouped ? {} : listeners)}
+        >
           <DragHandleIcon />
           <GroupName>{section.name}</GroupName>
         </GroupHandle>
@@ -50,7 +59,10 @@ function ProductGroupSection({ section, onEditProduct, onDeleteProduct }) {
         items={section.products.map((p) => p.id)}
         strategy={verticalListSortingStrategy}
       >
-        <GroupProductList ref={setDropRef}>
+        <GroupProductList
+          ref={setDropRef}
+          style={isEmpty ? { minHeight: 1 } : undefined}
+        >
           {section.products.map((product) => (
             <ProductCard
               key={product.id}

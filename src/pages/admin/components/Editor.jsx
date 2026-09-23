@@ -33,7 +33,13 @@ import {
 
 const preventMouseDown = (e) => e.preventDefault();
 
-export default function Editor({ content = '', onChange, ownerId, imageType }) {
+export default function Editor({
+  content = '',
+  onChange,
+  ownerId,
+  imageType,
+  forceShowError = false,
+}) {
   const fileInputRef = useRef(null);
   const linkMenuRef = useRef(null);
   const savedSelectionRef = useRef(null);
@@ -94,7 +100,7 @@ export default function Editor({ content = '', onChange, ownerId, imageType }) {
     }),
   });
 
-  const showError = touched && editorState.isEmpty;
+  const showError = (touched || forceShowError) && editorState.isEmpty;
 
   useEffect(() => {
     if (showLinkMenu && savedSelectionRef.current && editor) {

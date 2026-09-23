@@ -39,6 +39,8 @@ export function initSponsorDraft(sponsor) {
     externalUrl: sponsor?.externalUrl ?? '',
     introShort: sponsor?.introShort ?? '',
     description: sponsor?.description ?? '',
+    ungroupedDisplayOrder:
+      sponsor?.ungroupedDisplayOrder ?? Number.MAX_SAFE_INTEGER,
   };
 
   setState({
@@ -107,6 +109,8 @@ export function reassignSponsorItemsGroup(items, groupId) {
   const updates = {};
 
   items.forEach((item) => {
+    if (state.items[item.id]?.status === 'deleted') return;
+
     if (item.status === 'created') {
       updates[item.id] = {
         status: 'created',

@@ -31,6 +31,8 @@ function SponsorItemSection({ section, onEditItem, onDeleteItem }) {
     data: { type: 'container', sectionId: section.id },
   });
 
+  const isEmpty = section.items.length === 0;
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -39,7 +41,7 @@ function SponsorItemSection({ section, onEditItem, onDeleteItem }) {
 
   return (
     <GroupSectionWrapper ref={setNodeRef} style={style}>
-      <GroupHeader>
+      <GroupHeader style={isEmpty ? { display: 'none' } : undefined}>
         <GroupHandle {...attributes} {...listeners}>
           <DragHandleIcon />
           <GroupName>{section.name}</GroupName>
@@ -50,7 +52,10 @@ function SponsorItemSection({ section, onEditItem, onDeleteItem }) {
         items={section.items.map((i) => i.id)}
         strategy={verticalListSortingStrategy}
       >
-        <GroupProductList ref={setDropRef}>
+        <GroupProductList
+          ref={setDropRef}
+          style={isEmpty ? { minHeight: 1 } : undefined}
+        >
           {section.items.map((item) => (
             <SponsorItemCard
               key={item.id}

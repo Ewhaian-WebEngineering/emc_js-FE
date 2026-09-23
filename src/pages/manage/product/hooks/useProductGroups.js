@@ -168,10 +168,12 @@ export function useProductGroups(productGroups, { groupId, onGroupIdChange }) {
     if (!confirmed) return;
 
     const serverGroup = productGroups.find((g) => g.id === option.value);
-    const serverItemsInGroup = (serverGroup?.products ?? []).map((item) => ({
-      id: item.id,
-      status: draft.items[item.id]?.status ?? 'server',
-    }));
+    const serverItemsInGroup = (serverGroup?.products ?? [])
+      .filter((item) => draft.items[item.id]?.status !== 'deleted')
+      .map((item) => ({
+        id: item.id,
+        status: draft.items[item.id]?.status ?? 'server',
+      }));
 
     const draftCreatedItemsInGroup = Object.entries(draft.items)
       .filter(
