@@ -27,6 +27,28 @@ const SPONSOR_NAME_TO_BOOTH_TARGET = {
   이화이언: '13',
 };
 
+function buildDisplayGroups(
+  productGroups,
+  ungroupedProducts,
+  ungroupedDisplayOrder,
+) {
+  const groups = (productGroups ?? []).map((group) => ({
+    ...group,
+    isUngrouped: false,
+  }));
+
+  const ungroupedGroup = {
+    id: 'ungrouped',
+    displayOrder: ungroupedDisplayOrder ?? Number.MAX_SAFE_INTEGER,
+    products: ungroupedProducts ?? [],
+    isUngrouped: true,
+  };
+
+  return [...groups, ungroupedGroup]
+    .filter((group) => (group.isUngrouped ? group.products.length > 0 : true))
+    .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+}
+
 export default function SponsorDetailScreen() {
   const { sponsorId } = useParams();
   const handleBack = useGoBack();
@@ -55,6 +77,12 @@ function SponsorDetailContent({ id }) {
     SPONSOR_NAME_TO_BOOTH_TARGET[sponsorDetail.location] ??
     sponsorDetail.location;
   const boothTargetId = `sponsor-booth-${boothNumber}`;
+
+  const displayGroups = buildDisplayGroups(
+    sponsorDetail.productGroups,
+    sponsorDetail.products,
+    sponsorDetail.ungroupedDisplayOrder,
+  );
 
   useEffect(() => {
     if (!tabBarRef.current) return;
@@ -193,15 +221,17 @@ function SponsorDetailContent({ id }) {
         <S.SectionTitle>협찬품을 소개합니다</S.SectionTitle>
 
         <S.ProductGroups>
-          {sponsorDetail.productGroups.map((group) => (
+          {displayGroups.map((group) => (
             <S.ProductGroup key={group.id}>
-              <S.ProductGroupHeader>
-                <S.ProductGroupName>{group.name}</S.ProductGroupName>
+              {!group.isUngrouped && (
+                <S.ProductGroupHeader>
+                  <S.ProductGroupName>{group.name}</S.ProductGroupName>
 
-                <S.ProductGroupDescription>
-                  {group.description}
-                </S.ProductGroupDescription>
-              </S.ProductGroupHeader>
+                  <S.ProductGroupDescription>
+                    {group.description}
+                  </S.ProductGroupDescription>
+                </S.ProductGroupHeader>
+              )}
 
               <S.ProductList>
                 {group.products.map((product) => (
@@ -215,21 +245,6 @@ function SponsorDetailContent({ id }) {
               </S.ProductList>
             </S.ProductGroup>
           ))}
-
-          {sponsorDetail.products?.length > 0 && (
-            <S.ProductGroup>
-              <S.ProductList>
-                {sponsorDetail.products.map((product) => (
-                  <ProductHorizontalCard
-                    key={product.id}
-                    thumbnail={product.imageUrl}
-                    productName={product.name}
-                    productDescription={product.description}
-                  />
-                ))}
-              </S.ProductList>
-            </S.ProductGroup>
-          )}
         </S.ProductGroups>
       </S.ProductSection>
 
