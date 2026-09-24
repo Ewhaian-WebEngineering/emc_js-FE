@@ -1,6 +1,7 @@
 import { MANAGE_ROUTES } from '@/constants/routes';
 import {
   markProductDeleted,
+  updateBoothField,
   upsertGroupDraft,
   upsertProductDraft,
 } from '@/pages/manage/store/boothDraftStore';
@@ -12,10 +13,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 export function useProductSections({
   productGroups = [],
   ungroupedProducts = [],
+  booth,
 }) {
   const navigate = useNavigate();
   const { boothId } = useParams();
   const draft = useBoothDraftStore();
+
+  const ungroupedDisplayOrder =
+    draft.boothFields?.ungroupedDisplayOrder ??
+    booth?.ungroupedDisplayOrder ??
+    Number.MAX_SAFE_INTEGER;
 
   const [productSections, setProductSections] = useState(() =>
     buildSections(
@@ -24,6 +31,7 @@ export function useProductSections({
       draft.products,
       ungroupedProducts,
       'products',
+      ungroupedDisplayOrder,
     ),
   );
 
@@ -35,9 +43,16 @@ export function useProductSections({
         draft.products,
         ungroupedProducts,
         'products',
+        ungroupedDisplayOrder,
       ),
     );
-  }, [productGroups, ungroupedProducts, draft.groups, draft.products]);
+  }, [
+    productGroups,
+    ungroupedProducts,
+    draft.groups,
+    draft.products,
+    ungroupedDisplayOrder,
+  ]);
 
   const [productsError, setProductsError] = useState(null);
 
@@ -82,19 +97,22 @@ export function useProductSections({
   );
 
   const handleReorderGroups = useCallback((reorderedSections) => {
-    reorderedSections
-      .filter((section) => !section.isUngrouped)
-      .forEach((section, index) => {
-        const isTemp = String(section.id).startsWith('temp-group-');
-        upsertGroupDraft(section.id, {
-          status: isTemp ? 'created' : 'updated',
-          data: {
-            name: section.name,
-            description: section.description ?? null,
-            displayOrder: index,
-          },
-        });
+    reorderedSections.forEach((section, index) => {
+      if (section.isUngrouped) {
+        updateBoothField('ungroupedDisplayOrder', index);
+        return;
+      }
+
+      const isTemp = String(section.id).startsWith('temp-group-');
+      upsertGroupDraft(section.id, {
+        status: isTemp ? 'created' : 'updated',
+        data: {
+          name: section.name,
+          description: section.description ?? null,
+          displayOrder: index,
+        },
       });
+    });
   }, []);
 
   const hasAnyProduct = productSections.some((s) => s.products.length > 0);

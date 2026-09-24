@@ -24,11 +24,7 @@ function ProductGroupSection({ section, onEditProduct, onDeleteProduct }) {
     transform,
     transition,
     isDragging,
-  } = useSortable({
-    id: `section:${section.id}`,
-    data: { type: 'section' },
-    disabled: section.isUngrouped,
-  });
+  } = useSortable({ id: `section:${section.id}`, data: { type: 'section' } });
 
   const { setNodeRef: setDropRef } = useDroppable({
     id: `container:${section.id}`,
@@ -46,10 +42,7 @@ function ProductGroupSection({ section, onEditProduct, onDeleteProduct }) {
   return (
     <GroupSectionWrapper ref={setNodeRef} style={style}>
       <GroupHeader style={isEmpty ? { display: 'none' } : undefined}>
-        <GroupHandle
-          {...attributes}
-          {...(section.isUngrouped ? {} : listeners)}
-        >
+        <GroupHandle {...attributes} {...listeners}>
           <DragHandleIcon />
           <GroupName>{section.name}</GroupName>
         </GroupHandle>

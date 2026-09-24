@@ -115,6 +115,7 @@ function BoothEditForm({ booth, boothId }) {
   } = useProductSections({
     productGroups: booth.productGroups,
     ungroupedProducts: booth.ungroupedProducts,
+    booth,
   });
 
   const handleBack = async () => {
