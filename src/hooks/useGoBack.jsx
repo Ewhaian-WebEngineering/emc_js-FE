@@ -7,7 +7,7 @@ export function useGoBack(fallback = TAB_ROUTES.HOME) {
 
   return () => {
     if (location.key === 'default') {
-      navigate(fallback);
+      navigate(fallback, { replace: true });
     } else {
       navigate(-1);
     }

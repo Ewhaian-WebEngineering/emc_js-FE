@@ -40,6 +40,7 @@ import {
 } from '@/api/feature/booth/useBoothData';
 import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSections';
 import { useToast } from '@/hooks/toast/useToast';
+import { useGoBack } from '@/hooks/useGoBack';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -81,6 +82,7 @@ function buildNoticeList(serverNotices, draftNotices) {
 
 function BoothEditForm({ booth, boothId }) {
   const navigate = useNavigate();
+  const goBack = useGoBack(MANAGE_ROUTES.BOOTH_PREVIEW(boothId));
   const { showModal } = useModal();
   const { toast } = useToast();
   const draft = useBoothDraftStore();
@@ -122,7 +124,7 @@ function BoothEditForm({ booth, boothId }) {
 
   const handleBack = async () => {
     if (!isDraftDirty()) {
-      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
+      goBack();
       return;
     }
 
