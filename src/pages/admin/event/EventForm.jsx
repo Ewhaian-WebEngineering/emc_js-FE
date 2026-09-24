@@ -1,5 +1,4 @@
 import { useState, useRef, useMemo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
@@ -9,6 +8,7 @@ import Tag from '@/designsystem/components/tag/Tag';
 import DatePicker from '@/designsystem/components/datepicker/DatePicker';
 import Editor from '../components/Editor';
 import useModal from '@/hooks/modal/useModal';
+import { useGoBack } from '@/hooks/useGoBack';
 import {
   EventFormContainer,
   CategoryContainer,
@@ -31,12 +31,6 @@ const ORGANIZER_TYPES = [
 ];
 
 const LIVE_EVENT_DATE = new Date(2026, 9, 13);
-
-/**
- * @param {'create' | 'edit'} mode - 등록/수정 모드
- * @param {object} [initialData] - 수정 모드일 때 미리 채울 기존 데이터
- * @param {function} onSubmit - 등록/수정 완료 시 호출되는 콜백
- */
 
 const toDateString = (date) => {
   if (!date) return null;
@@ -73,12 +67,18 @@ function createInitialFormData(initialData) {
   };
 }
 
+/**
+ * @param {'create' | 'edit'} mode - 등록/수정 모드
+ * @param {object} [initialData] - 수정 모드일 때 미리 채울 기존 데이터
+ * @param {function} onSubmit - 저장 콜백. 성공 시 resolve, 실패 시 reject하는 Promise를 반환해야 함
+ */
 export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
-  const navigate = useNavigate();
+  const goBack = useGoBack(ADMIN_ROUTES.DASHBOARD);
   const { showModal } = useModal();
-  const ownerIdRef = useRef(initialData?.id ?? crypto.randomUUID());
-  const ownerId = ownerIdRef.current;
+
+  const ownerIdRef = useRef(crypto.randomUUID());
+  const ownerId = initialData?.id ?? ownerIdRef.current;
 
   const initialFormDataRef = useRef(createInitialFormData(initialData));
 
@@ -86,15 +86,14 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
     createInitialFormData(initialData),
   );
   const [imageFile, setImageFile] = useState(null);
-  const [touched, setTouched] = useState({
-    title: false,
-  });
+  const [touched, setTouched] = useState({ title: false });
+  const [isSaving, setIsSaving] = useState(false);
 
-  const prevInitialDataRef = useRef(initialData);
+  const hasLoadedRef = useRef(!!initialData);
 
   useEffect(() => {
-    if (initialData && initialData !== prevInitialDataRef.current) {
-      prevInitialDataRef.current = initialData;
+    if (initialData && !hasLoadedRef.current) {
+      hasLoadedRef.current = true;
       const next = createInitialFormData(initialData);
       initialFormDataRef.current = next;
       setFormData(next);
@@ -169,32 +168,49 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
   };
 
   const handleSubmit = async () => {
-    const imageS3Key = imageFile
-      ? (
-          await uploadImage({
-            file: imageFile,
-            imageType: 'event_image',
-            ownerId,
-          })
-        ).fileKey
-      : isEdit
-        ? (initialData?.imageS3Key ?? '')
-        : '';
-    onSubmit?.({
-      eventType,
-      title: title.trim(),
-      organizer,
-      startDate: toDateString(period.start),
-      endDate: toDateString(period.end),
-      description: description.trim(),
-      caution: caution.trim(),
-      imageS3Key,
-    });
+    if (isSaving) return;
+    setIsSaving(true);
+
+    try {
+      let imageS3Key = formData.imageS3Key;
+      if (imageFile) {
+        const { fileKey } = await uploadImage({
+          file: imageFile,
+          imageType: 'event_image',
+          ownerId,
+        });
+        imageS3Key = fileKey;
+      }
+
+      const trimmed = {
+        title: title.trim(),
+        description: description.trim(),
+        caution: caution.trim(),
+      };
+
+      await onSubmit?.({
+        eventType,
+        organizer,
+        startDate: toDateString(period.start),
+        endDate: toDateString(period.end),
+        imageS3Key,
+        ...trimmed,
+      });
+
+      const saved = { ...formData, ...trimmed, imageS3Key };
+      initialFormDataRef.current = saved;
+      setFormData(saved);
+      setImageFile(null);
+    } catch {
+      // 공통 에러 모달
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleBack = () => {
     if (!isDirty) {
-      navigate(ADMIN_ROUTES.DASHBOARD);
+      goBack();
       return;
     }
     showModal({
@@ -203,7 +219,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       confirmText: '계속 작성하기',
       cancelText: '나가기',
-      onCancel: () => navigate(ADMIN_ROUTES.DASHBOARD),
+      onCancel: () => goBack(),
     });
   };
 
@@ -213,7 +229,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
         onBack={handleBack}
         right={
           <TextButton
-            disabled={hasError || isUploading || (isEdit && !isDirty)}
+            disabled={hasError || isSaving || !isDirty}
             onClick={handleSubmit}
             size="sm"
             variant="primary"
