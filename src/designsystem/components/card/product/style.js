@@ -15,6 +15,8 @@ export const ProductVerticalCardThumbnail = styled.div`
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
+  position: relative;
+  overflow: hidden;
 
   img {
     width: 100%;
@@ -29,6 +31,19 @@ export const ProductVerticalCardThumbnail = styled.div`
     height: 100%;
     border-radius: 0;
   }
+`;
+
+export const ProductVerticalCardSoldOutOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(36, 38, 40, 0.4);
+  color: ${semantic.fillNormalWhite};
+  pointer-events: none;
+  z-index: 1;
+  ${typography.body1Semibold}
 `;
 
 export const ProductVerticalCardContent = styled.div`

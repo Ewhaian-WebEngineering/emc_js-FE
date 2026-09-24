@@ -6,6 +6,7 @@ import {
   ProductVerticalCardDescription,
   ProductVerticalCardName,
   ProductVerticalCardPrice,
+  ProductVerticalCardSoldOutOverlay,
   ProductVerticalCardThumbnail,
 } from './style';
 import Image from '../../Image';
@@ -18,6 +19,7 @@ import Image from '../../Image';
  * @param {string} productName - 제품 이름
  * @param {string} productDescription - 제품 설명
  * @param {number} productPrice - 제품 가격
+ * @param {boolean} [isSoldOut=false] - 판매 종료 여부
  * @returns
  */
 export default function ProductVerticalCard({
@@ -25,6 +27,7 @@ export default function ProductVerticalCard({
   productName,
   productDescription,
   productPrice,
+  isSoldOut = false,
 }) {
   return (
     <ProductVerticalCardContainer>
@@ -33,6 +36,11 @@ export default function ProductVerticalCard({
           <Image src={thumbnail} alt={productName} />
         ) : (
           <CardPlaceholder />
+        )}
+        {isSoldOut && (
+          <ProductVerticalCardSoldOutOverlay>
+            판매 종료
+          </ProductVerticalCardSoldOutOverlay>
         )}
       </ProductVerticalCardThumbnail>
       <ProductVerticalCardContent>
