@@ -27,9 +27,9 @@ function setState(partial) {
   notify();
 }
 
-export function initSponsorDraft(sponsor) {
+export function initSponsorDraft(sponsor, { force = false } = {}) {
   const sponsorId = sponsor?.id ?? null;
-  if (state.sponsorFields && state.sponsorId === sponsorId) return;
+  if (!force && state.sponsorFields && state.sponsorId === sponsorId) return;
 
   const fields = {
     name: sponsor?.name ?? '',
@@ -54,6 +54,7 @@ export function initSponsorDraft(sponsor) {
 }
 
 export function updateSponsorField(field, value) {
+  if (!state.sponsorFields) return;
   setState({ sponsorFields: { ...state.sponsorFields, [field]: value } });
 }
 
@@ -155,6 +156,7 @@ export function resetSponsorDraft() {
 }
 
 export function resetUngroupedDisplayOrder() {
+  if (!state.sponsorFields) return;
   setState({
     sponsorFields: {
       ...state.sponsorFields,

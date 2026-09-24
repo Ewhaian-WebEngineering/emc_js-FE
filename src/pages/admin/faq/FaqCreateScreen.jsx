@@ -5,17 +5,11 @@ import { useCreateFaq } from '@/api/feature/admin/useFaqData';
 
 export default function FaqCreateScreen() {
   const navigate = useNavigate();
-  const { mutate: createFaq } = useCreateFaq();
+  const { mutateAsync: createFaq } = useCreateFaq();
 
-  const handleSubmit = ({ que, ans }) => {
-    createFaq(
-      { question: que, answer: ans },
-      {
-        onSuccess: () => {
-          navigate(ADMIN_ROUTES.DASHBOARD);
-        },
-      },
-    );
+  const handleSubmit = async ({ que, ans }) => {
+    await createFaq({ question: que, answer: ans });
+    navigate(ADMIN_ROUTES.DASHBOARD);
   };
 
   return <FaqForm mode="create" onSubmit={handleSubmit} />;

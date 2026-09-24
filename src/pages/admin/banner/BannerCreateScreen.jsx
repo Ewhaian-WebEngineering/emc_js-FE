@@ -5,14 +5,11 @@ import { useCreateBanner } from '@/api/feature/admin/useBannerData';
 
 export default function BannerCreateScreen() {
   const navigate = useNavigate();
-  const { mutate: createBanner } = useCreateBanner();
+  const { mutateAsync: createBanner } = useCreateBanner();
 
-  const handleSubmit = (payload) => {
-    createBanner(payload, {
-      onSuccess: () => {
-        navigate(ADMIN_ROUTES.DASHBOARD);
-      },
-    });
+  const handleSubmit = async (payload) => {
+    await createBanner(payload);
+    navigate(ADMIN_ROUTES.DASHBOARD);
   };
 
   return <BannerForm mode="create" onSubmit={handleSubmit} />;

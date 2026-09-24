@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import MainImageUploader from '@/designsystem/components/fileuploader/MainImageUploader';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import DatePicker from '@/designsystem/components/datepicker/DatePicker';
 import useModal from '@/hooks/modal/useModal';
+import { useGoBack } from '@/hooks/useGoBack';
 import { BannerFormContainer, ContentContainer } from './style';
 import { ADMIN_ROUTES } from '@/constants/routes';
 import { useImageUpload } from '@/api/core/s3/useImageUpload';
@@ -67,20 +67,27 @@ const createInitialFormData = (initialData) => {
   };
 };
 
+/**
+ * @param {'create' | 'edit'} mode - 등록/수정 모드
+ * @param {object} [initialData] - 수정 모드일 때 미리 채울 기존 데이터
+ * @param {function} onSubmit - 저장 콜백. 성공 시 resolve, 실패 시 reject하는 Promise를 반환해야 함
+ */
 export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
-  const navigate = useNavigate();
+  const goBack = useGoBack(ADMIN_ROUTES.DASHBOARD);
   const { showModal } = useModal();
+
   const initialFormDataRef = useRef(createInitialFormData(initialData));
   const [formData, setFormData] = useState(() => initialFormDataRef.current);
   const [imageFile, setImageFile] = useState(null);
   const [touched, setTouched] = useState({ title: false, url: false });
+  const [isSaving, setIsSaving] = useState(false);
 
-  const prevInitialDataRef = useRef(initialData);
+  const hasLoadedRef = useRef(!!initialData);
 
   useEffect(() => {
-    if (initialData && initialData !== prevInitialDataRef.current) {
-      prevInitialDataRef.current = initialData;
+    if (initialData && !hasLoadedRef.current) {
+      hasLoadedRef.current = true;
       const next = createInitialFormData(initialData);
       initialFormDataRef.current = next;
       setFormData(next);
@@ -121,9 +128,8 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
     return false;
   };
 
-  const hasError = isEdit
-    ? !isRequiredFilled || !isFormDirty()
-    : !isRequiredFilled;
+  const isDirty = isFormDirty();
+  const isSubmitDisabled = !isRequiredFilled || !isDirty || isSaving;
 
   const handleImageUpload = (file) => {
     setImageFile(file);
@@ -136,28 +142,46 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
   };
 
   const handleSubmit = async () => {
-    let imageS3Key = DEFAULT_IMAGE_KEY;
+    if (isSaving) return;
+    setIsSaving(true);
 
-    if (imageFile) {
-      imageS3Key = (
-        await uploadImage({ file: imageFile, imageType: 'banner_image' })
-      ).fileKey;
-    } else if (formData.imageS3Key) {
-      imageS3Key = formData.imageS3Key;
+    try {
+      let savedImageS3Key = formData.imageS3Key;
+      if (imageFile) {
+        const { fileKey } = await uploadImage({
+          file: imageFile,
+          imageType: 'banner_image',
+        });
+        savedImageS3Key = fileKey;
+      }
+
+      await onSubmit?.({
+        title: title.trim(),
+        imageS3Key: savedImageS3Key || DEFAULT_IMAGE_KEY,
+        linkUrl: trimmedUrl ? normalizeUrl(url) : '',
+        startDate: toDateString(period.start),
+        endDate: toDateString(period.end),
+      });
+
+      const saved = {
+        ...formData,
+        title: title.trim(),
+        url: trimmedUrl,
+        imageS3Key: savedImageS3Key,
+      };
+      initialFormDataRef.current = saved;
+      setFormData(saved);
+      setImageFile(null);
+    } catch {
+      // 공통 에러 모달
+    } finally {
+      setIsSaving(false);
     }
-
-    onSubmit?.({
-      title: title.trim(),
-      imageS3Key,
-      linkUrl: trimmedUrl ? normalizeUrl(url) : '',
-      startDate: toDateString(period.start),
-      endDate: toDateString(period.end),
-    });
   };
 
   const handleBack = () => {
-    if (!isFormDirty()) {
-      navigate(ADMIN_ROUTES.DASHBOARD);
+    if (!isDirty) {
+      goBack();
       return;
     }
 
@@ -167,7 +191,7 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       confirmText: '계속 작성하기',
       cancelText: '나가기',
-      onCancel: () => navigate(ADMIN_ROUTES.DASHBOARD),
+      onCancel: () => goBack(),
     });
   };
 
@@ -184,12 +208,12 @@ export default function BannerForm({ mode = 'create', initialData, onSubmit }) {
         onBack={handleBack}
         right={
           <TextButton
-            disabled={hasError || isUploading}
+            disabled={isSubmitDisabled || isUploading}
             onClick={handleSubmit}
             size="sm"
             variant="primary"
           >
-            {isUploading ? '업로드 중...' : isEdit ? '저장' : '등록'}
+            {isEdit ? '저장' : '등록'}
           </TextButton>
         }
         title="배너"

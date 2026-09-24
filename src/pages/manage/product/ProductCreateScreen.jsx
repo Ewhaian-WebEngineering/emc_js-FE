@@ -29,7 +29,6 @@ export default function ProductCreateScreen() {
     });
 
     toast({ message: '변경사항이 저장되었어요.' });
-
     goBack();
   };
 

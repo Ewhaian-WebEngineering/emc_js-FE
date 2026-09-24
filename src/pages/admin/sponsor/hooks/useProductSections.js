@@ -10,9 +10,11 @@ import { buildSections } from '@/pages/manage/utils/buildSections';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+const EMPTY = [];
+
 export function useProductSections({
-  productGroups = [],
-  ungroupedProducts = [],
+  productGroups = EMPTY,
+  ungroupedProducts = EMPTY,
   booth,
 }) {
   const navigate = useNavigate();

@@ -9,13 +9,10 @@ import {
   updateSponsorProductGroup,
 } from '@/api/feature/admin/sponsorManageApi';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { resetSponsorDraft } from '../store/sponsorDraftStore';
+import { initSponsorDraft } from '../store/sponsorDraftStore';
 import { queryClient } from '@/api/core/query/queryClient';
-import { ADMIN_ROUTES } from '@/constants/routes';
 
 export function useSaveSponsorDraft(sponsorId) {
-  const navigate = useNavigate();
   const { mutateAsync: uploadImage } = useImageUpload();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -130,11 +127,17 @@ export function useSaveSponsorDraft(sponsorId) {
         }
       }
 
-      resetSponsorDraft();
-      queryClient.invalidateQueries({
-        queryKey: ['sponsor-detail', sponsorId],
-      });
-      navigate(ADMIN_ROUTES.DASHBOARD);
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['sponsor-detail', sponsorId],
+        }),
+        queryClient.invalidateQueries({ queryKey: ['adminDashboard'] }),
+      ]);
+      const freshSponsor = queryClient.getQueryData([
+        'sponsor-detail',
+        sponsorId,
+      ]);
+      initSponsorDraft(freshSponsor, { force: true });
     } finally {
       setIsSaving(false);
     }

@@ -1,4 +1,3 @@
-import { useGoBack } from '@/hooks/useGoBack';
 import { useLocation, useParams } from 'react-router-dom';
 import { useBoothDraftStore } from '../store/useBoothDraftStore';
 import { useProductDetail } from '@/api/feature/product/useProductData';
@@ -10,7 +9,6 @@ import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 export default function ProductEditScreen() {
   const { productId } = useParams();
   const location = useLocation();
-  const goBack = useGoBack();
   const draft = useBoothDraftStore();
   const { toast } = useToastContext();
 
@@ -50,8 +48,6 @@ export default function ProductEditScreen() {
     });
 
     toast({ message: '변경사항이 저장되었어요.' });
-
-    goBack();
   };
 
   return (

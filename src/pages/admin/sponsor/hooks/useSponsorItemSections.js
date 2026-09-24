@@ -11,13 +11,15 @@ import {
 } from '../store/sponsorDraftStore';
 import { useSponsorDraftStore } from './useSponsorDraftStore';
 
+const EMPTY = [];
+
 export function useSponsorItemSections(sponsor, sponsorId) {
   const navigate = useNavigate();
   const { showModal } = useModal();
   const draft = useSponsorDraftStore();
 
-  const productGroups = sponsor?.productGroups ?? [];
-  const ungroupedItems = sponsor?.products ?? [];
+  const productGroups = sponsor?.productGroups ?? EMPTY;
+  const ungroupedItems = sponsor?.products ?? EMPTY;
 
   const ungroupedDisplayOrder =
     draft.sponsorFields?.ungroupedDisplayOrder ??

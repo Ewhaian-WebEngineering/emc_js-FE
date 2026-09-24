@@ -14,9 +14,9 @@ export const ProductVerticalCardContainer = styled.div`
 export const ProductVerticalCardThumbnail = styled.div`
   width: 100%;
   aspect-ratio: 1 / 1;
-  overflow: hidden;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 
   img {
     width: 100%;

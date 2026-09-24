@@ -25,18 +25,17 @@ import { useBoothDraftStore } from '../store/useBoothDraftStore';
 import { buildGroupOptions } from '../utils/buildGroupOptions';
 import { useEntityGroups } from '@/hooks/useEntityGroups';
 import { useParams } from 'react-router-dom';
-import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
   const goBack = useGoBack();
   const { boothId } = useParams();
-  const { toast } = useToastContext();
 
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(
     product?.imageUrl ?? '',
   );
+  const [hasSaved, setHasSaved] = useState(false);
 
   const handleThumbnailUpload = (file) => {
     setThumbnailFile(file);
@@ -48,11 +47,10 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     setThumbnailPreview('');
   };
 
-  const handleFormSubmit = (values) => {
-    onSubmit(values, thumbnailFile);
-    toast({
-      message: '변경사항이 저장되었어요.',
-    });
+  const handleFormSubmit = async (values) => {
+    await onSubmit(values, thumbnailFile);
+    setBaseline({ values, thumbnailPreview });
+    setHasSaved(true);
   };
 
   const {
@@ -69,6 +67,15 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     onSubmit: handleFormSubmit,
     hasThumbnail: !!thumbnailPreview,
   });
+
+  const [baseline, setBaseline] = useState(() => ({
+    values: formValues,
+    thumbnailPreview: product?.imageUrl ?? '',
+  }));
+
+  const isDirty =
+    JSON.stringify(formValues) !== JSON.stringify(baseline.values) ||
+    thumbnailPreview !== baseline.thumbnailPreview;
 
   const { data: productGroups } = useProductGroupList(boothId);
   const draft = useBoothDraftStore();
@@ -100,6 +107,11 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   });
 
   const handleBack = async () => {
+    if (!isDirty) {
+      goBack();
+      return;
+    }
+
     await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
@@ -110,14 +122,19 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
     });
   };
 
+  const isCreateLabel = submitLabel === 'create' && !hasSaved;
+
   return (
     <>
       <FillCenterHeader
         onBack={handleBack}
         title="제품"
         right={
-          <TextButton onClick={handleSubmit} disabled={isProductButtonDisabled}>
-            {submitLabel === 'create' ? '등록' : '저장'}
+          <TextButton
+            onClick={handleSubmit}
+            disabled={isProductButtonDisabled || !isDirty}
+          >
+            {isCreateLabel ? '등록' : '저장'}
           </TextButton>
         }
         border

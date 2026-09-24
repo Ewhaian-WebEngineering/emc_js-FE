@@ -1,27 +1,21 @@
 import EventForm from './EventForm';
 import { useNavigate } from 'react-router-dom';
-import { useCreateEvent } from '@/api/feature/admin/useEventData';
 import { ADMIN_ROUTES } from '@/constants/routes';
+import { useCreateEvent } from '@/api/feature/admin/useEventData';
 
 export default function EventCreateScreen() {
   const navigate = useNavigate();
-  const { mutate: createEvent } = useCreateEvent();
+  const { mutateAsync: createEvent } = useCreateEvent();
 
-  const handleSubmit = (payload) => {
-    createEvent(
-      {
-        ...payload,
-        errorModal: {
-          title: '등록에 실패했습니다.',
-          description: '잠시 후 다시 시도해주세요.',
-        },
+  const handleSubmit = async (payload) => {
+    await createEvent({
+      ...payload,
+      errorModal: {
+        title: '등록에 실패했습니다.',
+        description: '잠시 후 다시 시도해주세요.',
       },
-      {
-        onSuccess: () => {
-          navigate(ADMIN_ROUTES.DASHBOARD);
-        },
-      },
-    );
+    });
+    navigate(ADMIN_ROUTES.DASHBOARD);
   };
 
   return <EventForm mode="create" onSubmit={handleSubmit} />;

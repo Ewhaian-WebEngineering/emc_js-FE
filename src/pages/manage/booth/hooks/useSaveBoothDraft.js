@@ -1,8 +1,5 @@
 import { useImageUpload } from '@/api/core/s3/useImageUpload';
-import {
-  useProductGroupList,
-  useUpdateMyBoothData,
-} from '@/api/feature/booth/useBoothData';
+import { useUpdateMyBoothData } from '@/api/feature/booth/useBoothData';
 import {
   createProduct,
   createProductGroup,
@@ -17,14 +14,10 @@ import {
   updateNotice,
 } from '@/api/feature/booth/boothApi';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { resetDraft } from '../../store/boothDraftStore';
+import { initDraft } from '../../store/boothDraftStore';
 import { queryClient } from '@/api/core/query/queryClient';
-import { MANAGE_ROUTES } from '@/constants/routes';
 
 export function useSaveBoothDraft(booth, boothId) {
-  const navigate = useNavigate();
-  const { data: productGroups } = useProductGroupList(boothId);
   const { mutateAsync: updateBoothAsync } = useUpdateMyBoothData(boothId);
   const { mutateAsync: uploadImage } = useImageUpload();
   const [isSaving, setIsSaving] = useState(false);
@@ -141,12 +134,18 @@ export function useSaveBoothDraft(booth, boothId) {
       const { marks, name, location, notices, ...boothFieldsOnly } = boothForm;
       await updateBoothAsync({ ...boothFieldsOnly, thumbnailKey });
 
-      resetDraft();
-      queryClient.invalidateQueries({ queryKey: ['my-booth'] });
-      queryClient.invalidateQueries({ queryKey: ['booth-detail', boothId] });
-      queryClient.invalidateQueries({ queryKey: ['product-groups', boothId] });
-      queryClient.invalidateQueries({ queryKey: ['notices', boothId] });
-      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['my-booth'] }),
+        queryClient.invalidateQueries({ queryKey: ['booth-detail', boothId] }),
+        queryClient.invalidateQueries({
+          queryKey: ['product-groups', boothId],
+        }),
+        queryClient.invalidateQueries({ queryKey: ['notices', boothId] }),
+        queryClient.invalidateQueries({ queryKey: ['adminDashboard'] }),
+      ]);
+
+      const freshBooth = queryClient.getQueryData(['my-booth', boothId]);
+      initDraft(boothId, freshBooth, { force: true });
     } finally {
       setIsSaving(false);
     }

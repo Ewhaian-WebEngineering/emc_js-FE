@@ -1,18 +1,12 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import FillCenterHeader from '../../../designsystem/components/header/FillCenterHeader';
 import TextButton from '../../../designsystem/components/button/textbutton/TextButton';
 import TextField from '../../../designsystem/components/textinput/textfield/TextField';
 import TextArea from '../../../designsystem/components/textinput/textarea/TextArea';
 import useModal from '@/hooks/modal/useModal';
+import { useGoBack } from '@/hooks/useGoBack';
 import { FaqFormContainer, ContentContainer } from './style';
 import { ADMIN_ROUTES } from '@/constants/routes';
-
-/**
- * @param {'create' | 'edit'} mode - 등록/수정 모드
- * @param {object} [initialData] - 수정 모드일 때 미리 채울 기존 데이터
- * @param {function} onSubmit - 등록/수정 완료 시 호출되는 콜백
- */
 
 function createInitialFormData(initialData) {
   return {
@@ -21,18 +15,25 @@ function createInitialFormData(initialData) {
   };
 }
 
+/**
+ * @param {'create' | 'edit'} mode - 등록/수정 모드
+ * @param {object} [initialData] - 수정 모드일 때 미리 채울 기존 데이터
+ * @param {function} onSubmit - 저장 콜백. 성공 시 resolve, 실패 시 reject하는 Promise를 반환해야 함
+ */
 export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
   const isEdit = mode === 'edit';
-  const navigate = useNavigate();
+  const goBack = useGoBack(ADMIN_ROUTES.DASHBOARD);
   const { showModal } = useModal();
 
   const [formData, setFormData] = useState(() =>
     createInitialFormData(initialData),
   );
-  const [touched, setTouched] = useState({
-    que: false,
-    ans: false,
-  });
+  const [baseline, setBaseline] = useState(() =>
+    createInitialFormData(initialData),
+  );
+  const [touched, setTouched] = useState({ que: false, ans: false });
+  const [isSaving, setIsSaving] = useState(false);
+
   const { que, ans } = formData;
 
   const updateField = (field) => (value) => {
@@ -44,29 +45,30 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
   };
 
   const hasError = !que.trim() || !ans.trim();
+  const isDirty =
+    que.trim() !== baseline.que.trim() || ans.trim() !== baseline.ans.trim();
+  const isSubmitDisabled = hasError || !isDirty || isSaving;
 
-  const isUnchanged =
-    isEdit &&
-    que.trim() === (initialData?.que ?? '').trim() &&
-    ans.trim() === (initialData?.ans ?? '').trim();
+  const handleSubmit = async () => {
+    if (isSaving) return;
+    setIsSaving(true);
 
-  const isSubmitDisabled = hasError || isUnchanged;
+    const trimmed = { que: que.trim(), ans: ans.trim() };
 
-  const handleSubmit = () => {
-    onSubmit?.({
-      ...formData,
-      que: que.trim(),
-      ans: ans.trim(),
-    });
+    try {
+      await onSubmit?.(trimmed);
+      setFormData(trimmed);
+      setBaseline(trimmed);
+    } catch {
+      // 공통 에러 모달
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const isEmpty = !isEdit && !que.trim() && !ans.trim();
-
-  const hasNoChanges = isEmpty || isUnchanged;
-
   const handleBack = () => {
-    if (hasNoChanges) {
-      navigate(ADMIN_ROUTES.DASHBOARD);
+    if (!isDirty) {
+      goBack();
       return;
     }
 
@@ -76,7 +78,7 @@ export default function FaqForm({ mode = 'create', initialData, onSubmit }) {
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       confirmText: '계속 작성하기',
       cancelText: '나가기',
-      onCancel: () => navigate(ADMIN_ROUTES.DASHBOARD),
+      onCancel: () => goBack(),
     });
   };
 
