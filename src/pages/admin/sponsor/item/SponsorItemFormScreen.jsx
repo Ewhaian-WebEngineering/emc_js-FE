@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import TextField from '@/designsystem/components/textinput/textfield/TextField';
@@ -11,6 +12,7 @@ import { useGoBack } from '@/hooks/useGoBack';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
 import { useSponsorItemForm } from '../hooks/useSponsorItemForm';
 import { useSponsorDraftStore } from '../hooks/useSponsorDraftStore';
+import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 import {
   ProductAddSheetBody,
   ProductAddSheetBottom,
@@ -18,6 +20,12 @@ import {
   ProductFormSection,
   ProductFormTitle,
 } from '@/pages/manage/product/style';
+
+const isSameValues = (a, b) => {
+  const { imageUrl: imageA, ...restA } = a;
+  const { imageUrl: imageB, ...restB } = b;
+  return imageA === imageB && JSON.stringify(restA) === JSON.stringify(restB);
+};
 
 export default function SponsorItemFormScreen({
   item,
@@ -28,6 +36,14 @@ export default function SponsorItemFormScreen({
   const { showModal } = useModal();
   const goBack = useGoBack();
   const draft = useSponsorDraftStore();
+  const { toast } = useToastContext();
+  const [hasSaved, setHasSaved] = useState(false);
+
+  const handleFormSubmit = async (...args) => {
+    await onSubmit(...args);
+    setBaseline({ values: formValues, groups: draft.groups });
+    setHasSaved(true);
+  };
 
   const {
     formValues,
@@ -36,7 +52,18 @@ export default function SponsorItemFormScreen({
     isButtonDisabled: isItemButtonDisabled,
     handleSubmit,
     handleUploadError,
-  } = useSponsorItemForm({ item, submitLabel, onSubmit });
+  } = useSponsorItemForm({ item, submitLabel, onSubmit: handleFormSubmit });
+
+  const [baseline, setBaseline] = useState(() => ({
+    values: formValues,
+    groups: draft.groups,
+  }));
+
+  const isItemChanged = !isSameValues(formValues, baseline.values);
+  const isGroupChanged = draft.groups !== baseline.groups;
+  const isDirty = isItemChanged || isGroupChanged;
+
+  const isSubmitDisabled = !isDirty || (isItemChanged && isItemButtonDisabled);
 
   const {
     groupOptions,
@@ -59,10 +86,12 @@ export default function SponsorItemFormScreen({
     onGroupIdChange: (value) => updateField('groupId', value),
   });
 
-  const hasGroupChanges = Object.keys(draft.groups).length > 0;
-  const isSubmitDisabled = isItemButtonDisabled && !hasGroupChanges;
-
   const handleBack = async () => {
+    if (!isDirty) {
+      goBack();
+      return;
+    }
+
     await showModal({
       variant: 'confirmation',
       title: '작성 중인 내용이 있어요.',
@@ -76,13 +105,16 @@ export default function SponsorItemFormScreen({
   };
 
   const handleSave = async () => {
-    if (!isItemButtonDisabled) {
+    if (isItemChanged) {
       await handleSubmit();
       return;
     }
 
-    goBack();
+    setBaseline((prev) => ({ ...prev, groups: draft.groups }));
+    toast({ message: '변경사항이 저장되었어요.' });
   };
+
+  const isCreateLabel = submitLabel === 'create' && !hasSaved;
 
   return (
     <>
@@ -91,7 +123,7 @@ export default function SponsorItemFormScreen({
         title="협찬품"
         right={
           <TextButton onClick={handleSave} disabled={isSubmitDisabled}>
-            {submitLabel === 'create' ? '등록' : '저장'}
+            {isCreateLabel ? '등록' : '저장'}
           </TextButton>
         }
         border

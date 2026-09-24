@@ -1,28 +1,34 @@
-import { ADMIN_ROUTES } from '@/constants/routes';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useSponsorDetail } from '@/api/feature/admin/useSponsorManageData';
 import SponsorItemFormScreen from './SponsorItemFormScreen';
-import { upsertSponsorItemDraft } from '../store/sponsorDraftStore';
+import {
+  getSnapshot,
+  upsertSponsorItemDraft,
+} from '../store/sponsorDraftStore';
 import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
+function createTempItemId() {
+  return `temp-${crypto.randomUUID()}`;
+}
+
 export default function SponsorItemCreateScreen() {
-  const navigate = useNavigate();
   const { toast } = useToastContext();
   const { sponsorId } = useParams();
+  const [itemId] = useState(createTempItemId);
 
   const { data: sponsor, isPending } = useSponsorDetail(sponsorId);
 
   const handleSubmit = async (values, thumbnailFile) => {
-    const itemId = `temp-${crypto.randomUUID()}`;
+    const prevFile = getSnapshot().items[itemId]?.file ?? null;
 
     upsertSponsorItemDraft(itemId, {
       status: 'created',
       data: { id: itemId, ...values },
-      file: thumbnailFile,
+      file: thumbnailFile ?? prevFile,
     });
 
     toast({ message: '변경사항이 저장되었어요.' });
-    navigate(ADMIN_ROUTES.SPONSOR_EDIT(sponsorId));
   };
 
   if (isPending) return <div>Loading...</div>;
