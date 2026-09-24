@@ -41,6 +41,7 @@ import {
 import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSections';
 import { useToast } from '@/hooks/toast/useToast';
 import { useGoBack } from '@/hooks/useGoBack';
+import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -373,6 +374,13 @@ function BoothEditForm({ booth, boothId }) {
           onReorderProducts={handleReorderProducts}
           onReorderGroups={handleReorderGroups}
         />
+        <BoxButton
+          variant="secondary"
+          size="sm"
+          onClick={() => navigate(MANAGE_ROUTES.PRODUCT_GROUP_MANAGE(boothId))}
+        >
+          그룹 설정하기
+        </BoxButton>
       </AccordionLine>
 
       <AccordionLine

@@ -182,3 +182,7 @@ export function resetDraft() {
   };
   notify();
 }
+
+export function restoreGroupsAndProducts({ groups, products }) {
+  setState({ groups, products });
+}

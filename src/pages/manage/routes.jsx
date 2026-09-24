@@ -3,6 +3,7 @@ import BoothPreviewScreen from './booth/BoothPreviewScreen';
 import BoothEditScreen from './booth/BoothEditScreen';
 import ProductCreateScreen from './product/ProductCreateScreen';
 import ProductEditScreen from './product/ProductEditScreen';
+import ProductGroupManageScreen from './product/ProductGroupManageScreen';
 
 export const manageRoutes = {
   withFooter: [
@@ -23,6 +24,10 @@ export const manageRoutes = {
     {
       path: MANAGE_ROUTES.PRODUCT_EDIT(':boothId', ':productId'),
       element: <ProductEditScreen />,
+    },
+    {
+      path: MANAGE_ROUTES.PRODUCT_GROUP_MANAGE(':boothId'),
+      element: <ProductGroupManageScreen />,
     },
   ],
 };

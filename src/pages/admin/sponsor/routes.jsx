@@ -2,6 +2,7 @@ import { ADMIN_ROUTES } from '@/constants/routes';
 import SponsorEditScreen from './SponsorEditScreen';
 import SponsorItemCreateScreen from './item/SponsorItemCreateScreen';
 import SponsorItemEditScreen from './item/SponsorItemEditScreen';
+import SponsorGroupManageScreen from './SponsorGroupManageScreen';
 
 export const adminRoutes = {
   withoutFooter: [
@@ -16,6 +17,10 @@ export const adminRoutes = {
     {
       path: ADMIN_ROUTES.SPONSOR_ITEM_EDIT(':sponsorId', ':itemId'),
       element: <SponsorItemEditScreen />,
+    },
+    {
+      path: ADMIN_ROUTES.SPONSOR_GROUP_MANAGE(':sponsorId'),
+      element: <SponsorGroupManageScreen />,
     },
   ],
 };

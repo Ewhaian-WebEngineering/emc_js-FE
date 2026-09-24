@@ -41,6 +41,7 @@ export const ADMIN_ROUTES = {
     `/admin/sponsor/${sponsorId}/item/register`,
   SPONSOR_ITEM_EDIT: (sponsorId, itemId) =>
     `/admin/sponsor/${sponsorId}/item/${itemId}/edit`,
+  SPONSOR_GROUP_MANAGE: (sponsorId) => `/admin/sponsor/${sponsorId}/group`,
 };
 
 export const NOTICE_ROUTE = '/notice';
@@ -60,6 +61,7 @@ export const MANAGE_ROUTES = {
   PRODUCT_CREATE: (boothId) => `/booth/${boothId}/product`,
   PRODUCT_EDIT: (boothId, productId) =>
     `/booth/${boothId}/product/${productId}/edit`,
+  PRODUCT_GROUP_MANAGE: (boothId) => `/booth/${boothId}/product-group`,
 };
 
 export const EMC_INTRODUCTION_ROUTE = '/emc';

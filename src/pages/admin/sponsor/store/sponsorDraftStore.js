@@ -164,3 +164,7 @@ export function resetUngroupedDisplayOrder() {
     },
   });
 }
+
+export function restoreSponsorGroupsAndItems({ groups, items }) {
+  setState({ groups, items });
+}

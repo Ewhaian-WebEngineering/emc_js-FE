@@ -15,6 +15,7 @@ import {
   GroupProductList,
   GroupSectionWrapper,
 } from '@/pages/manage/booth/style';
+import { measurement } from '@/designsystem/tokens/measurement';
 
 function SponsorItemSection({ section, onEditItem, onDeleteItem }) {
   const {
@@ -37,6 +38,7 @@ function SponsorItemSection({ section, onEditItem, onDeleteItem }) {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
+    ...(isEmpty && { marginTop: `calc(-1 * ${measurement.spacing16})` }),
   };
 
   return (

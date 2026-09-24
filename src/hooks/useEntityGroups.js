@@ -103,7 +103,7 @@ export function useEntityGroups(
     };
 
     if (isEditMode) {
-      const isTemp = editingGroupId.startsWith('temp-group-');
+      const isTemp = String(editingGroupId).startsWith('temp-group-');
       upsertGroupDraft(editingGroupId, {
         status: isTemp ? 'created' : 'updated',
         data: payload,
@@ -131,10 +131,12 @@ export function useEntityGroups(
     if (!confirmed) return;
 
     const serverGroup = productGroups?.find((g) => g.id === option.value);
-    const serverItemsInGroup = (serverGroup?.products ?? []).map((item) => ({
-      id: item.id,
-      status: draft.products[item.id]?.status ?? 'server',
-    }));
+    const serverItemsInGroup = (serverGroup?.products ?? [])
+      .filter((item) => draft.products[item.id]?.status !== 'deleted')
+      .map((item) => ({
+        id: item.id,
+        status: draft.products[item.id]?.status ?? 'server',
+      }));
 
     const draftCreatedItemsInGroup = Object.entries(draft.products)
       .filter(
