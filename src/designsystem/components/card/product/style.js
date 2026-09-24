@@ -43,6 +43,7 @@ export const ProductVerticalCardSoldOutOverlay = styled.div`
   color: ${semantic.fillNormalWhite};
   pointer-events: none;
   z-index: 1;
+  ${typography.body1Semibold}
 `;
 
 export const ProductVerticalCardContent = styled.div`
