@@ -110,6 +110,11 @@ export default function SponsorItemFormScreen({
       return;
     }
 
+    if (submitLabel === 'create') {
+      goBack();
+      return;
+    }
+
     setBaseline((prev) => ({ ...prev, groups: draft.groups }));
     toast({ message: '변경사항이 저장되었어요.' });
   };

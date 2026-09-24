@@ -98,6 +98,11 @@ export default function BoothNoticeFormScreen({ mode }) {
     setInitial(data);
 
     toast({ message: '변경사항이 저장되었어요.' });
+
+    if (!isEdit) {
+      handleBack();
+      return;
+    }
   };
 
   const actionLabel = isEditing ? '저장' : '등록';

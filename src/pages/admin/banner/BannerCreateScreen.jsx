@@ -1,30 +1,16 @@
-import { useState } from 'react';
 import BannerForm from './BannerForm';
-import {
-  useCreateBanner,
-  useUpdateBanner,
-} from '@/api/feature/admin/useBannerData';
-import { useToastContext } from '@/designsystem/components/toast/ToastContext';
+import { useNavigate } from 'react-router-dom';
+import { ADMIN_ROUTES } from '@/constants/routes';
+import { useCreateBanner } from '@/api/feature/admin/useBannerData';
 
 export default function BannerCreateScreen() {
+  const navigate = useNavigate();
   const { mutateAsync: createBanner } = useCreateBanner();
-  const { mutateAsync: updateBanner } = useUpdateBanner();
-  const { toast } = useToastContext();
-
-  const [createdId, setCreatedId] = useState(null);
 
   const handleSubmit = async (payload) => {
-    if (createdId) {
-      await updateBanner({ bid: createdId, ...payload });
-    } else {
-      const created = await createBanner(payload);
-      setCreatedId(created?.id);
-    }
-
-    toast({ message: '변경사항이 저장되었어요.' });
+    await createBanner(payload);
+    navigate(ADMIN_ROUTES.DASHBOARD);
   };
 
-  return (
-    <BannerForm mode={createdId ? 'edit' : 'create'} onSubmit={handleSubmit} />
-  );
+  return <BannerForm mode="create" onSubmit={handleSubmit} />;
 }
