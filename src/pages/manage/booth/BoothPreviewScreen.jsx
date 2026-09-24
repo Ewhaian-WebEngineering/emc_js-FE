@@ -40,7 +40,7 @@ export default function BoothPreviewScreen() {
           </EditButton>
         }
       />
-      <BoothDetailContent booth={booth} boothId={boothId} onBack={handleBack} />
+      <BoothDetailContent booth={booth} boothId={boothId} />
     </BoothPreviewContainer>
   );
 }

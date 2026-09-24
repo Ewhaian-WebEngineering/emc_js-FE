@@ -66,7 +66,7 @@ export default function ProductListTab({
                 productName={product.name}
                 productDescription={product.description}
                 productPrice={product.price}
-                isSoldOut={product.isSoldOut}
+                isSoldOut={product.isSoldOut ?? product.isOnSale === false}
               />
             ))}
           </ProductList>

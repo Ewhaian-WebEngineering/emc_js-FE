@@ -28,8 +28,9 @@ function setState(partial) {
   notify();
 }
 
-export function initDraft(boothId, booth) {
-  if (state.boothId === boothId && state.boothFields) return;
+export function initDraft(boothId, booth, { force = false } = {}) {
+  if (!booth) return;
+  if (!force && state.boothId === boothId && state.boothFields) return;
 
   const fields = {
     categories: booth.categories?.length > 0 ? booth.categories : ['food'],
@@ -58,6 +59,7 @@ export function initDraft(boothId, booth) {
 }
 
 export function updateBoothField(field, value) {
+  if (!state.boothFields) return;
   setState({ boothFields: { ...state.boothFields, [field]: value } });
 }
 

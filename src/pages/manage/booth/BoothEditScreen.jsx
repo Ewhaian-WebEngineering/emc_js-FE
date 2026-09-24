@@ -39,6 +39,7 @@ import {
   useProductGroupList,
 } from '@/api/feature/booth/useBoothData';
 import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSections';
+import { useToast } from '@/hooks/toast/useToast';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -81,6 +82,7 @@ function buildNoticeList(serverNotices, draftNotices) {
 function BoothEditForm({ booth, boothId }) {
   const navigate = useNavigate();
   const { showModal } = useModal();
+  const { toast } = useToast();
   const draft = useBoothDraftStore();
   const { save, isSaving } = useSaveBoothDraft(booth, boothId);
   const { data: rawNoticeList } = useNoticeList(boothId);
@@ -231,7 +233,7 @@ function BoothEditForm({ booth, boothId }) {
 
     try {
       await save(boothForm, draft);
-      navigate(MANAGE_ROUTES.BOOTH_PREVIEW(boothId), { replace: true });
+      toast({ message: '변경사항이 저장되었어요.' });
     } catch {
       // 공통 에러 모달
     }

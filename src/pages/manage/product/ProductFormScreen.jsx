@@ -25,13 +25,11 @@ import { useBoothDraftStore } from '../store/useBoothDraftStore';
 import { buildGroupOptions } from '../utils/buildGroupOptions';
 import { useEntityGroups } from '@/hooks/useEntityGroups';
 import { useParams } from 'react-router-dom';
-import { useToastContext } from '@/designsystem/components/toast/ToastContext';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
   const goBack = useGoBack();
   const { boothId } = useParams();
-  const { toast } = useToastContext();
 
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(
@@ -50,9 +48,6 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
 
   const handleFormSubmit = (values) => {
     onSubmit(values, thumbnailFile);
-    toast({
-      message: '변경사항이 저장되었어요.',
-    });
   };
 
   const {
