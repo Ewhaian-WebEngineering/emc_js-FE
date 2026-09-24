@@ -41,6 +41,7 @@ export default function ProductListTab({
                 productName={product.name}
                 productDescription={product.description}
                 productPrice={product.price}
+                isSoldOut={product.isSoldOut}
               />
             ))}
           </ProductList>
@@ -57,6 +58,7 @@ export default function ProductListTab({
                 productName={product.name}
                 productDescription={product.description}
                 productPrice={product.price}
+                isSoldOut={product.isSoldOut}
               />
             ))}
           </ProductList>
