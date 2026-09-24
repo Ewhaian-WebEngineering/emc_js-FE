@@ -42,6 +42,8 @@ export function initDraft(boothId, booth) {
     description: booth.description ?? '',
     allergenInfo: booth.allergenInfo ?? '',
     guides: booth.guides ?? '',
+    ungroupedDisplayOrder:
+      booth.ungroupedDisplayOrder ?? Number.MAX_SAFE_INTEGER,
   };
 
   setState({

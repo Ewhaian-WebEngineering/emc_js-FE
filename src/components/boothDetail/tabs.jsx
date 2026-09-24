@@ -10,6 +10,7 @@ export const BOOTH_DETAIL_TABS = [
       <ProductListTab
         productGroups={booth.productGroups}
         ungroupedProducts={booth.ungroupedProducts}
+        ungroupedDisplayOrder={booth.ungroupedDisplayOrder}
       />
     ),
   },

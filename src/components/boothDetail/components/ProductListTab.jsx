@@ -9,25 +9,50 @@ import EmptyState from '@/designsystem/components/emptystate/EmptyState';
 
 const byDisplayOrder = (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
 
+function buildDisplayGroups(
+  productGroups,
+  ungroupedProducts,
+  ungroupedDisplayOrder,
+) {
+  const groups = (productGroups ?? []).map((group) => ({
+    ...group,
+    isUngrouped: false,
+  }));
+
+  const ungroupedGroup = {
+    id: 'ungrouped',
+    displayOrder: ungroupedDisplayOrder ?? Number.MAX_SAFE_INTEGER,
+    products: ungroupedProducts ?? [],
+    isUngrouped: true,
+  };
+
+  return [...groups, ungroupedGroup]
+    .filter((group) => (group.isUngrouped ? group.products.length > 0 : true))
+    .sort(byDisplayOrder);
+}
+
 export default function ProductListTab({
   productGroups,
   ungroupedProducts = [],
+  ungroupedDisplayOrder,
 }) {
-  const sortedGroups = [...(productGroups ?? [])].sort(byDisplayOrder);
-  const sortedUngrouped = [...ungroupedProducts].sort(byDisplayOrder);
+  const displayGroups = buildDisplayGroups(
+    productGroups,
+    ungroupedProducts,
+    ungroupedDisplayOrder,
+  );
 
-  const hasGrouped = productGroups?.length > 0;
-  const hasUngrouped = ungroupedProducts.length > 0;
+  const hasAnyProduct = displayGroups.length > 0;
 
-  if (!hasGrouped && !hasUngrouped) {
+  if (!hasAnyProduct) {
     return <EmptyState height={600} description="등록된 상품이 없습니다." />;
   }
 
   return (
     <ProductListTabContainer>
-      {sortedGroups.map((group) => (
+      {displayGroups.map((group) => (
         <ProductListTabContent key={group.id}>
-          {(group.name || group.description) && (
+          {!group.isUngrouped && (group.name || group.description) && (
             <ProductListTabHeader>
               {group.name && <h2>{group.name}</h2>}
               {group.description && <p>{group.description}</p>}
@@ -47,23 +72,6 @@ export default function ProductListTab({
           </ProductList>
         </ProductListTabContent>
       ))}
-
-      {hasUngrouped && (
-        <ProductListTabContent>
-          <ProductList>
-            {sortedUngrouped.map((product) => (
-              <ProductVerticalCard
-                key={product.id}
-                thumbnail={product.imageUrl}
-                productName={product.name}
-                productDescription={product.description}
-                productPrice={product.price}
-                isSoldOut={product.isSoldOut}
-              />
-            ))}
-          </ProductList>
-        </ProductListTabContent>
-      )}
     </ProductListTabContainer>
   );
 }
