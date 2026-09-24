@@ -127,9 +127,12 @@ export function useSaveSponsorDraft(sponsorId) {
         }
       }
 
-      await queryClient.invalidateQueries({
-        queryKey: ['sponsor-detail', sponsorId],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['sponsor-detail', sponsorId],
+        }),
+        queryClient.invalidateQueries({ queryKey: ['adminDashboard'] }),
+      ]);
       const freshSponsor = queryClient.getQueryData([
         'sponsor-detail',
         sponsorId,

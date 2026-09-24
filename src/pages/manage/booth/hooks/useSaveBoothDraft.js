@@ -141,6 +141,7 @@ export function useSaveBoothDraft(booth, boothId) {
           queryKey: ['product-groups', boothId],
         }),
         queryClient.invalidateQueries({ queryKey: ['notices', boothId] }),
+        queryClient.invalidateQueries({ queryKey: ['adminDashboard'] }),
       ]);
 
       const freshBooth = queryClient.getQueryData(['my-booth', boothId]);

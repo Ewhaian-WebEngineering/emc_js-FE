@@ -19,6 +19,7 @@ export const useCreateEvent = () => {
       createEventApi(data, { errorModal }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
     },
   });
 };

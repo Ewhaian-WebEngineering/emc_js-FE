@@ -14,6 +14,7 @@ export const useCreateFaq = () => {
     mutationFn: createFaqApi,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: FAQ_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
     },
   });
 };
