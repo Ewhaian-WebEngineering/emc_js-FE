@@ -10,6 +10,7 @@ import useModal from '@/hooks/modal/useModal';
 import { useGoBack } from '@/hooks/useGoBack';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
 import { useSponsorItemForm } from '../hooks/useSponsorItemForm';
+import { useSponsorDraftStore } from '../hooks/useSponsorDraftStore';
 import {
   ProductAddSheetBody,
   ProductAddSheetBottom,
@@ -26,6 +27,7 @@ export default function SponsorItemFormScreen({
 }) {
   const { showModal } = useModal();
   const goBack = useGoBack();
+  const draft = useSponsorDraftStore();
 
   const {
     formValues,
@@ -57,6 +59,9 @@ export default function SponsorItemFormScreen({
     onGroupIdChange: (value) => updateField('groupId', value),
   });
 
+  const hasGroupChanges = Object.keys(draft.groups).length > 0;
+  const isSubmitDisabled = isItemButtonDisabled && !hasGroupChanges;
+
   const handleBack = async () => {
     await showModal({
       variant: 'confirmation',
@@ -70,13 +75,22 @@ export default function SponsorItemFormScreen({
     });
   };
 
+  const handleSave = async () => {
+    if (!isItemButtonDisabled) {
+      await handleSubmit();
+      return;
+    }
+
+    goBack();
+  };
+
   return (
     <>
       <FillCenterHeader
         onBack={handleBack}
         title="협찬품"
         right={
-          <TextButton onClick={handleSubmit} disabled={isItemButtonDisabled}>
+          <TextButton onClick={handleSave} disabled={isSubmitDisabled}>
             {submitLabel === 'create' ? '등록' : '저장'}
           </TextButton>
         }
@@ -160,7 +174,7 @@ export default function SponsorItemFormScreen({
 
           <TextArea
             title="그룹 설명"
-            placeholder="예)  버터와 밀가루를 기반으로 구워낸 쿠키, 마들렌, 스콘 등 다양한 구움과자를 모아둔 카테고리입니다."
+            placeholder="예)  버터와 밀가루를 기반으로 구워낸 쿠키, 마들렌, 스콘 등 다양한 구움과자를 모아둔 카테고리입니다."
             maxLength={50}
             value={newGroup.description}
             onChange={(value) => updateNewGroupField('description', value)}
