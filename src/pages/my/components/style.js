@@ -104,6 +104,8 @@ export const BannerCarouselContainer = styled.div`
   overflow: hidden;
   width: 100%;
   height: 80px;
+  border-radius: ${measurement.borderRadiusMd};
+  border: ${measurement.borderRadiusSm} solid ${semantic.borderNormalAssistive};
 `;
 
 export const BannerSlideTrack = styled.div`
