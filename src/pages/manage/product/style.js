@@ -11,6 +11,14 @@ export const ProductFormContainer = styled.div`
     ${measurement.spacing144} ${measurement.spacing16};
 `;
 
+export const ProductGroupFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${measurement.spacing32};
+  padding: ${measurement.spacing16} ${measurement.spacing16}
+    ${measurement.spacing144} ${measurement.spacing16};
+`;
+
 export const ProductFormSection = styled.div`
   display: flex;
   flex-direction: column;

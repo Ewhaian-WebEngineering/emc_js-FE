@@ -41,6 +41,7 @@ export const ADMIN_ROUTES = {
     `/admin/sponsor/${sponsorId}/item/register`,
   SPONSOR_ITEM_EDIT: (sponsorId, itemId) =>
     `/admin/sponsor/${sponsorId}/item/${itemId}/edit`,
+  SPONSOR_GROUP_MANAGE: (sponsorId) => `/admin/sponsor/${sponsorId}/group`,
 };
 
 export const NOTICE_ROUTE = '/notice';

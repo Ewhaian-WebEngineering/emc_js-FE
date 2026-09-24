@@ -23,6 +23,7 @@ import { ADMIN_ROUTES } from '@/constants/routes';
 import SponsorItemList from './item/components/SponsorItemList';
 import TextButton from '@/designsystem/components/button/textbutton/TextButton';
 import { resetSponsorDraft } from './store/sponsorDraftStore';
+import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 
 const SECTION_ORDER = [
   { scrollKey: 'name', fields: ['name'] },
@@ -264,6 +265,15 @@ export default function SponsorFormScreen({
           onReorderItems={handleReorderItems}
           onReorderGroups={handleReorderGroups}
         />
+        <BoxButton
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            navigate(ADMIN_ROUTES.SPONSOR_GROUP_MANAGE(sponsorId));
+          }}
+        >
+          그룹 설정하기
+        </BoxButton>
       </AccordionLine>
 
       <div style={{ height: '144px' }} />
