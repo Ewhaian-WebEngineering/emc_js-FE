@@ -15,6 +15,7 @@ import {
   GroupProductList,
 } from '../style';
 import { memo } from 'react';
+import { measurement } from '@/designsystem/tokens/measurement';
 
 function ProductGroupSection({ section, onEditProduct, onDeleteProduct }) {
   const {
@@ -37,6 +38,7 @@ function ProductGroupSection({ section, onEditProduct, onDeleteProduct }) {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
+    ...(isEmpty && { marginTop: `calc(-1 * ${measurement.spacing16})` }),
   };
 
   return (

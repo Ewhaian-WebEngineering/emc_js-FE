@@ -61,6 +61,7 @@ export const MANAGE_ROUTES = {
   PRODUCT_CREATE: (boothId) => `/booth/${boothId}/product`,
   PRODUCT_EDIT: (boothId, productId) =>
     `/booth/${boothId}/product/${productId}/edit`,
+  PRODUCT_GROUP_MANAGE: (boothId) => `/booth/${boothId}/product-group`,
 };
 
 export const EMC_INTRODUCTION_ROUTE = '/emc';
