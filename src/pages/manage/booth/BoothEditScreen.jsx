@@ -78,19 +78,6 @@ function buildNoticeList(serverNotices, draftNotices) {
   return [...created, ...overridden];
 }
 
-const FIELD_SCROLL_TARGET = {
-  categories: { scrollKey: 'categoryContainer' },
-  marks: { scrollKey: 'categoryContainer' },
-  operationTime: { scrollKey: 'categoryContainer' },
-  isCash: { scrollKey: 'categoryContainer' },
-  externalUrl: { scrollKey: 'categoryContainer' },
-  description: {
-    scrollKey: 'boothIntroduction',
-    accordionKey: 'boothIntroduction',
-  },
-  inquiryUrl: { scrollKey: 'customerInquiry', accordionKey: 'customerInquiry' },
-};
-
 function BoothEditForm({ booth, boothId }) {
   const navigate = useNavigate();
   const { showModal } = useModal();

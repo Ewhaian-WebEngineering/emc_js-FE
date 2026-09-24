@@ -10,7 +10,7 @@ export default function SponsorEditScreen() {
   const { sponsorId } = useParams();
   const { data: sponsor, isPending } = useSponsorDetail(sponsorId);
   const draft = useSponsorDraftStore();
-  const { save } = useSaveSponsorDraft(sponsorId);
+  const { save, isSaving } = useSaveSponsorDraft(sponsorId);
 
   if (isPending) {
     return (
@@ -29,6 +29,7 @@ export default function SponsorEditScreen() {
       sponsor={sponsor}
       onSubmit={handleSubmit}
       submitLabel="edit"
+      isSaving={isSaving}
     />
   );
 }

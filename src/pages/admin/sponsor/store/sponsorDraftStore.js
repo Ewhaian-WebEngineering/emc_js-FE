@@ -153,3 +153,12 @@ export function resetSponsorDraft() {
   };
   notify();
 }
+
+export function resetUngroupedDisplayOrder() {
+  setState({
+    sponsorFields: {
+      ...state.sponsorFields,
+      ungroupedDisplayOrder: Number.MAX_SAFE_INTEGER,
+    },
+  });
+}

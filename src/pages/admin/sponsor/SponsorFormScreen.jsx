@@ -33,7 +33,12 @@ const SECTION_ORDER = [
   { scrollKey: 'itemList', accordionKey: 'itemList', isItemSection: true },
 ];
 
-export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
+export default function SponsorFormScreen({
+  sponsor,
+  onSubmit,
+  submitLabel,
+  isSaving,
+}) {
   const { showModal } = useModal();
   const goBack = useGoBack();
   const navigate = useNavigate();
@@ -126,7 +131,10 @@ export default function SponsorFormScreen({ sponsor, onSubmit, submitLabel }) {
         onBack={handleBack}
         title="협찬사"
         right={
-          <TextButton onClick={handleSave} disabled={isButtonDisabled}>
+          <TextButton
+            onClick={handleSave}
+            disabled={isButtonDisabled || isSaving}
+          >
             {submitLabel === 'create' ? '등록' : '저장'}
           </TextButton>
         }
