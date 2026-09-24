@@ -1,4 +1,4 @@
-import { useGoBack } from '@/hooks/useGoBack';
+import { useState } from 'react';
 import { upsertProductDraft } from '../store/boothDraftStore';
 import ProductFormScreen from './ProductFormScreen';
 import { useToastContext } from '@/designsystem/components/toast/ToastContext';
@@ -8,12 +8,11 @@ function createTempProductId() {
 }
 
 export default function ProductCreateScreen() {
-  const goBack = useGoBack();
   const { toast } = useToastContext();
+  const [tempId] = useState(createTempProductId);
 
   const handleSubmit = async (values, thumbnailFile) => {
     const { name, price, isOnSale, description, groupId } = values;
-    const tempId = createTempProductId();
 
     upsertProductDraft(tempId, {
       status: 'created',
@@ -29,8 +28,6 @@ export default function ProductCreateScreen() {
     });
 
     toast({ message: '변경사항이 저장되었어요.' });
-
-    goBack();
   };
 
   return <ProductFormScreen onSubmit={handleSubmit} submitLabel="create" />;
