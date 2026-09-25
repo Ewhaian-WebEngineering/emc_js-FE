@@ -91,7 +91,7 @@ export const RankingScroll = styled.div`
 `;
 
 export const RankingPage = styled.div`
-  flex: 0 0 85%;
+  flex: 0 0 100%;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
