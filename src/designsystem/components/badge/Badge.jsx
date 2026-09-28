@@ -1,5 +1,5 @@
 import BADGE_MAP from '@/constants/badges';
-import { BadgeWrapper } from './style';
+import { BadgeLabel, BadgeWrapper } from './style';
 
 /**
  * @typedef {'performance'|'stationery'|'craft'|'fashionBeauty'|'food'|'eco'|'vegan'} BadgeVariant
@@ -20,7 +20,7 @@ export default function Badge({ size = 'sm', variant }) {
       $color={color}
       $backgroundColor={backgroundColor}
     >
-      {label}
+      <BadgeLabel>{label}</BadgeLabel>
     </BadgeWrapper>
   );
 }

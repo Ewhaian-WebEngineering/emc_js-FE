@@ -6,6 +6,8 @@ export const BadgeWrapper = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 0;
+  max-width: 100%;
 
   height: ${({ $size }) => ($size === 'sm' ? '20px' : '24px')};
 
@@ -21,4 +23,11 @@ export const BadgeWrapper = styled.span`
     $size === 'sm' ? typography.caption1Medium : typography.body2Medium}
 
   line-height: 1;
+`;
+
+export const BadgeLabel = styled.span`
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
