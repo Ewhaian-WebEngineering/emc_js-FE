@@ -50,7 +50,7 @@ export default function AdminDashboardScreen() {
 
       <FestivalInfo>
         <DashboardTitle>
-          <span>14th 종합손물세트</span>
+          <span>12th 종합손물세트</span>
           <br />
           관리자용 대시보드
         </DashboardTitle>

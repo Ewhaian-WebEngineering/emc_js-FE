@@ -32,7 +32,7 @@ export default function ManagementFairCard({
 
   return (
     <ManagementCardContainer>
-      <ManagementFairCardHeader>종합손물세트 14th</ManagementFairCardHeader>
+      <ManagementFairCardHeader>종합손물세트 12th</ManagementFairCardHeader>
       <ManagementCardLink onClick={onLinkClick}>
         바로가기
         <ArrowRightIcon />
