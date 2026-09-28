@@ -156,6 +156,7 @@ export const RecommendBoothList = styled.div`
   margin-inline: -${measurement.spacing16};
   padding-inline: ${measurement.spacing16};
   overflow-x: auto;
+  overflow-y: hidden;
   flex-shrink: 0;
 `;
 
