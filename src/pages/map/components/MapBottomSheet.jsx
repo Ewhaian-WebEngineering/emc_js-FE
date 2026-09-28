@@ -8,7 +8,7 @@ import {
 import BoothListItem from './BoothListItem';
 import useModal from '@/hooks/modal/useModal';
 import { useNavigate } from 'react-router-dom';
-import { BOOTH_ROUTES } from '@/constants/routes';
+import { BOOTH_ROUTES, SPONSOR_ROUTES } from '@/constants/routes';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Tag from '@/designsystem/components/tag/Tag';
 import { useMapData } from '@/api/feature/map/useMapData';
@@ -37,6 +37,7 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
       generalData
         .map((booth) => ({
           id: booth.id,
+          type: 'general',
           number: booth.boothNumber,
           name: booth.name,
         }))
@@ -49,6 +50,7 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
       sponsorData
         .map((booth) => ({
           id: booth.id,
+          type: 'sponsor',
           number: toSponsorNumber(booth.location),
           name: booth.name,
         }))
@@ -77,8 +79,13 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
     });
   }, [selectedBooth, activeTab]);
 
+  const getDetailRoute = (booth) =>
+    booth.type === 'sponsor'
+      ? SPONSOR_ROUTES.DETAIL(booth.id)
+      : BOOTH_ROUTES.DETAIL(booth.id);
+
   const { showModal } = useModal();
-  const handleBoothClick = async (boothId) => {
+  const handleBoothClick = async (booth) => {
     await showModal({
       variant: 'confirmation',
       title: '부스 상세 페이지로 이동할까요?',
@@ -86,7 +93,7 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
       confirmText: '이동하기',
       cancelText: '취소',
       onConfirm: () => {
-        navigate(BOOTH_ROUTES.DETAIL(boothId));
+        navigate(getDetailRoute(booth));
       },
       onCancel: () => {},
     });
@@ -143,7 +150,7 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
             focused={booth.number === focusedBoothNumber}
             onClick={() => {
               if (!isValid(booth.number)) return;
-              handleBoothClick(booth.id);
+              handleBoothClick(booth);
             }}
           />
         ))}
