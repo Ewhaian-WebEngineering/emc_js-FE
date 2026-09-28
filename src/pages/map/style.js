@@ -37,6 +37,7 @@ export const BoothListItemWrapper = styled.button`
   display: flex;
   gap: ${measurement.spacing6};
   align-items: center;
+  min-width: 0;
   background: none;
   border: none;
   cursor: pointer;
@@ -44,6 +45,7 @@ export const BoothListItemWrapper = styled.button`
 
 export const BoothNumber = styled.div`
   display: flex;
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
   align-items: center;
@@ -61,6 +63,11 @@ export const BoothName = styled.div`
   color: ${semantic.textNormalStrong};
   text-decoration: underline;
 
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
   &[data-focused='true'] {
     color: ${semantic.textPrimaryNormal};
   }
@@ -68,7 +75,7 @@ export const BoothName = styled.div`
 
 export const BoothListContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-flow: column;
   grid-template-rows: repeat(${({ $rows }) => $rows}, auto);
   gap: ${measurement.spacing12} ${measurement.spacing16};
