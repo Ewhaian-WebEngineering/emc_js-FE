@@ -195,6 +195,7 @@ export default function SponsorItemFormScreen({
         isOpen={isGroupSheetOpen}
         onClose={handleCloseGroupSheet}
         onBeforeClose={handleCheckBeforeClose}
+        dismissible={false}
         title={isEditMode ? '협찬품 그룹 수정' : '협찬품 그룹 추가'}
       >
         <ProductAddSheetBody>
