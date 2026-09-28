@@ -164,8 +164,6 @@ export default function BoothDetailContent({
           {booth.categories?.map((category) => (
             <Badge key={category} size="sm" variant={category} />
           ))}
-          {booth.isEco && <Badge key="eco" size="sm" variant="eco" />}
-          {booth.isVegan && <Badge key="vegan" size="sm" variant="vegan" />}
         </Badges>
         <InfoList>
           <InfoRow>
