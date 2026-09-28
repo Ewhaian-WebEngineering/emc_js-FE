@@ -12,13 +12,12 @@ export default function NoticeBottomSheet({ onClose }) {
       title="안내사항"
       isOpen={true}
       defaultSnap="min"
-      showScrim="transparent"
+      showScrim="none"
       onClose={onClose}
       onFull={() => {
         navigate(NOTICE_ROUTE);
       }}
       dismissible={false}
-      style={{ zIndex: 100 }}
     >
       <NoticeContent />
     </BottomSheet>

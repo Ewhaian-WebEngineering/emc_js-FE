@@ -9,9 +9,19 @@ import BoothListItem from './BoothListItem';
 import useModal from '@/hooks/modal/useModal';
 import { useNavigate } from 'react-router-dom';
 import { BOOTH_ROUTES } from '@/constants/routes';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Tag from '@/designsystem/components/tag/Tag';
 import { useMapData } from '@/api/feature/map/useMapData';
+
+const SPONSOR_LOCATION_ALIAS = { 이화이언: 0 };
+const SPONSOR_ROWS = 7;
+
+const toSponsorNumber = (location) =>
+  SPONSOR_LOCATION_ALIAS[location] ?? Number(location);
+
+const byNumber = (a, b) => a.number - b.number;
+
+const isValid = (number) => Number.isFinite(number);
 
 export default function MapBottomSheet({ isExpanded, selectedBooth }) {
   const navigate = useNavigate();
@@ -22,22 +32,34 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
   const { generalBooths: generalData, sponsorBooths: sponsorData } =
     useMapData();
 
-  const generalBooths = generalData.map((booth) => ({
-    id: booth.id,
-    number: booth.boothNumber,
-    name: booth.name,
-  }));
+  const generalBooths = useMemo(
+    () =>
+      generalData
+        .map((booth) => ({
+          id: booth.id,
+          number: booth.boothNumber,
+          name: booth.name,
+        }))
+        .sort(byNumber),
+    [generalData],
+  );
 
-  const sponsorBooths = sponsorData.map((booth) => ({
-    id: booth.id,
-    number: booth.boothNumber ?? null, // TODO: 서버 필드 추가 시 null 처리 제거
-    name: booth.name,
-  }));
-
-  const focusedBoothNumber = selectedBooth?.number ?? null;
+  const sponsorBooths = useMemo(
+    () =>
+      sponsorData
+        .map((booth) => ({
+          id: booth.id,
+          number: toSponsorNumber(booth.location),
+          name: booth.name,
+        }))
+        .sort(byNumber),
+    [sponsorData],
+  );
 
   const filteredBooths =
     activeTab === 'general' ? generalBooths : sponsorBooths;
+
+  const focusedBoothNumber = selectedBooth?.number ?? null;
 
   useEffect(() => {
     if (!selectedBooth) return;
@@ -79,7 +101,6 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
       snap={isExpanded ? 'half' : 'min'}
       showScrim="none"
       dismissible={false}
-      style={{ zIndex: 10 }}
     >
       <InstructionsContainer>
         <InstructionsText>
@@ -102,21 +123,26 @@ export default function MapBottomSheet({ isExpanded, selectedBooth }) {
           onClick={() => setActiveTab('sponsor')}
         />
       </TabRow>
-      <BoothListContainer>
+      <BoothListContainer
+        $rows={
+          activeTab === 'general'
+            ? Math.ceil(generalBooths.length / 2)
+            : SPONSOR_ROWS
+        }
+      >
         {filteredBooths.map((booth) => (
           <BoothListItem
             key={booth.id}
             ref={
-              booth.number !== null
+              isValid(booth.number)
                 ? (el) => (itemRefs.current[booth.number] = el)
                 : undefined
             }
-            boothNumber={booth.number}
+            boothNumber={isValid(booth.number) ? booth.number : null}
             boothName={booth.name}
             focused={booth.number === focusedBoothNumber}
-            disabled={booth.number === null}
             onClick={() => {
-              if (booth.number === null) return;
+              if (!isValid(booth.number)) return;
               handleBoothClick(booth.id);
             }}
           />

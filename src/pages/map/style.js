@@ -3,6 +3,7 @@ import { semantic } from '@/designsystem/tokens/semantic';
 import { measurement } from '@/designsystem/tokens/measurement';
 import { typography } from '@/designsystem/tokens/typography';
 import { css } from '@emotion/react';
+import { Z_INDEX } from '@/constants/zIndex';
 
 export const MapScreenWrapper = styled.div`
   display: flex;
@@ -15,6 +16,7 @@ export const MapArea = styled.div`
   min-height: 0;
   overflow: hidden;
   position: relative;
+  isolation: isolate;
 `;
 
 export const InstructionsContainer = styled.div`
@@ -68,7 +70,7 @@ export const BoothListContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-auto-flow: column;
-  grid-template-rows: repeat(26, auto);
+  grid-template-rows: repeat(${({ $rows }) => $rows}, auto);
   gap: ${measurement.spacing12} ${measurement.spacing16};
   padding: ${measurement.spacing20};
 `;
@@ -77,7 +79,7 @@ export const NoticeTagWrapper = styled.div`
   position: absolute;
   top: 10px;
   left: ${measurement.spacing16};
-  z-index: 101;
+  z-index: ${Z_INDEX.floatingOverScrim};
 `;
 
 export const NoticeTagContent = styled.div`
