@@ -1,4 +1,4 @@
-import BoothMap from '@/assets/svg/map/booth_map.svg?react';
+import BoothMap from '@/assets/svg/map/booth_map_lg.svg?react';
 import FillCenterHeader from '@/designsystem/components/header/FillCenterHeader';
 import { useGoBack } from '@/hooks/useGoBack';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
@@ -18,11 +18,12 @@ import NoticeBottomSheet from './components/NoticeBottomSheet';
 import { Global } from '@emotion/react';
 import { useLocation } from 'react-router-dom';
 
-const MAP_WIDTH = 813;
-const MAP_HEIGHT = 939;
+const MAP_WIDTH = 1193;
+const MAP_HEIGHT = 1264;
 
-const INITIAL_SCALE = 1.1;
-const MAX_SCALE = 1.8;
+const INITIAL_VIEW = { left: 590, right: 966, top: 160 };
+
+const MAX_ZOOM_RATIO = 1.8;
 
 const savedTransforms = new Map();
 
@@ -61,17 +62,31 @@ export default function MapScreen() {
     const { width, height } = el.getBoundingClientRect();
 
     const minScale = height / MAP_HEIGHT;
+    const initialScale = Math.max(
+      width / (INITIAL_VIEW.right - INITIAL_VIEW.left),
+      minScale,
+    );
+    const maxScale = initialScale * MAX_ZOOM_RATIO;
+
     const saved = savedTransforms.get(location.key) ?? null;
+
+    if (saved) {
+      setTransformConfig({
+        minScale,
+        maxScale,
+        initialScale: clamp(saved.scale, minScale, maxScale),
+        initialPositionX: saved.positionX,
+        initialPositionY: saved.positionY,
+      });
+      return;
+    }
 
     setTransformConfig({
       minScale,
-      initialScale: saved
-        ? clamp(saved.scale, minScale, MAX_SCALE)
-        : INITIAL_SCALE,
-      initialPositionX: saved
-        ? saved.positionX
-        : -(MAP_WIDTH * INITIAL_SCALE - width),
-      initialPositionY: saved ? saved.positionY : 0,
+      maxScale,
+      initialScale,
+      initialPositionX: -INITIAL_VIEW.left * initialScale,
+      initialPositionY: -INITIAL_VIEW.top * initialScale,
     });
   }, []);
 
@@ -143,7 +158,7 @@ export default function MapScreen() {
           <TransformWrapper
             initialScale={transformConfig.initialScale}
             minScale={transformConfig.minScale}
-            maxScale={MAX_SCALE}
+            maxScale={transformConfig.maxScale}
             initialPositionX={transformConfig.initialPositionX}
             initialPositionY={transformConfig.initialPositionY}
             onPanningStop={saveTransformState}
