@@ -16,6 +16,7 @@ import { semantic } from '@/designsystem/tokens/semantic';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import NoticeBottomSheet from './components/NoticeBottomSheet';
 import { Global } from '@emotion/react';
+import { useLocation } from 'react-router-dom';
 
 const MAP_WIDTH = 813;
 const MAP_HEIGHT = 939;
@@ -23,7 +24,14 @@ const MAP_HEIGHT = 939;
 const INITIAL_SCALE = 1.1;
 const MAX_SCALE = 1.8;
 
+const savedTransforms = new Map();
+
+const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
 export default function MapScreen() {
+  const location = useLocation();
+  const latestTransformRef = useRef(null);
+
   const handleBack = useGoBack();
   const [showNotice, setShowNotice] = useState(false);
   const containerRef = useRef(null);
@@ -31,17 +39,6 @@ export default function MapScreen() {
 
   const [selectedBooth, setSelectedBooth] = useState(null);
   const mapContentRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const { width, height } = el.getBoundingClientRect();
-
-    const minScale = height / MAP_HEIGHT;
-    const initialPositionX = -(MAP_WIDTH * INITIAL_SCALE - width);
-
-    setTransformConfig({ minScale, initialPositionX });
-  }, []);
 
   useEffect(() => {
     const container = mapContentRef.current;
@@ -57,6 +54,39 @@ export default function MapScreen() {
       container.querySelector(`#${id}`)?.classList.add('selected');
     }
   }, [selectedBooth]);
+
+  useLayoutEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const { width, height } = el.getBoundingClientRect();
+
+    const minScale = height / MAP_HEIGHT;
+    const saved = savedTransforms.get(location.key) ?? null;
+
+    setTransformConfig({
+      minScale,
+      initialScale: saved
+        ? clamp(saved.scale, minScale, MAX_SCALE)
+        : INITIAL_SCALE,
+      initialPositionX: saved
+        ? saved.positionX
+        : -(MAP_WIDTH * INITIAL_SCALE - width),
+      initialPositionY: saved ? saved.positionY : 0,
+    });
+  }, []);
+
+  useEffect(() => {
+    const key = location.key;
+    return () => {
+      if (!latestTransformRef.current) return;
+      savedTransforms.set(key, latestTransformRef.current);
+    };
+  }, [location.key]);
+
+  const saveTransformState = (ref) => {
+    const { scale, positionX, positionY } = ref.state;
+    latestTransformRef.current = { scale, positionX, positionY };
+  };
 
   const handleMapClick = (e) => {
     if (showNotice) {
@@ -111,11 +141,15 @@ export default function MapScreen() {
         </NoticeTagWrapper>
         {transformConfig !== null && (
           <TransformWrapper
-            initialScale={INITIAL_SCALE}
+            initialScale={transformConfig.initialScale}
             minScale={transformConfig.minScale}
             maxScale={MAX_SCALE}
             initialPositionX={transformConfig.initialPositionX}
-            initialPositionY={0}
+            initialPositionY={transformConfig.initialPositionY}
+            onPanningStop={saveTransformState}
+            onPinchingStop={saveTransformState}
+            onWheelStop={saveTransformState}
+            onZoomStop={saveTransformState}
             limitToBounds
             centerZoomedOut={true}
             wheel={{ step: 0.1 }}
