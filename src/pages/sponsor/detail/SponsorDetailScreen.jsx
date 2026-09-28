@@ -111,7 +111,7 @@ function SponsorDetailContent({ id }) {
 
   return (
     <S.SponsorDetailContainer>
-      {sponsorDetail ? (
+      {sponsorDetail.imageUrl ? (
         <S.RepresentativeImage
           src={sponsorDetail.imageUrl}
           alt={`${sponsorDetail.name} 대표 이미지`}
