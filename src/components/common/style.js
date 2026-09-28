@@ -4,9 +4,9 @@ import { typography } from '@/designsystem/tokens/typography';
 import styled from '@emotion/styled';
 
 export const CommonScreenContainer = styled.div`
-  position: relative;
-  width: 100vw;
-  height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: ${({ zIndex }) => zIndex ?? 'auto'};
   display: flex;
   flex-direction: column;
   justify-content: center;

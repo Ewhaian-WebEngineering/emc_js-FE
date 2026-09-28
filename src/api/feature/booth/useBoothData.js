@@ -24,6 +24,9 @@ export const useBoothData = ({ category, sort, time, limit = 20 }) => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
+    isPending,
+    isPaused,
+    refetch,
     error,
     isError,
   } = useInfiniteQuery({
@@ -45,6 +48,9 @@ export const useBoothData = ({ category, sort, time, limit = 20 }) => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
+    isPending,
+    isPaused,
+    refetch,
     error,
     isError,
   };

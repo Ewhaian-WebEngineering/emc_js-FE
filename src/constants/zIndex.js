@@ -15,6 +15,8 @@ export const Z_INDEX = {
   bottomSheet: 101,
   datepicker: 100,
 
+  errorScreen: 150,
+
   select: 200,
   toast: 300,
 

@@ -15,6 +15,7 @@ import { CATEGORY_TABS } from '@/constants/categoryTabs';
 import { useMemo, useRef } from 'react';
 import useHorizontalPager from './hooks/useHorizontalPages';
 import EmptyState from '@/designsystem/components/emptystate/EmptyState';
+import ErrorScreen from '@/components/common/ErrorScreen';
 
 const CATEGORY_LIST = CATEGORY_TABS.map((tab) => tab.value);
 
@@ -48,7 +49,16 @@ export default function BoothScreen() {
     setCategory(nextCategory);
   };
 
-  const { totalCount } = useBoothData({ category, sort, time, limit: 20 });
+  const { totalCount, isError, isPending, isPaused, refetch } = useBoothData({
+    category,
+    sort,
+    time,
+    limit: 20,
+  });
+
+  if (isError || (isPending && isPaused)) {
+    return <ErrorScreen onRetry={() => refetch()} />;
+  }
 
   return (
     <ScreenWrapper>
@@ -95,7 +105,7 @@ function CategoryPanel({ category, sort, time }) {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    isLoading,
+    isPending,
   } = useBoothData({ category, sort, time, limit: 20 });
 
   const observerRef = useInfiniteScroll({
@@ -104,7 +114,7 @@ function CategoryPanel({ category, sort, time }) {
     fetchNextPage,
   });
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <InfiniteScrollLoader>
         <Spinner />

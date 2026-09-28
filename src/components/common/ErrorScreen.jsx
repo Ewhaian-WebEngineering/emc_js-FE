@@ -6,10 +6,11 @@ import {
   ErrorTitle,
 } from './style';
 import Logo from '@/assets/svg/logo/ic_logo_main.svg?react';
+import { Z_INDEX } from '@/constants/zIndex';
 
 export default function ErrorScreen({ onRetry }) {
   return (
-    <CommonScreenContainer>
+    <CommonScreenContainer zIndex={Z_INDEX.errorScreen}>
       <CommonLogoBg>
         <Logo />
       </CommonLogoBg>
