@@ -59,6 +59,11 @@ export default function MapScreen() {
   }, [selectedBooth]);
 
   const handleMapClick = (e) => {
+    if (showNotice) {
+      setShowNotice(false);
+      return;
+    }
+
     const boothEl = e.target.closest('[id^="booth-"], [id^="sponsor-booth-"]');
     if (!boothEl) {
       setSelectedBooth(null);
