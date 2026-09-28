@@ -46,6 +46,11 @@ export default function SponsorList({ list }) {
   );
 }
 
+const splitKoEn = (name) =>
+  name
+    .replace(/([가-힣])\s+(?=[A-Za-z])/g, '$1\n')
+    .replace(/([A-Za-z,.])\s+(?=[가-힣])/g, '$1\n');
+
 function SponsorItem({ name, imageUrl, isSelected, onClick }) {
   return (
     <SponsorItemContainer onClick={onClick}>
@@ -56,7 +61,7 @@ function SponsorItem({ name, imageUrl, isSelected, onClick }) {
           <Placeholder width={70} height={70} />
         )}
       </SponsorItemThumbnail>
-      <SponsorName isSelected={isSelected}>{name}</SponsorName>
+      <SponsorName isSelected={isSelected}>{splitKoEn(name)}</SponsorName>
     </SponsorItemContainer>
   );
 }

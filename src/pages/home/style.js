@@ -196,6 +196,11 @@ export const SponsorName = styled.p`
     isSelected ? typography.caption1Medium : typography.caption1Regular};
   color: ${({ isSelected }) =>
     isSelected ? semantic.textNormalStrong : semantic.textNormalNormal};
+
+  width: 70px;
+  white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 `;
 
 export const SponsorListSection = styled.div`
