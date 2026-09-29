@@ -118,6 +118,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
       description: '나가면 작성 중인 내용이 저장되지 않아요.',
       cancelText: '나가기',
       confirmText: '계속 작성하기',
+      dismissible: false,
       onCancel: () => goBack(),
     });
   };

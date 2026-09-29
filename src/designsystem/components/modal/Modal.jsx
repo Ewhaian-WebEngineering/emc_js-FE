@@ -24,6 +24,7 @@ import { createPortal } from 'react-dom';
  * @param {function} [onConfirm] - 확인 버튼 클릭 시 호출되는 함수
  * @param {function} onCancel - 취소 버튼 또는 배경(Scrim) 클릭 시 호출되는 함수
  * @param {function} [onDismiss] - 배경(Scrim) 클릭 시 호출되는 함수
+ * @param {boolean} [dismissible=true] - 배경(Scrim) 클릭으로 모달을 닫을 수 있는지 여부
  */
 export default function Modal({
   variant,
@@ -37,6 +38,7 @@ export default function Modal({
   onConfirm,
   onCancel,
   onDismiss,
+  dismissible = true,
 }) {
   // 드롭다운
   const [selectedOption, setSelectedOption] = useState(defaultValue || '');
@@ -86,7 +88,11 @@ export default function Modal({
   };
 
   return createPortal(
-    <Scrim onClick={handleDismiss} layer="modalScrim" data-modal-root>
+    <Scrim
+      onClick={dismissible ? handleDismiss : undefined}
+      layer="modalScrim"
+      data-modal-root
+    >
       <ModalContainer>
         <ModalContent>
           <h2>{title}</h2>
