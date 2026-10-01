@@ -105,7 +105,7 @@ export const BannerCarouselContainer = styled.div`
   width: 100%;
   height: 80px;
   border-radius: ${measurement.borderRadiusMd};
-  border: ${measurement.borderRadiusSm} solid ${semantic.borderNormalAssistive};
+  border: ${measurement.borderWidthSm} solid ${semantic.borderNormalAssistive};
 `;
 
 export const BannerSlideTrack = styled.div`
