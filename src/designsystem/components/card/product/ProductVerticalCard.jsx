@@ -33,7 +33,7 @@ export default function ProductVerticalCard({
     <ProductVerticalCardContainer>
       <ProductVerticalCardThumbnail>
         {thumbnail ? (
-          <Image src={thumbnail} alt={productName} />
+          <Image src={thumbnail} alt={productName} width={1200} />
         ) : (
           <CardPlaceholder />
         )}

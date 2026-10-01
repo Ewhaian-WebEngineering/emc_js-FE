@@ -8,7 +8,7 @@ export default function Image({ eager = false, src, width = 400, ...props }) {
   const resizedSrc = isRemote
     ? `https://images.weserv.nl/?url=${encodeURIComponent(
         resolvedSrc.replace(/^https?:\/\//, ''),
-      )}&w=${width}&output=webp`
+      )}&w=${width}&we&output=webp`
     : resolvedSrc;
 
   return <img src={resizedSrc} loading={eager ? 'eager' : 'lazy'} {...props} />;

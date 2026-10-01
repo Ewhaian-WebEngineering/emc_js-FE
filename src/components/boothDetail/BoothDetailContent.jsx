@@ -132,7 +132,7 @@ export default function BoothDetailContent({
     <>
       <RepresentativeImageWrapper>
         {booth.thumbnailUrl ? (
-          <Image src={booth.thumbnailUrl} alt="대표 이미지" />
+          <Image src={booth.thumbnailUrl} alt="대표 이미지" width={1200} />
         ) : (
           <Placeholder logoSize="30%" />
         )}

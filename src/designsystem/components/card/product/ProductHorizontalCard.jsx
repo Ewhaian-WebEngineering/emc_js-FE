@@ -25,7 +25,7 @@ export default function ProductHorizontalCard({
     <ProductHorizontalCardContainer>
       <ProductHorizontalCardThumbnail>
         {thumbnail ? (
-          <Image src={thumbnail} alt={productName} />
+          <Image src={thumbnail} alt={productName} width={1200} />
         ) : (
           <CardPlaceholder />
         )}

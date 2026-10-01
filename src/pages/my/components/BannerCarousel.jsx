@@ -95,6 +95,8 @@ export default function BannerCarousel({ banners = [] }) {
             <Image
               src={banner.imageUrl || Placeholder}
               alt={banner.title ?? 'Banner'}
+              width={1200}
+              eager={index === 0}
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </BannerSlide>

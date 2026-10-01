@@ -39,7 +39,11 @@ export default function SponsorCard({
       <SponsorCardThumbnailWrapper>
         <SponsorCardMainImage>
           {mainImage ? (
-            <Image src={mainImage} alt={`${sponsorName} main thumbnail`} />
+            <Image
+              src={mainImage}
+              alt={`${sponsorName} main thumbnail`}
+              width={1200}
+            />
           ) : (
             <CardPlaceholder />
           )}

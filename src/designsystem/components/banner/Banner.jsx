@@ -12,7 +12,7 @@ import Placeholder from '@/assets/img/img_checker.png';
 export default function Banner({ src, alt = 'Banner' }) {
   return (
     <BannerContainer>
-      <Image src={src || Placeholder} alt={alt} />
+      <Image src={src || Placeholder} alt={alt} width={1200} />
     </BannerContainer>
   );
 }

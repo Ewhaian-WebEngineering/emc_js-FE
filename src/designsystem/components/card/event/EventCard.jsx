@@ -34,7 +34,7 @@ export default function EventCard({
     <EventCardContainer status={status} onClick={onClick}>
       <EventCardThumbnail>
         {thumbnail ? (
-          <Image src={thumbnail} alt={eventTitle} />
+          <Image src={thumbnail} alt={eventTitle} width={1200} />
         ) : (
           <CardPlaceholder />
         )}
