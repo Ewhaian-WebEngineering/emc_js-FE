@@ -21,7 +21,7 @@ export default function EmptyState({
   height,
 }) {
   return (
-    <EmptyStateContainer height={height} $variant={variant}>
+    <EmptyStateContainer $height={height} $variant={variant}>
       {Icon && <Icon />}
       <EmptyStateText $variant={variant}>
         {title && <h2>{title}</h2>}
