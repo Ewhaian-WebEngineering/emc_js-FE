@@ -12,7 +12,7 @@ export const EventCardContainer = styled.div`
 `;
 
 export const EventCardThumbnail = styled.div`
-  aspect-ratio: 2 / 1;
+  flex-shrink: 0;
   height: 172px;
 
   img,
