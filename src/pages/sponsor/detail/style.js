@@ -95,6 +95,16 @@ export const IntroductionContent = styled.div`
   ${typography.body2Regular}
   color: ${semantic.textNormalNormal};
 
+  & > * {
+    max-width: 100%;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
   p {
     margin-bottom: ${measurement.spacing12};
   }
