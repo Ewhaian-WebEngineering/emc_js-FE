@@ -38,6 +38,7 @@ export default function Editor({
   onChange,
   ownerId,
   imageType,
+  placeholder = '상세 내용을 작성해주세요.',
   forceShowError = false,
 }) {
   const fileInputRef = useRef(null);
@@ -66,7 +67,7 @@ export default function Editor({
       }),
       Image,
       Placeholder.configure({
-        placeholder: '이벤트에 대한 상세 내용을 작성해주세요.',
+        placeholder,
       }),
     ],
     content,

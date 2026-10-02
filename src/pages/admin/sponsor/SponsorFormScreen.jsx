@@ -214,6 +214,9 @@ export default function SponsorFormScreen({
               content={formValues.description}
               onChange={(value) => updateField('description', value)}
               forceShowError={hasAttemptedSubmit}
+              imageType="sponsor_description"
+              ownerId={sponsorId}
+              placeholder="협찬사에 대한 상세 내용을 작성해주세요."
             />
           </RichTextField>
         </div>

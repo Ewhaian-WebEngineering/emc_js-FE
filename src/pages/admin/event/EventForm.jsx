@@ -313,6 +313,7 @@ export default function EventForm({ mode = 'create', initialData, onSubmit }) {
             onChange={updateField('description')}
             ownerId={ownerId}
             imageType="event_description"
+            placeholder="이벤트에 대한 상세 내용을 작성해주세요."
           />
         </CategoryContainer>
 
