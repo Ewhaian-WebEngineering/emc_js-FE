@@ -52,13 +52,10 @@ export const InfoList = styled.dl`
 
 export const InfoRow = styled.div`
   display: grid;
-  grid-template-columns: ${measurement.spacing64} 1fr;
+  grid-template-columns: ${measurement.spacing64} minmax(0, 1fr);
   width: 100%;
   align-items: center;
   gap: ${measurement.spacing12};
-  & > a {
-    justify-self: start;
-  }
 `;
 
 export const InfoLabel = styled.dt`
@@ -69,9 +66,9 @@ export const InfoLabel = styled.dt`
 export const InfoValue = styled.dd`
   ${typography.caption1Medium};
   min-width: ${measurement.spacing0};
+  overflow: hidden;
   margin: 0;
   color: ${semantic.textNormalStrong};
-  justify-self: start;
 `;
 
 export const IntroductionSection = styled.section`

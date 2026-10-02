@@ -178,32 +178,36 @@ export default function BoothDetailContent({
           </InfoRow>
           <InfoRow>
             <InfoLabel>위치</InfoLabel>
-            {booth.location ? (
-              <LinkButton
-                size="sm"
-                variant="secondary"
-                onClick={handleLocationClick}
-              >
-                {booth.location}번 부스
-              </LinkButton>
-            ) : (
-              <InfoValue>-</InfoValue>
-            )}
+            <InfoValue>
+              {booth.location ? (
+                <LinkButton
+                  size="sm"
+                  variant="secondary"
+                  onClick={handleLocationClick}
+                >
+                  {booth.location}번 부스
+                </LinkButton>
+              ) : (
+                '-'
+              )}
+            </InfoValue>
           </InfoRow>
           <InfoRow>
             <InfoLabel>URL</InfoLabel>
-            {booth.externalUrl ? (
-              <LinkButton
-                size="sm"
-                variant="secondary"
-                href={booth.externalUrl}
-                target="_blank"
-              >
-                {booth.externalUrl}
-              </LinkButton>
-            ) : (
-              <InfoValue>-</InfoValue>
-            )}
+            <InfoValue>
+              {booth.externalUrl ? (
+                <LinkButton
+                  size="sm"
+                  variant="secondary"
+                  href={booth.externalUrl}
+                  target="_blank"
+                >
+                  {booth.externalUrl}
+                </LinkButton>
+              ) : (
+                '-'
+              )}
+            </InfoValue>
           </InfoRow>
         </InfoList>
         <NoticeCard onClick={handleNoticeClick}>

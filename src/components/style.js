@@ -93,6 +93,9 @@ export const InfoLabel = styled.dt`
 
 export const InfoValue = styled.dd`
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  margin: 0;
   ${typography.caption1Medium};
   color: ${semantic.textNormalStrong};
 `;

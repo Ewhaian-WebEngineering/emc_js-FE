@@ -105,6 +105,9 @@ export const LinkButtonContainer = styled.a`
   justify-content: center;
   cursor: pointer;
 
+  max-width: 100%;
+  min-width: 0;
+
   color: ${({ $variant }) =>
     $variant === 'primary'
       ? semantic.textPrimaryNormal
@@ -120,6 +123,13 @@ export const LinkButtonContainer = styled.a`
       : $size === 'md'
         ? css(typography.body2Medium)
         : css(typography.caption1Medium)}
+`;
+
+export const LinkButtonLabel = styled.span`
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export const IconButtonContainer = styled.button`

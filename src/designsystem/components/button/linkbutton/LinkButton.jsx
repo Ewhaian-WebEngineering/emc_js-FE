@@ -1,4 +1,4 @@
-import { LinkButtonContainer } from '../style';
+import { LinkButtonContainer, LinkButtonLabel } from '../style';
 
 /**
  * 링크 버튼 컴포넌트입니다.
@@ -29,7 +29,7 @@ export default function LinkButton({
       onClick={onClick}
       {...rest}
     >
-      {children}
+      <LinkButtonLabel>{children}</LinkButtonLabel>
     </LinkButtonContainer>
   );
 }
