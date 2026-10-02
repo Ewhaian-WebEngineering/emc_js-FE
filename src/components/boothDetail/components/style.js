@@ -62,17 +62,24 @@ export const ContactButton = styled.button`
   display: flex;
   align-items: center;
   gap: ${measurement.spacing12};
+  width: 100%;
+  min-width: 0;
   padding: ${measurement.spacing12} ${measurement.spacing16};
   border-radius: ${measurement.borderRadiusXl};
   background-color: ${semantic.fillNormalWhite};
   border: ${measurement.borderWidthSm} solid ${semantic.borderNormalNormal};
   cursor: pointer;
+
+  & > svg {
+    flex-shrink: 0;
+  }
 `;
 
 export const InquiryIconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   padding: ${measurement.spacing4};
   border-radius: ${measurement.borderWidthLg};
   background-color: ${semantic.secondaryYellowLighten};
@@ -80,6 +87,10 @@ export const InquiryIconWrapper = styled.div`
 
 export const ContactUrl = styled.span`
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   ${typography.body2Medium};
   color: ${semantic.textNormalNormal};
   text-align: left;
