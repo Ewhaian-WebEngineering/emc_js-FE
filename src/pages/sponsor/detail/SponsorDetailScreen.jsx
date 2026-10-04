@@ -201,7 +201,7 @@ function SponsorDetailContent({ id }) {
         ref={registerSection('introduction')}
         style={{ scrollMarginTop: tabBarHeight }}
       >
-        <S.SectionTitle>{sponsorDetail.name}을 소개합니다.</S.SectionTitle>
+        <S.SectionTitle>{sponsorDetail.name} 소개합니다.</S.SectionTitle>
 
         {sponsorDetail.description && (
           <S.IntroductionContent
