@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 
 export default function useHorizontalPager({
   pagerRef,
@@ -8,6 +8,13 @@ export default function useHorizontalPager({
   debounceMs = 100,
 }) {
   const debounceTimer = useRef(null);
+
+  useLayoutEffect(() => {
+    const el = pagerRef.current;
+    const idx = items.indexOf(activeItem);
+    if (!el || idx < 0) return;
+    el.scrollTo({ left: idx * el.clientWidth, behavior: 'instant' });
+  }, []);
 
   const scrollToIndex = useCallback(
     (idx) => {
