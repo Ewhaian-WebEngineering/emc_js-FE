@@ -7,6 +7,8 @@ import {
 } from './tokenStorage';
 import { ApiError } from './errors';
 import { modalStore } from './store/modalStore';
+import { queryClient } from './query/queryClient';
+import { PHASE_LOCKED_MODAL } from '@/constants/phase';
 
 // 요청 인터셉터: 토큰 주입
 export function attachRequestInterceptor(instance) {
@@ -66,6 +68,12 @@ export function attachResponseInterceptor(instance) {
       }
 
       const apiError = ApiError.from(error);
+
+      if (apiError.status === 403 && apiError.code === 'PHASE_LOCKED') {
+        queryClient.invalidateQueries({ queryKey: ['phase'] });
+        modalStore.show(PHASE_LOCKED_MODAL);
+        return Promise.reject(apiError);
+      }
 
       const MODAL_TARGET_METHODS = ['post', 'patch', 'put'];
 
