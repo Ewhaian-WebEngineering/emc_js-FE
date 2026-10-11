@@ -28,6 +28,7 @@ const ACCEPTED_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
  * @param {string} [helperText] - 안내 문구, 에러 상태일 때는 에러 문구로 사용
  * @param {function} [onUploadError] - 업로드 실패 시 호출되는 함수
  * @param {string} [accept='image/*'] - 업로드 가능한 파일 타입
+ * @param {function} [onBeforeUpload] - 업로드 창 열기 전 호출, false 반환 시 중단
  */
 export default function ProductImageUploader({
   title,
@@ -39,10 +40,12 @@ export default function ProductImageUploader({
   onDelete,
   onUploadError,
   accept = 'image/*',
+  onBeforeUpload,
 }) {
   const inputRef = useRef(null);
 
   const handleUploadClick = () => {
+    if (onBeforeUpload?.() === false) return;
     inputRef.current?.click();
   };
 

@@ -16,6 +16,11 @@ export const useImageUpload = (options = {}) => {
       return { fileKey, cdnUrl };
     },
     onError: (error) => {
+      if (error.code === 'PHASE_LOCKED') {
+        options.onError?.(error);
+        return;
+      }
+
       let message = '이미지 업로드에 실패했어요';
 
       if (error.isS3Error) {
