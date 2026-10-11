@@ -31,6 +31,7 @@ import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
 import BottomSheet from '@/designsystem/components/bottomsheet/BottomSheet';
 import TextField from '@/designsystem/components/textinput/textfield/TextField';
 import TextArea from '@/designsystem/components/textinput/textarea/TextArea';
+import { usePhaseGuard } from '@/hooks/config/usePhaseGuard';
 
 const EMPTY = [];
 const noop = () => {};
@@ -80,6 +81,8 @@ export default function ProductGroupManageScreen() {
     groupId: null,
     onGroupIdChange: noop,
   });
+
+  const { guard } = usePhaseGuard();
 
   const handleSave = () => {
     setSaved({ groups: draft.groups, products: draft.products });
@@ -135,13 +138,17 @@ export default function ProductGroupManageScreen() {
               selected={false}
               showActions={!option.hideActions}
               onClick={noop}
-              onDelete={() => handleDeleteGroup(option)}
-              onEdit={() => handleEditGroup(option)}
+              onDelete={guard(() => handleDeleteGroup(option))}
+              onEdit={guard(() => handleEditGroup(option))}
             />
           ))}
         </ProductFormSection>
 
-        <BoxButton variant="secondary" size="sm" onClick={handleAddGroup}>
+        <BoxButton
+          variant="secondary"
+          size="sm"
+          onClick={guard(handleAddGroup)}
+        >
           그룹 추가하기
         </BoxButton>
       </ProductGroupFormContainer>
