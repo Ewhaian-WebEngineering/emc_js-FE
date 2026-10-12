@@ -42,6 +42,7 @@ import { useProductSections } from '@/pages/admin/sponsor/hooks/useProductSectio
 import { useToast } from '@/hooks/toast/useToast';
 import { useGoBack } from '@/hooks/useGoBack';
 import BoxButton from '@/designsystem/components/button/boxbutton/BoxButton';
+import { usePhaseGuard } from '@/hooks/config/usePhaseGuard';
 
 export default function BoothEditScreen() {
   const { boothId } = useParams();
@@ -226,7 +227,41 @@ function BoothEditForm({ booth, boothId }) {
     }, delay);
   };
 
+  const LOCKED_FIELDS = [
+    'categories',
+    'isVegan',
+    'isEco',
+    'operationTime',
+    'isCash',
+    'externalUrl',
+    'inquiryUrl',
+    'description',
+    'guides',
+  ];
+
+  const hasLockedChange = () => {
+    const fieldChanged = LOCKED_FIELDS.some(
+      (f) =>
+        JSON.stringify(draft.boothFields?.[f]) !==
+        JSON.stringify(draft.originalFields?.[f]),
+    );
+    const thumbnailChanged =
+      draft.thumbnail.file !== null || draft.thumbnail.removed;
+    const groupChanged = Object.keys(draft.groups).length > 0;
+    const productAddedOrDeleted = Object.values(draft.products).some(
+      (p) => p.status !== 'updated',
+    );
+    return (
+      fieldChanged || thumbnailChanged || groupChanged || productAddedOrDeleted
+    );
+  };
+
   const handleSave = async () => {
+    if (isLocked && hasLockedChange()) {
+      showLockedModal();
+      return;
+    }
+
     const fieldErrors = validate();
     const productError = validateProducts();
     if (Object.keys(fieldErrors).length > 0 || productError) {
@@ -241,6 +276,20 @@ function BoothEditForm({ booth, boothId }) {
       // 공통 에러 모달
     }
   };
+
+  const { isLocked, guard, canEdit, showLockedModal } = usePhaseGuard();
+
+  const guardBlur =
+    (field, onBlur) =>
+    (...args) => {
+      const original = draft.originalFields?.[field] ?? '';
+      if (isLocked && boothForm[field] !== original) {
+        updateField(field)(original);
+        showLockedModal();
+        return;
+      }
+      onBlur?.(...args);
+    };
 
   return (
     <BoothEditContainer>
@@ -260,7 +309,8 @@ function BoothEditForm({ booth, boothId }) {
       <MainImageUploader
         imageUrl={draft.thumbnail.preview}
         onUpload={(file) => setThumbnail(file, URL.createObjectURL(file))}
-        onDelete={() => removeThumbnail()}
+        onBeforeUpload={canEdit}
+        onDelete={guard(() => removeThumbnail())}
       />
 
       <CategoryContainer
@@ -283,7 +333,7 @@ function BoothEditForm({ booth, boothId }) {
           multiple
           options={BOOTH_CATEGORY_OPTIONS.tags}
           selected={boothForm.categories}
-          onChange={updateField('categories')}
+          onChange={guard(updateField('categories'))}
           hasError={!!errors.categories}
           helperText={errors.categories}
         />
@@ -293,7 +343,7 @@ function BoothEditForm({ booth, boothId }) {
           exclusiveValue="none"
           options={BOOTH_CATEGORY_OPTIONS.marks}
           selected={boothForm.marks}
-          onChange={updateField('marks')}
+          onChange={guard(updateField('marks'))}
           hasError={!!errors.marks}
           helperText={errors.marks}
         />
@@ -301,7 +351,7 @@ function BoothEditForm({ booth, boothId }) {
           title="운영 시간"
           options={BOOTH_CATEGORY_OPTIONS.operatingTime}
           selected={boothForm.operationTime}
-          onChange={updateField('operationTime')}
+          onChange={guard(updateField('operationTime'))}
           hasError={!!errors.operationTime}
           helperText={errors.operationTime}
         />
@@ -309,7 +359,7 @@ function BoothEditForm({ booth, boothId }) {
           title="현금 사용 여부"
           options={BOOTH_CATEGORY_OPTIONS.cash}
           selected={boothForm.isCash}
-          onChange={updateField('isCash')}
+          onChange={guard(updateField('isCash'))}
           hasError={!!errors.isCash}
           helperText={errors.isCash}
         />
@@ -318,7 +368,7 @@ function BoothEditForm({ booth, boothId }) {
           placeholder="공식 SNS 등 외부 채널 링크를 등록해보세요."
           value={boothForm.externalUrl}
           onChange={updateField('externalUrl')}
-          onBlur={handleBlur('externalUrl')}
+          onBlur={guardBlur('externalUrl', handleBlur('externalUrl'))}
           hasError={!!errors.externalUrl}
           helperText={errors.externalUrl}
         />
@@ -336,6 +386,7 @@ function BoothEditForm({ booth, boothId }) {
           placeholder="예) 수제로 만든 디저트와 음료를 판매하는 부스로, 신선한 재료와 정성으로 준비한 다양한 메뉴를 만나보실 수 있습니다."
           value={boothForm.description}
           onChange={updateField('description')}
+          onBlur={guardBlur('description')}
           maxLength={500}
           hasError={!!errors.description}
           helperText={errors.description}
@@ -364,20 +415,23 @@ function BoothEditForm({ booth, boothId }) {
               <AddIcon />
             </ActionButtonContent>
           }
-          onClick={() => navigate(MANAGE_ROUTES.PRODUCT_CREATE(boothId))}
+          onClick={guard(() => navigate(MANAGE_ROUTES.PRODUCT_CREATE(boothId)))}
         />
         <ProductGroupList
           sections={productSections}
           onSectionsChange={setProductSections}
           onEditProduct={handleEditProduct}
-          onDeleteProduct={clickDeleteProduct}
+          onDeleteProduct={guard(clickDeleteProduct)}
+          readOnly={isLocked}
           onReorderProducts={handleReorderProducts}
           onReorderGroups={handleReorderGroups}
         />
         <BoxButton
           variant="secondary"
           size="sm"
-          onClick={() => navigate(MANAGE_ROUTES.PRODUCT_GROUP_MANAGE(boothId))}
+          onClick={guard(() =>
+            navigate(MANAGE_ROUTES.PRODUCT_GROUP_MANAGE(boothId)),
+          )}
         >
           그룹 설정하기
         </BoxButton>
@@ -394,7 +448,7 @@ function BoothEditForm({ booth, boothId }) {
         <TextInput
           value={boothForm.inquiryUrl}
           onChange={(e) => updateField('inquiryUrl')(e.target.value)}
-          onBlur={handleBlur('inquiryUrl')}
+          onBlur={guardBlur('inquiryUrl', handleBlur('inquiryUrl'))}
           placeholder="예) https://pf.kakao.com/_jwmVd"
           hasError={!!errors.inquiryUrl}
           helperText={errors.inquiryUrl}
@@ -412,7 +466,7 @@ function BoothEditForm({ booth, boothId }) {
             placeholder="예) 밀, 우유, 계란, 초콜릿(대두 포함)"
             value={boothForm.allergenInfo}
             onChange={updateField('allergenInfo')}
-            maxLength={1000}
+            maxLength={500}
           />
         </AccordionLine>
       )}
@@ -454,6 +508,7 @@ function BoothEditForm({ booth, boothId }) {
           placeholder="예) 현장 결제 시 제품 1과 제품 2는 인당 구매 제한이 있습니다."
           value={boothForm.guides}
           onChange={updateField('guides')}
+          onBlur={guardBlur('guides')}
           maxLength={1000}
         />
       </AccordionLine>

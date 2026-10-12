@@ -24,6 +24,7 @@ export default function ProductGroupList({
   onDeleteProduct,
   onReorderProducts,
   onReorderGroups,
+  readOnly = false,
 }) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -182,7 +183,7 @@ export default function ProductGroupList({
 
   return (
     <DndContext
-      sensors={sensors}
+      sensors={readOnly ? [] : sensors}
       collisionDetection={pointerWithin}
       measuring={{
         droppable: {

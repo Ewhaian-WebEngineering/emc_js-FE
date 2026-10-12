@@ -25,6 +25,7 @@ import { useBoothDraftStore } from '../store/useBoothDraftStore';
 import { buildGroupOptions } from '../utils/buildGroupOptions';
 import { useEntityGroups } from '@/hooks/useEntityGroups';
 import { useParams } from 'react-router-dom';
+import { usePhaseGuard } from '@/hooks/config/usePhaseGuard';
 
 export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
   const { showModal } = useModal();
@@ -125,6 +126,33 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
 
   const isCreateLabel = submitLabel === 'create' && !hasSaved;
 
+  const { isLocked, guard, canEdit, showLockedModal } = usePhaseGuard();
+
+  const guardBlur =
+    (field, onBlur) =>
+    (...args) => {
+      const original = baseline.values[field];
+      if (isLocked && formValues[field] !== original) {
+        updateField(field, original);
+        showLockedModal();
+        return;
+      }
+      onBlur?.(...args);
+    };
+
+  const handleSaveClick = () => {
+    const lockedChanged =
+      ['name', 'price', 'description', 'groupId'].some(
+        (f) => formValues[f] !== baseline.values[f],
+      ) || thumbnailPreview !== baseline.thumbnailPreview;
+
+    if (isLocked && lockedChanged) {
+      showLockedModal();
+      return;
+    }
+    handleSubmit();
+  };
+
   return (
     <>
       <FillCenterHeader
@@ -132,7 +160,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
         title="제품"
         right={
           <TextButton
-            onClick={handleSubmit}
+            onClick={handleSaveClick}
             disabled={isProductButtonDisabled || !isDirty}
           >
             {isCreateLabel ? '등록' : '저장'}
@@ -147,6 +175,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           placeholder="제품 이름을 입력해주세요."
           value={formValues.name}
           onChange={(value) => updateField('name', value)}
+          onBlur={guardBlur('name')}
           maxLength={10}
           hasError={!!visibleErrors.name}
           helperText={visibleErrors.name}
@@ -158,7 +187,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           placeholder="예) 999,999원"
           value={formValues.price}
           onChange={(value) => updateField('price', value)}
-          onBlur={handleBlur('price')}
+          onBlur={guardBlur('price', handleBlur('price'))}
           hasError={!!visibleErrors.price}
           helperText={visibleErrors.price}
         />
@@ -186,6 +215,7 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           placeholder="제품의 특징과 구성, 구매 포인트를 간단하게 작성해주세요."
           value={formValues.description}
           onChange={(value) => updateField('description', value)}
+          onBlur={guardBlur('description')}
           maxLength={24}
           hasError={!!visibleErrors.description}
           helperText={visibleErrors.description}
@@ -196,7 +226,8 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           isRequired
           imageUrl={thumbnailPreview}
           onUpload={handleThumbnailUpload}
-          onDelete={handleThumbnailDelete}
+          onBeforeUpload={canEdit}
+          onDelete={guard(handleThumbnailDelete)}
           isError={!!visibleErrors.thumbnail}
           helperText={
             visibleErrors.thumbnail ??
@@ -213,13 +244,17 @@ export default function ProductFormScreen({ product, onSubmit, submitLabel }) {
           <Select
             options={groupOptions}
             value={selectedGroupOption}
-            onChange={(option) => handleSelectGroup(option)}
             placeholder="그룹 없음"
             showActions
-            onDelete={handleDeleteGroup}
-            onEdit={handleEditGroup}
+            onChange={guard((option) => handleSelectGroup(option))}
+            onDelete={guard(handleDeleteGroup)}
+            onEdit={guard(handleEditGroup)}
           />
-          <BoxButton variant="secondary" size="sm" onClick={handleAddGroup}>
+          <BoxButton
+            variant="secondary"
+            size="sm"
+            onClick={guard(handleAddGroup)}
+          >
             그룹 추가하기
           </BoxButton>
         </ProductFormSection>
