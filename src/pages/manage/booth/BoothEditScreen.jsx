@@ -466,7 +466,7 @@ function BoothEditForm({ booth, boothId }) {
             placeholder="예) 밀, 우유, 계란, 초콜릿(대두 포함)"
             value={boothForm.allergenInfo}
             onChange={updateField('allergenInfo')}
-            maxLength={1000}
+            maxLength={500}
           />
         </AccordionLine>
       )}
