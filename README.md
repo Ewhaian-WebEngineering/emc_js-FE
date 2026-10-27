@@ -79,6 +79,32 @@
  
 <br/>
 
+## 💡 Getting Started
+
+```bash
+# 프로젝트 클론
+git clone https://github.com/Ewhaian-WebEngineering/emc_js-FE.git
+cd emc_js-FE
+
+# 라이브러리 설치
+npm install
+```
+
+```bash
+# .env (프로젝트 루트)
+VITE_API_BASE_URL={서버 base url}
+VITE_KAKAO_REST_API_KEY={카카오 REST API 키}
+VITE_KAKAO_JS_KEY={카카오 JavaScript 키}
+VITE_KAKAO_REDIRECT_URI={카카오 로그인 redirect uri}
+```
+
+```bash
+# 개발 서버 실행
+npm run dev
+```
+
+<br />
+
 ## 📚 Convention
 
 - [Git Convention](https://app.notion.com/p/Git-Convention-38e97dd9da6b807f84d2ef55dfe57ab5)
